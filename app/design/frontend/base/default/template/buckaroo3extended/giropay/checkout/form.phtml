@@ -30,10 +30,10 @@
     <?php $_code=$this->getMethodCode() ?>
     <ul id="payment_form_<?php echo $_code ?>" style="display:none">
         <li>
-            <?php echo $this->__('You will be redirected to the Buckaroo website when you place an order.') ?>
+            <?php echo $this->__('You will be redirected to our payment service provider to process your payment.') ?>
         </li>
         <li>
-                <label style ="padding:0;"><?php echo $this->__('Vul s.v.p. uw bankleitzahl in.'); ?></label><br/>
+                <label style ="padding:0;"><?php echo $this->__('Please enter your Bankleitzahl.'); ?></label><br/>
                 <input type="text" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="" /></label><br/>
         </li>
     </ul>
