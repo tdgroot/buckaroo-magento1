@@ -30,7 +30,9 @@
     <?php $_code = $this->getMethodCode() ?>
     <ul id="payment_form_<?php echo $_code ?>" style="display:none;">
         <li>
-            <?php echo Mage::helper('buckaroo3extended')->__('You will be redirected to the Buckaroo website when you place an order.') ?>
+            <?php echo Mage::helper('buckaroo3extended')->__(
+            	'You will be redirected to our payment service provider to process your payment.'
+            ) ?>
         </li>
     </ul>
 </fieldset>
