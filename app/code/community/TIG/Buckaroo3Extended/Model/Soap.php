@@ -50,14 +50,14 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $TransactionRequest->Services = new Services();
         
-        $this->_addServices(&$TransactionRequest);
+        $this->_addServices($TransactionRequest);
         
         $TransactionRequest->ClientIP = new IPAddress();
         $TransactionRequest->ClientIP->Type = 'IPv4';
         $TransactionRequest->ClientIP->_ = $_SERVER['REMOTE_ADDR'];
         
         foreach ($TransactionRequest->Services->Service as $key => $service) {
-            $this->_addCustomFields(&$TransactionRequest, $key, $service->Name);
+            $this->_addCustomFields($TransactionRequest, $key, $service->Name);
         }
         
         $Header = new Header();
@@ -137,16 +137,22 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
         
         $responseXML = $client->__getLastResponse();
+        $requestXML = $client->__getLastRequest();
         
         $responseDomDOC = new DOMDocument();
         $responseDomDOC->loadXML($responseXML);
 		$responseDomDOC->preserveWhiteSpace = FALSE;
 		$responseDomDOC->formatOutput = TRUE;
+		
+		$requestDomDOC = new DOMDocument();
+        $requestDomDOC->loadXML($requestXML);
+		$requestDomDOC->preserveWhiteSpace = FALSE;
+		$requestDomDOC->formatOutput = TRUE;
         
-        return array($response, $responseDomDOC);
+        return array($response, $responseDomDOC, $requestDomDOC);
     }
     
-    protected function _addServices($TransactionRequest)
+    protected function _addServices(&$TransactionRequest)
     {
         $services = array();
         foreach($this->_vars['services'] as $fieldName => $value) {
@@ -161,7 +167,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->Services->Service = $services;
     }
     
-    protected function _addCustomFields($TransactionRequest, $key, $name) 
+    protected function _addCustomFields(&$TransactionRequest, $key, $name) 
     {
         if (
             !isset($this->_vars['customVars']) 

@@ -539,11 +539,12 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    unset($origArray['brq_signature']);
 	    
 	    //sort the array
-	    $origArray = $this->keyNatCaseSort($origArray);
+	    list($sortableArray, $origArray) = $this->keyNatCaseSort($origArray);
 	    
 	    //turn into string and add the secret key to the end
 	    $signatureString = '';
-	    foreach($origArray as $key => $value) {
+	    foreach($sortableArray as $key => $value) {
+	        $key = $origArray[$key];
             $value = urldecode($value);
 	        $signatureString .= $key . '=' . $value;
 	    }

@@ -513,15 +513,22 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	
 	public function keyNatCaseSort($array)
     {
-        if(is_array($array))
+        $arrayToSort = array();
+        $origArray = array();
+        foreach ($array as $key => $value) {
+            $arrayToSort[str_replace('_', '0', $key)] = $value;
+            $origArray[str_replace('_', '0', $key)] = $key;
+        }
+        
+        if(is_array($arrayToSort))
         {
-            $keys = array_keys($array);
+            $keys = array_keys($arrayToSort);
             if(natcasesort($keys))
             {
                 $result = array();
                 foreach($keys as $key)
                 {
-                    $result[$key] = $array[$key];
+                    $result[$key] = $arrayToSort[$key];
                 }
                    
             }
@@ -533,7 +540,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
             $result = null;
         }
        
-        return $result;
+        return array($result, $origArray);
     }
 	
 	public $oldResponseCodes = array(
