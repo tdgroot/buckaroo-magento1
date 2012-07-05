@@ -88,16 +88,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		$this->_debugEmail .= "Response recieved: " . var_export($response, true) . "\n\n";
 		$this->_debugEmail .= "Current state: " . $this->_order->getState() . "\nCurrent status: " . $this->_order->getStatus() . "\n";
 		$this->_debugEmail .= "New state: " . $newStates[0] . "\nNew status: " . $newStates[1] . "\n\n";
-		
-        Mage::dispatchEvent(
-        	'buckaroo3extended_push_custom_processing', 
-            array(
-        		'push'     => $this,
-                'order'    => $this->getOrder(),
-                'response' => $response,
-            )
-        );  
-		
+        
+        Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
+                
         if ($this->getCustomResponseProcessing()) {
             return true;
         }
@@ -539,12 +532,11 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    unset($origArray['brq_signature']);
 	    
 	    //sort the array
-	    list($sortableArray, $origArray) = $this->keyNatCaseSort($origArray);
+	    list($sortableArray) = $this->keyNatCaseSort($origArray);
 	    
 	    //turn into string and add the secret key to the end
 	    $signatureString = '';
 	    foreach($sortableArray as $key => $value) {
-	        $key = $origArray[$key];
             $value = urldecode($value);
 	        $signatureString .= $key . '=' . $value;
 	    }

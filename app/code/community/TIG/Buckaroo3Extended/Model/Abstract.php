@@ -65,8 +65,11 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	 */
 	protected function _loadLastOrder()
 	{
-		$order_id = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-        $this->_order = Mage::getModel('sales/order')->loadByIncrementId($order_id);
+	    $session = Mage::getSingleton('checkout/session');
+	    $orderId = $session->getLastRealOrderId();
+	    if (!empty($orderId)) {
+            $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+	    }
 	}
 	
 	public function setOrder($order) {
@@ -153,6 +156,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	 */
 	protected function _setOrderBillingInfo()
 	{
+	    if (empty($this->_order)) {
+	        return false;
+	    }
 		$billingAddress = $this->_order->getBillingAddress();
 		
 		$firstname 		 = $billingAddress->getFirstname();
@@ -516,31 +522,19 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         $arrayToSort = array();
         $origArray = array();
         foreach ($array as $key => $value) {
-            $arrayToSort[str_replace('_', '0', $key)] = $value;
-            $origArray[str_replace('_', '0', $key)] = $key;
+            $arrayToSort[strtolower($key)] = $value;
+            $origArray[strtolower($key)] = $key;
         }
         
-        if(is_array($arrayToSort))
-        {
-            $keys = array_keys($arrayToSort);
-            if(natcasesort($keys))
-            {
-                $result = array();
-                foreach($keys as $key)
-                {
-                    $result[$key] = $arrayToSort[$key];
-                }
-                   
-            }
-            else {
-                $result = false;
-            }
+        ksort($arrayToSort);
+        
+        $sortedArray = array();
+        foreach($arrayToSort as $key => $value) {
+            $key = $origArray[$key];
+            $sortedArray[$key] = $value;
         }
-        else {
-            $result = null;
-        }
-       
-        return array($result, $origArray);
+        
+        return array($sortedArray);
     }
 	
 	public $oldResponseCodes = array(
