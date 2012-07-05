@@ -4,34 +4,34 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected $_debugEmail = '';
     protected $_responseXML = '';
     protected $_response = '';
-    
+
     protected $_customResponseProcessing = false;
-        
+
 	public function setCurrentOrder($order)
     {
     	$this->_order = $order;
     }
-    
+
     public function getCurrentOrder()
     {
     	return $this->_order;
     }
-    
+
     public function setDebugEmail($debugEmail)
     {
     	$this->_debugEmail = $debugEmail;
     }
-    
+
     public function getDebugEmail()
     {
     	return $this->_debugEmail;
     }
-    
+
     public function setResponseXML($xml)
     {
         $this->_responseXML = $xml;
     }
-    
+
     public function getResponseXML()
     {
         return $this->_responseXML;
@@ -41,75 +41,75 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     {
         $this->_response = $response;
     }
-    
+
     public function getResponse()
     {
         return $this->_response;
     }
-    
+
     public function setCustomResponseProcessing($boolean)
     {
         $this->_customResponseProcessing = (bool) $boolean;
     }
-    
+
     public function getCustomResponseProcessing()
     {
         return $this->_customResponseProcessing;
     }
-    
+
     public function __construct($data)
     {
         parent::__construct($data['debugEmail']);
         $this->setResponse($data['response']);
         $this->setResponseXML($data['XML']);
     }
-    
+
     public function processResponse()
     {
         if ($this->_response === false) {
             $this->_debugEmail .= "The transaction generated an error! :'( \n";
             $this->_error();
         }
-        
+
         $this->_debugEmail .= "verifiying authenticity of the response... \n";
         $verified = $this->_verifyResponse();
-        
+
         if ($verified !== true) {
             $this->_debugEmail .= "I don't know where you got that message, but it sure wasn't authentic! \n";
             $this->_verifyError();
         }
         $this->_debugEmail .= "Verified as authentic! \n\n";
-        
+
         //sets the transaction key if its defined ($trx)
 		//will retrieve it from the response array, if response actually is an array
 		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
 			$this->_order->setTransactionKey($this->_response->key);
             $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->key . "\n";
 		}
-        
+
         $requiredAction = $this->_response->RequiredAction->Type;
-        
+
         if (!is_null($requiredAction) && $requiredAction == 'Redirect') {
             $this->_debugEmail .= "Apparantely we need to redirect the customer. \n";
             $this->_redirectUser();
         }
-        
+
         $parsedResponse = $this->_parseResponse();
         $this->_debugEmail .= "Remember that big XMl message from a couple of lines up? This is what that whole thing comes down to: " . var_export($parsedResponse, true) . "\n";
-        
+
         $this->_debugEmail .= "Dispatching custom order rpocessing event... \n";
         Mage::dispatchEvent(
-        	'buckaroo3extended_response_custom_processing', 
+        	'buckaroo3extended_response_custom_processing',
             array(
         		'model' => $this,
                 'order'         => $this->getOrder(),
                 'response'      => $parsedResponse,
             )
         );
-        
+
         $this->_requiredAction($parsedResponse);
     }
-    
+
     protected function _requiredAction($response)
     {
         switch ($response['status']) {
@@ -128,20 +128,20 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             default:                               $this->_neutral();
         }
     }
-    
+
     protected function _redirectUser()
     {
         $redirectUrl = $this->_response->RequiredAction->RedirectURL;
-        
+
         $this->_debugEmail .= "Redirecting user to…" . $redirectUrl . "\n";
         $this->_debugEmail .= "So long and thanks for all the fish! \n";
-        
+
         $this->sendDebugEmail();
-        
+
         header('Location:' . $redirectUrl);
         exit;
     }
-    
+
     protected function _success()
     {
         $this->_debugEmail .= "Yay! A success response :) \n";
@@ -149,95 +149,95 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         {
         	$this->_order->sendNewOrderEmail();
         }
-		
+
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__('Uw bestelling is succesvol geplaatst.')
 		);
-		
-		$returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) 
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'') 
+
+		$returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
 			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
-		
+
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
         $this->_debugEmail .= "So long and thanks for all the fish! \n";
-        
+
         $this->sendDebugEmail();
-			
+
 		header('Location:' . $returnUrl);
 		exit;
     }
-    
+
     protected function _failed()
     {
         $this->_debugEmail .= 'Oh no! A failed response :( \n';
         $this->restoreQuote();
-        
+
         Mage::getSingleton('core/session')->addError(
             Mage::helper('buckaroo3extended')->__('Your payment was unsuccesful. Please try again or choose another payment method.')
         );
-        
+
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', Mage::app()->getStore()->getStoreId())) {
             $this->_order->cancel()->save();
         }
-        
-        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) 
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'') 
+
+        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
 			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-        
+
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
         $this->_debugEmail .= "So long and thanks for all the fish! \n";
-        
+
         $this->sendDebugEmail();
         header('Location:' . $returnUrl);
         exit;
     }
-    
+
     protected function _error()
     {
         $this->_debugEmail .= "Oh no! An error response :( \n";
         Mage::getSingleton('core/session')->addError(
             Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
         );
-        
+
         $this->_order->cancel()->save();
         var_dump($this->_order->getIncrementId());exit;
         $this->_debugEmail .= "I have cancelled the order! \n";
         $this->restoreQuote();
         $this->_debugEmail .= "I've also restored the quote. \n";
-        
-        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) 
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'') 
+
+        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
 			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-        
+
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
         $this->_debugEmail .= "So long and thanks for all the fish! \n";
-        
+
         $this->sendDebugEmail();
         header('Location:' . $returnUrl);
         exit;
     }
-    
+
     protected function _neutral()
     {
         $this->_debugEmail .= "A neutral response... that's ok :) \n";
-        
+
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__(
 		    	'Uw bestelling is succesvol geplaatst, binnenkort ontvangt u een e-mail met een update over de status van uw bestelling.'
 		    )
 		);
-		
-		$returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) 
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'') 
+
+		$returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
 			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
-		
+
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . '\n';
         $this->_debugEmail .= "So long and thanks for all the fish! \n";
-        
+
         $this->sendDebugEmail();
 		header('Location:' . $returnUrl);
 		exit;
@@ -252,126 +252,126 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     {
         $this->_error();
     }
-    
+
     protected function _verifyError()
     {
         $this->_debugEmail .= "Oh no! A verification error response :( \n";
         Mage::getSingleton('core/session')->addNotice(
             Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not recieve an e-mail regarding your order within 30 minutes, please contact the shop owner.')
         );
-        
+
         $this->_order->cancel()->save();
         $this->_debugEmail .= "I have cancelled the order! \n";
-        
-        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) 
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'') 
+
+        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
 			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-        
+
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
         $this->_debugEmail .= "So long and thanks for all the fish! \n";
-        
+
         $this->sendDebugEmail();
         header('Location:' . $returnUrl);
         exit;
     }
-    
+
     private function _verifyResponse()
     {
         $verified = false;
-        
+
         $verifiedSignature = $this->_verifySignature();
         $verifiedDigest = $this->_verifyDigest();
-        
+
         if ($verifiedSignature === true && $verifiedDigest === true) {
             $verified =  true;
         }
-        
+
         return $verified;
     }
-    
+
     private function _verifySignature()
     {
         $verified = false;
-        
+
         //save response XML to string
         $responseDomDoc = $this->_responseXML;
         $responseString = $responseDomDoc->saveXML();
-        
+
         //retrieve the signature value
         $sigatureRegex = "#<SignatureValue>(.*)</SignatureValue>#ims";
         $signatureArray = array();
         preg_match_all($sigatureRegex, $responseString, $signatureArray);
-        
+
         //decode the signature
         $signature = $signatureArray[1][0];
         $sigDecoded = base64_decode($signature);
-        
+
         $xPath = new DOMXPath($responseDomDoc);
-    		
+
     	//register namespaces to use in xpath query's
     	$xPath->registerNamespace('wsse','http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
     	$xPath->registerNamespace('sig','http://www.w3.org/2000/09/xmldsig#');
     	$xPath->registerNamespace('soap','http://schemas.xmlsoap.org/soap/envelope/');
-        
+
         //Get the SignedInfo nodeset
     	$SignedInfoQuery = '//wsse:Security/sig:Signature/sig:SignedInfo';
     	$SignedInfoQueryNodeSet = $xPath->query($SignedInfoQuery);
     	$SignedInfoNodeSet = $SignedInfoQueryNodeSet->item(0);
-    		
+
     	//Canonicalize nodeset
     	$signedInfo = $SignedInfoNodeSet->C14N(true, false);
-        
+
     	//get the public key
 		$pubKey = openssl_get_publickey(openssl_x509_read(file_get_contents(CERTIFICATE_DIR . '/Checkout.pem')));
-		
+
 		//verify the signature
     	$sigVerify = openssl_verify($signedInfo, $sigDecoded, $pubKey);
-        
+
     	if ($sigVerify === 1) {
     	    $verified = true;
     	}
-    	
+
     	return $verified;
     }
-    
+
     private function _verifyDigest()
     {
         $verified = false;
-        
+
         //save response XML to string
         $responseDomDoc = $this->_responseXML;
         $responseString = $responseDomDoc->saveXML();
-        
+
         //retrieve the signature value
         $digestRegex = "#<DigestValue>(.*?)</DigestValue>#ims";
         $digestArray = array();
         preg_match_all($digestRegex, $responseString, $digestArray);
-        
+
         $digestValues = array();
         foreach($digestArray[1] as $digest) {
             $digestValues[] = $digest;
         }
-        
+
         $xPath = new DOMXPath($responseDomDoc);
-    		
+
     	//register namespaces to use in xpath query's
     	$xPath->registerNamespace('wsse','http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
     	$xPath->registerNamespace('sig','http://www.w3.org/2000/09/xmldsig#');
     	$xPath->registerNamespace('soap','http://schemas.xmlsoap.org/soap/envelope/');
-        
+
     	$controlHashReference = $xPath->query('//*[@Id="_control"]')->item(0);
     	$controlHashCanonical = $controlHashReference->C14N(true, false);
     	$controlHash = base64_encode(pack('H*',sha1($controlHashCanonical)));
-    	
+
     	$bodyHashReference = $xPath->query('//*[@Id="_body"]')->item(0);
     	$bodyHashCanonical = $bodyHashReference->C14N(true, false);
     	$bodyHash = base64_encode(pack('H*',sha1($bodyHashCanonical)));
-    	
+
     	if (in_array($controlHash, $digestValues) === true && in_array($bodyHash, $digestValues) === true) {
     	    $verified = true;
     	}
-    	
+
     	return $verified;
     }
 }

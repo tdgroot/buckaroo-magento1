@@ -6,7 +6,8 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     
     public function __construct()
     {
-        
+        $this->_loadLastOrder();
+        $this->_setOrderBillingInfo();
     }
     
     protected function _isChosenMethod($observer)
@@ -21,7 +22,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $ret;
     }
     
-    protected function _addCreditManagement($vars, $serviceName = 'creditmanagement')
+    protected function _addCreditManagement(&$vars, $serviceName = 'creditmanagement')
     {
         $method = $this->_order->getPayment()->getMethod();
         
@@ -50,7 +51,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $vars;
     }
     
-    protected function _addCustomerVariables($vars, $serviceName = 'creditmanagement')
+    protected function _addCustomerVariables(&$vars, $serviceName = 'creditmanagement')
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         
