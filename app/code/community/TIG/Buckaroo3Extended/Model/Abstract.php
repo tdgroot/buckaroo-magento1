@@ -188,7 +188,6 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         $this->setBillingInfo($billingInfo);
 	}
 	
-
     public function restoreQuote()
     {
     	$quoteId = $this->_order->getQuoteId();
@@ -197,6 +196,22 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         
         Mage::getSingleton('checkout/session')->getQuote()->setIsActive(true)->save();
         Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
+    }
+    
+    public function emptyCart()
+    {
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended/manual_empty_cart', Mage::app()->getStore()->getStoreId())) {
+            return false;
+        }
+        
+        $cartHelper = Mage::helper('checkout/cart');
+ 
+        $items = $cartHelper->getCart()->getItems();
+ 
+        foreach ($items as $item) {
+            $itemId = $item->getItemId();
+            $cartHelper->getCart()->removeItem($itemId)->save();
+        }
     }
     
     protected function _determineAmountAndCurrency()

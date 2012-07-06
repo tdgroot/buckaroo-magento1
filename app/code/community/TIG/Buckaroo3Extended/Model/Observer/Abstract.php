@@ -78,28 +78,26 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		$customerLastNamePrefix = $this->_getCustomerLastNamePrefix();
 		$customerInitials       = $this->_getInitialsCM();
 		
-		$customerVars['PhoneNumber']            = $processedPhoneNumber['clean'];
-		$customerVars['CustomerCode']           = $customerId;
-		$customerVars['CustomerFirstName']      = $firstName;
-		$customerVars['CustomerLastName']       = $lastName;
-		$customerVars['ZipCode']                = $zipcode;
-		$customerVars['City']                   = $city;
-		$customerVars['Customeremail']          = $mail;
-		$customerVars['State']                  = $state;
-		$customerVars['FaxNumber']              = $fax;
-		$customerVars['CustomerInitials']       = $customerInitials;
-		$customerVars['CustomerLastNamePrefix'] = $customerLastNamePrefix;
-		$customerVars['CustomerBirthDate']      = $dob;
-		$customerVars['Street']                 = $street;
-		$customerVars['HouseNumber']            = $houseNumber;
-		$customerVars['HouseNumberSuffix']      = $houseNumberSuffix;
-		$customerVars['Customergender']         = $gender;
-		$customerVars['Country']                = $country;
-		
-		foreach ($customerVars as $key => $value) {
-		    $vars['customVars'][$serviceName][$key] = $value;
-		}
-		
+		$vars['customVars'][$serviceName] = array(
+		    'PhoneNumber'            => $processedPhoneNumber['clean'],
+        	'CustomerCode'           => $customerId,
+        	'CustomerFirstName'      => $firstName,
+        	'CustomerLastName'       => $lastName,
+        	'ZipCode'                => $zipcode,
+        	'City'                   => $city,
+        	'Customeremail'          => $mail,
+        	'State'                  => $state,
+        	'FaxNumber'              => $fax,
+        	'CustomerInitials'       => $customerInitials,
+        	'CustomerLastNamePrefix' => $customerLastNamePrefix,
+        	'CustomerBirthDate'      => $dob,
+        	'Street'                 => $street,
+        	'HouseNumber'            => $houseNumber,
+        	'HouseNumberSuffix'      => $houseNumberSuffix,
+        	'Customergender'         => $gender,
+        	'Country'                => $country,
+		);
+				
 		return $vars;
     }
     

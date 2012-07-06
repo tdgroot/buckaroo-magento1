@@ -150,6 +150,8 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         	$this->_order->sendNewOrderEmail();
         }
 
+        $this->emptyCart();
+        
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__('Uw bestelling is succesvol geplaatst.')
 		);
