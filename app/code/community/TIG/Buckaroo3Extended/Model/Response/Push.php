@@ -324,6 +324,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		//will retrieve it from the response array, if response actually is an array
 		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
+			$this->_order->setTransactionId($this->_postArray['brq_transactions']);
+			$this->_order->save();
 		}
 		
 		$this->_order->setState($newStates[0], $newStates[1], $description)
@@ -510,6 +512,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	        $this->_order->save();
 	        $this->_debugEmail .= 'Invoice created and saved. \n';
 	        return true;
+	    }
+        foreach($this->_order->getInvoiceCollection() as $invoice)
+	    {
+	        $invoice->setTransactionId($this->_postArray['brq_transactions']);
 	    }
         return false;
     }

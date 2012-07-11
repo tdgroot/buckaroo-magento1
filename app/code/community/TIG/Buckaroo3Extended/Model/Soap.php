@@ -41,12 +41,14 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $TransactionRequest = new Body();
         $TransactionRequest->Currency = $this->_vars['currency'];
-        $TransactionRequest->AmountDebit = round($this->_vars['totalAmount'], 2);
+        $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
+        $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
         $TransactionRequest->Invoice = $this->_vars['orderId'];
         $TransactionRequest->Order = $this->_vars['orderId'];
         $TransactionRequest->Description = $this->_vars['description'];
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
+        $TransactionRequest->OriginalTransactionKey = $this->_vars['originalTransactionKey'];
         
         $TransactionRequest->Services = new Services();
         
@@ -413,7 +415,7 @@ class Body
 {
 	public $Currency;
 	public $AmountDebit;
- 	//public $AmountCredit;
+ 	public $AmountCredit;
  	public $Invoice;
  	public $Order;
  	public $Description;
@@ -422,7 +424,7 @@ class Body
  	public $ReturnURLCancel;
  	public $ReturnURLError;
  	public $ReturnURLReject;
- 	//public $OriginalTransactionKey;
+ 	public $OriginalTransactionKey;
  	public $StartRecurrent;
  	public $Services;
  	//public $CustomParameters;

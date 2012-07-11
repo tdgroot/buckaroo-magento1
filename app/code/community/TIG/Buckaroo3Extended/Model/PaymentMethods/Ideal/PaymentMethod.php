@@ -59,6 +59,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mag
 
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }
+    
+    public function refund(Varien_Object $payment, $amount)
+    {
+        if (!$this->canRefund()) {
+            Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
+        }
+        
+        $refundRequest = Mage::getModel('buckaroo3extended/refund_request_abstract', $payment);
+        $refundRequest->sendRefundRequest();
+    }
 
     public function isAvailable($quote = null)
     {

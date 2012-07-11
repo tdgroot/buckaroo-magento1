@@ -155,7 +155,8 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         $tax = round($tax * 100,0);
 
         $this->_vars['currency']    = $currency;
-        $this->_vars['totalAmount'] = $totalAmount;
+        $this->_vars['amountCredit'] = 0;
+        $this->_vars['amountDebit'] = $totalAmount;
         $this->_vars['orderId']     = $this->_order->getIncrementId();
 
         $this->_debugEmail .= 'Order variables added! \n';
