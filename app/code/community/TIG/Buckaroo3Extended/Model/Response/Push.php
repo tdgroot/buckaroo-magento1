@@ -30,11 +30,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     
     public function setMethod($method)
     {
-//        if (strpos($method, 'buckaroo') !== false) {
-//            $methodBits = explode('_', $method);
-//            $method = end($methodBits);
-//        }
-        
     	$this->_method = $method;
     }
     
@@ -305,7 +300,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * Process a succesful order. Sets its new state and status, sends an order confirmation email
 	 * and creates an invoice if set in config.
 	 * 
-	 * @TODO $trx will be used for Buckaroo2012Refund, to be added in 3.0.0
 	 * 
 	 * @param array $response | int $response
 	 * @param string $description
@@ -326,8 +320,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
 		}
 		
-		$this->_order->setState($newStates[0], $newStates[1], $description)
+		$this->_order->addStatusHistoryComment($description, $newStates[1])
 			         ->save();
+			         
+	    $this->_order->setStatus($newStates[1])->save();
 		
 		//send new order email if it hasnt already been sent
 		if(!$this->_order->getEmailSent())
@@ -385,32 +381,28 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		if ($amount > $this->_postArray['brq_amount']) {
 	    	$setState = $newStates[0];
             $setStatus = $newStates[1];
-            $description = Mage::helper('buckaroo3extended')->__('te weinig betaald: ') 
+            $description = Mage::helper('buckaroo3extended')->__('Not enough paid: ') 
                			 . round(($this->_postArray['brq_amount'] / 100), 2)
                			 . ' '
                			 . $currency
-               			 . Mage::helper('buckaroo3extended')->__(' is overgemaakt. Order bedrag was: ') 
+               			 . Mage::helper('buckaroo3extended')->__(' has been transfered. Order grand total was: ') 
               			 . round($this->_order->getGrandTotal(), 2)
                			 . ' '
                			 . $currency;
 	    } elseif ($amount < $this->_postArray['bpe_amount']) {
 	    	$setState = $newStates[0];
             $setStatus = $newStates[1];
-            $description = Mage::helper('buckaroo3extended')->__('te veel betaald: ') 
+            $description = Mage::helper('buckaroo3extended')->__('Too much paid: ') 
                			 . round(($this->_postArray['brq_amount'] / 100), 2)
                			 . ' '
                			 . $currency
-               			 . Mage::helper('buckaroo3extended')->__(' is overgemaakt. Order bedrag was: ') 
+               			 . Mage::helper('buckaroo3extended')->__(' has been transfered. Order grand total was: ') 
                			 . round($this->_order->getGrandTotal(), 2)
                			 . ' '
                			 . $currency;
 	    } else {
 	    	//the correct amount was actually paid, so return false
 	    	return false;
-	    }
-	    
-	    if (Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/on_hold_email')) {
-	        $this->_sendOverschrijvingOnHoldEmail();
 	    }
 	    
 	    //hold the order
@@ -457,15 +449,15 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	}
 	
     public function processSuccess($newStates, $description = false) {
-	    return $this->_processPendingPayment($newStates, $description);
+	    return $this->_processSuccess($newStates, $description);
 	}
 	
     public function processFailed($newStates, $description = false) {
-	    return $this->_processPendingPayment($newStates, $description);
+	    return $this->_processFailed($newStates, $description);
 	}
 	
     public function processIncorrectPayment($newStates) {
-	    return $this->_processPendingPayment($newStates);
+	    return $this->_processIncorrectPayment($newStates);
 	}
 	
 	/**

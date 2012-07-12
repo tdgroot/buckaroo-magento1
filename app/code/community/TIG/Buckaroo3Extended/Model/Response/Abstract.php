@@ -101,7 +101,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         Mage::dispatchEvent(
         	'buckaroo3extended_response_custom_processing',
             array(
-        		'model' => $this,
+        		'model'         => $this,
                 'order'         => $this->getOrder(),
                 'response'      => $parsedResponse,
             )
@@ -153,7 +153,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->emptyCart();
         
 		Mage::getSingleton('core/session')->addSuccess(
-		    Mage::helper('buckaroo3extended')->__('Uw bestelling is succesvol geplaatst.')
+		    Mage::helper('buckaroo3extended')->__('Your order has been placed succesfully.')
 		);
 
 		$returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
@@ -228,7 +228,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__(
-		    	'Uw bestelling is succesvol geplaatst, binnenkort ontvangt u een e-mail met een update over de status van uw bestelling.'
+		    	'Your order has been placed succesfully. You will recieve an e-mail containing further payment instructions shortly.'
 		    )
 		);
 

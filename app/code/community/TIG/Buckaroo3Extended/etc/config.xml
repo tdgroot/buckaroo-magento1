@@ -6,15 +6,6 @@
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<global>
-		<template>
-	        <email>
-	            <otransferholdemail>
-	                <label>Buckaroo 2012 Overschrijven On Hold Email</label>
-	                <file>buckaroo3extended/otransferholdemail.html</file>
-	                <type>html</type>
-	            </otransferholdemail>
-	        </email>
-	    </template>
 		<events>
             <controller_action_postdispatch_adminhtml_system_config_save>
             	<observers>
