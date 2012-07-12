@@ -180,13 +180,24 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $requestParameters = array();
         foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
-            if (is_null($value) || $value === '') {
+            if (
+                (is_null($value) || $value == '')
+                || (
+                    (is_array($value)) 
+                    && (is_null($value['value']) || $value['value'] == '')
+                   )
+            ) {
                 continue;
             }
             
             $requestParameter = new RequestParameter();
             $requestParameter->Name = $fieldName;
-            $requestParameter->_ = $value;
+            if (is_array($value)) {
+                $requestParameter->Group = $value['group'];
+                $requestParameter->_ = $value['value'];
+            } else {
+                $requestParameter->_ = $value;
+            }
             
             $requestParameters[] = $requestParameter;
         }

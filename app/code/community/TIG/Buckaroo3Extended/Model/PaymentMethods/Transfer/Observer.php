@@ -13,16 +13,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
         $request = $observer->getRequest();
 
         $vars = $request->getVars();
-
-        $vars['services'][$this->_method] = array(
-            'action'	=> 'Pay',
-            'version'   => 1,
+        
+        $array = array(
+            $this->_method     => array(
+                'action'	=> 'Pay',
+                'version'   => 1,
+            ),
+            'creditmanagement' => array(
+                'action'	=> 'Invoice',
+                'version'   => 1,
+            ),
         );
-
-        $vars['services']['creditmanagement'] = array(
-            'action'	=> 'Invoice',
-            'version'   => 1,
-        );
+        
+        if (is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
+        } else {
+            $vars['services'] = $array;
+        }
 
         $request->setVars($vars);
 
@@ -42,9 +49,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
         $vars = $request->getVars();
 
         $this->_addCustomerVariables($vars, 'creditmanagement');
-        $this->_addCreditManagement($vars);
+        $this->_addTransfer($vars);
+        
+        if (isset($vars['services']['creditmanagement']) && !empty($vars['services']['creditmanagement'])) {
+            $this->_addCreditManagement($vars);
+            $this->_addTransferCreditmanagement($vars);
+        }
+        
+        $request->setVars($vars);
 
-        $vars['customVars']['transfer'] = array(
+        return $this;
+    }
+    
+    protected function _addTransfer(&$vars)
+    {
+        $array = array(
             'SendMail'          => Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/send_mail', Mage::app()->getStore()->getStoreId()) ? 'true' : 'false',
             'customeremail'     => $this->_billingInfo['email'],
             'customercountry'   => $this->_billingInfo['countryCode'],
@@ -52,26 +71,36 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
             'customerFirstName' => $this->_billingInfo['firstname'],
             'customerLastName'  => $this->_billingInfo['lastname'],
         );
-
+        if (is_array($vars['customVars']['transfer'])) {
+            $vars['customVars']['transfer'] = array_merge($vars['customVars']['transfer'], $array);
+        } else {
+            $vars['customVars']['transfer'] = $array;
+        }
+    }
+    
+    protected function _addTransferCreditmanagement(&$vars)
+    {
         $VAT = 0;
         foreach($this->_order->getFullTaxInfo() as $taxRecord)
         {
             $VAT += $taxRecord['amount'];
         }
-        $VAT = round($VAT * 100,0);
 
-        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/due_date', Mage::app()->getStore()->getStoreId());
-        $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays), date("Y")));
+        $creditmanagementArray = array(
+            'AmountVat'        => $VAT,
+            'CustomerType'     => 1,
+            'MaxReminderLevel' => 4,
+        );
 
-        $vars['customVars']['transfer']['DateDue']                  = $dueDate;
-
-        $vars['customVars']['creditmanagement']['AmountVat']        = $VAT;
-        $vars['customVars']['creditmanagement']['CustomerType']     = 1;
-        $vars['customVars']['creditmanagement']['MaxReminderLevel'] = 4;
-
-        $request->setVars($vars);
-
-        return $this;
+        if (is_array($vars['customVars']['creditmanagement'])) {
+            $vars['customVars']['creditmanagement'] = array_merge($vars['customVars']['creditmanagement'], $creditmanagementArray);
+        } else {
+            $vars['customVars']['creditmanagement'] = $creditmanagementArray;
+        }
+        
+        if (empty($vars['customVars']['creditmanagement']['PhoneNumber'])) {
+            $vars['customVars']['creditmanagement']['PhoneNumber'] = $vars['customVars']['creditmanagement']['MobilePhoneNumber'];
+        }
     }
 
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)

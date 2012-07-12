@@ -13,11 +13,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         $request = $observer->getRequest();
 
         $vars = $request->getVars();
-
-        $vars['services'][$this->_method] = array(
+        
+        $array = array(
             'action'	=> 'Pay',
             'version'   => 1,
         );
+        
+        if (is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
 
         $request->setVars($vars);
 
@@ -37,9 +43,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         $vars = $request->getVars();
 
         $issuer = $this->_getIssuer();
-        $vars['customVars']['ideal'] = array(
+        $array = array(
             'issuer' => $issuer,
         );
+        if (is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+        
         $request->setVars($vars);
 
         return $this;

@@ -204,7 +204,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         );
 
         $this->_order->cancel()->save();
-        var_dump($this->_order->getIncrementId());exit;
+        
         $this->_debugEmail .= "I have cancelled the order! \n";
         $this->restoreQuote();
         $this->_debugEmail .= "I've also restored the quote. \n";

@@ -14,10 +14,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_Observer extends TIG_Bu
         
         $vars = $request->getVars();
         
-        $vars['services'][$this->_method] = array(
+        $array = array(
             'action'	=> 'Pay',
             'version'   => 1,
         );
+        
+        if (is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
         
         $request->setVars($vars);
         
@@ -37,9 +43,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_Observer extends TIG_Bu
         $vars = $request->getVars();
         
         $bankleitzahl = $this->_getBankleitzahl();
-        $vars['customVars']['giropay'] = array(
+        $array = array(
             'bankleitzahl' => $bankleitzahl,
         );
+        if (is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+        
         $request->setVars($vars);
         
         return $this;

@@ -147,13 +147,6 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         list($currency, $totalAmount) = $this->_determineAmountAndCurrency();
 
-        $tax = 0;
-        foreach($this->_order->getFullTaxInfo() as $taxRecord)
-        {
-            $tax += $taxRecord['amount'];
-        }
-        $tax = round($tax * 100,0);
-
         $this->_vars['currency']    = $currency;
         $this->_vars['totalAmount'] = $totalAmount;
         $this->_vars['orderId']     = $this->_order->getIncrementId();

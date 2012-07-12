@@ -70,6 +70,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
     
     public function getOrderPlaceRedirectUrl()
     {
+        $session = Mage::getSingleton('checkout/session');
+
+		$session->setData('additionalFields', array(
+			'gender'    => $_POST['buckaroo3extended_payperemail_BPE_Customergender'],
+		    'firstname' => $_POST['buckaroo3extended_payperemail_BPE_Customerfirstname'],
+		    'lastname'  => $_POST['buckaroo3extended_payperemail_BPE_Customerlastname'],
+		    'mail'      => $_POST['buckaroo3extended_payperemail_BPE_Customermail'],
+		));
+    	
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }
     
