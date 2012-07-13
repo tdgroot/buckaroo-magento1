@@ -58,7 +58,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	/**
 	 * Processes 'pushes' recieves from Buckaroo with the purpose of updating an order or payment.
 	 * 
-	 * @return boolean
 	 */
 	public function processPush()
 	{	
@@ -126,8 +125,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * This field is unique for every payment and every store.
      * Also calls method that checks if an order is able to be updated further.
      * Canceled, completed, holded etc. orders are not able to be updated
-     * 
-     * @return array $return
      */
 	protected function _canProcessPush($isReturn = false)
 	{
@@ -190,8 +187,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * or the order can't be invoiced. Returns false if the config has disabled this feature.
 	 * 
 	 * @param string $omschrijving
-	 * 
-	 * @return boolean
 	 */
 	protected function _addNote($omschrijving)
 	{
@@ -220,9 +215,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * that's not set, use the default
 	 * 
 	 * @param string $code
-	 * @param string $paymentCode
 	 * 
 	 * @return array $newStates
+	 * 
+	 * @note currently the states are only used by _processpendingPayment(). May be removed completely in the future
 	 */
 	protected function _getNewStates($code)
 	{
@@ -347,7 +343,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	{
 		$description .= " (#{$this->_postArray['brq_statuscode']})";
 		
-	    //sets the transaction key if its defined ($trx)
+	    //sets the transaction key if its defined ('brq_transactions')
 		//will retrieve it from the response array, if response actually is an array
 		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
@@ -368,7 +364,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	}
 	
 	/**
-	 * Processes an order for which an incorrect amount has been paid (can only happen with Overschrijving)
+	 * Processes an order for which an incorrect amount has been paid (can only happen with Transfer)
 	 * 
 	 * @return boolean
 	 */
@@ -462,8 +458,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	
 	/**
 	 * Creates an invoice for the order if set to do so in config.
-	 * 
-	 * @return boolean |
 	 */
 	protected function _autoInvoice()
 	{		
@@ -503,13 +497,17 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	        $this->_debugEmail .= 'Invoice created and saved. \n';
 	        return true;
 	    }
+	    
+	    //sets the transaction id. Will allow for online refunds.
+        foreach($this->_order->getInvoiceCollection() as $invoice)
+	    {
+	        $invoice->setTransactionId($this->_postArray['brq_transactions']);
+	    }
         return false;
     }
     
 	/**
 	 * Determines the signature using array sorting and the SHA1 hash algorithm
-	 * 
-	 * @param array $origArray
 	 * 
 	 * @return string $signature
 	 */
@@ -544,6 +542,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    return $signature;
 	}
 	
+	/**
+	 * Compatibility for BPE 2.0 pushes
+	 */
 	protected function _calculateOldSignature()
 	{
         $signature2 = md5(
