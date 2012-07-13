@@ -6,7 +6,8 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     
     public function __construct()
     {
-        
+        $this->_loadLastOrder();
+        $this->_setOrderBillingInfo();
     }
     
     protected function _isChosenMethod($observer)
@@ -21,7 +22,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $ret;
     }
     
-    protected function _addCreditManagement($vars, $serviceName = 'creditmanagement')
+    protected function _addCreditManagement(&$vars, $serviceName = 'creditmanagement')
     {
         $method = $this->_order->getPayment()->getMethod();
         
@@ -38,19 +39,22 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         }
         $VAT = round($VAT * 100,0);
         
-        $creditManagementVars = array(
-            'DateDue'			     => $dueDate,
-            'InvoiceDate'			 => $invoiceDate,
-        );
-        
-        foreach ($creditManagementVars as $key => $value) {
-		    $vars['customVars'][$serviceName][$key] = $value;
+        if (is_array($vars['customVars'][$serviceName])) {
+		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
+            	'DateDue'			     => $dueDate,
+            	'InvoiceDate'			 => $invoiceDate,
+            ));
+		} else {
+    	    $vars['customVars'][$serviceName] = array(
+            	'DateDue'			     => $dueDate,
+            	'InvoiceDate'			 => $invoiceDate,
+    	    );
 		}
         
         return $vars;
     }
     
-    protected function _addCustomerVariables($vars, $serviceName = 'creditmanagement')
+    protected function _addCustomerVariables(&$vars, $serviceName = 'creditmanagement')
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         
@@ -77,28 +81,62 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		$customerLastNamePrefix = $this->_getCustomerLastNamePrefix();
 		$customerInitials       = $this->_getInitialsCM();
 		
-		$customerVars['PhoneNumber']            = $processedPhoneNumber['clean'];
-		$customerVars['CustomerCode']           = $customerId;
-		$customerVars['CustomerFirstName']      = $firstName;
-		$customerVars['CustomerLastName']       = $lastName;
-		$customerVars['ZipCode']                = $zipcode;
-		$customerVars['City']                   = $city;
-		$customerVars['Customeremail']          = $mail;
-		$customerVars['State']                  = $state;
-		$customerVars['FaxNumber']              = $fax;
-		$customerVars['CustomerInitials']       = $customerInitials;
-		$customerVars['CustomerLastNamePrefix'] = $customerLastNamePrefix;
-		$customerVars['CustomerBirthDate']      = $dob;
-		$customerVars['Street']                 = $street;
-		$customerVars['HouseNumber']            = $houseNumber;
-		$customerVars['HouseNumberSuffix']      = $houseNumberSuffix;
-		$customerVars['Customergender']         = $gender;
-		$customerVars['Country']                = $country;
-		
-		foreach ($customerVars as $key => $value) {
-		    $vars['customVars'][$serviceName][$key] = $value;
+		$array = array(
+        	'CustomerCode'           => $customerId,
+        	'CustomerFirstName'      => $firstName,
+        	'CustomerLastName'       => $lastName,
+        	'FaxNumber'              => $fax,
+        	'CustomerInitials'       => $customerInitials,
+        	'CustomerLastNamePrefix' => $customerLastNamePrefix,
+        	'CustomerBirthDate'      => $dob,
+        	'Customergender'         => $gender,
+        	'Customeremail'          => $mail,
+        	'ZipCode'                => array(
+                'value' => $zipcode,
+                'group' => 'address'
+            ),
+        	'City'                   => array(
+                'value' => $city,
+                'group' => 'address'
+            ),
+        	'State'                  => array(
+                'value' => $state,
+                'group' => 'address'
+            ),
+        	'Street'                 => array(
+                'value' => $street,
+                'group' => 'address'
+            ),
+        	'HouseNumber'            => array(
+                'value' => $houseNumber,
+                'group' => 'address'
+            ),
+        	'HouseNumberSuffix'      => array(
+                'value' => $houseNumberSuffix,
+                'group' => 'address'
+            ),
+        	'Country'                => array(
+                'value' => $country,
+                'group' => 'address'
+            )
+        );
+        
+		if (is_array($vars['customVars'][$serviceName])) {
+		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], $array);
+		} else {
+    		$vars['customVars'][$serviceName] = $array;
 		}
 		
+		if ($processedPhoneNumber['mobile']) {
+		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
+		        'MobilePhoneNumber' => $processedPhoneNumber['clean'],
+		    ));
+		} else {
+		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
+		        'PhoneNumber' => $processedPhoneNumber['clean'],
+		    ));
+		}
+				
 		return $vars;
     }
     

@@ -1,89 +1,107 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract 
-{    
+class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+{
     protected $_code = 'buckaroo3extended_paymentguarantee';
     protected $_method = 'paymentguarantee';
-    
+
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        
+
         $request = $observer->getRequest();
-        
+
         $vars = $request->getVars();
         
-        $vars['services'][$this->_method] = array(
+        $array = array(
             'action'	=> 'PaymentInvitation',
             'version'   => 1,
         );
         
+        if (is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
+
         $request->setVars($vars);
-        
+
         return $this;
     }
-    
+
     public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        
+
         $request            = $observer->getRequest();
         $this->_billingInfo = $request->getBillingInfo();
         $this->_order       = $request->getOrder();
-        
+
         $vars = $request->getVars();
-        
-        //$this->_addCustomerVariables(&$vars, 'creditmanagement');
-        $this->_addCustomerVariables(&$vars, $this->_method);
-        $this->_addCreditManagement(&$vars, $this->_method);
-        $this->_addPaymentGuaranteeVariables(&$vars);
-        
+
+        $this->_addCustomerVariables($vars, $this->_method);
+        $this->_addCreditManagement($vars, $this->_method);
+        $this->_addPaymentGuaranteeVariables($vars);
+
         $request->setVars($vars);
-        
+
         return $this;
     }
-    
+
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        
+
         $request = $observer->getRequest();
-        
+
         $codeBits = explode('_', $this->_code);
         $code = end($codeBits);
         $request->setMethod($code);
-        
+
         return $this;
     }
     
+	/**
+     * Custom push processing for Paymentguarantee. Because paymentguarantee orders should have been invoiced as 
+     * soon as Buckaroo said that the guarantor had approved the transaction only a note should be added to the
+     * order.
+     * 
+     * @param Varien_Event_Observer $observer
+     */
     public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        
+
         $push = $observer->getPush();
         $response = $observer->getResponse();
-        
+
         $push->addNote($response['message'], $this->_method);
-        
+
         $push->setCustomResponseProcessing(true);
     }
-    
+
+    /**
+     * Custom response processing for Paymentguarantee. Because paymentguarantee orders should be invoiced as soon
+     * as Buckaroo says that the guarantor has approved the transaction
+     * 
+     * @param Varien_Event_Observer $observer
+     */
     public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        
+
         $responseModel = $observer->getModel();
         $response = $observer->getResponse();
-        
+
         $pushModel = Mage::getModel(
         	'buckaroo3extended/response_push',
             array(
@@ -93,9 +111,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer exten
     	        'method'     => $this->_method,
             )
         );
-        
+
         $newStates = $pushModel->getNewStates($response['status']);
-        
+
         switch ($response['status'])
 		{
 		    case self::BUCKAROO_ERROR:
@@ -110,37 +128,50 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer exten
 			case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $pushModel->processIncorrectPayment($newStates);
 			                                       break;
 		}
-        
+
         $responseModel->setCustomResponseProcessing(true);
     }
-    
-    protected function _addPaymentGuaranteeVariables($vars)
+
+    /**
+     * Adds variables required for the SOAP XML for paymentguarantee to the variable array
+     * Will merge with old array if it exists
+     * 
+     * @param array $vars
+     */
+    protected function _addPaymentGuaranteeVariables(&$vars)
     {
         $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/due_date', Mage::app()->getStore()->getStoreId());
         $dueDateInvoice = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays), date("Y")));
         $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays + 14), date("Y")));
-        
+
         $VAT = 0;
         foreach($this->_order->getFullTaxInfo() as $taxRecord)
         {
             $VAT += $taxRecord['amount'];
         }
-        $VAT = round($VAT * 100,0);
-        
+
         $session = Mage::getSingleton('checkout/session');
         $additionalFields = $session->getData('additionalFields');
-        
+
         $gender        = $additionalFields['BPE_Customergender'];
         $dob           = $additionalFields['BPE_customerbirthdate'];
         $accountNumber = $additionalFields['BPE_AccountNumber'];
         
-        $vars['customVars'][$this->_method]['InvoiceDate']           = $dueDateInvoice;
-        $vars['customVars'][$this->_method]['DateDue']               = $dueDate;
-        $vars['customVars'][$this->_method]['AmountVat']             = $VAT;
-        $vars['customVars'][$this->_method]['CustomerGender']        = $gender;
-        $vars['customVars'][$this->_method]['CustomerBirthDate']     = $dob;
-        $vars['customVars'][$this->_method]['CustomerEmail']         = $this->_billingInfo['email'];
-        $vars['customVars'][$this->_method]['CustomerAccountNumber'] = $accountNumber;
-        $vars['customVars'][$this->_method]['PaymentMethodsAllowed'] = $this->_getPaymentMethodsAllowed();
+        $array = array(
+            'InvoiceDate'           => $dueDateInvoice,
+            'DateDue'               => $dueDate,
+            'AmountVat'             => $VAT,
+            'CustomerGender'        => $gender,
+            'CustomerBirthDate'     => $dob,
+            'CustomerEmail'         => $this->_billingInfo['email'],
+            'CustomerAccountNumber' => $accountNumber,
+            'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
+        );
+        
+        if (is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
     }
 }

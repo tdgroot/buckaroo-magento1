@@ -14,10 +14,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         
         $vars = $request->getVars();
         
-        $vars['services'][$this->_method] = array(
+        $array = array(
             'action'	=> 'PaymentInvitation',
             'version'   => 1,
         );
+        
+        if (is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
         
         $request->setVars($vars);
         
@@ -35,15 +41,22 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         $this->_order       = $request->getOrder();
         
         $vars = $request->getVars();
+        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         
-        $vars['customVars'][$this->_method] = array(
+        $array = array(
             'MerchantSendsEmail'    => Mage::getStoreConfig('buckaroo/buckaroo3extended_payperemail/send_mail', Mage::app()->getStore()->getStoreId()) ? 'false' : 'true',
-            'customergender'        => '0',
+            'customergender'        => $additionalFields['gender'],
             'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
-            'CustomerEmail'         => $this->_billingInfo['email'],
-            'CustomerFirstName'     => $this->_billingInfo['firstname'],
-            'CustomerLastName'      => $this->_billingInfo['lastname'],
+            'CustomerEmail'         => $additionalFields['mail'],
+            'CustomerFirstName'     => $additionalFields['firstname'],
+            'CustomerLastName'      => $additionalFields['lastname'],
         );
+        
+        if (is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
         $request->setVars($vars);
         
         return $this;

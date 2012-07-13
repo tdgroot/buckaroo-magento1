@@ -65,8 +65,11 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	 */
 	protected function _loadLastOrder()
 	{
-		$order_id = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-        $this->_order = Mage::getModel('sales/order')->loadByIncrementId($order_id);
+	    $session = Mage::getSingleton('checkout/session');
+	    $orderId = $session->getLastRealOrderId();
+	    if (!empty($orderId)) {
+            $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+	    }
 	}
 	
 	public function setOrder($order) {
@@ -120,7 +123,12 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	
 	public function __construct($debugEmail = false)
 	{
-	    define('CERTIFICATE_DIR', str_replace('/Model', '/certificate', __DIR__));
+	    if (strpos(__DIR__, '/Model') !== false) {
+	        $dir = str_replace('/Model', '/certificate', __DIR__);
+	    } else {
+	        $dir = str_replace('/includes/src', '/app/code/community/TIG/Buckaroo3Extended/certificate', __DIR__);
+	    }
+	    define('CERTIFICATE_DIR', $dir);
 	    
 		$this->_loadLastOrder();
 		$this->setSession(Mage::getSingleton('core/session'));
@@ -153,6 +161,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	 */
 	protected function _setOrderBillingInfo()
 	{
+	    if (empty($this->_order)) {
+	        return false;
+	    }
 		$billingAddress = $this->_order->getBillingAddress();
 		
 		$firstname 		 = $billingAddress->getFirstname();
@@ -182,7 +193,6 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         $this->setBillingInfo($billingInfo);
 	}
 	
-
     public function restoreQuote()
     {
     	$quoteId = $this->_order->getQuoteId();
@@ -191,6 +201,22 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         
         Mage::getSingleton('checkout/session')->getQuote()->setIsActive(true)->save();
         Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
+    }
+    
+    public function emptyCart()
+    {
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended/manual_empty_cart', Mage::app()->getStore()->getStoreId())) {
+            return false;
+        }
+        
+        $cartHelper = Mage::helper('checkout/cart');
+ 
+        $items = $cartHelper->getCart()->getItems();
+ 
+        foreach ($items as $item) {
+            $itemId = $item->getItemId();
+            $cartHelper->getCart()->removeItem($itemId)->save();
+        }
     }
     
     protected function _determineAmountAndCurrency()
@@ -208,7 +234,6 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
     		case 'buckaroo2012ideal': 					 $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_ideal_paymentMethod');
     		                                             $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_ideal/allowed_currencies', Mage::app()->getStore()->getStoreId());
     		                                             break;
-    		
 	        case 'buckaroo3extended_visa':
 	        case 'buckaroocc':
     		case 'buckaroo2012creditcard': 				 $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_visa_paymentMethod');
@@ -260,7 +285,6 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
     		case 'buckaroo3extended_sofortueberweisung': $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_sofortueberweisung_paymentMethod');
     		                                             $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_sofortueberweisung/allowed_currencies', Mage::app()->getStore()->getStoreId());
     													 break;
-	        
     		default:                                     $paymentMethod = null;
     		                                             $currenciesAllowedConfig = 'EUR';
 	    }
@@ -355,7 +379,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 
 	
     /**
-     * Retrieves an array with information related to a recieved response code.
+     * Retreives an array with information related to a recieved response code.
      * This method will only be called when it's child cant find it itself. This list
      * is a general list of known status codes. Its not as inclusive as the lists used\
      * by its children. However, this list also contains general error codes not
@@ -459,7 +483,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
     {
     	$cleanArray = array();
     	
-		foreach ($array as $key=>$value) {
+		foreach ($array as $key => $value) {
         	$value = str_replace('\r', ' ', $value);
         	$value = str_replace('\n', ' ', $value);
         	$cleanArray[$key] = $value;
@@ -468,7 +492,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         return $cleanArray;
     }
     
-    //function which converts special characters to html numeric equivalents
+    /**
+     * function which converts special characters to html numeric equivalents
+     */
 	public function htmlNumeric($string) {
 		preg_match_all('/[^\!-\~\s]/', $string, $specialChars);
 		if ($specialChars) {
@@ -504,36 +530,35 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    
 	    $mail = $this->_debugEmail;
 	    
-	    mail(
-	        Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
-	        'Buckaroo 3 Extended Debug Email', 
-	        $mail
-	    );
+	    $recipients = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()));
+	    
+	    foreach($recipients as $recipient) {
+    	    mail(
+    	        $recipient, 
+    	        'Buckaroo 3 Extended Debug Email', 
+    	        $mail
+    	    );
+	    }
 	}
 	
-	public function keyNatCaseSort($array)
+	public function buckarooSort($array)
     {
-        if(is_array($array))
-        {
-            $keys = array_keys($array);
-            if(natcasesort($keys))
-            {
-                $result = array();
-                foreach($keys as $key)
-                {
-                    $result[$key] = $array[$key];
-                }
-                   
-            }
-            else {
-                $result = false;
-            }
+        $arrayToSort = array();
+        $origArray = array();
+        foreach ($array as $key => $value) {
+            $arrayToSort[strtolower($key)] = $value;
+            $origArray[strtolower($key)] = $key;
         }
-        else {
-            $result = null;
+        
+        ksort($arrayToSort);
+        
+        $sortedArray = array();
+        foreach($arrayToSort as $key => $value) {
+            $key = $origArray[$key];
+            $sortedArray[$key] = $value;
         }
-       
-        return $result;
+        
+        return $sortedArray;
     }
 	
 	public $oldResponseCodes = array(

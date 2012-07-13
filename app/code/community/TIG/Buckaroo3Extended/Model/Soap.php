@@ -50,14 +50,14 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $TransactionRequest->Services = new Services();
         
-        $this->_addServices(&$TransactionRequest);
+        $this->_addServices($TransactionRequest);
         
         $TransactionRequest->ClientIP = new IPAddress();
         $TransactionRequest->ClientIP->Type = 'IPv4';
         $TransactionRequest->ClientIP->_ = $_SERVER['REMOTE_ADDR'];
         
         foreach ($TransactionRequest->Services->Service as $key => $service) {
-            $this->_addCustomFields(&$TransactionRequest, $key, $service->Name);
+            $this->_addCustomFields($TransactionRequest, $key, $service->Name);
         }
         
         $Header = new Header();
@@ -137,16 +137,22 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
         
         $responseXML = $client->__getLastResponse();
+        $requestXML = $client->__getLastRequest();
         
         $responseDomDOC = new DOMDocument();
         $responseDomDOC->loadXML($responseXML);
 		$responseDomDOC->preserveWhiteSpace = FALSE;
 		$responseDomDOC->formatOutput = TRUE;
+		
+		$requestDomDOC = new DOMDocument();
+        $requestDomDOC->loadXML($requestXML);
+		$requestDomDOC->preserveWhiteSpace = FALSE;
+		$requestDomDOC->formatOutput = TRUE;
         
-        return array($response, $responseDomDOC);
+        return array($response, $responseDomDOC, $requestDomDOC);
     }
     
-    protected function _addServices($TransactionRequest)
+    protected function _addServices(&$TransactionRequest)
     {
         $services = array();
         foreach($this->_vars['services'] as $fieldName => $value) {
@@ -161,7 +167,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->Services->Service = $services;
     }
     
-    protected function _addCustomFields($TransactionRequest, $key, $name) 
+    protected function _addCustomFields(&$TransactionRequest, $key, $name) 
     {
         if (
             !isset($this->_vars['customVars']) 
@@ -174,13 +180,23 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $requestParameters = array();
         foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
-            if (is_null($value) || $value === '') {
+            if (
+                ((is_null($value)) || $value === '')
+                || (is_array($value) && 
+                    (is_null($value['value']) || $value['value'] === '')
+                   )
+            ) {
                 continue;
             }
             
             $requestParameter = new RequestParameter();
             $requestParameter->Name = $fieldName;
-            $requestParameter->_ = $value;
+            if (is_array($value)) {
+                $requestParameter->Group = $value['group'];
+                $requestParameter->_ = $value['value'];
+            } else {
+                $requestParameter->_ = $value;
+            }
             
             $requestParameters[] = $requestParameter;
         }
@@ -230,7 +246,20 @@ class SoapClientWSSEC extends SoapClient
 		$domDOC->loadXML($request);	
 		
 		//Sign the document					
-		$domDOC = $this->SignDomDocument($domDOC);
+		try {
+		    $domDOC = $this->SignDomDocument($domDOC);
+		} catch (Exception $e) {
+		    Mage::getSingleton('core/session')->addError(
+                Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
+            );
+    	    $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+    			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
+    			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
+    			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
+    
+            header('Location:' . $returnUrl);
+            exit;
+		}
 		
 		// Uncomment the following line, if you actually want to do the request
 		return parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
@@ -301,13 +330,13 @@ class SoapClientWSSEC extends SoapClient
     	$fp = fopen(CERTIFICATE_DIR . '/BuckarooPrivateKey.pem', "r");
     	$priv_key = fread($fp, 8192);
     	if ($priv_key === false) {
-    	    echo 'cant read';exit;
+    	    throw new Exception('Cannot find key file.');
     	}
     	fclose($fp);
     	
     	$pkeyid = openssl_get_privatekey($priv_key, '');	
 	    if ($pkeyid === false) {
-    	    echo 'no pkeyid';exit;
+	        throw new Exception('Key file does not contain actual key.');
     	}
     	
     	//Sign signedinfo with privatekey

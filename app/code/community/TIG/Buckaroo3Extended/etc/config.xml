@@ -6,15 +6,6 @@
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<global>
-		<template>
-	        <email>
-	            <otransferholdemail>
-	                <label>Buckaroo 2012 Overschrijven On Hold Email</label>
-	                <file>buckaroo3extended/otransferholdemail.html</file>
-	                <type>html</type>
-	            </otransferholdemail>
-	        </email>
-	    </template>
 		<events>
             <controller_action_postdispatch_adminhtml_system_config_save>
             	<observers>
@@ -369,7 +360,7 @@
                 <sort_order>460</sort_order>
             </buckaroo3extended_mastercard>
             <buckaroo3extended_amex translate="title">
-                <active>1</active>
+                <active>0</active>
                 <model>buckaroo3extended/paymentMethods_amex_paymentMethod</model>
                 <title>American Express</title>
                 <sort_order>420</sort_order>
@@ -680,6 +671,7 @@
          		<due_date_invoice>0</due_date_invoice>
          		<due_date>7</due_date>
          		<send_mail>1</send_mail>
+         		<use_creditmanagement>0</use_creditmanagement>
          	</buckaroo3extended_transfer>
          	
          	<buckaroo3extended_directdebit>

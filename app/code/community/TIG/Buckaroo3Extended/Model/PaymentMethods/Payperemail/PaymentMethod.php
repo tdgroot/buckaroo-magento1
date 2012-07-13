@@ -25,27 +25,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
         'CHF',
 	);
 	
-    /**
-    * unique internal payment method identifier
-    * 
-    * @var string [a-z0-9_]
-    */
     protected $_code = 'buckaroo3extended_payperemail';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_payperemail_checkout_form';
-    /**
-     * Here are examples of flags that will determine functionality availability
-     * of this module to be used by frontend and backend.
-     * 
-     * @see all flags and their defaults in Mage_Payment_Model_Method_Abstract
-     *
-     * It is possible to have a custom dynamic logic by overloading
-     * public function can* for each flag respectively
-     */
-     
-    /**
-     * Availability options
-     */
+    
     protected $_isGateway               = true;
     protected $_canAuthorize            = true;
     protected $_canCapture              = true;
@@ -70,6 +53,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
     
     public function getOrderPlaceRedirectUrl()
     {
+        $session = Mage::getSingleton('checkout/session');
+
+		$session->setData('additionalFields', array(
+			'gender'    => $_POST['buckaroo3extended_payperemail_BPE_Customergender'],
+		    'firstname' => $_POST['buckaroo3extended_payperemail_BPE_Customerfirstname'],
+		    'lastname'  => $_POST['buckaroo3extended_payperemail_BPE_Customerlastname'],
+		    'mail'      => $_POST['buckaroo3extended_payperemail_BPE_Customermail'],
+		));
+    	
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }
     

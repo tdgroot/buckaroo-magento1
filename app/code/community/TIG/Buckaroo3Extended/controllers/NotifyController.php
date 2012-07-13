@@ -1,8 +1,8 @@
 <?php
-class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_Action 
+class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_Action
 {
 	/**
-	 * 
+	 *
 	 * Prevents the page from being displayed using GET
 	 */
 	public function preDispatch()
@@ -13,9 +13,9 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 		}
 		parent::preDispatch();
 	}
-    
+
 	/**
-	 * 
+	 *
 	 * Handles 'pushes' sent by Buckaroo meant to update the current status of payments/orders
 	 */
     public function pushAction()
@@ -29,22 +29,21 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     	} else {
     		return;
     	}
-    	
+
     	$debugEmail = 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
     	$debugEmail = 'Order ID: ' . $orderId . "\n";
-    	
+
     	if (isset($_POST['brq_test']) && $_POST['brq_test'] == 'true') {
     	    $debugEmail .= "\n/////////// TEST /////////\n";
     	}
     	
-	    mage::log($debugEmail, null, 'TIG_OLDPUSH.log', true);
     	$order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-    	
+
     	$paymentCode = $order->getPayment()->getMethod();
-    	
+
     	$debugEmail .= 'Payment code: ' . $paymentCode . "\n\n";
     	$debugEmail .= 'POST variables recieved: ' . var_export($postArray, true) . "\n\n";
-    	
+
     	$module = Mage::getModel(
     	    'TIG_Buckaroo3Extended_Model_Response_Push',
     	    array(
@@ -54,18 +53,19 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     	        'method'     => $paymentCode,
     	    )
     	);
-    	
+
     	$processedPush = $module->processPush();
-    	
+
     	$debugEmail = $module->getDebugEmail();
     	if ($processedPush === false) {
     		$debugEmail .= 'Push was not fully processed!';
     	}
-    	
+
     	$debugEmail .= '\n sent from: ' . __FILE__ . '@' . __LINE__;
-    	mail('joris.fritzsche@totalinternetgroup.nl','Buckaroo debug-email', $debugEmail);
+    	$module->setDebugEmail($debugEmail);
+    	$module->sendDebugEmail();
     }
-    
+
 	public function returnAction()
 	{
 	    if (isset($_POST['brq_invoicenumber'])) {
@@ -73,14 +73,14 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     	} else {
     		return;
     	}
-    	
+
     	$order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-    	
+
     	$paymentCode = $order->getPayment()->getMethod();
-    	
+
     	$debugEmail .= 'Payment code: ' . $paymentCode . "\n\n";
     	$debugEmail .= 'POST variables recieved: ' . var_export($_POST, true) . "\n\n";
-    	
+
     	$module = Mage::getModel(
     	    'TIG_Buckaroo3Extended_Model_Response_Return',
     	    array(
@@ -90,10 +90,14 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     	        'method'     => $paymentCode,
     	    )
     	);
-    	
+
     	$module->processReturn();
 	}
-	
+
+	/**
+	 * Restructure the Push message sent by the BPE 2.0 to one resembling a push message sent by BPE 3.0.
+	 * This way push messages sent to update a 2.0 transaction can still be processed.
+	 */
 	protected function _restructurePostArray()
 	{
 	    $postArray = array(
@@ -111,7 +115,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 	        'isOldPost'              => true,
 	        'oldPost'                => $_POST,
 	    );
-	    
+
 	    return $postArray;
 	}
 }
