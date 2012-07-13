@@ -537,7 +537,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    );
 	}
 	
-	public function keyNatCaseSort($array)
+	public function buckarooSort($array)
     {
         $arrayToSort = array();
         $origArray = array();

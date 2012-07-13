@@ -524,7 +524,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    unset($origArray['brq_signature']);
 	    
 	    //sort the array
-	    list($sortableArray) = $this->keyNatCaseSort($origArray);
+	    $sortableArray = $this->buckarooSort($origArray);
 	    
 	    //turn into string and add the secret key to the end
 	    $signatureString = '';

@@ -52,11 +52,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
     {
         $session = Mage::getSingleton('checkout/session');
         
-        $session->setData('additionalFields',array('BPE_Customergender' => $_POST[$this->_code.'_BPE_Customergender'],
-        	'BPE_Customermail' => $_POST[$this->_code.'_BPE_Customermail'],
-        	'BPE_customerbirthdate' => date('Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
-        		. '-' . $_POST[$this->_code.'_customerbirthdate']['month']
-        		. '-' . $_POST[$this->_code.'_customerbirthdate']['day']))));  	
+        if (isset($_POST[$this->_code.'_BPE_Customergender'])) {
+            $session->setData('additionalFields',array('BPE_Customergender' => $_POST[$this->_code.'_BPE_Customergender'],
+            	'BPE_Customermail' => $_POST[$this->_code.'_BPE_Customermail'],
+            	'BPE_customerbirthdate' => date('Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
+            		. '-' . $_POST[$this->_code.'_customerbirthdate']['month']
+            		. '-' . $_POST[$this->_code.'_customerbirthdate']['day']))));  	
+        }
         
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }

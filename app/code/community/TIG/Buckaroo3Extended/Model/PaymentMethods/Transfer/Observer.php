@@ -19,11 +19,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
                 'action'	=> 'Pay',
                 'version'   => 1,
             ),
-            'creditmanagement' => array(
+        );
+        
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+            $array['creditmanagement'] = array(
                 'action'	=> 'Invoice',
                 'version'   => 1,
-            ),
-        );
+            );
+        }
         
         if (is_array($vars['services'])) {
             $vars['services'] = array_merge($vars['services'], $array);
@@ -51,7 +54,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
         $this->_addCustomerVariables($vars, 'creditmanagement');
         $this->_addTransfer($vars);
         
-        if (isset($vars['services']['creditmanagement']) && !empty($vars['services']['creditmanagement'])) {
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $this->_addCreditManagement($vars);
             $this->_addTransferCreditmanagement($vars);
         }
