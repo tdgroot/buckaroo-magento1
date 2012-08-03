@@ -4,9 +4,13 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends TIG_Buckaroo3E
 {
     public function __construct()
     {
-
     }
 
+    /**
+     * Uploads the certificate file.
+     * 
+     * @param Varien_Object $object
+     */
     public function uploadAndImport(Varien_Object $object)
     {   
         if (

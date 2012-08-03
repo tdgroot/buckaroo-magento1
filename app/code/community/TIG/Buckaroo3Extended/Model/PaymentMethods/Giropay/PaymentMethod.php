@@ -60,6 +60,26 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_PaymentMethod extends M
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }
     
+    public function refund(Varien_Object $payment, $amount)
+    {
+        if (!$this->canRefund()) {
+            Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
+        }
+        
+        $refundRequest = Mage::getModel(
+        	'buckaroo3extended/refund_request_abstract', 
+            array(
+            	'payment' => $payment, 
+            	'amount' => $amount
+            )
+        );
+        $payment = $refundRequest->sendRefundRequest();
+        
+        $this->setPayment($payment);
+        
+        return $this;
+    }
+    
     public function isAvailable($quote = null)
     {
         if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo()) {

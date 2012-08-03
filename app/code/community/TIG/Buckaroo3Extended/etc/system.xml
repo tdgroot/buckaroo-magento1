@@ -323,7 +323,7 @@
                             <label>Modus</label>
                             <comment>Beware that test orders will still appear in Buckaroo Plaza as regular orders. Setting this to 'Test' will also force 'Display only for certain IP-addresses' to 'yes'.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_TestLive</source_model>
+                            <source_model>buckaroo3extended/sources_testLive</source_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>

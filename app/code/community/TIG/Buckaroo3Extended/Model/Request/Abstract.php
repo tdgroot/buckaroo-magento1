@@ -162,6 +162,13 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         $this->_debugEmail .= 'Order variables added! \n';
     }
 
+    protected function _addRefundVariables()
+    {
+        $this->_vars['OriginalTransactionKey'] = $this->_invoice->getTransactionId();
+        
+        $this->_debugEmail .= 'Refund variables added! \n';
+    }
+
 	/**
 	 * Get the locale code based on the countrycode
 	 *

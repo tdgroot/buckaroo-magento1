@@ -30,11 +30,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     
     public function setMethod($method)
     {
-//        if (strpos($method, 'buckaroo') !== false) {
-//            $methodBits = explode('_', $method);
-//            $method = end($methodBits);
-//        }
-        
     	$this->_method = $method;
     }
     
@@ -138,7 +133,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	{
 	    $correctSignature = false;
 		$canUpdate = false;
-	    $signature = $this->_calculateSignature($isReturn);
+	    $signature = $this->_calculateSignature();
 	    if ($signature === $this->_postArray['brq_signature']) {
 	        $correctSignature = true;
 	    }
@@ -324,7 +319,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		//will retrieve it from the response array, if response actually is an array
 		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
-			$this->_order->setTransactionId($this->_postArray['brq_transactions']);
 			$this->_order->save();
 		}
 		
@@ -511,12 +505,16 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	        $payment = $this->_order->getPayment()->registerCaptureNotification($this->_order->getBaseGrandTotal());
 	        $this->_order->save();
 	        $this->_debugEmail .= 'Invoice created and saved. \n';
+	        
+    	    //sets the invoice's transaction ID as the Buckaroo TRX. This is to allow the order to be refunded using Buckaroo later on.
+            foreach($this->_order->getInvoiceCollection() as $invoice)
+    	    {
+    	        $invoice->setTransactionId($this->_postArray['brq_transactions'])
+    	                ->save();
+    	    }
 	        return true;
 	    }
-        foreach($this->_order->getInvoiceCollection() as $invoice)
-	    {
-	        $invoice->setTransactionId($this->_postArray['brq_transactions']);
-	    }
+	    
         return false;
     }
     
@@ -527,7 +525,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * 
 	 * @return string $signature
 	 */
-	protected function _calculateSignature($isReturn = false)
+	protected function _calculateSignature()
 	{
 	    if (isset($this->_postArray['isOldPost']) && $this->_postArray['isOldPost'])
 	    {

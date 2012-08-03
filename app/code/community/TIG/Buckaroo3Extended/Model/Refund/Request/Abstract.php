@@ -1,7 +1,52 @@
 <?php
 class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3Extended_Model_Request_Abstract
 {
-    public function __construct($payment) {
+    protected $_payment;
+    protected $_invoice;
+    protected $_amount;
+    
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+    
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+    
+    public function setInvoice($invoice)
+    {
+        $this->_invoice = $invoice;
+    }
+    
+    public function getInvoice()
+    {
+        return $this->_invoice;
+    }
+
+    public function setAmount($amount)
+    {
+        $this->_amount = $amount;
+    }
+    
+    public function getAmount()
+    {
+        return $this->_amount;
+    }
+    
+    public function loadInvoiceByTransactionId($transactionId)
+    {
+        foreach ($this->getOrder()->getInvoiceCollection() as $invoice) {
+            if ($invoice->getTransactionId() == $transactionId) {
+                $invoice->load($invoice->getId()); // to make sure all data will properly load (maybe not required)
+                return $invoice;
+            }
+        }
+        return false;
+    }
+    
+    public function __construct($data) {
         if (strpos(__DIR__, '/Model') !== false) {
 	        $dir = str_replace('/Model/Refund/Request', '/certificate', __DIR__);
 	    } else {
@@ -9,8 +54,17 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 	    }
 	    define('CERTIFICATE_DIR', $dir);
 	    
-		$this->setOrder($payment->getOrder());
+	    $this->setAmount($data['amount']);
+	    $this->setPayment($data['payment']);
+		$this->setOrder($data['payment']->getOrder());
 		$this->setSession(Mage::getSingleton('core/session'));
+		
+		$invoice = $this->loadInvoiceByTransactionId($this->_order->getTransactionKey());
+		if ($invoice === false) {
+            Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
+		}
+		$this->setInvoice($invoice);
+		
 		$this->_setOrderBillingInfo();
 		$this->setDebugEmail('');
 		
@@ -36,6 +90,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         $this->_addBaseVariables();
         $this->_addOrderVariables();
         $this->_addShopVariables();
+        $this->_addRefundVariables();
 
         $this->_debugEmail .= "Firing request events. \n";
         //event that allows individual payment methods to add additional variables such as bankaccount number
@@ -54,14 +109,6 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         $soap = Mage::getModel('buckaroo3extended/soap', array('vars' => $this->getVars(), 'method' => $this->getMethod()));
         list($response, $responseXML, $requestXML) = $soap->transactionRequest();
 
-        echo '<pre>';var_dump(array(
-        $this->_vars,
-        $requestXML->saveXML(),
-        $response,
-        $responseXML->saveXML()
-        ));
-        exit;
-
         $this->_debugEmail .= "Soap sent! \n";
         $this->_debugEmail .= "Request: " . var_export($requestXML->saveXML(), true) . "\n";
         $this->_debugEmail .= "Response: " . var_export($response, true) . "\n";
@@ -69,13 +116,52 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 
         $this->_debugEmail .= "Let's process that beautiful response! \n";
         //process the response
-        Mage::getModel(
-            'buckaroo3extended/response_abstract',
+        
+        $processedResponse = Mage::getModel(
+            'buckaroo3extended/refund_response_abstract',
             array(
                 'response'   => $response,
                 'XML'        => $responseXML,
                 'debugEmail' => $this->_debugEmail,
+                'payment'    => $this->_payment,
+                'order'      => $this->_order,
             )
         )->processResponse();
+        
+        $this->setPayment($processedResponse->getPayment());
+        
+        return $this;
     }
+
+    /**
+     * Only difference with parent is that here the totalAmount is 'Credit', rather than 'Debit'
+     * 
+     * @see TIG_Buckaroo3Extended_Model_Request_Abstract::_addOrderVariables()
+     */
+    protected function _addOrderVariables()
+    {
+        list($currency, $totalAmount) = $this->_determineRefundAmountAndCurrency();
+
+        $tax = 0;
+        foreach($this->_order->getFullTaxInfo() as $taxRecord)
+        {
+            $tax += $taxRecord['amount'];
+        }
+        $tax = round($tax * 100,0);
+
+        $this->_vars['currency']    = $currency;
+        $this->_vars['amountCredit'] = $totalAmount;
+        $this->_vars['amountDebit'] = 0;
+        $this->_vars['orderId']     = $this->_order->getIncrementId();
+
+        $this->_debugEmail .= 'Order variables added! \n';
+    }
+    
+    protected function _determineRefundAmountAndCurrency()
+	{
+	    $totalAmount = $this->_amount;
+	    $currency = $this->_order->getBaseCurrency()->getCode();
+        
+	    return array($currency, $totalAmount);
+	}
 }

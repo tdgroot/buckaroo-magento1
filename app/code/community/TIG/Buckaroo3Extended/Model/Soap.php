@@ -36,7 +36,12 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     public function transactionRequest()
     {
         $wsdl_url = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
-        $client = new SoapClientWSSEC($wsdl_url, array('trace'=>1));
+        $client = new SoapClientWSSEC(
+            $wsdl_url,
+            array(
+            	'trace' => 1,
+                'cache_wsdl' => WSDL_CACHE_NONE,
+            ));
         $client->thumbprint = $this->_vars['thumbprint'];
         
         $TransactionRequest = new Body();
@@ -48,7 +53,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->Description = $this->_vars['description'];
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
-        $TransactionRequest->OriginalTransactionKey = $this->_vars['originalTransactionKey'];
+        $TransactionRequest->OriginalTransactionKey = $this->_vars['OriginalTransactionKey'];
         
         $TransactionRequest->Services = new Services();
         

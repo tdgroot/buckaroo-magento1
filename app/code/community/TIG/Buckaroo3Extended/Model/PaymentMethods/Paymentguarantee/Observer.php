@@ -68,10 +68,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer exten
 
         $push = $observer->getPush();
         $response = $observer->getResponse();
+        $order = $observer->getOrder();
+        $postArray = $push->getPostArray();
 
         $push->addNote($response['message'], $this->_method);
+        
+        $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
+        $order->save();
 
         $push->setCustomResponseProcessing(true);
+        
+        return $this;
     }
 
     public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)

@@ -48,6 +48,30 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         
         return $this;
     }
+
+    public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $push = $observer->getPush();
+        $order = $observer->getOrder();
+        $postArray = $push->getPostArray();
+        
+        if (isset($postArray['brq_payment_method']) && !$order->getPaymentMethodUsedForTransaction())
+        {
+            $order->setPaymentMethodUsedForTransaction($postArray['brq_payment_method']);
+        } elseif (isset($postArray['brq_transaction_method']) && !$order->getPaymentMethodUsedForTransaction())
+        {
+            $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
+        }
+        $order->save();
+
+        $push->setCustomResponseProcessing(false);
+        
+        return $this;
+    }
     
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {

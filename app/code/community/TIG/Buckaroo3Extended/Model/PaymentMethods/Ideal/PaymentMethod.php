@@ -1,6 +1,18 @@
 <?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
+    protected $_payment;
+    
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+    
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+    
     public $allowedCurrencies = array(
 		'EUR',
 	);
@@ -66,8 +78,18 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mag
             Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
         }
         
-        $refundRequest = Mage::getModel('buckaroo3extended/refund_request_abstract', $payment);
-        $refundRequest->sendRefundRequest();
+        $refundRequest = Mage::getModel(
+        	'buckaroo3extended/refund_request_abstract', 
+            array(
+            	'payment' => $payment, 
+            	'amount' => $amount
+            )
+        );
+        $payment = $refundRequest->sendRefundRequest();
+        
+        $this->setPayment($payment);
+        
+        return $this;
     }
 
     public function isAvailable($quote = null)

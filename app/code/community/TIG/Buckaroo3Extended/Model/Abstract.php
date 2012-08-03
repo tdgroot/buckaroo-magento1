@@ -13,6 +13,10 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	protected $_billingInfo = '';
 	protected $_session = '';
 	
+	/**
+	 *  List of possible response codes sent by buckaroo.
+	 *  This is the list for the BPE 3.0 gateway.
+	 */
 	public    $responseCodes = array(
 		    190 => array(
 		    	       'message' => 'Success',
@@ -65,6 +69,10 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	 */
 	protected function _loadLastOrder()
 	{
+	    if (!empty($this->_order)) {
+	        return;
+	    }
+	    
 	    $session = Mage::getSingleton('checkout/session');
 	    $orderId = $session->getLastRealOrderId();
 	    if (!empty($orderId)) {
@@ -123,6 +131,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	
 	public function __construct($debugEmail = false)
 	{
+	    //used to find the certificate file later on
 	    if (strpos(__DIR__, '/Model') !== false) {
 	        $dir = str_replace('/Model', '/certificate', __DIR__);
 	    } else {
@@ -143,6 +152,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		$this->_checkExpired();
 	}
 	
+	/**
+	 * Checks if the order object is still there. Prevents errors when session has expired.
+	 */
 	protected function _checkExpired()
 	{
 	    if (empty($this->_order)) {
@@ -193,6 +205,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         $this->setBillingInfo($billingInfo);
 	}
 	
+	/**
+	 * Restores a previously closed quote so that the cart stays filled after an unsuccessfull order
+	 */
     public function restoreQuote()
     {
     	$quoteId = $this->_order->getQuoteId();
@@ -203,6 +218,10 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
     }
     
+    /**
+	 *  Empties the cart after a successfull order. To prevent the cart from staying filled when the user
+	 *  has a modified shop that doesn't automatically clear the cart when placing an order.
+     */
     public function emptyCart()
     {
         if (!Mage::getStoreConfig('buckaroo/buckaroo3extended/manual_empty_cart', Mage::app()->getStore()->getStoreId())) {
@@ -219,6 +238,14 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         }
     }
     
+    /**
+     * Determines the totalamount of the order and the currency to be used based on which currencies are available
+     * and which currency the customer has selected.
+     * 
+     * Will default to base currency if the selected currency is unavailable.
+     * 
+     * @return array
+     */
     protected function _determineAmountAndCurrency()
 	{
 	    $code = $this->_order->getPayment()->getMethod();
@@ -318,7 +345,6 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	 * get locale based on country
 	 * locale is formatted as language-LOCALE
 	 * 
-	 * 
 	 * @return array
 	 */
 	protected function _getLocale()
@@ -382,12 +408,8 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	
     /**
      * Retrieves an array with information related to a recieved response code.
-     * This method will only be called when it's child cant find it itself. This list
-     * is a general list of known status codes. Its not as inclusive as the lists used\
-     * by its children. However, this list also contains general error codes not
-     * carried by its children.
      * 
-     * @return array $returnArray
+     * @return array
      */
 	protected function _parseResponse()
 	{
@@ -398,6 +420,8 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		    $returnArray = $this->responseCodes[$code];
 		    
 		    if ($this->_response) {
+		        //the subcode is additional information sometimes returned by Buckaroo. Currently not used,
+		        //but it may be of use when debugging.
     		    $returnArray['subCode'] = array(
     		        'message' => $this->_response->Status->SubCode->_,
     		        'code'    => $this->_response->Status->SubCode->Code,
@@ -415,14 +439,11 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	}
 	
 	/**
-     * Retrieves an array with information related to a recieved response code.
-     * This method will only be called when it's child cant find it itself. This list
-     * is a general list of known status codes. Its not as inclusive as the lists used\
-     * by its children. However, this list also contains general error codes not
-     * carried by its children.
-     * 
-     * @return array $returnArray
-     */
+	 * Same as above, only is used by PUSH responses and return responses (when the customer is redirected to Buckaroo and
+	 * returns to the shop later).
+	 * 
+	 * @param unknown_type $code
+	 */
 	protected function _parsePostResponse($code)
 	{
 	    $isCorrect = $this->_checkCorrectAmount();
@@ -455,6 +476,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		}
 	}
 	
+	/**
+	 * Checks if the correct amount has been paid.
+	 */
 	protected function _checkCorrectAmount()
 	{
 	    $amountPaid = round($this->_postArray['brq_amount'] * 100, 0);
@@ -494,7 +518,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         return $cleanArray;
     }
     
-    //function which converts special characters to html numeric equivalents
+    /**
+     * function which converts special characters to html numeric equivalents
+     */
 	public function htmlNumeric($string) {
 		preg_match_all('/[^\!-\~\s]/', $string, $specialChars);
 		if ($specialChars) {
@@ -557,6 +583,10 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         return array($sortedArray);
     }
 	
+    /**
+     * Long list of response codes used by BPE 2.0 gateway. Added here for backwards compatibility. Added
+     * to the bottem of the page so it doesn't take up as much space
+     */
 	public $oldResponseCodes = array(
           0	 => array( '*'=>array(	"omschrijving" => "De credit card transactie is pending.",
     					"code"		=> self::BUCKAROO_NEUTRAL,

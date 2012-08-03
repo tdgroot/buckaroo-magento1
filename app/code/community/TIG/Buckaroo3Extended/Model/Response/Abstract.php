@@ -82,9 +82,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         //sets the transaction key if its defined ($trx)
 		//will retrieve it from the response array, if response actually is an array
-		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
-			$this->_order->setTransactionKey($this->_response->key);
-            $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->key . "\n";
+		if (!$this->_order->getTransactionKey()) {
+			$this->_order->setTransactionKey($this->_response->Key);
+			$this->_order->save();
+            $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->Key . "\n";
 		}
 
         $requiredAction = $this->_response->RequiredAction->Type;
@@ -277,7 +278,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         exit;
     }
 
-    private function _verifyResponse()
+    protected function _verifyResponse()
     {
         $verified = false;
 
@@ -291,7 +292,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         return $verified;
     }
 
-    private function _verifySignature()
+    protected function _verifySignature()
     {
         $verified = false;
 
@@ -336,7 +337,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     	return $verified;
     }
 
-    private function _verifyDigest()
+    protected function _verifyDigest()
     {
         $verified = false;
 

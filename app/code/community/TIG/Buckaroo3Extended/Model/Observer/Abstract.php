@@ -10,6 +10,12 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         $this->_setOrderBillingInfo();
     }
     
+    /**
+     * Each payment method has it's own observer. When one of thos observers is called, this checks if it's
+     * payment method is being used and therefore, if this observer needs to do anything.
+     * 
+     * @param unknown_type $observer
+     */
     protected function _isChosenMethod($observer)
     {
         $ret = false;
@@ -101,7 +107,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		return $vars;
     }
     
-/**
+	/**
 	 * Processes billingInfo array to get the initials of the customer
 	 * 
 	 * @param array $billingInfo
@@ -276,6 +282,10 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 	    return $prefix;
 	}
     
+	/**
+	 * Certain payment methods require a list of other payment methods that will be used to finalize the payment.
+	 * This method forms that list.å
+	 */
     protected function _getPaymentMethodsAllowed()
     {
         $configAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowed_methods', Mage::app()->getStore()->getStoreId());
