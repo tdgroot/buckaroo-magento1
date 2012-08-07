@@ -76,7 +76,7 @@
                             <show_in_store>1</show_in_store>
                         </limit_by_ip>
 						<key translate="label">
-                            <label>Merchant key</label>
+                            <label>Website key</label>
                             <comment>Enter you Buckaroo merchant key.</comment>
                             <tooltip>You can find your Buckaroo merchant key by logging into Buckaroo Payment Plaza and selecting 'profiel' -> 'Websites', then select your website; your merchant key will display at the top of the displayed form.</tooltip>
                             <frontend_type>text</frontend_type>

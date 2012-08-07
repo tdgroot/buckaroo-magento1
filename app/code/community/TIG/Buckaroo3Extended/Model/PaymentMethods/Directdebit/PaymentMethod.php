@@ -1,6 +1,18 @@
 <?php 
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Directdebit_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
+    protected $_payment;
+    
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+    
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+    
     public $allowedCurrencies = array(
 		'EUR',
 	);

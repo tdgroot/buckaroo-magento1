@@ -11,7 +11,7 @@
             	<observers>
             		<buckaroo3extended_refund_observer>
             			<type>Singleton</type>
-            			<class>TIG_Buckaroo3Extended_Model_Refund_Observer</class>
+            			<class>buckaroo3extended/refund_observer</class>
             			<method>sales_order_payment_refund</method>
             		</buckaroo3extended_refund_observer>
             	</observers>
@@ -20,11 +20,25 @@
             	<observers>
             		<buckaroo3extended_config_observer>
             			<type>Singleton</type>
-            			<class>TIG_Buckaroo3Extended_Model_Observer</class>
+            			<class>buckaroo3extended/observer</class>
             			<method>controller_action_postdispatch_adminhtml_system_config_save</method>
             		</buckaroo3extended_config_observer>
             	</observers>
             </controller_action_postdispatch_adminhtml_system_config_save>
+            <buckaroo3extended_refund_request_setmethod>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_payperemail>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_payperemail_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_payperemail>
+            		<buckaroo3extended_paymentmethod_observer_ideal>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_ideal_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_ideal>
+            	</observers>
+            </buckaroo3extended_refund_request_setmethod>
             <buckaroo3extended_request_addservices>
             	<observers>
             		<buckaroo3extended_paymentmethod_observer_transfer>
@@ -106,6 +120,13 @@
             			<class>buckaroo3extended/paymentMethods_ideal_observer</class>
             			<method>buckaroo3extended_refund_request_addservices</method>
             		</buckaroo3extended_paymentmethod_observer_ideal>
+            	</observers>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_payperemail>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_payperemail_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_payperemail>
             	</observers>
             </buckaroo3extended_refund_request_addservices>
             <buckaroo3extended_request_addcustomvars>

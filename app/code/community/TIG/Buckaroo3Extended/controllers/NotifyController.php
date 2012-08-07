@@ -133,66 +133,96 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 	
 	protected function _processPushAccordingToType()
 	{
-	    mage::log('called', null, 'TIG_R12.log', true);
     	if ($this->_order->getTransactionKey() == $this->_postArray['brq_transactions']) {
-	    mage::log('1', null, 'TIG_R12.log', true);
-    	    $this->_debugEmail .= "Transaction key matches the order. \n";
-        	$module = Mage::getModel(
-        	    'TIG_Buckaroo3Extended_Model_Response_Push',
-        	    array(
-        	        'order'      => $this->_order,
-        	        'postArray'  => $this->_postArray,
-        	        'debugEmail' => $this->_debugEmail,
-        	        'method'     => $this->_paymentCode,
-        	    )
-        	);
-    	    $processedPush = $module->processPush();
+    	    list($processedPush, $module) = $this->_updateOrderWithKey();
     	} elseif ($this->_pushIsCreditmemo($this->_postArray)) {
-	    mage::log('2', null, 'TIG_R12.log', true);
-    	    $this->_debugEmail .= "Transaction key matches a creditmemo. \n";
-    	    $module = Mage::getModel(
-        	    'TIG_Buckaroo3Extended_Model_Refund_Response_Push',
-        	    array(
-        	        'order'      => $this->_order,
-        	        'postArray'  => $this->_postArray,
-        	        'debugEmail' => $this->_debugEmail,
-        	    )
-        	);
-    	    //$processedPush = $module->processPush();
+        	list($processedPush, $module) = $this->_updateCreditmemo();
     	} elseif (isset($this->_postArray['brq_amount_credit'])) {
-	    mage::log('3', null, 'TIG_R12.log', true);
-    	    $this->_debugEmail .= "The PUSH constitutes a new refund. \n";
-    	    $module = Mage::getModel(
-        	    'TIG_Buckaroo3Extended_Model_Refund_Creditmemo',
-        	    array(
-        	        'order'      => $this->_order,
-        	        'postArray'  => $this->_postArray,
-        	        'debugEmail' => $this->_debugEmail,
-        	    )
-        	);
-        	mage::log(get_class($module), null, 'TIG_R2.log', true);
-    	    $processedPush = $module->processBuckarooRefundPush();
+    	    list($processedPush, $module) = $this->_newRefund();
     	} elseif (!$this->_order->getTransactionKey()) {
-    	    $this->_debugEmail .= "Order does not yet have a transaction key and the PUSH does not constitute a refund. \n";
-    	    
-    	    $this->_order->setTransactionKey($this->_postArray['brq_transactions'])
-    	          ->save();
-    	          
-    	    $this->_debugEmail .= "Transaction key saved: {$this->_postArray['brq_transactions']}";
-    	    
-        	$module = Mage::getModel(
-        	    'TIG_Buckaroo3Extended_Model_Response_Push',
-        	    array(
-        	        'order'      => $this->_order,
-        	        'postArray'  => $this->_postArray,
-        	        'debugEmail' => $this->_debugEmail,
-        	        'method'     => $this->_paymentCode,
-        	    )
-        	);
-    	    $processedPush = $module->processPush();
+    	    list($processedPush, $module) = $this->_updateOrderWithoutKey();
     	}
     	
     	return array($module, $processedPush);
+	}
+	
+	protected function _updateOrderWithKey()
+	{
+	    $this->_debugEmail .= "Transaction key matches the order. \n";
+    	    
+    	$module = Mage::getModel(
+    	    'TIG_Buckaroo3Extended_Model_Response_Push',
+    	    array(
+    	        'order'      => $this->_order,
+    	        'postArray'  => $this->_postArray,
+    	        'debugEmail' => $this->_debugEmail,
+    	        'method'     => $this->_paymentCode,
+    	    )
+    	);
+    	
+    	$processedPush = $module->processPush();
+    	
+	    return array($processedPush, $module);
+	}
+	
+    protected function _updateOrderWithoutKey()
+	{
+	    $this->_debugEmail .= "Order does not yet have a transaction key and the PUSH does not constitute a refund. \n";
+	    
+	    $this->_order->setTransactionKey($this->_postArray['brq_transactions'])
+	          ->save();
+	          
+	    $this->_debugEmail .= "Transaction key saved: {$this->_postArray['brq_transactions']}";
+	    
+    	$module = Mage::getModel(
+    	    'TIG_Buckaroo3Extended_Model_Response_Push',
+    	    array(
+    	        'order'      => $this->_order,
+    	        'postArray'  => $this->_postArray,
+    	        'debugEmail' => $this->_debugEmail,
+    	        'method'     => $this->_paymentCode,
+    	    )
+    	);
+    	
+	    $processedPush = $module->processPush();
+	    
+	    return array($processedPush, $module);
+	}    
+	
+	protected function _updateCreditmemo()
+	{
+	    $this->_debugEmail .= "Transaction key matches a creditmemo. \n";
+	    
+	    $module = Mage::getModel(
+    	    'TIG_Buckaroo3Extended_Model_Refund_Response_Push',
+    	    array(
+    	        'order'      => $this->_order,
+    	        'postArray'  => $this->_postArray,
+    	        'debugEmail' => $this->_debugEmail,
+    	    )
+    	);
+    	
+	    $processedPush = /*$module->processPush()*/false; //TODO: create code to update creditmemo
+	    
+	    return array($processedPush, $module);
+	}
+	
+	protected function _newRefund()
+	{
+	    $this->_debugEmail .= "The PUSH constitutes a new refund. \n";
+	    
+	    $module = Mage::getModel(
+    	    'TIG_Buckaroo3Extended_Model_Refund_Creditmemo',
+    	    array(
+    	        'order'      => $this->_order,
+    	        'postArray'  => $this->_postArray,
+    	        'debugEmail' => $this->_debugEmail,
+    	    )
+    	);
+    	
+	    $processedPush = $module->processBuckarooRefundPush();
+	    
+	    return array($processedPush, $module);
 	}
 	
 	protected function _pushIsCreditmemo()

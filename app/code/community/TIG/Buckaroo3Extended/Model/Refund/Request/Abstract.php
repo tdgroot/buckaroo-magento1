@@ -70,7 +70,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 		
 		$this->_checkExpired();
 
-        Mage::dispatchEvent('buckaroo3extended_request_setmethod', array('request' => $this, 'order' => $this->_order));
+        Mage::dispatchEvent('buckaroo3extended_refund_request_setmethod', array('request' => $this, 'order' => $this->_order));
 
         $this->setVars(array());
     }
@@ -110,9 +110,11 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         list($response, $responseXML, $requestXML) = $soap->transactionRequest();
 
         $this->_debugEmail .= "Soap sent! \n";
-        $this->_debugEmail .= "Request: " . var_export($requestXML->saveXML(), true) . "\n";
-        $this->_debugEmail .= "Response: " . var_export($response, true) . "\n";
-        $this->_debugEmail .= "Response XML:" . var_export($responseXML->saveXML(), true) . "\n\n";
+        if (is_object($requestXML) && is_object($responseXML)) {
+            $this->_debugEmail .= "Request: " . var_export($requestXML->saveXML(), true) . "\n";
+            $this->_debugEmail .= "Response: " . var_export($response, true) . "\n";
+            $this->_debugEmail .= "Response XML:" . var_export($responseXML->saveXML(), true) . "\n\n";
+        }
 
         $this->_debugEmail .= "Let's process that beautiful response! \n";
         //process the response

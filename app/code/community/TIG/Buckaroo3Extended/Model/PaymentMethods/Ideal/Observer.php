@@ -24,6 +24,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         return $this;
     }
     
+    public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+
+        $codeBits = explode('_', $this->_code);
+        $code = end($codeBits);
+        $request->setMethod($code);
+
+        return $this;
+    }
+    
     public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {

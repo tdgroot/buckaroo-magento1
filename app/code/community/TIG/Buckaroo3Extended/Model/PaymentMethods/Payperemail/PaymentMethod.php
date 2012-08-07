@@ -1,6 +1,18 @@
 <?php 
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
+    protected $_payment;
+    
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+    
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+    
     public $allowedCurrencies = array(
 		'EUR',
 		'GBP',
@@ -71,6 +83,30 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
     public function getOrderPlaceRedirectUrl()
     {
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
+    }
+    
+    public function refund(Varien_Object $payment, $amount)
+    {
+        if (!$this->canRefund()) {
+            Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
+        }
+        
+        $refundRequest = Mage::getModel(
+        	'buckaroo3extended/refund_request_abstract', 
+            array(
+            	'payment' => $payment, 
+            	'amount' => $amount
+            )
+        );
+        try {
+            $payment = $refundRequest->sendRefundRequest();
+        } catch (Exception $e) {
+            Mage::throwException($this->_getHelper()->__($e->getMessage()));
+        }
+        
+        $this->setPayment($payment);
+        
+        return $this;
     }
     
     public function isAvailable($quote = null)

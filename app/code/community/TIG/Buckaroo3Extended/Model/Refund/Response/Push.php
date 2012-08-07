@@ -88,7 +88,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
 		
 		$this->_debugEmail .= "Response recieved: " . var_export($response, true) . "\n\n";
         
-        Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
+        Mage::dispatchEvent('buckaroo3extended_refund_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
                 
         if ($this->getCustomResponseProcessing()) {
             return true;

@@ -1,6 +1,18 @@
 <?php 
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
+    protected $_payment;
+    
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+    
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+    
     public $allowedCurrencies = array(
 		'EUR',
 	);
@@ -30,8 +42,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
     protected $_canAuthorize            = true;
     protected $_canCapture              = true;
     protected $_canCapturePartial       = true;
-    protected $_canRefund               = true;
-    protected $_canRefundInvoicePartial = true;
+    protected $_canRefund               = false;
+    protected $_canRefundInvoicePartial = false;
     protected $_canVoid                 = true;
     protected $_canUseInternal          = true;
     protected $_canUseCheckout          = true;

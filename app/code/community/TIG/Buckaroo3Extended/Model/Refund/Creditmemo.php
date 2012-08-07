@@ -28,7 +28,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             $creditmemo = $this->_initCreditmemo($data);
             
             if ($creditmemo) {
-                if (($creditmemo->getGrandTotal() <=0) && (!$creditmemo->getAllowZeroGrandTotal())) {
+                if (($creditmemo->getGrandTotal() <= 0) && (!$creditmemo->getAllowZeroGrandTotal())) {
                     Mage::throwException(
                         $this->__('Credit memo\'s total must be positive.')
                     );
@@ -89,6 +89,16 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         }
         $data['qtys'] = $qtys;
         $creditmemo = $service->prepareCreditmemo($data);
+    
+        /**
+         * Process back to stock flags
+         */
+        foreach ($creditmemo->getAllItems() as $creditmemoItem) {
+            $orderItem = $creditmemoItem->getOrderItem();
+            $parentId = $orderItem->getParentItemId();
+            
+            $creditmemoItem->setBackToStock(false);
+        }
         
         $args = array('creditmemo' => $creditmemo, 'request' => $data);
         Mage::dispatchEvent('adminhtml_sales_order_creditmemo_register_before', $args);
@@ -136,25 +146,83 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
     protected function _getCreditmemoData()
     {
         $data = array(
-            'do_offline' => '1',
-            'comment_text' => '',
-            'shipping_amount' => '0',
-            'adjustment_positive' => $this->_postArray['brq_amount_credit'],
-            'adjustment_negative' => '0',
+            'do_offline'      => '0',
+            'do_refund'       => '0',
+            'comment_text'    => '',
         );
         
+        $totalToRefund = $this->_postArray['brq_amount_credit'] + $this->_order->getBaseTotalRefunded();
+        if ($totalToRefund == $this->_order->getBaseGrandTotal()) {
+            //if the amount to be refunded + the amount that has already been refunded equals the order's base grandtotal
+            //all products from that order will be refunded as well
+            $data['shipping_amount']     = $this->_order->getBaseShippingAmount() - $this->_order->getBaseShippingRefunded();
+            $data['adjustment_negative'] = $this->_order->getBaseTotalRefunded() - $this->_order->getBaseShippingRefunded();
+
+            $remainder = $this->_calculateRemainder();
+            
+            $data['adjustment_positive'] = $remainder;
+        } else {
+            //if the above is not the case; no products will be refunded and this refund will be considered an
+            //adjustment refund
+            $data['shipping_amount']     = '0';
+            $data['adjustment_negative'] = '0';
+            $data['adjustment_positive'] = $this->_postArray['brq_amount_credit'];
+        }
+        
+        $items = $this->_getCreditmemoDataItems();
+        
+        $data['items'] = $items;
+        return $data;
+    }
+    
+    /**
+     * Calculates the amount left over after discounts, shipping, taxes, adjustments and the subtotal have been
+     * taken into account. This remainder is probably caused by some module such as a paymentfee. 
+     * 
+     * This method will return 0 in most cases.
+     */
+    protected function _calculateRemainder()
+    {
+        $baseTotalToBeRefunded = (
+                                   $this->_order->getBaseShippingAmount() 
+                                   - $this->_order->getBaseShippingRefunded()
+                               ) + (
+                                   $this->_order->getBaseSubtotal()
+                                   - $this->_order->getBaseSubtotalRefunded()
+                               ) + (
+                                   $this->_order->getBaseAdjustmentNegative()
+                                   - $this->_order->getBaseAdjustmentPositive()
+                               );
+                               
+        $remainderToBeRefunded = $this->_order->getBaseGrandTotal() 
+                               - $baseTotalToBeRefunded
+                               - $this->_order->getBaseTotalRefunded();
+                               
+        return $remainderToBeRefunded;
+    }
+    
+    /**
+     * Determines which items need to be refunded. If the amount to be refunded equals the order base grandtotal
+     * thern all items are refunded, otherwise none are
+     */
+    protected function _getCreditmemoDataItems()
+    {
         $items = array();
         foreach ($this->_order->getAllItems() as $orderItem)
         {
-            if (!in_array(array_flip($items))) {
+            if (!in_array($orderItem->getId(), array_flip($items))) {
+               if (($this->_postArray['brq_amount_credit'] + $this->_order->getBaseTotalRefunded()) == $this->_order->getBaseGrandTotal()) {
+                    $qty = $orderItem->getQtyInvoiced();
+                } else {
+                    $qty = 0;
+                }
                 $items[$orderItem->getId()] = array(
-                    'qty' => 0,
+                	'qty' => $qty,
                 );
             }
         }
         
-        $data['items'] = $items;
-        return $data;
+        return $items;
     }
     
 	/**

@@ -36,12 +36,32 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     public function transactionRequest()
     {
         $wsdl_url = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
-        $client = new SoapClientWSSEC(
-            $wsdl_url,
-            array(
-            	'trace' => 1,
-                'cache_wsdl' => WSDL_CACHE_NONE,
+        
+        try
+        {
+        	$client = new SoapClientWSSEC(
+                $wsdl_url,
+                array(
+                	'trace' => 1,
+                    'cache_wsdl' => WSDL_CACHE_DISK,
             ));
+        }
+        catch (SoapFault $e)
+        {
+            try {
+                ini_set('soap.wsdl_cache_ttl', 1);
+                $client = new SoapClientWSSEC(
+                    $wsdl_url,
+                    array(
+                    	'trace' => 1,
+                        'cache_wsdl' => WSDL_CACHE_NONE,
+                ));
+            } catch (SoapFault $e) {
+                var_dump($e->getMessage());exit;
+            	return $this->_error($client);
+            }
+        }
+        
         $client->thumbprint = $this->_vars['thumbprint'];
         
         $TransactionRequest = new Body();
@@ -128,15 +148,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         catch ( SoapFault $e )
         {
             $this->logException($e->getMessage());
-            
-            $responseXML = $client->__getLastResponse();
-            
-            $responseDomDOC = new DOMDocument();
-            $responseDomDOC->loadXML($responseXML);
-    		$responseDomDOC->preserveWhiteSpace = FALSE;
-    		$responseDomDOC->formatOutput = TRUE;
-            
-        	$response = false;
+        	return $this->_error($client);
         }
         
         if (is_null($response)) {
@@ -155,6 +167,28 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $requestDomDOC->loadXML($requestXML);
 		$requestDomDOC->preserveWhiteSpace = FALSE;
 		$requestDomDOC->formatOutput = TRUE;
+        
+        return array($response, $responseDomDOC, $requestDomDOC);
+    }
+    
+    protected function _error($client = false)
+    {
+        $response = false;
+        
+        if ($client) {
+            $responseXML = $client->__getLastResponse();
+            $requestXML = $client->__getLastRequest();
+        
+            $responseDomDOC = new DOMDocument();
+            $responseDomDOC->loadXML($responseXML);
+    		$responseDomDOC->preserveWhiteSpace = FALSE;
+    		$responseDomDOC->formatOutput = TRUE;
+    		
+    		$requestDomDOC = new DOMDocument();
+            $requestDomDOC->loadXML($requestXML);
+    		$requestDomDOC->preserveWhiteSpace = FALSE;
+    		$requestDomDOC->formatOutput = TRUE;
+        }
         
         return array($response, $responseDomDOC, $requestDomDOC);
     }
