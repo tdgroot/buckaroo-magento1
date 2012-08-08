@@ -57,7 +57,6 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                         'cache_wsdl' => WSDL_CACHE_NONE,
                 ));
             } catch (SoapFault $e) {
-                var_dump($e->getMessage());exit;
             	return $this->_error($client);
             }
         }
