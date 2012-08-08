@@ -35,8 +35,32 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     
     public function transactionRequest()
     {
-        $wsdl_url = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
-        $client = new SoapClientWSSEC($wsdl_url, array('trace'=>1));
+        $wsdlUrl = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
+        
+        try
+        {
+        	$client = new SoapClientWSSEC(
+                $wsdlUrl,
+                array(
+                	'trace' => 1,
+                    'cache_wsdl' => WSDL_CACHE_DISK,
+            ));
+        }
+        catch (SoapFault $e)
+        {
+            try {
+                ini_set('soap.wsdl_cache_ttl', 1);
+                $client = new SoapClientWSSEC(
+                    $wsdlUrl,
+                    array(
+                    	'trace' => 1,
+                        'cache_wsdl' => WSDL_CACHE_NONE,
+                ));
+            } catch (SoapFault $e) {
+            	return $this->_error($client);
+            }
+        }
+        
         $client->thumbprint = $this->_vars['thumbprint'];
         
         $TransactionRequest = new Body();
@@ -120,16 +144,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
         catch ( SoapFault $e )
         {
-            $this->logException($e->getMessage());
-            
-            $responseXML = $client->__getLastResponse();
-            
-            $responseDomDOC = new DOMDocument();
-            $responseDomDOC->loadXML($responseXML);
-    		$responseDomDOC->preserveWhiteSpace = FALSE;
-    		$responseDomDOC->formatOutput = TRUE;
-            
-        	$response = false;
+        	return $this->_error($client);
         }
         
         if (is_null($response)) {
@@ -148,6 +163,28 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $requestDomDOC->loadXML($requestXML);
 		$requestDomDOC->preserveWhiteSpace = FALSE;
 		$requestDomDOC->formatOutput = TRUE;
+        
+        return array($response, $responseDomDOC, $requestDomDOC);
+    }
+    
+    protected function _error($client = false)
+    {
+        $response = false;
+        
+        if ($client) {
+            $responseXML = $client->__getLastResponse();
+            $requestXML = $client->__getLastRequest();
+        
+            $responseDomDOC = new DOMDocument();
+            $responseDomDOC->loadXML($responseXML);
+    		$responseDomDOC->preserveWhiteSpace = FALSE;
+    		$responseDomDOC->formatOutput = TRUE;
+    		
+    		$requestDomDOC = new DOMDocument();
+            $requestDomDOC->loadXML($requestXML);
+    		$requestDomDOC->preserveWhiteSpace = FALSE;
+    		$requestDomDOC->formatOutput = TRUE;
+        }
         
         return array($response, $responseDomDOC, $requestDomDOC);
     }
@@ -180,23 +217,13 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $requestParameters = array();
         foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
-            if (
-                ((is_null($value)) || $value === '')
-                || (is_array($value) && 
-                    (is_null($value['value']) || $value['value'] === '')
-                   )
-            ) {
+            if (is_null($value) || $value === '') {
                 continue;
             }
             
             $requestParameter = new RequestParameter();
             $requestParameter->Name = $fieldName;
-            if (is_array($value)) {
-                $requestParameter->Group = $value['group'];
-                $requestParameter->_ = $value['value'];
-            } else {
-                $requestParameter->_ = $value;
-            }
+            $requestParameter->_ = $value;
             
             $requestParameters[] = $requestParameter;
         }
@@ -246,20 +273,7 @@ class SoapClientWSSEC extends SoapClient
 		$domDOC->loadXML($request);	
 		
 		//Sign the document					
-		try {
-		    $domDOC = $this->SignDomDocument($domDOC);
-		} catch (Exception $e) {
-		    Mage::getSingleton('core/session')->addError(
-                Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
-            );
-    	    $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
-    			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
-    			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
-    			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-    
-            header('Location:' . $returnUrl);
-            exit;
-		}
+		$domDOC = $this->SignDomDocument($domDOC);
 		
 		// Uncomment the following line, if you actually want to do the request
 		return parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
@@ -330,13 +344,13 @@ class SoapClientWSSEC extends SoapClient
     	$fp = fopen(CERTIFICATE_DIR . '/BuckarooPrivateKey.pem', "r");
     	$priv_key = fread($fp, 8192);
     	if ($priv_key === false) {
-    	    throw new Exception('Cannot find key file.');
+    	    echo 'cant read';exit;
     	}
     	fclose($fp);
     	
     	$pkeyid = openssl_get_privatekey($priv_key, '');	
 	    if ($pkeyid === false) {
-	        throw new Exception('Key file does not contain actual key.');
+    	    echo 'no pkeyid';exit;
     	}
     	
     	//Sign signedinfo with privatekey
@@ -436,7 +450,7 @@ class Body
 {
 	public $Currency;
 	public $AmountDebit;
- 	//public $AmountCredit;
+ 	public $AmountCredit;
  	public $Invoice;
  	public $Order;
  	public $Description;
@@ -445,9 +459,10 @@ class Body
  	public $ReturnURLCancel;
  	public $ReturnURLError;
  	public $ReturnURLReject;
- 	//public $OriginalTransactionKey;
+ 	public $OriginalTransactionKey;
  	public $StartRecurrent;
  	public $Services;
+ 	//public $ContinueOnIncomplete;
  	//public $CustomParameters;
  	//public $AdditionalParameters;
 }
