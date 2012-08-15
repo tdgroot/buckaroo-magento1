@@ -23,7 +23,7 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends TIG_Buckaroo3E
 
                 $uploader = new Varien_File_Uploader('certificate');
 
-                $path = str_replace('/Model/Certificate', '/certificate', __DIR__);
+                $path = str_replace('/Model/Certificate', '/certificate', dirname(__FILE__));
 
                 $certName = 'BuckarooPrivateKey.pem';
 
