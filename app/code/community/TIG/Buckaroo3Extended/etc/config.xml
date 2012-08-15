@@ -781,6 +781,17 @@
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_onlinegiro>
+         	
+         	<buckaroo3extended_refund>
+         		<active>0</active>
+         		<allow_push>1</allow_push>
+         		<order_status_processing_success></order_status_processing_success>
+         		<order_status_processing_failed></order_status_processing_failed>
+         		<order_status_closed_success></order_status_closed_success>
+         		<order_status_closed_failed></order_status_closed_failed>
+         		<order_status_complete_success></order_status_complete_success>
+         		<order_status_complete_failed></order_status_complete_failed>
+         	</buckaroo3extended_refund>
          </buckaroo>
 	</default>
 </config>

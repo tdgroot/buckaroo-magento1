@@ -8,16 +8,21 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
 	public function processBuckarooRefundPush()
 	{
 		//check if the push is valid and if the order can be updated
-		$canProcessPush = $this->_canProcessRefundPush();
-		list($canProcess, $canUpdate) = $canProcessPush;
+		list($valid, $canProcess) = $this->_canProcessRefundPush();
 		
-		$this->_debugEmail .= "Is the PUSH valid? " . $canProcess . "\nCan the creditmemo be created? " . $canUpdate . "\n";
+		$this->_debugEmail .= "Is the PUSH valid? " . $valid . "\nCan the creditmemo be created? " . $canProcess . "\n";
 		
-		if (!$canProcess || !$canUpdate) {
+		if (!$valid || !$canProcess) {
 			return false;
 		}
 	    
-		$this->_createCreditmemo();
+		$success = $this->_createCreditmemo();
+		
+		if ($success === false) { //if $success === true, the observer will update the status instead
+		    $this->_updateRefundedOrderStatus($success);
+		}
+		
+		return true;
 	}
 	
 	protected function _createCreditmemo()
@@ -53,6 +58,8 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
                     $creditmemo->setOfflineRequested((bool)(int)$data['do_offline']);
                 }
 
+                $creditmemo->setTransactionKey($this->_postArray['brq_transactions']);
+                
                 $creditmemo->register();
                 if (!empty($data['send_email'])) {
                     $creditmemo->setEmailSent(true);
@@ -63,12 +70,19 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
                 $creditmemo->sendEmail(!empty($data['send_email']), $comment);
                 
                 Mage::getSingleton('adminhtml/session')->getCommentText(true);
+                
+                return true;
+            } else {
+                return false;
             }
         } catch (Mage_Core_Exception $e) {
-            Mage::log($e->getMessage(), null, 'TIG_R4.log', true);
+            $this->logException($e->getMessage());
+            return false;
         } catch (Exception $e) {
-            Mage::log($e->getMessage(), null, 'TIG_R4.log', true);
+            $this->logException($e->getMessage());
+            return false;
         }
+        return true;
 	}
 	
     protected function _initCreditmemo($data, $update = false)
@@ -145,19 +159,21 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
      */
     protected function _getCreditmemoData()
     {
+        $totalAmount = $this->_calculateTotalAmount();
+        
         $data = array(
             'do_offline'      => '0',
             'do_refund'       => '0',
             'comment_text'    => '',
         );
         
-        $totalToRefund = $this->_postArray['brq_amount_credit'] + $this->_order->getBaseTotalRefunded();
+        $totalToRefund = $totalAmount + $this->_order->getBaseTotalRefunded();
         if ($totalToRefund == $this->_order->getBaseGrandTotal()) {
             //if the amount to be refunded + the amount that has already been refunded equals the order's base grandtotal
             //all products from that order will be refunded as well
             $data['shipping_amount']     = $this->_order->getBaseShippingAmount() - $this->_order->getBaseShippingRefunded();
             $data['adjustment_negative'] = $this->_order->getBaseTotalRefunded() - $this->_order->getBaseShippingRefunded();
-
+            
             $remainder = $this->_calculateRemainder();
             
             $data['adjustment_positive'] = $remainder;
@@ -166,13 +182,20 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             //adjustment refund
             $data['shipping_amount']     = '0';
             $data['adjustment_negative'] = '0';
-            $data['adjustment_positive'] = $this->_postArray['brq_amount_credit'];
+            $data['adjustment_positive'] = $totalAmount;
         }
         
         $items = $this->_getCreditmemoDataItems();
         
         $data['items'] = $items;
         return $data;
+    }
+    
+    protected function _calculateTotalAmount()
+    {
+        $amountPushed = $this->_postArray['brq_amount_credit'];
+        
+        return $amountPushed;
     }
     
     /**
@@ -192,6 +215,12 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
                                ) + (
                                    $this->_order->getBaseAdjustmentNegative()
                                    - $this->_order->getBaseAdjustmentPositive()
+                               ) + (
+                                   $this->_order->getBaseTaxAmount()
+                                   - $this->_order->getBaseTaxRefunded()
+                               ) + (
+                                   $this->_order->getBaseDiscountAmount()
+                                   - $this->_order->getBaseDiscountRefunded()
                                );
                                
         $remainderToBeRefunded = $this->_order->getBaseGrandTotal() 
@@ -235,7 +264,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
 	protected function _canProcessRefundPush()
 	{
 	    $correctSignature = false;
-		$canUpdate = false;
+		$canProcess = false;
 	    $signature = $this->_calculateSignature();
 	    if ($signature === $this->_postArray['brq_signature']) {
 	        $correctSignature = true;
@@ -243,13 +272,26 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
 	    
 		//check if the order can recieve a new creditmemo
 		if ($correctSignature === true) {
-			$canUpdate = $this->_order->canCreditmemo();
+			$canProcess = $this->_canProcessCreditmemo();
 		}
 		
 		$return = array(
 			(bool) $correctSignature,
-			(bool) $canUpdate,
+			(bool) $canProcess,
 		);
 		return $return;
+	}
+	
+	protected function _canProcessCreditmemo()
+	{
+	    if (!$this->_order->canCreditmemo()) {
+	        return false;
+	    }
+	    
+	    if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_refund/allow_push')) {
+	        return false;
+	    }
+	    
+	    return true;
 	}
 }

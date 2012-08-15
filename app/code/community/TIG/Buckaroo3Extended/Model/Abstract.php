@@ -84,7 +84,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    $this->_order = $order;
 	}
 	
-	public function getorder()
+	public function getOrder()
 	{
 	    return $this->_order;
 	}
@@ -482,9 +482,8 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	protected function _checkCorrectAmount()
 	{
 	    $amountPaid = round($this->_postArray['brq_amount'] * 100, 0);
-	    
-	    if ($this->_postArray['brq_currency'] == $this->_order->getCurrencyCode()) {
-	        $amountOrdered = round($this->_order->getGrandTotal() * 100, 0);
+	    if ($this->_postArray['brq_currency'] == $this->_order->getStoreCurrencyCode()) {
+	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
 	    } else {
 	        $amountOrdered = round($this->_order->getGrandTotal() * 100, 0);
 	    }
@@ -582,6 +581,34 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         
         return array($sortedArray);
     }
+	
+	protected function _updateRefundedOrderStatus($success = false)
+	{	    
+	    $successString = $success ? 'success' : 'failed';
+	    $state = $this->_order->getState();
+	     
+	    if ($success) {
+	        $comment = 'Buckaroo refund request was successfully processed.';
+	    } else {
+	        $comment = 'Unfortunately the Buckaroo refund request could not be processed succesfully.';
+	    }
+	    
+	    if ($this->_order->getBaseGrandTotal() != $this->_order->getBaseTotalRefunded()) {
+	        $configField = "buckaroo/buckaroo3extended_refund/order_status_partial_{$state}_{$successString}";
+	        $status = Mage::getStoreConfig($configField);
+	    } else {
+	        $status = null;
+	    }
+	    
+	    if (!empty($status)) {
+    	    $this->_order->setStatus($status)->save();
+    	    $this->_order->addStatusHistoryComment($comment, $status)
+    	         ->save();
+	    } else {
+	        $this->_order->addStatusHistoryComment($comment)
+    	         ->save();
+	    }
+	}
 	
     /**
      * Long list of response codes used by BPE 2.0 gateway. Added here for backwards compatibility. Added

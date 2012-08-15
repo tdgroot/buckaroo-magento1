@@ -189,22 +189,42 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 	    return array($processedPush, $module);
 	}    
 	
+	/**
+	 * Creditmemo updates are currently not supported
+	 */
 	protected function _updateCreditmemo()
 	{
-	    $this->_debugEmail .= "Transaction key matches a creditmemo. \n";
+	    $this->_debugEmail .= "Recieved PUSH to update creditmemo. Unfortunately the module does not support creditmemo updates at this time. The PUSH is ignored.";
 	    
-	    $module = Mage::getModel(
-    	    'TIG_Buckaroo3Extended_Model_Refund_Response_Push',
-    	    array(
-    	        'order'      => $this->_order,
-    	        'postArray'  => $this->_postArray,
-    	        'debugEmail' => $this->_debugEmail,
-    	    )
-    	);
-    	
-	    $processedPush = /*$module->processPush()*/false; //TODO: create code to update creditmemo
+	    $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId());
+	    if (empty($debugEmailConfig))
+	    {
+	        return;
+	    }
 	    
-	    return array($processedPush, $module);
+	    $mail = $this->_debugEmail;
+	    
+	    mail(
+	        Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
+	        'Buckaroo 3 Extended Debug Email', 
+	        $mail
+	    );
+	    exit;
+	    
+//	    $this->_debugEmail .= "Transaction key matches a creditmemo. \n";
+//	    
+//	    $module = Mage::getModel(
+//    	    'TIG_Buckaroo3Extended_Model_Refund_Response_Push',
+//    	    array(
+//    	        'order'      => $this->_order,
+//    	        'postArray'  => $this->_postArray,
+//    	        'debugEmail' => $this->_debugEmail,
+//    	    )
+//    	);
+//    	
+//	    $processedPush = /*$module->processPush()*/false; //TODO: create code to update creditmemo
+//	    
+//	    return array($processedPush, $module);
 	}
 	
 	protected function _newRefund()

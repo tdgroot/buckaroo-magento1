@@ -35,12 +35,12 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     
     public function transactionRequest()
     {
-        $wsdl_url = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
+        $wsdlUrl = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
         
         try
         {
         	$client = new SoapClientWSSEC(
-                $wsdl_url,
+                $wsdlUrl,
                 array(
                 	'trace' => 1,
                     'cache_wsdl' => WSDL_CACHE_DISK,
@@ -51,7 +51,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             try {
                 ini_set('soap.wsdl_cache_ttl', 1);
                 $client = new SoapClientWSSEC(
-                    $wsdl_url,
+                    $wsdlUrl,
                     array(
                     	'trace' => 1,
                         'cache_wsdl' => WSDL_CACHE_NONE,

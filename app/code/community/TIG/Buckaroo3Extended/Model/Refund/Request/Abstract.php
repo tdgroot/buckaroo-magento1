@@ -103,20 +103,20 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         $this->setVars($this->_cleanArrayForSoap($this->getVars()));
 
         $this->_debugEmail .= "Variable array:" . var_export($this->_vars, true) . "\n\n";
-        $this->_debugEmail .= "Time to build the soap request... \n";
+        $this->_debugEmail .= "Building SOAP request... \n";
 
         //send the transaction request using SOAP
         $soap = Mage::getModel('buckaroo3extended/soap', array('vars' => $this->getVars(), 'method' => $this->getMethod()));
         list($response, $responseXML, $requestXML) = $soap->transactionRequest();
 
-        $this->_debugEmail .= "Soap sent! \n";
+        $this->_debugEmail .= "The SOAP request has been sent. \n";
         if (is_object($requestXML) && is_object($responseXML)) {
             $this->_debugEmail .= "Request: " . var_export($requestXML->saveXML(), true) . "\n";
             $this->_debugEmail .= "Response: " . var_export($response, true) . "\n";
             $this->_debugEmail .= "Response XML:" . var_export($responseXML->saveXML(), true) . "\n\n";
         }
 
-        $this->_debugEmail .= "Let's process that beautiful response! \n";
+        $this->_debugEmail .= "Response recieved. \n";
         //process the response
         
         $processedResponse = Mage::getModel(
@@ -142,7 +142,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
      */
     protected function _addOrderVariables()
     {
-        list($currency, $totalAmount) = $this->_determineRefundAmountAndCurrency();
+        list($currency, $totalAmount) = $this->_determinRefundAmountAndCurrency();
 
         $tax = 0;
         foreach($this->_order->getFullTaxInfo() as $taxRecord)
@@ -151,19 +151,24 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         }
         $tax = round($tax * 100,0);
 
-        $this->_vars['currency']    = $currency;
+        $this->_vars['currency']     = $currency;
         $this->_vars['amountCredit'] = $totalAmount;
-        $this->_vars['amountDebit'] = 0;
-        $this->_vars['orderId']     = $this->_order->getIncrementId();
+        $this->_vars['amountDebit']  = 0;
+        $this->_vars['orderId']      = $this->_order->getIncrementId();
 
         $this->_debugEmail .= 'Order variables added! \n';
     }
     
-    protected function _determineRefundAmountAndCurrency()
+    protected function _determinRefundAmountAndCurrency()
 	{
-	    $totalAmount = $this->_amount;
-	    $currency = $this->_order->getBaseCurrency()->getCode();
-        
-	    return array($currency, $totalAmount);
+	    $baseCurrency  = $this->_order->getBaseCurrency()->getCode();
+        $currency      = $this->_order->getCurrencyCodeUsedForTransaction();
+	    
+	    if ($baseCurrency == $currency) {
+	        return array($currency, $this->_amount);
+	    } else {
+	        $amount = round($this->_amount * $this->_order->getBaseToOrderRate(), 2);
+	        return array($currency, $amount);
+	    }
 	}
 }

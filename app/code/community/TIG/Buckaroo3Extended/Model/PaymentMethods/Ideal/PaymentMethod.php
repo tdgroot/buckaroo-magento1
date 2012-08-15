@@ -74,7 +74,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mag
     
     public function refund(Varien_Object $payment, $amount)
     {
-        if (!$this->canRefund()) {
+        if (!$this->canRefund() || !$this->isRefundAvailable($payment)) {
             Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
         }
         
@@ -85,11 +85,26 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mag
             	'amount' => $amount
             )
         );
-        $payment = $refundRequest->sendRefundRequest();
         
-        $this->setPayment($payment);
+        $refundRequest->sendRefundRequest();
+        $this->setPayment($refundRequest->getPayment());
         
         return $this;
+    }
+    
+    public function isRefundAvailable($payment)
+    {
+        if (!$payment->getOrder()->getTransactionKey()) {
+            echo 'no key';exit;
+            return false;
+        }
+        
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_refund/active', Mage::app()->getStore()->getStoreId())) {
+            echo 'inactive';exit;
+            return false;
+        }
+        
+        return true;
     }
 
     public function isAvailable($quote = null)

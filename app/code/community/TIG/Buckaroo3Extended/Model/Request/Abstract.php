@@ -62,19 +62,24 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         $this->setVars($this->_cleanArrayForSoap($this->getVars()));
 
         $this->_debugEmail .= "Variable array:" . var_export($this->_vars, true) . "\n\n";
-        $this->_debugEmail .= "Time to build the soap request... \n";
+        $this->_debugEmail .= "Building SOAP request... \n";
 
         //send the transaction request using SOAP
         $soap = Mage::getModel('buckaroo3extended/soap', array('vars' => $this->getVars(), 'method' => $this->getMethod()));
         list($response, $responseXML, $requestXML) = $soap->transactionRequest();
 
 
-        $this->_debugEmail .= "Soap sent! \n";
-        $this->_debugEmail .= "Request: " . var_export($requestXML->saveXML(), true) . "\n";
-        $this->_debugEmail .= "Response: " . var_export($response, true) . "\n";
-        $this->_debugEmail .= "Response XML:" . var_export($responseXML->saveXML(), true) . "\n\n";
+        $this->_debugEmail .= "The SOAP request has been sent. \n";
+        
+        if (!is_object($requestXML) || !is_object($responseXML)) { 
+            $this->_debugEmail .= "Request or response was not an object \n";
+        } else {
+            $this->_debugEmail .= "Request: " . var_export($requestXML->saveXML(), true) . "\n";
+            $this->_debugEmail .= "Response: " . var_export($response, true) . "\n";
+            $this->_debugEmail .= "Response XML:" . var_export($responseXML->saveXML(), true) . "\n\n";
+        }
 
-        $this->_debugEmail .= "Let's process that beautiful response! \n";
+        $this->_debugEmail .= "Processing response... \n";
         //process the response
         Mage::getModel(
             'buckaroo3extended/response_abstract',
@@ -111,7 +116,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 		$this->_vars['lang']           = $lang;
 		$this->_vars['test']           = $test;
 
-        $this->_debugEmail .= 'Base variables added! \n';
+        $this->_debugEmail .= "Base variables added! \n";
     }
 
     protected function _addShopVariables()
@@ -159,14 +164,14 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         $this->_vars['amountDebit'] = $totalAmount;
         $this->_vars['orderId']     = $this->_order->getIncrementId();
 
-        $this->_debugEmail .= 'Order variables added! \n';
+        $this->_debugEmail .= "Order variables added! \n";
     }
 
     protected function _addRefundVariables()
     {
         $this->_vars['OriginalTransactionKey'] = $this->_invoice->getTransactionId();
         
-        $this->_debugEmail .= 'Refund variables added! \n';
+        $this->_debugEmail .= "Refund variables added! \n";
     }
 
 	/**
