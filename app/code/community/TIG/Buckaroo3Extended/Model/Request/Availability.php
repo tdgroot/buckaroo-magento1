@@ -40,8 +40,6 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
 
     	$ipAllowed       = self::_checkIpAllowed();
 
-    	$ipV6            = self::_checkIPv6($soap);
-
     	$isZeroPayment   = self::_checkGrandTotalNotZero();
 
     	$isEnterprise    = @mage::getModel('Enterprise_Reward_Model_Reward');
@@ -50,7 +48,6 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
     	    $configValues        === true
     	    && $currencyAllowed  === true
     	    && $ipAllowed        === true
-    	    && $ipV6             === false
     	    && (
     	        $isZeroPayment   === false || $isEnterprise
     	        )
@@ -100,7 +97,6 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
 
     /**
      * Checks if the store's base currency is allowed by Buckaroo
-     * Buckaroo 2012 payment module uses the base currency for payments, however Buckaroo does not accept all currencies
      */
     private static function _checkCurrencyAllowed()
     {
@@ -135,29 +131,6 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
     	}
 
     	return $ipAllowed;
-    }
-
-    /**
-     * Check if the user uses an IPv6 IP-address. This is currently not supported by SOAP payment options
-     *
-     * @param boolean $soap
-     */
-    private static function _checkIPv6($soap)
-    {
-        $IPv6 = true;
-
-    	if ($soap) {
-    		$regex = "/(:){2,}/";
-    		if (preg_match($regex, $_SERVER['REMOTE_ADDR'])) {
-    			$isIpv6 = true;
-    		} else {
-    			$isIpv6 = false;
-    		}
-    	} else {
-    		$isIpv6 = false;
-    	}
-
-    	return $isIpv6;
     }
 
     /**

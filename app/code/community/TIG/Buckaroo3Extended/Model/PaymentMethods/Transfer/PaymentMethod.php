@@ -17,27 +17,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
 		'EUR',
 	);
 	
-    /**
-    * unique internal payment method identifier
-    * 
-    * @var string [a-z0-9_]
-    */
     protected $_code = 'buckaroo3extended_transfer';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_transfer_checkout_form';
-    /**
-     * Here are examples of flags that will determine functionality availability
-     * of this module to be used by frontend and backend.
-     * 
-     * @see all flags and their defaults in Mage_Payment_Model_Method_Abstract
-     *
-     * It is possible to have a custom dynamic logic by overloading
-     * public function can* for each flag respectively
-     */
-     
-    /**
-     * Availability options
-     */
+    
     protected $_isGateway               = true;
     protected $_canAuthorize            = true;
     protected $_canCapture              = true;
@@ -64,11 +47,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
     {
         $session = Mage::getSingleton('checkout/session');
         
-        $session->setData('additionalFields',array('BPE_Customergender' => $_POST[$this->_code.'_BPE_Customergender'],
-        	'BPE_Customermail' => $_POST[$this->_code.'_BPE_Customermail'],
-        	'BPE_customerbirthdate' => date('Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
-        		. '-' . $_POST[$this->_code.'_customerbirthdate']['month']
-        		. '-' . $_POST[$this->_code.'_customerbirthdate']['day']))));  	
+        if (isset($_POST[$this->_code.'_BPE_Customergender'])) {
+            $session->setData('additionalFields',array('BPE_Customergender' => $_POST[$this->_code.'_BPE_Customergender'],
+            	'BPE_Customermail' => $_POST[$this->_code.'_BPE_Customermail'],
+            	'BPE_customerbirthdate' => date('Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
+            		. '-' . $_POST[$this->_code.'_customerbirthdate']['month']
+            		. '-' . $_POST[$this->_code.'_customerbirthdate']['day']))));  	
+        }
         
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }

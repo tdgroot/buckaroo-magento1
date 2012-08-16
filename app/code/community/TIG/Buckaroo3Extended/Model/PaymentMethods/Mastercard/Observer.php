@@ -14,10 +14,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Mastercard_Observer extends TIG
         
         $vars = $request->getVars();
         
-        $vars['services'][$this->_method] = array(
+        $array = array(
             'action'	=> 'Pay',
             'version'   => 1,
         );
+        
+        if (is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
         
         $request->setVars($vars);
         

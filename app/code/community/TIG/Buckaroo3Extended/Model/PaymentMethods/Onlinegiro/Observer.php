@@ -14,10 +14,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG
         
         $vars = $request->getVars();
         
-        $vars['services'][$this->_method] = array(
+        $array = array(
             'action'	=> 'PaymentInvitation',
             'version'   => 1,
         );
+        
+        if (is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
         
         $request->setVars($vars);
         
@@ -35,13 +41,29 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG
         $this->_order       = $request->getOrder();
         
         $vars = $request->getVars();
+        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         
-        $vars['customVars'][$this->_method] = array(
-            'customergender'        => '0',
-            'CustomerEmail'         => $this->_billingInfo['email'],
-            'CustomerFirstName'     => $this->_billingInfo['firstname'],
-            'CustomerLastName'      => $this->_billingInfo['lastname'],
-        );
+        if (is_array($additionalFields) 
+            && array_key_exists('gender', $additionalFields)
+            && array_key_exists('mail', $additionalFields)
+            && array_key_exists('firstname', $additionalFields)
+            && array_key_exists('lastname', $additionalFields)
+        ) {
+            $array = array(
+                'customergender'        => $additionalFields['gender'],
+                'CustomerEmail'         => $additionalFields['mail'],
+                'CustomerFirstName'     => $additionalFields['firstname'],
+                'CustomerLastName'      => $additionalFields['lastname'],
+            );
+        } else {
+            $array = array();
+        }
+        
+        if (is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
         $request->setVars($vars);
         
         return $this;

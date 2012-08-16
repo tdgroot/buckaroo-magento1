@@ -45,13 +45,16 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         }
         $VAT = round($VAT * 100,0);
         
-        $creditManagementVars = array(
-            'DateDue'			     => $dueDate,
-            'InvoiceDate'			 => $invoiceDate,
-        );
-        
-        foreach ($creditManagementVars as $key => $value) {
-		    $vars['customVars'][$serviceName][$key] = $value;
+        if (is_array($vars['customVars'][$serviceName])) {
+		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
+            	'DateDue'			     => $dueDate,
+            	'InvoiceDate'			 => $invoiceDate,
+            ));
+		} else {
+    	    $vars['customVars'][$serviceName] = array(
+            	'DateDue'			     => $dueDate,
+            	'InvoiceDate'			 => $invoiceDate,
+    	    );
 		}
         
         return $vars;
@@ -84,25 +87,61 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		$customerLastNamePrefix = $this->_getCustomerLastNamePrefix();
 		$customerInitials       = $this->_getInitialsCM();
 		
-		$vars['customVars'][$serviceName] = array(
-		    'PhoneNumber'            => $processedPhoneNumber['clean'],
+		$array = array(
         	'CustomerCode'           => $customerId,
         	'CustomerFirstName'      => $firstName,
         	'CustomerLastName'       => $lastName,
-        	'ZipCode'                => $zipcode,
-        	'City'                   => $city,
-        	'Customeremail'          => $mail,
-        	'State'                  => $state,
         	'FaxNumber'              => $fax,
         	'CustomerInitials'       => $customerInitials,
         	'CustomerLastNamePrefix' => $customerLastNamePrefix,
         	'CustomerBirthDate'      => $dob,
-        	'Street'                 => $street,
-        	'HouseNumber'            => $houseNumber,
-        	'HouseNumberSuffix'      => $houseNumberSuffix,
         	'Customergender'         => $gender,
-        	'Country'                => $country,
-		);
+        	'Customeremail'          => $mail,
+        	'ZipCode'                => array(
+                'value' => $zipcode,
+                'group' => 'address'
+            ),
+        	'City'                   => array(
+                'value' => $city,
+                'group' => 'address'
+            ),
+        	'State'                  => array(
+                'value' => $state,
+                'group' => 'address'
+            ),
+        	'Street'                 => array(
+                'value' => $street,
+                'group' => 'address'
+            ),
+        	'HouseNumber'            => array(
+                'value' => $houseNumber,
+                'group' => 'address'
+            ),
+        	'HouseNumberSuffix'      => array(
+                'value' => $houseNumberSuffix,
+                'group' => 'address'
+            ),
+        	'Country'                => array(
+                'value' => $country,
+                'group' => 'address'
+            )
+        );
+        
+		if (is_array($vars['customVars'][$serviceName])) {
+		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], $array);
+		} else {
+    		$vars['customVars'][$serviceName] = $array;
+		}
+		
+		if ($processedPhoneNumber['mobile']) {
+		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
+		        'MobilePhoneNumber' => $processedPhoneNumber['clean'],
+		    ));
+		} else {
+		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
+		        'PhoneNumber' => $processedPhoneNumber['clean'],
+		    ));
+		}
 				
 		return $vars;
     }

@@ -256,6 +256,10 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 	    return false;
 	}
 
+	/**
+	 * Restructure the Push message sent by the BPE 2.0 to one resembling a push message sent by BPE 3.0.
+	 * This way push messages sent to update a 2.0 transaction can still be processed.
+	 */
 	protected function _restructurePostArray()
 	{
 	    $postArray = array(

@@ -723,6 +723,7 @@
          		<due_date_invoice>0</due_date_invoice>
          		<due_date>7</due_date>
          		<send_mail>1</send_mail>
+         		<use_creditmanagement>0</use_creditmanagement>
          	</buckaroo3extended_transfer>
          	
          	<buckaroo3extended_directdebit>

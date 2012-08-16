@@ -35,15 +35,51 @@
         <li>
         	<div id = "radiogroup-container">
                 <label style ="padding:0;"><?php echo $this->__('Please, choose your bank:'); ?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="ABNAMRO" /> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/logo_abn_s.gif"/> <?php echo $this->__('ABN AMRO');?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="ASNBANK" /> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/icon_asn.gif"/> <?php echo $this->__('ASN Bank');?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="FRIESLAND" /> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/logo_friesland_s.gif"/> <?php echo $this->__('Friesland Bank');?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="INGBANK" /> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/logo_ing_s.gif"/> <?php echo $this->__('ING');?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="RABOBANK" /> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/logo_rabo_s.gif"/> <?php echo $this->__('Rabobank');?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="SNSBANK" /> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/logo_sns_s.gif"/> <?php echo $this->__('SNS Bank');?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="SNSREGIO" /> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/logo_sns_s.gif"/> <?php echo $this->__('RegioBank');?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="TRIODOS" /> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/logo_triodos.gif"/> <?php echo $this->__('Triodos Bank');?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;"><input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="LANSCHOT" class = 'validate-one-required-by-name'/> <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);?>buckaroo/logo_lanschot_s.gif"/> <?php echo $this->__('Van Lanschot');?></label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="ABNAMRO" /> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/logo_abn_s.gif");?>"/> 
+                    <?php echo $this->__('ABN AMRO');?>
+                </label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="ASNBANK" /> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/icon_asn.gif");?>"/> 
+                    <?php echo $this->__('ASN Bank');?>
+                </label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="FRIESLAND" /> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/logo_friesland_s.gif");?>"/> 
+                    <?php echo $this->__('Friesland Bank');?>
+                </label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="INGBANK" /> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/logo_ing_s.gif");?>"/> 
+                    <?php echo $this->__('ING');?>
+                </label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="RABOBANK" /> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/logo_rabo_s.gif");?>"/> 
+                    <?php echo $this->__('Rabobank');?>
+                </label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="SNSBANK" /> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/logo_sns_s.gif");?>"/> 
+                    <?php echo $this->__('SNS Bank');?>
+                </label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="SNSREGIO" /> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/logo_sns_s.gif");?>"/> 
+                    <?php echo $this->__('RegioBank');?>
+                </label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="TRIODOS" /> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/logo_triodos.gif");?>"/> 
+                    <?php echo $this->__('Triodos Bank');?>
+                </label><br/>
+                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="LANSCHOT" class = 'validate-one-required-by-name'/> 
+                    <img src="<?php echo $this->getSkinUrl("buckaroo/images/logo_lanschot_s.gif");?>"/> 
+                    <?php echo $this->__('Van Lanschot');?>
+                </label><br/>
             </div>
         </li>
     </ul>

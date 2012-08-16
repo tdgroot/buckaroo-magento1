@@ -58,7 +58,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	/**
 	 * Processes 'pushes' recieves from Buckaroo with the purpose of updating an order or payment.
 	 * 
-	 * @return boolean
 	 */
 	public function processPush()
 	{	
@@ -126,8 +125,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * This field is unique for every payment and every store.
      * Also calls method that checks if an order is able to be updated further.
      * Canceled, completed, holded etc. orders are not able to be updated
-     * 
-     * @return array $return
      */
 	protected function _canProcessPush($isReturn = false)
 	{
@@ -190,8 +187,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * or the order can't be invoiced. Returns false if the config has disabled this feature.
 	 * 
 	 * @param string $omschrijving
-	 * 
-	 * @return boolean
 	 */
 	protected function _addNote($omschrijving)
 	{
@@ -220,9 +215,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * that's not set, use the default
 	 * 
 	 * @param string $code
-	 * @param string $paymentCode
 	 * 
 	 * @return array $newStates
+	 * 
+	 * @note currently the states are only used by _processpendingPayment(). May be removed completely in the future
 	 */
 	protected function _getNewStates($code)
 	{
@@ -300,7 +296,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * Process a succesful order. Sets its new state and status, sends an order confirmation email
 	 * and creates an invoice if set in config.
 	 * 
-	 * @TODO $trx will be used for Buckaroo2012Refund, to be added in 3.0.0
 	 * 
 	 * @param array $response | int $response
 	 * @param string $description
@@ -322,8 +317,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			$this->_order->save();
 		}
 		
-		$this->_order->setState($newStates[0], $newStates[1], $description)
+		$this->_order->addStatusHistoryComment($description, $newStates[1])
 			         ->save();
+			         
+	    $this->_order->setStatus($newStates[1])->save();
 		
 		//send new order email if it hasnt already been sent
 		if(!$this->_order->getEmailSent())
@@ -347,7 +344,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	{
 		$description .= " (#{$this->_postArray['brq_statuscode']})";
 		
-	    //sets the transaction key if its defined ($trx)
+	    //sets the transaction key if its defined ('brq_transactions')
 		//will retrieve it from the response array, if response actually is an array
 		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
@@ -368,7 +365,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	}
 	
 	/**
-	 * Processes an order for which an incorrect amount has been paid (can only happen with Overschrijving)
+	 * Processes an order for which an incorrect amount has been paid (can only happen with Transfer)
 	 * 
 	 * @return boolean
 	 */
@@ -381,32 +378,28 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		if ($amount > $this->_postArray['brq_amount']) {
 	    	$setState = $newStates[0];
             $setStatus = $newStates[1];
-            $description = Mage::helper('buckaroo3extended')->__('te weinig betaald: ') 
+            $description = Mage::helper('buckaroo3extended')->__('Not enough paid: ') 
                			 . round(($this->_postArray['brq_amount'] / 100), 2)
                			 . ' '
                			 . $currency
-               			 . Mage::helper('buckaroo3extended')->__(' is overgemaakt. Order bedrag was: ') 
+               			 . Mage::helper('buckaroo3extended')->__(' has been transfered. Order grand total was: ') 
               			 . round($this->_order->getGrandTotal(), 2)
                			 . ' '
                			 . $currency;
 	    } elseif ($amount < $this->_postArray['bpe_amount']) {
 	    	$setState = $newStates[0];
             $setStatus = $newStates[1];
-            $description = Mage::helper('buckaroo3extended')->__('te veel betaald: ') 
+            $description = Mage::helper('buckaroo3extended')->__('Too much paid: ') 
                			 . round(($this->_postArray['brq_amount'] / 100), 2)
                			 . ' '
                			 . $currency
-               			 . Mage::helper('buckaroo3extended')->__(' is overgemaakt. Order bedrag was: ') 
+               			 . Mage::helper('buckaroo3extended')->__(' has been transfered. Order grand total was: ') 
                			 . round($this->_order->getGrandTotal(), 2)
                			 . ' '
                			 . $currency;
 	    } else {
 	    	//the correct amount was actually paid, so return false
 	    	return false;
-	    }
-	    
-	    if (Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/on_hold_email')) {
-	        $this->_sendOverschrijvingOnHoldEmail();
 	    }
 	    
 	    //hold the order
@@ -453,21 +446,19 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	}
 	
     public function processSuccess($newStates, $description = false) {
-	    return $this->_processPendingPayment($newStates, $description);
+	    return $this->_processSuccess($newStates, $description);
 	}
 	
     public function processFailed($newStates, $description = false) {
-	    return $this->_processPendingPayment($newStates, $description);
+	    return $this->_processFailed($newStates, $description);
 	}
 	
     public function processIncorrectPayment($newStates) {
-	    return $this->_processPendingPayment($newStates);
+	    return $this->_processIncorrectPayment($newStates);
 	}
 	
 	/**
 	 * Creates an invoice for the order if set to do so in config.
-	 * 
-	 * @return boolean |
 	 */
 	protected function _autoInvoice()
 	{		
@@ -523,8 +514,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	/**
 	 * Determines the signature using array sorting and the SHA1 hash algorithm
 	 * 
-	 * @param array $origArray
-	 * 
 	 * @return string $signature
 	 */
 	protected function _calculateSignature()
@@ -538,7 +527,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    unset($origArray['brq_signature']);
 	    
 	    //sort the array
-	    list($sortableArray) = $this->keyNatCaseSort($origArray);
+	    $sortableArray = $this->buckarooSort($origArray);
 	    
 	    //turn into string and add the secret key to the end
 	    $signatureString = '';
@@ -558,6 +547,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    return $signature;
 	}
 	
+	/**
+	 * Compatibility for BPE 2.0 pushes
+	 */
 	protected function _calculateOldSignature()
 	{
         $signature2 = md5(
