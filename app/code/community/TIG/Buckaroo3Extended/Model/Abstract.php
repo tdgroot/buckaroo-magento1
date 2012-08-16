@@ -137,7 +137,10 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    } else {
 	        $dir = str_replace('/includes/src', '/app/code/community/TIG/Buckaroo3Extended/certificate', __DIR__);
 	    }
-	    define('CERTIFICATE_DIR', $dir);
+	    
+	    if (!defined('CERTIFICATE_DIR')) {
+	        define('CERTIFICATE_DIR', $dir);
+	    }
 	    
 		$this->_loadLastOrder();
 		$this->setSession(Mage::getSingleton('core/session'));
@@ -405,7 +408,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 
 	
     /**
-     * Retreives an array with information related to a recieved response code.
+     * Retrieves an array with information related to a recieved response code.
      * This method will only be called when it's child cant find it itself. This list
      * is a general list of known status codes. Its not as inclusive as the lists used\
      * by its children. However, this list also contains general error codes not
@@ -421,7 +424,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		{
 		    $returnArray = $this->responseCodes[$code];
 		    
-		    if ($this->_response) {
+		    if (is_object($this->_response)
+		        && isset($this->_response->Status->SubCode)) 
+		    {
 		        //the subcode is additional information sometimes returned by Buckaroo. Currently not used,
 		        //but it may be of use when debugging.
     		    $returnArray['subCode'] = array(
@@ -541,14 +546,19 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		return $string;
 	}
 	
-	public function log($string, $force = false)
+	public function log($message, $force = false)
 	{
-	    Mage::log($string, null, 'TIG_B3E.log', $force);
+	    Mage::log($message, Zend_Log::DEBUG, 'TIG_B3E.log', $force);
 	}
 
-	public function logException($string)
+	public function logException($e)
 	{
-	    Mage::log($string, null, 'TIG_B3E_Exception.log', true);
+	    if (is_string($e)) {
+	        Mage::log($e, Zend_Log::ERR, 'TIG_B3E_Exception.log', true);
+	    } else {
+	        Mage::log($e->getMessage(), Zend_Log::ERR, 'TIG_B3E_Exception.log', true);
+	        Mage::log($e->getTraceAsString(), Zend_Log::ERR, 'TIG_B3E_Exception.log', true);
+	    }
 	}
 	
 	public function sendDebugEmail()
@@ -565,7 +575,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    
 	    foreach($recipients as $recipient) {
     	    mail(
-    	        $recipient, 
+    	        trim($recipient), 
     	        'Buckaroo 3 Extended Debug Email', 
     	        $mail
     	    );

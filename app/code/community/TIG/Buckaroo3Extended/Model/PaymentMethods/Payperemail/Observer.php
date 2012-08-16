@@ -19,7 +19,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
             'version'   => 1,
         );
         
-        if (is_array($vars['services'][$this->_method])) {
+        if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
             $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
         } else {
             $vars['services'][$this->_method] = $array;
@@ -103,7 +103,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
                                        , Mage::app()->getStore()->getStoreId()) ? 'false' : 'true';
         $array['PaymentMethodsAllowed'] = $this->_getPaymentMethodsAllowed();
         
-        if (is_array($vars['customVars'][$this->_method])) {
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
         } else {
             $vars['customVars'][$this->_method] = $array;

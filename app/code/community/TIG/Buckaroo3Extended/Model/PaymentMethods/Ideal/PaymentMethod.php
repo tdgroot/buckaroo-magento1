@@ -78,12 +78,24 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mag
     public function isRefundAvailable($payment)
     {
         if (!$payment->getOrder()->getTransactionKey()) {
-            echo 'no key';exit;
+            Mage::getSingleton('adminhtml/session')
+                ->addError(
+                    Mage::helper('buckaroo3extended')->__(
+                    	'The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.'
+                    )
+                );
+            throw new Exception('The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.');
             return false;
         }
         
         if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_refund/active', Mage::app()->getStore()->getStoreId())) {
-            echo 'inactive';exit;
+            Mage::getSingleton('adminhtml/session')
+                ->addError(
+                    Mage::helper('buckaroo3extended')->__(
+                    	'Buckaroo refunding is currently disabled in the configuration menu.'
+                    )
+                );
+            throw new Exception('Buckaroo refunding is currently disabled in the configuration menu.');
             return false;
         }
         

@@ -45,7 +45,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         }
         $VAT = round($VAT * 100,0);
         
-        if (is_array($vars['customVars'][$serviceName])) {
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$serviceName])) {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
             	'DateDue'			     => $dueDate,
             	'InvoiceDate'			 => $invoiceDate,
@@ -127,7 +127,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
             )
         );
         
-		if (is_array($vars['customVars'][$serviceName])) {
+		if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$serviceName])) {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], $array);
 		} else {
     		$vars['customVars'][$serviceName] = $array;

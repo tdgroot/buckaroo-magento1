@@ -76,8 +76,8 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     		return;
     	}
 
-    	$this->_debugEmail = 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
-    	$this->_debugEmail = 'Order ID: ' . $this->_orderId . "\n";
+    	$this->_debugEmail .= 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
+    	$this->_debugEmail .= 'Order ID: ' . $orderId . "\n";
 
     	if (isset($_POST['brq_test']) && $_POST['brq_test'] == 'true') {
     	    $this->_debugEmail .= "\n/////////// TEST /////////\n";
@@ -90,10 +90,21 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     	$this->_debugEmail .= 'Payment code: ' . $this->_paymentCode . "\n\n";
     	$this->_debugEmail .= 'POST variables recieved: ' . var_export($this->_postArray, true) . "\n\n";
 	    
-	    list($module, $processedPush) = $this->_processPushAccordingToType();
-
+    	try {
+	        list($module, $processedPush) = $this->_processPushAccordingToType();
+    	} catch (Exception $e) {
+    	    $this->_debugEmail .= "An Exception occurred: " . $e->getMessage() . "\n";
+    	    $this->_debugEmail .= "\nException trace: " . $e->getTraceAsString() . "\n";
+    	    
+    	    Mage::logException($e);
+    	    
+    	    //this will allow the script to continue unhindered
+    	    $processedPush = false;
+    	    $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
+    	}
 
     	$this->_debugEmail = $module->getDebugEmail();
+    	
     	if ($processedPush === false) {
     		$this->_debugEmail .= 'Push was not fully processed!';
     	}
@@ -247,9 +258,9 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 	
 	protected function _pushIsCreditmemo()
 	{
-	    foreach ($this->_order->getCreditmemoCollection() as $creditmemo)
+	    foreach ($this->_order->getCreditmemosCollection() as $creditmemo)
 	    {
-	        if ($creditmemo->getTransactionKey == $this->_postArray['brq_transactions']) {
+	        if ($creditmemo->getTransactionKey() == $this->_postArray['brq_transactions']) {
 	            return true;
 	        }
 	    }

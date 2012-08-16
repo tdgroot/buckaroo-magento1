@@ -2,6 +2,8 @@
 
 final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model_Abstract
 {
+    const WSDL_URL = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
+    
     private $_vars;
     private $_method;
     
@@ -17,12 +19,6 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         return $this->_vars;
     }
     
-    public function __construct($data = array())
-    {
-        $this->setVars($data['vars']);
-        $this->setMethod($data['method']);
-    }
-    
     public function getMethod()
     {
         return $this->_method;
@@ -33,14 +29,18 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $this->_method = $method;
     }
     
+    public function __construct($data = array())
+    {
+        $this->setVars($data['vars']);
+        $this->setMethod($data['method']);
+    }
+    
     public function transactionRequest()
     {
-        $wsdlUrl = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
-        
         try
         {
         	$client = new SoapClientWSSEC(
-                $wsdlUrl,
+                self::WSDL_URL,
                 array(
                 	'trace' => 1,
                     'cache_wsdl' => WSDL_CACHE_DISK,
@@ -51,12 +51,13 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             try {
                 ini_set('soap.wsdl_cache_ttl', 1);
                 $client = new SoapClientWSSEC(
-                    $wsdlUrl,
+                    self::WSDL_URL,
                     array(
                     	'trace' => 1,
                         'cache_wsdl' => WSDL_CACHE_NONE,
                 ));
             } catch (SoapFault $e) {
+                $this->logException($e);
             	return $this->_error($client);
             }
         }
@@ -73,8 +74,9 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
         
-        if (array_key_exists(OriginalTransactionKey, $this->_vars)) {
+        if (array_key_exists('OriginalTransactionKey', $this->_vars)) {
             $TransactionRequest->OriginalTransactionKey = $this->_vars['OriginalTransactionKey'];
+        }
         
         $TransactionRequest->Services = new Services();
         
@@ -145,11 +147,12 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         try
         {
         	$response = $client->TransactionRequest($TransactionRequest);
-        }
-        catch ( SoapFault $e )
-        {
-            $this->logException($e->getMessage());
+        } catch (SoapFault $e) {
+            $this->logException($e);
         	return $this->_error($client);
+        } catch (Exception $e) {
+            $this->logException($e);
+            return $this->_error($client);
         }
         
         if (is_null($response)) {
@@ -346,16 +349,20 @@ class SoapClientWSSEC extends SoapClient
     	$signedINFO = $this->GetCanonical($SignedInfoNodeSet);
     	
     	//Get privatekey certificate
+    	if(!file_exists(CERTIFICATE_DIR . '/BuckarooPrivateKey.pem')) {
+    	    throw new Exception('Certificate file could not be located.');
+    	}
+    	
     	$fp = fopen(CERTIFICATE_DIR . '/BuckarooPrivateKey.pem', "r");
     	$priv_key = fread($fp, 8192);
     	if ($priv_key === false) {
-    	    echo 'cant read';exit;
+    	    throw new Exception('Unable to read certificate file.');
     	}
     	fclose($fp);
     	
     	$pkeyid = openssl_get_privatekey($priv_key, '');	
 	    if ($pkeyid === false) {
-    	    echo 'no pkeyid';exit;
+    	    throw new Exception('Unable to retrieve private key from certificate file');
     	}
     	
     	//Sign signedinfo with privatekey
@@ -467,8 +474,6 @@ class Body
  	public $OriginalTransactionKey;
  	public $StartRecurrent;
  	public $Services;
- 	//public $CustomParameters;
- 	//public $AdditionalParameters;
 }
 
 class Services

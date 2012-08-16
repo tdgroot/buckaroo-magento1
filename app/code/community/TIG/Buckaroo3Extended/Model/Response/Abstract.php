@@ -82,21 +82,34 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         //sets the transaction key if its defined ('brq_transactions')
 		//will retrieve it from the response array, if response actually is an array
-		if (!$this->_order->getTransactionKey()) {
+		if (!$this->_order->getTransactionKey() 
+		    && is_object($this->_response) 
+		    && isset($this->_response->Key))
+		{
 			$this->_order->setTransactionKey($this->_response->Key);
 			$this->_order->save();
             $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->Key . "\n";
 		}
 		
 		//sets the currency used by Buckaroo
-		if (!$this->_order->getCurrencyCodeUsedForTransaction()) {
+		if (!$this->_order->getCurrencyCodeUsedForTransaction() 
+		    && is_object($this->_response) 
+		    && isset($this->_response->Currency)) 
+		{
 		    $this->_order->setCurrencyCodeUsedForTransaction($this->_response->Currency);
 		    $this->_order->save();
 		}
 
-        $requiredAction = $this->_response->RequiredAction->Type;
+		if (is_object($this->_response) && isset($this->_response->RequiredAction)) {
+		    $requiredAction = $this->_response->RequiredAction->Type;
+		} else {
+		    $requiredAction = false;
+		}
 
-        if (!is_null($requiredAction) && $requiredAction == 'Redirect') {
+        if (!is_null($requiredAction) 
+            && $requiredAction !== false 
+            && $requiredAction == 'Redirect') 
+        {
             $this->_debugEmail .= "Redirecting customer... \n";
             $this->_redirectUser();
         }
