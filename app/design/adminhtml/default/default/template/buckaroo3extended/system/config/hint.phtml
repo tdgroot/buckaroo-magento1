@@ -1,18 +1,3 @@
-<?php $_methods = array(
-    'amex',
-    'directdebit',
-    'giropay',
-    'ideal',
-    'mastercard',
-    'onlinegiro',
-    'paypal',
-    'paysafecard',
-    'sofortueberweisung',
-    'transfer',
-    'visa',
-    'payperemail',
-    'paymentguarantee'
-);?>
 <div style="
     background-image:url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/images/fam_bullet_error.gif');
     background-repeat:no-repeat; 
@@ -45,7 +30,7 @@ jQuery('document').ready(
 		
 		jQuery('#buckaroo_buckaroo3extended_advanced').prev().prev().css('background-color','rgb(245,111,9)')
 
-		<?php foreach($_methods as $method):?>
+		<?php foreach($this->methods as $method):?>
     		jQuery('.buckaroo-header').html('&nbsp;').css('background-image', "url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>buckaroo/buckaroo_large.jpg')").css('width','151').css('height','30');
 
     		if (jQuery("#buckaroo_buckaroo3extended_<?php echo $method; ?>_active").val() == 0 ) {
@@ -61,6 +46,22 @@ jQuery('document').ready(
     			jQuery("#buckaroo_buckaroo3extended_<?php echo $method; ?>").prev().prev().css('background-color','rgb(137,197,64)');
     		}
 		<?php endforeach;?>
+		<?php foreach($this->services as $service):?>
+    		jQuery('.buckaroo-header').html('&nbsp;').css('background-image', "url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>buckaroo/buckaroo_large.jpg')").css('width','151').css('height','30');
+    
+    		if (jQuery("#buckaroo_buckaroo3extended_<?php echo $service; ?>_active").val() == 0 ) {
+    			jQuery("#buckaroo_buckaroo3extended_<?php echo $service; ?>").prev().prev().addClass('disabled');
+    		} 
+    		else if (jQuery("#buckaroo_buckaroo3extended_<?php echo $service; ?>_active").val() == 1 
+    				&& jQuery("#buckaroo_buckaroo3extended_<?php echo $service; ?>_allow_push").val() == 0)
+    		{
+    			jQuery("#buckaroo_buckaroo3extended_<?php echo $service; ?>").prev().prev().css('background-color','rgb(174,216,230)');
+    		} 
+    		else
+    		{
+    			jQuery("#buckaroo_buckaroo3extended_<?php echo $service; ?>").prev().prev().css('background-color','rgb(30,143,255)');
+    		}
+	    <?php endforeach;?>
     }
 );
 </script>

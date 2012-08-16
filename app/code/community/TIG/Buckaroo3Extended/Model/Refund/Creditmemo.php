@@ -195,7 +195,15 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
     {
         $amountPushed = $this->_postArray['brq_amount_credit'];
         
-        return $amountPushed;
+        $baseCurrency  = $this->_order->getBaseCurrency()->getCode();
+        $currency      = $this->_postArray['brq_currency'];
+	    
+	    if ($baseCurrency == $currency) {
+	        return $amountPushed;
+	    } else {
+	        $amount = round($amountPushed * $this->_order->getBaseToOrderRate(), 2);
+	        return $amount;
+	    }
     }
     
     /**

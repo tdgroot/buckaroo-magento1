@@ -474,8 +474,7 @@
             </buckaroo3extended_onlinegiro>
             <buckaroo2012ideal translate="title">
                 <active>0</active>
-                <model>buckaroo2012ideal/paymentMethod</model>
-                <title>iDeal</title>
+                <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012ideal>
             <buckaroo>
             	<active>0</active>

@@ -502,7 +502,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     protected function _saveInvoice()
     {  
 	    if ($this->_order->canInvoice()) {
-	        $payment = $this->_order->getPayment()->registerCaptureNotification($this->_order->getBaseGrandTotal());
+	        $payment = $this->_order->getPayment();
+	        $payment->registerCaptureNotification($this->_order->getBaseGrandTotal());
+	        
 	        $this->_order->save();
 	        $this->_debugEmail .= 'Invoice created and saved. \n';
 	        

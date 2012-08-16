@@ -72,7 +72,9 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->Description = $this->_vars['description'];
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
-        $TransactionRequest->OriginalTransactionKey = $this->_vars['OriginalTransactionKey'];
+        
+        if (array_key_exists(OriginalTransactionKey, $this->_vars)) {
+            $TransactionRequest->OriginalTransactionKey = $this->_vars['OriginalTransactionKey'];
         
         $TransactionRequest->Services = new Services();
         

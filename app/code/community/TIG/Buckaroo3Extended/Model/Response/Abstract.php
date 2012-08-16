@@ -67,7 +67,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     public function processResponse()
     {
         if ($this->_response === false) {
-            $this->_debugEmail .= "An error occurred in building or sending the SOAP request. \n";
+            $this->_debugEmail .= "An error occurred in building or sending the SOAP request.. \n";
             $this->_error();
         }
 
