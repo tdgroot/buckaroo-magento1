@@ -57,7 +57,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                         'cache_wsdl' => WSDL_CACHE_NONE,
                 ));
             } catch (SoapFault $e) {
-                $this->logException($e);
+                $this->logException($e->getMessage());
             	return $this->_error($client);
             }
         }
@@ -148,10 +148,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         {
         	$response = $client->TransactionRequest($TransactionRequest);
         } catch (SoapFault $e) {
-            $this->logException($e);
+            $this->logException($e->getMessage());
         	return $this->_error($client);
         } catch (Exception $e) {
-            $this->logException($e);
+            $this->logException($e->getMessage());
             return $this->_error($client);
         }
         

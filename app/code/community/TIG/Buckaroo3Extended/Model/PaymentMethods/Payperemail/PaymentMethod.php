@@ -79,7 +79,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
     
     public function refund(Varien_Object $payment, $amount)
     {
-        if (!$this->canRefund()) {
+        if (!$this->canRefund() || !$this->isRefundAvailable($payment)) {
             Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
         }
         
@@ -90,15 +90,38 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
             	'amount' => $amount
             )
         );
-        try {
-            $payment = $refundRequest->sendRefundRequest();
-        } catch (Exception $e) {
-            Mage::throwException($this->_getHelper()->__($e->getMessage()));
-        }
-        
-        $this->setPayment($payment);
+            
+        $refundRequest->sendRefundRequest();
+        $this->setPayment($refundRequest->getPayment());
         
         return $this;
+    }
+    
+    public function isRefundAvailable($payment)
+    {
+        if (!$payment->getOrder()->getTransactionKey()) {
+            Mage::getSingleton('adminhtml/session')
+                ->addError(
+                    Mage::helper('buckaroo3extended')->__(
+                    	'The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.'
+                    )
+                );
+            throw new Exception('The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.');
+            return false;
+        }
+        
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_refund/active', Mage::app()->getStore()->getStoreId())) {
+            Mage::getSingleton('adminhtml/session')
+                ->addError(
+                    Mage::helper('buckaroo3extended')->__(
+                    	'Buckaroo refunding is currently disabled in the configuration menu.'
+                    )
+                );
+            throw new Exception('Buckaroo refunding is currently disabled in the configuration menu.');
+            return false;
+        }
+        
+        return true;
     }
     
     public function isAvailable($quote = null)

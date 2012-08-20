@@ -6,7 +6,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_CertificateUploaded
     protected $_template = 'buckaroo3extended/system/config/certificateUploaded.phtml';
     
     public $message;
-    public $icon;
+    public $bannerClass;
 
     /**
      * Render fieldset html
@@ -39,12 +39,10 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_CertificateUploaded
         
         if (file_exists($certificate)) {
             $this->message = 'You have succesfully uploaded your Buckaroo private key certificate! You can use the form below to upload a replacement.';
-            $this->icon = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) 
-                        . 'adminhtml/default/default/images/fam_bullet_success.gif';
+            $this->bannerClass = 'buckaroo_certificate_is_uploaded_banner';
         } else {
             $this->message = 'You have not yet uploaded a Buckaroo private key certificate. Please use the form below to do so.';
-            $this->icon = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) 
-                        . 'adminhtml/default/default/images/error_msg_icon.gif';
+            $this->bannerClass = 'buckaroo_certificate_is_not_uploaded_banner';
         }
     }
 }
