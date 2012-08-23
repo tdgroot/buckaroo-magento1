@@ -324,52 +324,11 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		$country = $this->_order->getBillingAddress()->getCountry();
 		switch ($country)
 		{
-			case 'US': 
-    		case 'GB': 
-    		case 'AU': 
-    		case 'NZ': $locale = 'en-' . $country; 
-    		           $lang = 'EN';
-    				   break;
-    		case 'AT': 
-    		case 'DE': 
-    		case 'CH': $locale = 'de-' . $country; 
-    		           $lang = 'DE';
-    				   break;
-    		case 'CA': 
-    		case 'FR': $locale = 'fr-' . $country; 
-    		           $lang = 'FR';
-    				   break;
-    		case 'AR': 
-    		case 'CL': 
-    		case 'CO': 
-    		case 'CR': 
-    		case 'MX': 
-    		case 'PA':
-    		case 'PE': 
-    		case 'VE':
-    		case 'ES': $locale = 'es-' . $country;
-    		           $lang = 'ES';
-    				   break;
     		case 'BE': 
     		case 'NL': $locale = 'nl-' . $country; 
     		           $lang = 'NL';
     				   break;
-    		case 'DK': $locale = 'dk-' . $country;
-    		           $lang = 'DK';
-    				   break;
-    		case 'SE': $locale = 'se-' . $country;
-    		           $lang = 'SE';
-    				   break;
-    		case 'PT': $locale = 'pt-' . $country;
-    		           $lang = 'PT';
-    				   break;
-    		case 'IT': $locale = 'it-' . $country;
-    		           $lang = 'IT';
-    				   break;
-    		case 'RU': $locale = 'ru-' . $country;
-    		           $lang = 'RU';
-    				   break;
-    		default:   $locale = 'en-' . $country;
+    		default:   $locale = 'en-US';
     		           $lang = 'EN';
 		}
 		
