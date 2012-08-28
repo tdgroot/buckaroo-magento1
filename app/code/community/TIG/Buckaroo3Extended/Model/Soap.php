@@ -233,10 +233,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $requestParameters = array();
         foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
             if (
-                (is_null($value) || $value == '')
+                (is_null($value) || $value === '')
                 || (
-                    (is_array($value)) 
-                    && (is_null($value['value']) || $value['value'] == '')
+                    is_array($value)
+                    && (is_null($value['value']) || $value['value'] === '')
                    )
             ) {
                 continue;
