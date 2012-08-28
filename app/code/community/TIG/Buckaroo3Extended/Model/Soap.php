@@ -19,6 +19,11 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     
     public function __construct($data = array())
     {
+        define(
+        	   'LIB_DIR', 
+               Mage::getBaseDir() . DS . 'app' . DS . 'code' . DS . 'community' . DS . 'TIG' . DS . 'Buckaroo3Extended' . DS . 'lib' . DS
+        );
+        
         $this->setVars($data['vars']);
         $this->setMethod($data['method']);
     }
@@ -39,16 +44,16 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         try
         {
+            //first attempt: use the cached WSDL
         	$client = new SoapClientWSSEC(
                 $wsdlUrl,
                 array(
                 	'trace' => 1,
                     'cache_wsdl' => WSDL_CACHE_DISK,
             ));
-        }
-        catch (SoapFault $e)
-        {
+        } catch (SoapFault $e) {
             try {
+                //second attempt: use an uncached WSDL
                 ini_set('soap.wsdl_cache_ttl', 1);
                 $client = new SoapClientWSSEC(
                     $wsdlUrl,
@@ -57,7 +62,17 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                         'cache_wsdl' => WSDL_CACHE_NONE,
                 ));
             } catch (SoapFault $e) {
-            	return $this->_error($client);
+                try {
+                    //third and final attempt: use the supplied wsdl found in the lib folder
+                    $client = new SoapClientWSSEC(
+                        LIB_DIR . 'Buckaroo.wsdl',
+                        array(
+                        	'trace' => 1,
+                            'cache_wsdl' => WSDL_CACHE_NONE,
+                    ));
+                } catch (SoapFault $e) {
+            	    return $this->_error($client);
+                }
             }
         }
         
@@ -218,10 +233,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $requestParameters = array();
         foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
             if (
-                (is_null($value) || $value == '')
+                (is_null($value) || $value === '')
                 || (
-                    (is_array($value)) 
-                    && (is_null($value['value']) || $value['value'] == '')
+                    is_array($value)
+                    && (is_null($value['value']) || $value['value'] === '')
                    )
             ) {
                 continue;
@@ -235,6 +250,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             } else {
                 $requestParameter->_ = $value;
             }
+            
             $requestParameters[] = $requestParameter;
         }
         

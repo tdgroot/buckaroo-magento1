@@ -1,6 +1,6 @@
 <?php 
 
-$certificateBaseDir = preg_replace("#/design(.*)#", '', __DIR__);
+$certificateBaseDir = preg_replace("#/design(.*)#", '', dirname(__FILE__));
 $certificate = $certificateBaseDir . '/code/community/TIG/Buckaroo3Extended/certificate/BuckarooPrivateKey.pem';
 
 $isUploaded = file_exists($certificate); ?>

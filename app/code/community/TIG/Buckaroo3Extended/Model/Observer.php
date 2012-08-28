@@ -31,14 +31,14 @@ class TIG_Buckaroo3Extended_Model_Observer extends Mage_Core_Model_Abstract
     		    foreach(Mage::app()->getStores() as $eachStore => $storeVal)
     		    {
         		    //retrieve the title as set in the backend
-        			$title = mage::getStoreConfig('buckaroo/' . $code . '/title', Mage::app()->getStore($eachStore)->getId());
-        			$sort_order = mage::getStoreConfig('buckaroo/' . $code . '/sort_order', Mage::app()->getStore($eachStore)->getId());
+        			$title = Mage::getStoreConfig('buckaroo/' . $code . '/title', Mage::app()->getStore($eachStore)->getId());
+        			$sort_order = Mage::getStoreConfig('buckaroo/' . $code . '/sort_order', Mage::app()->getStore($eachStore)->getId());
         			
-        			if ($title) {
+        			if (!is_null($title) && $title !== '') {
         				//set the title as the new path
         				Mage::getModel('core/config')->saveConfig('payment/' . $code . '/title', $title, 'stores', Mage::app()->getStore($eachStore)->getId());
         			}
-        			if ($sort_order) {
+        			if (!is_null($sort_order) && $title !== '') {
         				//set the sort_order as the new path
         				Mage::getModel('core/config')->saveConfig('payment/' . $code . '/sort_order', $sort_order, 'stores', Mage::app()->getStore($eachStore)->getId());
         			}
