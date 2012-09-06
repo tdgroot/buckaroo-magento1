@@ -80,14 +80,20 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         }
         $this->_debugEmail .= "Verified as authentic! \n\n";
 
-        //sets the transaction key if its defined ('brq_transactions')
-		//will retrieve it from the response array, if response actually is an array
-		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
-			$this->_order->setTransactionKey($this->_response->key);
-            $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->key . "\n";
+        if (!$this->_order->getTransactionKey() 
+		    && is_object($this->_response) 
+		    && isset($this->_response->Key))
+		{
+			$this->_order->setTransactionKey($this->_response->Key);
+			$this->_order->save();
+            $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->Key . "\n";
 		}
 
-        $requiredAction = $this->_response->RequiredAction->Type;
+		if (isset($this->_response->RequiredAction)) {
+            $requiredAction = $this->_response->RequiredAction->Type;
+		} else {
+		    $requiredAction = null;
+		}
 
         if (!is_null($requiredAction) && $requiredAction == 'Redirect') {
             $this->_debugEmail .= "Apparantely we need to redirect the customer. \n";

@@ -74,7 +74,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
             'customerFirstName' => $this->_billingInfo['firstname'],
             'customerLastName'  => $this->_billingInfo['lastname'],
         );
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars']['transfer'])) {
+        if (array_key_exists('customVars', $vars) && array_key_exists('transfer', $vars['customVars']) && is_array($vars['customVars']['transfer'])) {
             $vars['customVars']['transfer'] = array_merge($vars['customVars']['transfer'], $array);
         } else {
             $vars['customVars']['transfer'] = $array;

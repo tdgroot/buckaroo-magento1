@@ -357,13 +357,13 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		{
 		    $returnArray = $this->responseCodes[$code];
 		    
-		    if ($this->_response) {
+		    if ($this->_response && isset($this->_response->Status->SubCode)) {
     		    $returnArray['subCode'] = array(
     		        'message' => $this->_response->Status->SubCode->_,
     		        'code'    => $this->_response->Status->SubCode->Code,
     		    );
-    		    $returnArray['code'] = $code;
 		    }
+		    $returnArray['code'] = $code;
 		    
 			return $returnArray;
 		} else {
