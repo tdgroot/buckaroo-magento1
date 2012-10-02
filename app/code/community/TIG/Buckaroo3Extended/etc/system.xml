@@ -2336,6 +2336,164 @@
                         </allowed_currencies>		
                     </fields>
                 </buckaroo3extended_byjunoaccount>
+                
+                <buckaroo3extended_byjunoinvoice translate="label" module="paygate">
+                    <label>Buckaroo 3 extended Byjuno Invoice</label>
+                    <sort_order>300</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint>
+		                    <frontend_model>buckaroo3extended/adminhtml_system_config_singlehint</frontend_model>
+		                    <sort_order>0</sort_order>
+		                    <show_in_default>1</show_in_default>
+		                    <show_in_website>1</show_in_website>
+		                    <show_in_store>1</show_in_store>
+		                </hint>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <comment>Enable or disable only this payment option.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1.</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <mode translate="label">
+                            <label>Modus</label>
+                            <comment>Beware that test orders will still appear in Buckaroo Plaza as regular orders. Setting this to 'Test' will also force 'Display only for certain IP-addresses' to 'yes'.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_testLive</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mode>   
+                        <limit_by_ip>
+                        	<label>Display this payment method only for selected IP's?</label>
+                        	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
+                        	<tooltip>If set to yes, Buckaroo payment options will only display for users with an IP address listed in Configuration > Developer > Developer Client Restrictions.</tooltip>
+                        	<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order> 
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </limit_by_ip>
+                        <title>
+                        	<label>Label</label>
+                        	<comment>This will determine the label of the payment method as it appears to customers.</comment>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>				
+                        <allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<tooltip>Select whether all countries may make use of this payment option, or only specific countries.</tooltip>
+							<frontend_type>allowspecific</frontend_type>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Country</label>
+							<comment>Only available if 'Payment from applicable countries' is set to 'specific countries'.</comment>
+							<tooltip>Define which countries are allowed to make use of this payment option.</tooltip>
+							<frontend_type>multiselect</frontend_type>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</specificcountry>
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <comment>This determines the order in which payment options will appear to the customer.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+		                <send_mail>
+						 	<label>Send email</label>
+						 	<comment>Whether Buckaroo should send an email to the customer with details as to how and when they should pay.</comment>
+						 	<tooltip>Only disable this if you wish to send these emails yourself. Otherwise, customers will not be aware how and when they should pay for their order.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>520</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_payperemail_advanced</validate>
+						</send_mail>
+						<allowed_methods>
+							<label>Allowed payment methods</label>
+							<comment>Select which payment methods are available to customers using payperemail</comment>
+							<tooltip>These options will be presented to the customer after Buckaroo has invoiced the order. If left blank, the available options will be based on which Buckaroo payment options you have enabled.</tooltip>
+							<frontend_type>multiselect</frontend_type>
+							<source_model>buckaroo3extended/sources_availablemethods</source_model>
+                            <sort_order>530</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_payperemail_advanced</validate>
+						</allowed_methods>
+						<order_status_success translate="label">
+                            <label>Order status 'success'</label>
+                            <comment>Successful orders will have this status in the back-end. Leave empty to use the status defined in Buckaroo 3 extended Config.</comment>
+                            <tooltip>This option does not affect the workflow.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>550</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_payperemail_advanced</validate>
+                        </order_status_success>
+                        <order_status_failed translate="label">
+                            <label>Order status 'failed'</label>
+                            <comment>Unsuccessful orders will have this status when viewed in the back-end. Leave empty to use the status defined in Buckaroo 3 extended Config.</comment>
+                            <tooltip>This option does not affect the workflow.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesFailed</source_model>
+                            <sort_order>560</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_payperemail_advanced</validate>
+                        </order_status_failed>
+                        <order_status_pendingpayment>
+                            <label>Order status 'pending payment'</label>
+                            <comment>Orders which are awaiting payment will have this status when viewed in the back-end.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <sort_order>540</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_payperemail_advanced</validate>
+                        </order_status_pendingpayment>
+                        <allowed_currencies>
+                        	<label>Allowed currencies</label>
+                            <comment>Select which currencies can be used with this payment method</comment>
+                            <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used  this payment method.</tooltip>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>buckaroo3extended/sources_payperemail_availableCurrencies</source_model>
+                            <sort_order>535</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_payperemail_advanced</validate>
+                        </allowed_currencies>		
+                    </fields>
+                </buckaroo3extended_byjunoinvoice>
 			</groups>
 		</buckaroo>
 	</sections>
