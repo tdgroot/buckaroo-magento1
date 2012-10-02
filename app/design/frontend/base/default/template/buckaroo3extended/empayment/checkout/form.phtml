@@ -1,0 +1,34 @@
+<?php
+$billing_info=Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress();
+$firstname=$billing_info->getFirstname();
+$lastname=$billing_info->getLastname();
+$email=$billing_info->getEmail();
+
+$gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
+?>
+<div id="payment-errors" class="validation-advice" style="display:none;"></div>
+
+<fieldset class="form-list">
+    <?php $_code=$this->getMethodCode() ?>
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+        <li>
+            <?php echo $this->__('You will receive an email with further payment instructions when you place your order.') ?>
+        </li>
+        <li>
+            <label><?php echo $this->__('Bank identification') ?>:</label>
+            <div class="input-box">
+            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Bankid" value="" />
+            </div>
+        </li>
+        <li>
+            <label><?php echo $this->__('Account holder') ?>:</label>
+            <div class="input-box">
+            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountholder" value="" />
+            </div>
+            <label><?php echo $this->__('Account number') ?>:</label>
+            <div class="input-box">
+            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountnumber" value="" />
+            </div>
+        </li>
+    </ul>
+</fieldset>
