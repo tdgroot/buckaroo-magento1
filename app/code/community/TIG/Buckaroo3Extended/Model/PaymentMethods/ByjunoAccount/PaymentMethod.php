@@ -7,7 +7,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_ByjunoAccount_PaymentMethod ext
 	
     protected $_code = 'buckaroo3extended_byjunoaccount';
 
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_empayment_checkout_form';
+    protected $_formBlockType = 'buckaroo3extended/paymentMethods_byjunoAccount_checkout_form';
     
     protected $_isGateway               = true;
     protected $_canAuthorize            = true;
@@ -39,9 +39,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_ByjunoAccount_PaymentMethod ext
         	'additionalFields', 
             array(
             	'DOM' => array(
-                    'accountHolder' => $_POST['buckaroo3extended_byjunoaccount_BPE_Accountholder'],
                     'accountNumber' => $_POST['buckaroo3extended_byjunoaccount_BPE_Accountnumber'],
-                    'bankId'        => $_POST['buckaroo3extended_byjunoaccount_BPE_Bankid'],
                 ),
         	)
         );  	

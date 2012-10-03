@@ -43,9 +43,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_ByjunoAccount_Observer extends 
         $vars = $request->getVars();
 
         $this->_addEmpaymentVars($vars);
-        $this->_addPersonVars($vars);
-        $this->_addBankAccountVars($vars);
-        $this->_addBillingAddressVars($vars);
+        //$this->_addPersonVars($vars);
+        //$this->_addBankAccountVars($vars);
+        //$this->_addBillingAddressVars($vars);
 
         $request->setVars($vars);
 
@@ -69,12 +69,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_ByjunoAccount_Observer extends 
 
     protected function _addEmpaymentVars(&$vars)
     {        
+        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         $storeId = Mage::app()->getStore()->getId();
         
         $array = array(
-            'beneficiaryAccountNumber' => Mage::getStoreConfig('buckaroo/buckaroo3extended_byjunoaccount/account_number', $storeId),
+            //'beneficiaryAccountNumber' => Mage::getStoreConfig('buckaroo/buckaroo3extended_byjunoaccount/account_number', $storeId),
             'reference'                => $this->_order->getIncrementId(),
-            'emailAddress'             => Mage::getStoreConfig('buckaroo/buckaroo3extended_byjunoaccount/email_address', $storeId),
+            'principalAccountNumber'   => $additionalFields['DOM']['accountNumber'],
+            //'emailAddress'             => Mage::getStoreConfig('buckaroo/buckaroo3extended_byjunoaccount/email_address', $storeId),
         );
         
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
