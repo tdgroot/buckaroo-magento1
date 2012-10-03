@@ -2238,25 +2238,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>	
-                        <account_number>
-                        	<label>Account number</label>
-                        	<comment>Please enter your bankaccount number</comment>
-                        	<frontend_type>text</frontend_type>
-                            <sort_order>42</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </account_number>
-                        <email_address>
-                        	<label>E-mail address</label>
-                        	<comment>Please enter your e-mail address</comment>
-                        	<frontend_type>text</frontend_type>
-                            <sort_order>46</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </email_address>			
+                        </title>			
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<tooltip>Select whether all countries may make use of this payment option, or only specific countries.</tooltip>
