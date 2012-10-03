@@ -80,9 +80,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         }
         $this->_debugEmail .= "Verified as authentic! \n\n";
 
-        //sets the transaction key if its defined ('brq_transactions')
-		//will retrieve it from the response array, if response actually is an array
-		if (!$this->_order->getTransactionKey() 
+        if (!$this->_order->getTransactionKey() 
 		    && is_object($this->_response) 
 		    && isset($this->_response->Key))
 		{

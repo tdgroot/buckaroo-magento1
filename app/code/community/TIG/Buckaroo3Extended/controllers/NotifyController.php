@@ -126,8 +126,8 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
     	$this->_paymentCode = $this->_order->getPayment()->getMethod();
 
-    	$this->_debugEmail .= 'Payment code: ' . $this->_paymentCode . "\n\n";
-    	$this->_debugEmail .= 'POST variables recieved: ' . var_export($_POST, true) . "\n\n";
+    	$debugEmail = 'Payment code: ' . $paymentCode . "\n\n";
+    	$debugEmail .= 'POST variables recieved: ' . var_export($_POST, true) . "\n\n";
 
     	$module = Mage::getModel(
     	    'TIG_Buckaroo3Extended_Model_Response_Return',

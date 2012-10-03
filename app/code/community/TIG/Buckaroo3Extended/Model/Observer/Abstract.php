@@ -63,10 +63,15 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     protected function _addCustomerVariables(&$vars, $serviceName = 'creditmanagement')
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
-        
+    
         $gender = $additionalFields['BPE_Customergender'];
-        $mail   = $additionalFields['BPE_Customermail'];
         $dob    = $additionalFields['BPE_customerbirthdate'];
+        
+        if (isset($additionalFields['BPE_Customermail'])) {
+            $mail   = $additionalFields['BPE_Customermail'];
+        } else {
+            $mail = $this->_billingInfo['email'];
+        }
         
         $customerId = $this->_order->getCustomerId() 
         	? $this->_order->getCustomerId() 

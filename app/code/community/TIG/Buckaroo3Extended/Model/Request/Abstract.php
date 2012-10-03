@@ -39,7 +39,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         //if no method has been set (no payment method could identify the chosen method) process the order as if it had failed
         if (empty($this->_method)) {
             $this->_debugEmail .= "No method was set! :( \n";
-            Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false))->processResponse();
+            Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
         }
 
         //hack to prevent SQL errors when using onestepcheckout
