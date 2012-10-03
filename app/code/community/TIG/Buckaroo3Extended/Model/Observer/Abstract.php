@@ -337,6 +337,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                 'sofortueberweisung',
                 'transfer',
                 'visa',
+                'byjunoaccount',
             );
         } else {
             $allowedArray = explode(',', $configAllowed);
@@ -354,6 +355,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                     'sofortueberweisung',
                     'transfer',
                     'visa',
+                    'byjunoaccount',
                 );
             }
         }
