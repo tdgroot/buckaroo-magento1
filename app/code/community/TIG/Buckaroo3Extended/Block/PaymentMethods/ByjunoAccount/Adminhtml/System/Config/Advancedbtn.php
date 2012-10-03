@@ -1,5 +1,5 @@
 <?php 
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Empayment_Adminhtml_System_Config_Advancedbtn 
+class TIG_Buckaroo3Extended_Block_PaymentMethods_ByjunoAccount_Adminhtml_System_Config_Advancedbtn 
     extends Mage_Adminhtml_Block_Abstract
 	implements Varien_Data_Form_Element_Renderer_Interface
 {

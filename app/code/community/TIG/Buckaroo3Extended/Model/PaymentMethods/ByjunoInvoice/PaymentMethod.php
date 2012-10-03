@@ -27,7 +27,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_ByjunoInvoice_PaymentMethod ext
 	
     protected $_code = 'buckaroo3extended_byjunoinvoice';
 
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_payperemail_checkout_form';
+    protected $_formBlockType = 'buckaroo3extended/paymentMethods_byjunoInvoice_checkout_form';
     
     protected $_isGateway               = true;
     protected $_canAuthorize            = true;

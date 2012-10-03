@@ -37,7 +37,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_ByjunoInvoice_Observer extends 
         }
         
         $request            = $observer->getRequest();
-        $this->_billingInfo = $request->getBillingInfo();
+        $billingInfo = $request->getBillingInfo();
         $this->_order       = $request->getOrder();
         
         $vars = $request->getVars();
@@ -48,8 +48,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_ByjunoInvoice_Observer extends 
             'customergender'        => $additionalFields['gender'],
             'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
             'CustomerEmail'         => $additionalFields['mail'],
-            'CustomerFirstName'     => $additionalFields['firstname'],
-            'CustomerLastName'      => $additionalFields['lastname'],
+            'CustomerFirstName'     => $billingInfo['firstname'],
+            'CustomerLastName'      => $billingInfo['lastname'],
         );
         
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
