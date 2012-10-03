@@ -54,7 +54,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $vars;
     }
     
-protected function _addCustomerVariables(&$vars, $serviceName = 'creditmanagement')
+    protected function _addCustomerVariables(&$vars, $serviceName = 'creditmanagement')
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
     
