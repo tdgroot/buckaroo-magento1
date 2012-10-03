@@ -2,7 +2,7 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_ByjunoAccount_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
     protected $_code   = 'buckaroo3extended_byjunoaccount';
-    protected $_method = 'empayment';
+    protected $_method = 'byjunoaccount';
 
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
