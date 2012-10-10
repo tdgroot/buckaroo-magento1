@@ -296,6 +296,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -382,6 +393,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_ideal_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_ideal>
                 
@@ -487,7 +535,7 @@
 						 	<tooltip>Only disable this if you wish to send these emails yourself. Otherwise, customers will not be aware how and when they should pay for their order.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>520</sort_order>
+                            <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -550,6 +598,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_paymentguarantee_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_paymentguarantee>
                 
@@ -587,6 +672,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -682,6 +778,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_paysafecard_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_paysafecard>
                 
@@ -719,6 +852,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -805,6 +949,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_visa_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_visa>
                 
@@ -842,6 +1023,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -928,131 +1120,216 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_sofortueberweisung_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_sofortueberweisung>
                 
-<!--                <buckaroo3extended_amex translate="label" module="paygate">-->
-<!--                    <label>Buckaroo 3 extended American Express</label>-->
-<!--                    <sort_order>220</sort_order>-->
-<!--                    <show_in_default>1</show_in_default>-->
-<!--                    <show_in_website>1</show_in_website>-->
-<!--                    <show_in_store>1</show_in_store>-->
-<!--                    <fields>-->
-<!--                    	<hint>-->
-<!--		                    <frontend_model>buckaroo3extended/adminhtml_system_config_singlehint</frontend_model>-->
-<!--		                    <sort_order>0</sort_order>-->
-<!--		                    <show_in_default>1</show_in_default>-->
-<!--		                    <show_in_website>1</show_in_website>-->
-<!--		                    <show_in_store>1</show_in_store>-->
-<!--		                </hint>-->
-<!--                        <active translate="label">-->
-<!--                            <label>Enabled</label>-->
-<!--                            <comment>Enable or disable only this payment option.</comment>-->
-<!--                            <frontend_type>select</frontend_type>-->
-<!--                            <source_model>adminhtml/system_config_source_yesno</source_model>-->
-<!--                            <sort_order>10</sort_order>-->
-<!--                            <show_in_default>1</show_in_default>-->
-<!--                            <show_in_website>1</show_in_website>-->
-<!--                            <show_in_store>1</show_in_store>-->
-<!--                        </active>	-->
-<!--                        <mode translate="label">-->
-<!--                            <label>Modus</label>-->
-<!--                            <comment>Beware that test orders will still appear in Buckaroo Plaza as regular orders. Setting this to 'Test' will also force 'Display only for certain IP-addresses' to 'yes'.</comment>-->
-<!--                            <frontend_type>select</frontend_type>-->
-<!--                            <source_model>buckaroo3extended/sources_testLive</source_model>-->
-<!--                            <sort_order>20</sort_order>-->
-<!--                            <show_in_default>1</show_in_default>-->
-<!--                            <show_in_website>1</show_in_website>-->
-<!--                            <show_in_store>1</show_in_store>-->
-<!--                        </mode>-->
-<!--                        <limit_by_ip>-->
-<!--                        	<label>Display this payment method only for selected IP's?</label>-->
-<!--                        	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>-->
-<!--                        	<tooltip>If set to yes, Buckaroo payment options will only display for users with an IP address listed in Configuration > Developer > Developer Client Restrictions.</tooltip>-->
-<!--                        	<frontend_type>select</frontend_type>-->
-<!--                            <source_model>adminhtml/system_config_source_yesno</source_model>-->
-<!--                            <sort_order>30</sort_order> -->
-<!--                            <show_in_default>1</show_in_default>-->
-<!--                            <show_in_website>1</show_in_website>-->
-<!--                            <show_in_store>1</show_in_store>-->
-<!--                        </limit_by_ip>-->
-<!--                        <title>-->
-<!--                        	<label>Label</label>-->
-<!--                        	<comment>This will determine the label of the payment method as it appears to customers.</comment>-->
-<!--                        	<frontend_type>text</frontend_type>-->
-<!--                            <sort_order>40</sort_order>-->
-<!--                            <show_in_default>1</show_in_default>-->
-<!--                            <show_in_website>1</show_in_website>-->
-<!--                            <show_in_store>1</show_in_store>-->
-<!--                        </title>		-->
-<!--                        <allowspecific translate="label">-->
-<!--							<label>Payment from Applicable Countries</label>-->
-<!--							<tooltip>Select whether all countries may make use of this payment option, or only specific countries.</tooltip>-->
-<!--							<frontend_type>allowspecific</frontend_type>-->
-<!--							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>-->
-<!--							<sort_order>50</sort_order>-->
-<!--							<show_in_default>1</show_in_default>-->
-<!--							<show_in_website>1</show_in_website>-->
-<!--							<show_in_store>1</show_in_store>-->
-<!--						</allowspecific>-->
-<!--						<specificcountry translate="label">-->
-<!--							<label>Payment from Specific Country</label>-->
-<!--							<comment>Only available if 'Payment from applicable countries' is set to 'specific countries'.</comment>-->
-<!--							<tooltip>Define which countries are allowed to make use of this payment option.</tooltip>-->
-<!--							<frontend_type>multiselect</frontend_type>-->
-<!--							<source_model>adminhtml/system_config_source_country</source_model>-->
-<!--							<sort_order>60</sort_order>-->
-<!--							<show_in_default>1</show_in_default>-->
-<!--							<show_in_website>1</show_in_website>-->
-<!--							<show_in_store>1</show_in_store>-->
-<!--						</specificcountry>-->
-<!--                        <sort_order translate="label">-->
-<!--                            <label>Sort Order</label>-->
-<!--                            <comment>This determines the order in which payment options will appear to the customer.</comment>-->
-<!--                            <frontend_type>text</frontend_type>-->
-<!--                            <sort_order>300</sort_order>-->
-<!--                            <show_in_default>1</show_in_default>-->
-<!--                            <show_in_website>1</show_in_website>-->
-<!--                            <show_in_store>1</show_in_store>-->
-<!--                        </sort_order>-->
-<!--                        <order_status_success translate="label">-->
-<!--                            <label>Order status 'success'</label>-->
-<!--                            <comment>Successful orders will have this status in the back-end. Leave empty to use the status defined in Buckaroo 3 extended Config.</comment>-->
-<!--                            <tooltip>This option does not affect the workflow.</tooltip>-->
-<!--                            <frontend_type>select</frontend_type>-->
-<!--                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>-->
-<!--                            <sort_order>520</sort_order>-->
-<!--                            <show_in_default>1</show_in_default>-->
-<!--                            <show_in_website>1</show_in_website>-->
-<!--                            <show_in_store>1</show_in_store>-->
-<!--                            <validate>buckaroo3extended_amex_advanced</validate>-->
-<!--                        </order_status_success>-->
-<!--                        <order_status_failed translate="label">-->
-<!--                            <label>Order status 'failed'</label>-->
-<!--                            <comment>Unsuccessful orders will have this status when viewed in the back-end. Leave empty to use the status defined in Buckaroo 3 extended Config.</comment>-->
-<!--                            <tooltip>This option does not affect the workflow.</tooltip>-->
-<!--                            <frontend_type>select</frontend_type>-->
-<!--                            <source_model>buckaroo3extended/sources_statusesFailed</source_model>-->
-<!--                            <sort_order>530</sort_order>-->
-<!--                            <show_in_default>1</show_in_default>-->
-<!--                            <show_in_website>1</show_in_website>-->
-<!--                            <show_in_store>1</show_in_store>-->
-<!--                            <validate>buckaroo3extended_amex_advanced</validate>-->
-<!--                        </order_status_failed>-->
-<!--                        <allowed_currencies>-->
-<!--                        	<label>Allowed currencies</label>-->
-<!--                            <comment>Select which currencies can be used with this payment method</comment>-->
-<!--                            <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>-->
-<!--                            <frontend_type>multiselect</frontend_type>-->
-<!--                            <source_model>buckaroo3extended/sources_amex_availableCurrencies</source_model>-->
-<!--                            <sort_order>535</sort_order>-->
-<!--                            <show_in_default>1</show_in_default>-->
-<!--                            <show_in_website>1</show_in_website>-->
-<!--                            <show_in_store>1</show_in_store>-->
-<!--                            <validate>buckaroo3extended_amex_advanced</validate>-->
-<!--                        </allowed_currencies>-->
-<!--                    </fields>-->
-<!--                </buckaroo3extended_amex>-->
+                <!-- <buckaroo3extended_amex translate="label" module="paygate">
+                    <label>Buckaroo 3 extended American Express</label>
+                    <sort_order>220</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                    	<hint>
+		                    <frontend_model>buckaroo3extended/adminhtml_system_config_singlehint</frontend_model>
+		                    <sort_order>0</sort_order>
+		                    <show_in_default>1</show_in_default>
+		                    <show_in_website>1</show_in_website>
+		                    <show_in_store>1</show_in_store>
+		                </hint>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <comment>Enable or disable only this payment option.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>	
+                        <mode translate="label">
+                            <label>Modus</label>
+                            <comment>Beware that test orders will still appear in Buckaroo Plaza as regular orders. Setting this to 'Test' will also force 'Display only for certain IP-addresses' to 'yes'.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_testLive</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mode>
+                         <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement> 
+                        <limit_by_ip>
+                        	<label>Display this payment method only for selected IP's?</label>
+                        	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
+                        	<tooltip>If set to yes, Buckaroo payment options will only display for users with an IP address listed in Configuration > Developer > Developer Client Restrictions.</tooltip>
+                        	<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order> 
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </limit_by_ip>
+                        <title>
+                        	<label>Label</label>
+                        	<comment>This will determine the label of the payment method as it appears to customers.</comment>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>		
+                        <allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<tooltip>Select whether all countries may make use of this payment option, or only specific countries.</tooltip>
+							<frontend_type>allowspecific</frontend_type>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Country</label>
+							<comment>Only available if 'Payment from applicable countries' is set to 'specific countries'.</comment>
+							<tooltip>Define which countries are allowed to make use of this payment option.</tooltip>
+							<frontend_type>multiselect</frontend_type>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</specificcountry>
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <comment>This determines the order in which payment options will appear to the customer.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+                        <order_status_success translate="label">
+                            <label>Order status 'success'</label>
+                            <comment>Successful orders will have this status in the back-end. Leave empty to use the status defined in Buckaroo 3 extended Config.</comment>
+                            <tooltip>This option does not affect the workflow.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>520</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_amex_advanced</validate>
+                        </order_status_success>
+                        <order_status_failed translate="label">
+                            <label>Order status 'failed'</label>
+                            <comment>Unsuccessful orders will have this status when viewed in the back-end. Leave empty to use the status defined in Buckaroo 3 extended Config.</comment>
+                            <tooltip>This option does not affect the workflow.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesFailed</source_model>
+                            <sort_order>530</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_amex_advanced</validate>
+                        </order_status_failed>
+                        <allowed_currencies>
+                        	<label>Allowed currencies</label>
+                            <comment>Select which currencies can be used with this payment method</comment>
+                            <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>buckaroo3extended/sources_amex_availableCurrencies</source_model>
+                            <sort_order>535</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>buckaroo3extended_amex_advanced</validate>
+                        </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
+                    </fields>
+                </buckaroo3extended_amex> -->
                 
                 <buckaroo3extended_mastercard translate="label" module="paygate">
                     <label>Buckaroo 3 extended Mastercard</label>
@@ -1088,6 +1365,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -1174,6 +1462,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_mastercard_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_mastercard>
                 
@@ -1211,6 +1536,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -1296,6 +1632,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_giropay_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_giropay>
                 
@@ -1333,6 +1706,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -1403,7 +1787,7 @@
                             <comment>Orders which are awaiting payment will have this status when viewed in the back-end.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesPending</source_model>
-                            <sort_order>520</sort_order>
+                            <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1429,11 +1813,48 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_directdebit_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_directdebit>
                 
                 <buckaroo3extended_onlinegiro translate="label" module="paygate">
-                    <label>Buckaroo 3 extended OnlineGiro</label>
+                    <label>Buckaroo 3 extended Online Giro</label>
                     <sort_order>270</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -1466,6 +1887,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -1563,11 +1995,48 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_onlinegiro_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_onlinegiro>
                 
                 <buckaroo3extended_transfer translate="label" module="paygate">
-                    <label>Buckaroo 3 extended Overschrijving</label>
+                    <label>Buckaroo 3 extended Overboeking</label>
                     <sort_order>280</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -1676,22 +2145,39 @@
                         	<label>Invoice Date (in days)</label>
                         	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
                         	<frontend_type>text</frontend_type>
-                        	<sort_order>520</sort_order>
+                        	<sort_order>26</sort_order>
                         	<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<validate>buckaroo3extended_transfer_advanced</validate>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
                         </due_date_invoice>	
                         <due_date>
                         	<label>Due Date (in days)</label>
                         	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
                         	<frontend_type>text</frontend_type>
-                        	<sort_order>521</sort_order>
+                        	<sort_order>27</sort_order>
                         	<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<validate>buckaroo3extended_transfer_advanced</validate>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
                         </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                         <send_mail>
                         	<label>Should Buckaroo send an email with details regarding the transfer?</label>
                         	<frontend_type>select</frontend_type>
@@ -1786,6 +2272,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mode>
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>  
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -1872,11 +2369,48 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_paypal_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_paypal>
                 
                 <buckaroo3extended_payperemail translate="label" module="paygate">
-                    <label>Buckaroo 3 extended PayPerEmail</label>
+                    <label>Buckaroo 3 extended PayperEmail</label>
                     <sort_order>300</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -1908,7 +2442,18 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>   
+                        </mode>  
+                        <use_creditmanagement translate="label">
+                            <label>Use creditmanagement</label>
+                            <comment>Using this will cause Buckaroo to send payment reminders to the customer if they do not pay on time.</comment>
+                            <tooltip>Beware that this option should only be selected if your buckaroo subscription allows for it. Please contact your Buckaroo contact if you have any questions about this functionality.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_creditmanagement>   
                         <limit_by_ip>
                         	<label>Display this payment method only for selected IP's?</label>
                         	<comment>This is useful to test Buckaroo before customers have a chance to use it.</comment>
@@ -1965,7 +2510,7 @@
 						 	<tooltip>Only disable this if you wish to send these emails yourself. Otherwise, customers will not be aware how and when they should pay for their order.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>520</sort_order>
+                            <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -2029,7 +2574,44 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_payperemail_advanced</validate>
-                        </allowed_currencies>		
+                        </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>		
                     </fields>
                 </buckaroo3extended_payperemail>
                 
@@ -2182,6 +2764,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_empayment_advanced</validate>
                         </allowed_currencies>		
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_empayment> -->
 			</groups>
