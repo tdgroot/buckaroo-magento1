@@ -41,7 +41,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Abstract extends TIG_Buckaroo3
         $parsedResponse = $this->_parseResponse();
         $this->_debugEmail .= "Parsed response: " . var_export($parsedResponse, true) . "\n";
 
-        $this->_debugEmail .= "Dispatching custom order rpocessing event... \n";
+        $this->_debugEmail .= "Dispatching custom order processing event... \n";
         
         Mage::dispatchEvent(
         	'buckaroo3extended_refund_response_custom_processing',
@@ -71,10 +71,10 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Abstract extends TIG_Buckaroo3
         $this->_debugEmail .= 'The transaction request has failed. \n';
         
         $this->_updateRefundedOrderStatus(false);
-	    
-        Mage::throwException(Mage::helper('buckaroo3extended')->__($this->_response->Status->Code->_));
         
         $this->sendDebugEmail();
+	    
+        Mage::throwException(Mage::helper('buckaroo3extended')->__($this->_response->Status->Code->_));
     }
 
     protected function _error()
@@ -82,10 +82,15 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Abstract extends TIG_Buckaroo3
         $this->_debugEmail .= 'The transaction request produced an error. \n';
         
         $this->_updateRefundedOrderStatus(false);
-	    
-        Mage::throwException(Mage::helper('buckaroo3extended')->__($this->_response->Status->Code->_));
         
         $this->sendDebugEmail();
+        
+        if (isset($this->_response) && isset($this->_response->Status->Code->_)) {
+        	Mage::throwException(Mage::helper('buckaroo3extended')->__($this->_response->Status->Code->_));
+        } else {
+        	Mage::throwException('An unknown error occurred.');
+        }
+        
     }
 
     protected function _neutral()
@@ -103,9 +108,9 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Abstract extends TIG_Buckaroo3
         $this->_debugEmail .= 'This refund request has been put on hold. \n';
         
         $this->_updateRefundedOrderStatus(false);
-	    
-        Mage::throwException(Mage::helper('buckaroo3extended')->__("This refund request has been put on hold by Buckaroo. You can find out details regarding the action and complete the refund in Buckaroo Payment Plaza."));
         
         $this->sendDebugEmail();
+	    
+        Mage::throwException(Mage::helper('buckaroo3extended')->__("This refund request has been put on hold by Buckaroo. You can find out details regarding the action and complete the refund in Buckaroo Payment Plaza."));
     }
 }
