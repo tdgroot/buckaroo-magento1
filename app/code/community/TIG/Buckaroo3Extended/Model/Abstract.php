@@ -458,7 +458,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    if ($this->_postArray['brq_currency'] == $this->_order->getStoreCurrencyCode()) {
 	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
 	    } else {
-	        $amountOrdered = round($this->_order->getGrandTotal() * 100, 0);
+	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
 	    }
 	    
 	    if ($amountPaid != $amountOrdered) {
