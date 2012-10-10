@@ -2033,7 +2033,7 @@
                     </fields>
                 </buckaroo3extended_payperemail>
                 
-                <!-- <buckaroo3extended_empayment translate="label" module="paygate">
+                <buckaroo3extended_empayment translate="label" module="paygate">
                     <label>Buckaroo 3 extended èM! Payment</label>
                     <sort_order>300</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2183,7 +2183,7 @@
                             <validate>buckaroo3extended_empayment_advanced</validate>
                         </allowed_currencies>		
                     </fields>
-                </buckaroo3extended_empayment> -->
+                </buckaroo3extended_empayment>
 			</groups>
 		</buckaroo>
 	</sections>
