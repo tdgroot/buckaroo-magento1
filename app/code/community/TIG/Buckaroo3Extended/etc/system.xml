@@ -1433,7 +1433,7 @@
                 </buckaroo3extended_directdebit>
                 
                 <buckaroo3extended_onlinegiro translate="label" module="paygate">
-                    <label>Buckaroo 3 extended OnlineGiro</label>
+                    <label>Buckaroo 3 extended Online Giro</label>
                     <sort_order>270</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -1567,7 +1567,7 @@
                 </buckaroo3extended_onlinegiro>
                 
                 <buckaroo3extended_transfer translate="label" module="paygate">
-                    <label>Buckaroo 3 extended Overschrijving</label>
+                    <label>Buckaroo 3 extended Overboeking</label>
                     <sort_order>280</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -1876,7 +1876,7 @@
                 </buckaroo3extended_paypal>
                 
                 <buckaroo3extended_payperemail translate="label" module="paygate">
-                    <label>Buckaroo 3 extended PayPerEmail</label>
+                    <label>Buckaroo 3 extended PayperEmail</label>
                     <sort_order>300</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
