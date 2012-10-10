@@ -56,7 +56,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
         
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $this->_addCreditManagement($vars);
-            $this->_addTransferCreditmanagement($vars);
+            $this->_addAdditionalCreditManagementVariables($vars);
         }
         
         $request->setVars($vars);
@@ -78,31 +78,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
             $vars['customVars']['transfer'] = array_merge($vars['customVars']['transfer'], $array);
         } else {
             $vars['customVars']['transfer'] = $array;
-        }
-    }
-    
-    protected function _addTransferCreditmanagement(&$vars)
-    {
-        $VAT = 0;
-        foreach($this->_order->getFullTaxInfo() as $taxRecord)
-        {
-            $VAT += $taxRecord['amount'];
-        }
-
-        $creditmanagementArray = array(
-            'AmountVat'        => $VAT,
-            'CustomerType'     => 1,
-            'MaxReminderLevel' => 4,
-        );
-
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars']['creditmanagement'])) {
-            $vars['customVars']['creditmanagement'] = array_merge($vars['customVars']['creditmanagement'], $creditmanagementArray);
-        } else {
-            $vars['customVars']['creditmanagement'] = $creditmanagementArray;
-        }
-        
-        if (empty($vars['customVars']['creditmanagement']['PhoneNumber'])) {
-            $vars['customVars']['creditmanagement']['PhoneNumber'] = $vars['customVars']['creditmanagement']['MobilePhoneNumber'];
         }
     }
 
