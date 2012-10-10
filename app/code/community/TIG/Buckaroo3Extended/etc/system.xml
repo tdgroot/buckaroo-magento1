@@ -393,6 +393,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_ideal_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_ideal>
                 
@@ -498,7 +535,7 @@
 						 	<tooltip>Only disable this if you wish to send these emails yourself. Otherwise, customers will not be aware how and when they should pay for their order.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>520</sort_order>
+                            <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -561,6 +598,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_paymentguarantee_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_paymentguarantee>
                 
@@ -704,6 +778,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_paysafecard_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_paysafecard>
                 
@@ -838,6 +949,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_visa_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_visa>
                 
@@ -972,6 +1120,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_sofortueberweisung_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_sofortueberweisung>
                 
@@ -1106,6 +1291,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_amex_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_amex> -->
                 
@@ -1240,6 +1462,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_mastercard_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_mastercard>
                 
@@ -1373,6 +1632,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_giropay_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_giropay>
                 
@@ -1491,7 +1787,7 @@
                             <comment>Orders which are awaiting payment will have this status when viewed in the back-end.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesPending</source_model>
-                            <sort_order>520</sort_order>
+                            <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1517,6 +1813,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_directdebit_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_directdebit>
                 
@@ -1662,6 +1995,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_onlinegiro_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_onlinegiro>
                 
@@ -1775,22 +2145,39 @@
                         	<label>Invoice Date (in days)</label>
                         	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
                         	<frontend_type>text</frontend_type>
-                        	<sort_order>520</sort_order>
+                        	<sort_order>26</sort_order>
                         	<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<validate>buckaroo3extended_transfer_advanced</validate>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
                         </due_date_invoice>	
                         <due_date>
                         	<label>Due Date (in days)</label>
                         	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
                         	<frontend_type>text</frontend_type>
-                        	<sort_order>521</sort_order>
+                        	<sort_order>27</sort_order>
                         	<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<validate>buckaroo3extended_transfer_advanced</validate>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
                         </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                         <send_mail>
                         	<label>Should Buckaroo send an email with details regarding the transfer?</label>
                         	<frontend_type>select</frontend_type>
@@ -1982,6 +2369,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_paypal_advanced</validate>
                         </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_paypal>
                 
@@ -2086,7 +2510,7 @@
 						 	<tooltip>Only disable this if you wish to send these emails yourself. Otherwise, customers will not be aware how and when they should pay for their order.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>520</sort_order>
+                            <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -2150,7 +2574,44 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_payperemail_advanced</validate>
-                        </allowed_currencies>		
+                        </allowed_currencies>
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>		
                     </fields>
                 </buckaroo3extended_payperemail>
                 
@@ -2303,6 +2764,43 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_empayment_advanced</validate>
                         </allowed_currencies>		
+                        <due_date_invoice>
+                        	<label>Invoice Date (in days)</label>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>26</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date_invoice>	
+                        <due_date>
+                        	<label>Due Date (in days)</label>
+                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                        	<frontend_type>text</frontend_type>
+                        	<sort_order>27</sort_order>
+                        	<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </due_date>	
+                        <reminder_level>
+                        	<label>Max. Reminder Level</label>
+                            <comment>Select the maximum reminder level buckaroo will use</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_reminderLevel</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                            	<use_creditmanagement>1</use_creditmanagement>
+                            </depends>
+                        </reminder_level>
                     </fields>
                 </buckaroo3extended_empayment> -->
 			</groups>

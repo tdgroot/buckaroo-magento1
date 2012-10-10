@@ -58,10 +58,12 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     		$VAT += $taxRecord['amount'];
     	}
     	
+    	$reminderLevel = Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/reminder_level', Mage::app()->getStore()->getId());
+    	
     	$creditmanagementArray = array(
     			'AmountVat'        => $VAT,
     			'CustomerType'     => 1,
-    			'MaxReminderLevel' => 4,
+    			'MaxReminderLevel' => $reminderLevel,
     	);
     	
     	if (array_key_exists('customVars', $vars) && is_array($vars['customVars']['creditmanagement'])) {
