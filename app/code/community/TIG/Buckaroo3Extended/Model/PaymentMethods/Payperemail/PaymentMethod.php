@@ -53,21 +53,29 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
     
     public function getOrderPlaceRedirectUrl()
     {
-        $session = Mage::getSingleton('checkout/session');
-
+    	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
+    }
+    
+    public function assignData($data)
+    {
+    	if (!Mage::helper('buckaroo3extended')->isAdmin()) {
+        	$session = Mage::getSingleton('checkout/session');
+    	} else {
+    		$session = Mage::getSingleton('core/session');
+    	}
+		
 		$session->setData('additionalFields', array(
 			'gender'    => $_POST['buckaroo3extended_payperemail_BPE_Customergender'],
 		    'firstname' => $_POST['buckaroo3extended_payperemail_BPE_Customerfirstname'],
 		    'lastname'  => $_POST['buckaroo3extended_payperemail_BPE_Customerlastname'],
 		    'mail'      => $_POST['buckaroo3extended_payperemail_BPE_Customermail'],
 		));
-    	
-    	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
+		return parent::assignData($data);
     }
     
     public function isAvailable($quote = null)
     {
-        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo()) {
+        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote)) {
     		return false;
     	}
     
@@ -106,7 +114,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
         {
             return false;
         }
-                  
+
         return parent::isAvailable($quote);
     }
 }
