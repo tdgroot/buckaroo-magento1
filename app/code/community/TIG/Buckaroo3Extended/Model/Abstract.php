@@ -131,10 +131,28 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	
 	public function __construct($debugEmail = false)
 	{
-	    if (strpos(dirname(__FILE__), '/Model') !== false) {
-	        $dir = str_replace('/Model', '/certificate', dirname(__FILE__));
+	    if (strpos(dirname(__FILE__), DS .'Model') !== false) {
+	        $dir = str_replace(DS .'Model', DS .'certificate', dirname(__FILE__));
 	    } else {
-	        $dir = str_replace('/includes/src', '/app/code/community/TIG/Buckaroo3Extended/certificate', dirname(__FILE__));
+	        $dir = str_replace(
+	        	DS 
+	        	.'includes' 
+	        	. DS 
+	        	. 'src', 
+	        	DS 
+	        	. 'app' 
+	        	. DS 
+	        	. 'code' 
+	        	. DS 
+	        	. 'community' 
+	        	. DS 
+	        	. 'TIG' 
+	        	. DS 
+	        	. 'Buckaroo3Extended' 
+	        	. DS 
+	        	. 'certificate',
+	        	dirname(__FILE__)
+	        );
 	    }
 	    
 	    if (!defined('CERTIFICATE_DIR')) {

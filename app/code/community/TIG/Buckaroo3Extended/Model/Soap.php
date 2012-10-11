@@ -23,7 +23,20 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     {
         define(
         	   'LIB_DIR', 
-               Mage::getBaseDir() . DS . 'app' . DS . 'code' . DS . 'community' . DS . 'TIG' . DS . 'Buckaroo3Extended' . DS . 'lib' . DS
+               Mage::getBaseDir() 
+               . DS 
+               . 'app' 
+               . DS 
+               . 'code' 
+               . DS 
+               . 'community' 
+               . DS 
+               . 'TIG' 
+               . DS 
+               . 'Buckaroo3Extended' 
+               . DS 
+               . 'lib' 
+               . DS
         );
         
         $this->setVars($data['vars']);

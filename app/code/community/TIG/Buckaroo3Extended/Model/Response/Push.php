@@ -354,11 +354,15 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    	$this->_order->cancel()
 	    				 ->save();
 	    	if ($description) {
-	    		$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description))
-	    					 ->save();
+	    		$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
+	    				     ->save();
 	    	}
+    		$this->_order->setStatus($newStates[1])
+    					 ->save();
 	    } else {	    	
-	    	$this->_order->setState($newStates[0], $newStates[1], Mage::helper('buckaroo3extended')->__($description))
+	    	$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
+	    	             ->save();
+	    	$this->_order->setStatus($newStates[1])
 	    				 ->save();
 	    }
 	    return true;
