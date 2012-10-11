@@ -140,7 +140,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer exten
      */
     protected function _addPaymentGuaranteeVariables(&$vars)
     {
-        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/due_date', Mage::app()->getStore()->getStoreId());
+        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/duedate', Mage::app()->getStore()->getStoreId());
         $dueDateInvoice = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays), date("Y")));
         $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays + 14), date("Y")));
 
