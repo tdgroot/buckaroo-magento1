@@ -38,13 +38,6 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         $invoiceDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDaysInvoice), date("Y")));
         $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDaysInvoice + $dueDays), date("Y")));
         
-        $VAT = 0;
-        foreach($this->_order->getFullTaxInfo() as $taxRecord)
-        {
-            $VAT += $taxRecord['amount'];
-        }
-        $VAT = round($VAT * 100,0);
-        
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$serviceName])) {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
             	'DateDue'			     => $dueDate,
@@ -60,15 +53,54 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $vars;
     }
     
+    /**
+     * Currently used by all payment methods except payment guarantee
+     */
+    protected function _addAdditionalCreditManagementVariables(&$vars)
+    {
+    	$VAT = 0;
+    	foreach($this->_order->getFullTaxInfo() as $taxRecord)
+    	{
+    		$VAT += $taxRecord['amount'];
+    	}
+    	
+    	$reminderLevel = Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/reminder_level', Mage::app()->getStore()->getId());
+    	
+    	$creditmanagementArray = array(
+    			'AmountVat'        => $VAT,
+    			'CustomerType'     => 1,
+    			'MaxReminderLevel' => $reminderLevel,
+    	);
+    	
+    	if (array_key_exists('customVars', $vars) && is_array($vars['customVars']['creditmanagement'])) {
+    		$vars['customVars']['creditmanagement'] = array_merge($vars['customVars']['creditmanagement'], $creditmanagementArray);
+    	} else {
+    		$vars['customVars']['creditmanagement'] = $creditmanagementArray;
+    	}
+    	
+    	if (empty($vars['customVars']['creditmanagement']['PhoneNumber']) && !empty($vars['customVars']['creditmanagement']['MobilePhoneNumber'])) {
+    		$vars['customVars']['creditmanagement']['PhoneNumber'] = $vars['customVars']['creditmanagement']['MobilePhoneNumber'];
+    	}
+    }
+    
     protected function _addCustomerVariables(&$vars, $serviceName = 'creditmanagement')
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
     
-        $gender = $additionalFields['BPE_Customergender'];
-        $dob    = $additionalFields['BPE_customerbirthdate'];
+        if (isset($additionalFields['BPE_Customergender'])) {
+        	$gender = $additionalFields['BPE_Customergender'];
+        } else {
+        	$gender = 0;
+        }
+        
+        if (isset($additionalFields['BPE_customerbirthdate'])) {
+        	$dob = $additionalFields['BPE_customerbirthdate'];
+        } else {
+        	$dob = '';
+        }
         
         if (isset($additionalFields['BPE_Customermail'])) {
-            $mail   = $additionalFields['BPE_Customermail'];
+            $mail = $additionalFields['BPE_Customermail'];
         } else {
             $mail = $this->_billingInfo['email'];
         }
@@ -147,7 +179,6 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		        'PhoneNumber' => $processedPhoneNumber['clean'],
 		    ));
 		}
-				
 		return $vars;
     }
     

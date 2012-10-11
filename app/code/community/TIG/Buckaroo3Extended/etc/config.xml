@@ -396,6 +396,17 @@
                 </TIG_Buckaroo3Extended>
             </modules>
         </translate>
+        <events>
+        	<checkout_submit_all_after>
+        		<observers>
+            		<buckaroo3extended_backendOrder>
+            			<type>Model</type>
+            			<class>buckaroo3extended/observer_backendOrder</class>
+            			<method>checkout_submit_all_after</method>
+            		</buckaroo3extended_backendOrder>
+        		</observers>
+       		</checkout_submit_all_after>
+        </events>
     </adminhtml>
     <admin>
         <routers>

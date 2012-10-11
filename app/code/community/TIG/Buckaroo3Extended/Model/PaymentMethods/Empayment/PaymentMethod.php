@@ -16,7 +16,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_PaymentMethod extends
     protected $_canRefund               = true;
     protected $_canRefundInvoicePartial = true;
     protected $_canVoid                 = true;
-    protected $_canUseInternal          = true;
+    protected $_canUseInternal          = false;
     protected $_canUseCheckout          = true;
     protected $_canUseForMultishipping  = false;
     protected $_canSaveCc 				= false;
@@ -51,7 +51,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_PaymentMethod extends
     
     public function isAvailable($quote = null)
     {
-        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo()) {
+        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote)) {
     		return false;
     	}
     

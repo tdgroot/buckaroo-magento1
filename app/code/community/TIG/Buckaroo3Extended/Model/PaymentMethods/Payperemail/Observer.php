@@ -41,7 +41,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         $this->_order       = $request->getOrder();
         
         $vars = $request->getVars();
-        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        if (!Mage::helper('buckaroo3extended')->isAdmin()) {
+        	$additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        } else {
+        	$additionalFields = Mage::getSingleton('core/session')->getData('additionalFields');
+        }
         
         if (is_array($additionalFields) 
             && array_key_exists('customergender', $additionalFields)

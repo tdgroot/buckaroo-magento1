@@ -30,20 +30,20 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
      *
      * @param boolean $soap
      */
-    public static function canUseBuckaroo($soap = false)
+    public static function canUseBuckaroo($quote = null)
     {
     	$return = false;
 
-    	$configValues    = self::_checkConfigValues($soap);
+    	$configValues    = self::_checkConfigValues();
 
     	$currencyAllowed = self::_checkCurrencyAllowed();
 
     	$ipAllowed       = self::_checkIpAllowed();
 
-    	$isZeroPayment   = self::_checkGrandTotalNotZero();
+    	$isZeroPayment   = self::_checkGrandTotalNotZero($quote);
 
     	$isEnterprise    = @mage::getModel('Enterprise_Reward_Model_Reward');
-
+    	
     	if (
     	    $configValues        === true
     	    && $currencyAllowed  === true
@@ -138,11 +138,12 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
      * NOTE: this check is currently not used. Will be implemented later when I know for certain which payment methods can and cannot handle
      * zero-grandtotal payments.
      */
-    private static function _checkGrandTotalNotZero()
+    private static function _checkGrandTotalNotZero($quote)
     {
+    	if (empty($quote)) {
+    		return true;
+    	}
         $isZero = false;
-
-        $quote = Mage::getSingleton('checkout/session')->getQuote();
 
         if ($quote->getBaseGrandTotal() < 0.01) {
             $isZero = true;

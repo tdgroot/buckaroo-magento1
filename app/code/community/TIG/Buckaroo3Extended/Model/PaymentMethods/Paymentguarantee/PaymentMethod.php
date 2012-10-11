@@ -85,7 +85,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
     
     public function isAvailable($quote = null)
     {
-        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo()) {
+        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote)) {
     		return false;
     	}
     

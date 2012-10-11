@@ -28,7 +28,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
     protected $_canRefund               = false;
     protected $_canRefundInvoicePartial = false;
     protected $_canVoid                 = true;
-    protected $_canUseInternal          = true;
+    protected $_canUseInternal          = false;
     protected $_canUseCheckout          = true;
     protected $_canUseForMultishipping  = false;
     protected $_canSaveCc 				= false;
@@ -80,7 +80,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
     
     public function isAvailable($quote = null)
     {
-        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo()) {
+        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote)) {
     		return false;
     	}
     

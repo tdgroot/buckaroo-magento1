@@ -146,7 +146,12 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    }
 	    
 		$this->_loadLastOrder();
-		$this->setSession(Mage::getSingleton('core/session'));
+		
+		if (!Mage::helper('buckaroo3extended')->isAdmin()) {
+			$this->setSession(Mage::getSingleton('checkout/session'));
+		} else {
+			$this->setSession(Mage::getSingleton('core/session'));
+		}
 		$this->_setOrderBillingInfo();
 		
 		if ($debugEmail) {
@@ -155,7 +160,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		    $this->setDebugEmail('');
 		}
 		
-		$this->_checkExpired();
+		if (!Mage::helper('buckaroo3extended')->isAdmin()) {
+			$this->_checkExpired();
+		}
 	}
 	
 	/**
