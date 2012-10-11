@@ -68,9 +68,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_PaymentMethod extends M
             	'amount' => $amount
             )
         );
-        $payment = $refundRequest->sendRefundRequest();
         
-        $this->setPayment($payment);
+        try {
+	        $refundRequest->sendRefundRequest();
+	        $this->setPayment($refundRequest->getPayment());
+        } catch (Exception $e) {
+        	Mage::helper('buckaroo3extended')->logException($e);
+        	Mage::throwException($e->getMessage());
+        }
         
         return $this;
     }

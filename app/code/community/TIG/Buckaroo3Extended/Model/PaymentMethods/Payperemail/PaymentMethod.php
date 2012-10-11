@@ -98,9 +98,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
             	'amount' => $amount
             )
         );
-            
-        $refundRequest->sendRefundRequest();
-        $this->setPayment($refundRequest->getPayment());
+
+        try {
+        	$refundRequest->sendRefundRequest();
+        	$this->setPayment($refundRequest->getPayment());
+        } catch (Exception $e) {
+        	Mage::helper('buckaroo3extended')->logException($e);
+        	Mage::throwException($e->getMessage());
+        }
         
         return $this;
     }

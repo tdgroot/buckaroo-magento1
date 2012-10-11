@@ -61,9 +61,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Sofortueberweisung_PaymentMetho
             	'amount' => $amount
             )
         );
-        $payment = $refundRequest->sendRefundRequest();
         
-        $this->setPayment($payment);
+        try {
+	        $refundRequest->sendRefundRequest();
+	        $this->setPayment($refundRequest->getPayment());
+        } catch (Exception $e) {
+        	Mage::helper('buckaroo3extended')->logException($e);
+        	Mage::throwException($e->getMessage());
+        }
         
         return $this;
     }

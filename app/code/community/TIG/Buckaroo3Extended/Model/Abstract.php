@@ -517,17 +517,12 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	
 	public function log($message, $force = false)
 	{
-	    Mage::log($message, Zend_Log::DEBUG, 'TIG_B3E.log', $force);
+	    Mage::helper('buckaroo3extended')->log($message, $force);
 	}
 
 	public function logException($e)
 	{
-	    if (is_string($e)) {
-	        Mage::log($e, Zend_Log::ERR, 'TIG_B3E_Exception.log', true);
-	    } else {
-	        Mage::log($e->getMessage(), Zend_Log::ERR, 'TIG_B3E_Exception.log', true);
-	        Mage::log($e->getTraceAsString(), Zend_Log::ERR, 'TIG_B3E_Exception.log', true);
-	    }
+	    Mage::helper('buckaroo3extended')->logException($e);
 	}
 	
 	public function sendDebugEmail()
