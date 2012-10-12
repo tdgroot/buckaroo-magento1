@@ -386,7 +386,7 @@
                 <sort_order>460</sort_order>
             </buckaroo3extended_mastercard>
             <buckaroo3extended_amex translate="title">
-                <active>0</active>
+                <active>1</active>
                 <model>buckaroo3extended/paymentMethods_amex_paymentMethod</model>
                 <title>American Express</title>
                 <sort_order>420</sort_order>

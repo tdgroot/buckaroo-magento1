@@ -1160,7 +1160,7 @@
                     </fields>
                 </buckaroo3extended_sofortueberweisung>
                 
-                <!-- <buckaroo3extended_amex translate="label" module="paygate">
+                <buckaroo3extended_amex translate="label" module="paygate">
                     <label>Buckaroo 3 extended American Express</label>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1329,7 +1329,7 @@
                             </depends>
                         </reminder_level>
                     </fields>
-                </buckaroo3extended_amex> -->
+                </buckaroo3extended_amex>
                 
                 <buckaroo3extended_mastercard translate="label" module="paygate">
                     <label>Buckaroo 3 extended Mastercard</label>
