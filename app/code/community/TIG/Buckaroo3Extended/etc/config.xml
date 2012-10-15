@@ -88,6 +88,11 @@
             			<class>buckaroo3extended/paymentMethods_onlinegiro_observer</class>
             			<method>buckaroo3extended_request_addservices</method>
             		</buckaroo3extended_paymentmethod_observer_onlinegiro>
+            		<buckaroo3extended_paymentmethod_observer_giftcards>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_giftcards_observer</class>
+            			<method>buckaroo3extended_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_giftcards>
             		<!-- <buckaroo3extended_paymentmethod_observer_empayment>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
@@ -162,6 +167,11 @@
             			<class>buckaroo3extended/paymentMethods_onlinegiro_observer</class>
             			<method>buckaroo3extended_request_addcustomvars</method>
             		</buckaroo3extended_paymentmethod_observer_onlinegiro>
+            		<buckaroo3extended_paymentmethod_observer_giftcards>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_giftcards_observer</class>
+            			<method>buckaroo3extended_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_giftcards>
             		<!-- <buckaroo3extended_paymentmethod_observer_empayment>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
@@ -236,6 +246,11 @@
             			<class>buckaroo3extended/paymentMethods_onlinegiro_observer</class>
             			<method>buckaroo3extended_request_setmethod</method>
             		</buckaroo3extended_paymentmethod_observer_onlinegiro>
+            		<buckaroo3extended_paymentmethod_observer_giftcards>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_giftcards_observer</class>
+            			<method>buckaroo3extended_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_giftcards>
             		<!-- <buckaroo3extended_paymentmethod_observer_empayment>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
@@ -445,6 +460,12 @@
                 <title>Online Giro</title>
                 <sort_order>470</sort_order>
             </buckaroo3extended_onlinegiro>
+            <buckaroo3extended_giftcards translate="title">
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_giftcards_paymentMethod</model>
+                <title>Cadeaukaarten</title>
+                <sort_order>600</sort_order>
+            </buckaroo3extended_giftcards>
             <!-- <buckaroo3extended_empayment translate="title">
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_empayment_paymentMethod</model>
@@ -760,6 +781,19 @@
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_onlinegiro>
+         	
+         	<buckaroo3extended_giftcards>
+         		<active>0</active>
+         		<mode>0</mode>
+         		<title>Cadeaukaarten</title>
+         		<allowspecific>0</allowspecific>
+         		<specificcountry></specificcountry>
+         		<order_status_success></order_status_success>
+         		<order_status_failed></order_status_failed>
+         		<sort_order>470</sort_order>
+         		<limit_by_ip>0</limit_by_ip>
+         		<allowed_currencies>EUR</allowed_currencies>
+         	</buckaroo3extended_giftcards>
          	
          	<!-- <buckaroo3extended_empayment>
          		<active>0</active>

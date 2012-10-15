@@ -97,7 +97,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
             $this->_debugEmail .= "Response: " . var_export($response, true) . "\n";
             $this->_debugEmail .= "Response XML:" . var_export($responseXML->saveXML(), true) . "\n\n";
         }
-
+        
         $this->_debugEmail .= "Let's process that beautiful response! \n";
         //process the response
         $responseModel = Mage::getModel(
