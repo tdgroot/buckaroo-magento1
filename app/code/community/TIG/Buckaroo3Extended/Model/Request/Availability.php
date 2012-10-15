@@ -71,7 +71,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
         //config values that need to be entered
     	$configEnabled = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/active', Mage::app()->getStore()->getStoreId());
     	$merchantKeyEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId());
-    	$thumbprintEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', Mage::app()->getStore()->getStoreId());
+    	$thumbprintEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_certificate/thumbprint', Mage::app()->getStore()->getStoreId());
     	$orderStatusSuccessEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/order_status_success', Mage::app()->getStore()->getStoreId());
     	$orderStatusFailedEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/order_status_failed', Mage::app()->getStore()->getStoreId());
 
