@@ -3,12 +3,10 @@ class TIG_Buckaroo3Extended_Model_Observer extends Mage_Core_Model_Abstract
 {    
     /**
      * When config settings are saved in the backend, retrieve the title of all buckaroo payment methods that have been activated.
-     * These titles are using the following path: 'buckaroo/buckaroo2012PAYMENTCODE/title'.
-     * Retrieve this and enter it in the DB using the following path: 'payment/buckaroo2012PAYMENTMETHOD/title'.
+     * These titles are using the following path: 'buckaroo/buckaroo3extended_PAYMENTCODE/title'.
+     * Retrieve this and enter it in the DB using the following path: 'payment/buckaroo3extended_PAYMENTCODE/title'.
      * This way, magento will know what label to give the payment methods in the frontend.
      * The same goes for the sort_order
-     * 
-     * Secondly, calls the 'logExpertSettings' method which will log any changes made to expert settings in a seperate table.
      * 
      * @param Varien_Event_Observer $observer
      */

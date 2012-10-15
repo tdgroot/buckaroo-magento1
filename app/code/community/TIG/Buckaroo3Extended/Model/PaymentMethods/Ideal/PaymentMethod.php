@@ -1,6 +1,18 @@
 <?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
+    protected $_payment;
+    
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+    
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+    
     public $allowedCurrencies = array(
 		'EUR',
 	);
@@ -41,6 +53,59 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mag
     	}
 
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
+    }
+    
+    public function refund(Varien_Object $payment, $amount)
+    {
+    	mage::log(microtime(), null, 'TIG_RF.log', true);
+        if (!$this->canRefund() || !$this->isRefundAvailable($payment)) {
+            Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
+        }
+        
+        $refundRequest = Mage::getModel(
+        	'buckaroo3extended/refund_request_abstract', 
+            array(
+            	'payment' => $payment, 
+            	'amount' => $amount
+            )
+        );
+        
+        try {
+	        $refundRequest->sendRefundRequest();
+	        $this->setPayment($refundRequest->getPayment());
+        } catch (Exception $e) {
+        	Mage::helper('buckaroo3extended')->logException($e);
+        	Mage::throwException($e->getMessage());
+        }
+        
+        return $this;
+    }
+    
+    public function isRefundAvailable($payment)
+    {
+        if (!$payment->getOrder()->getTransactionKey()) {
+            Mage::getSingleton('adminhtml/session')
+                ->addError(
+                    Mage::helper('buckaroo3extended')->__(
+                    	'The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.'
+                    )
+                );
+            throw new Exception('The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.');
+            return false;
+        }
+        
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_refund/active', Mage::app()->getStore()->getStoreId())) {
+            Mage::getSingleton('adminhtml/session')
+                ->addError(
+                    Mage::helper('buckaroo3extended')->__(
+                    	'Buckaroo refunding is currently disabled in the configuration menu.'
+                    )
+                );
+            throw new Exception('Buckaroo refunding is currently disabled in the configuration menu.');
+            return false;
+        }
+        
+        return true;
     }
 
     public function isAvailable($quote = null)

@@ -3,26 +3,14 @@ $installer = $this;
 
 $installer->startSetup();
 
-$sql = <<<SQL
-DROP TABLE IF EXISTS `buckaroo_log_expert`;
-CREATE TABLE `buckaroo_log_expert`
-(
-`Id` int NOT NULL AUTO_INCREMENT,
-`Timestamp` int NOT NULL,
-`Date` varchar(50),
-`Previous_setting` varchar(50),
-`New_setting` varchar(50) NOT NULL,
-`Setting_name` varchar(50) NOT NULL,
-`User` varchar(50) NOT NULL,
-PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-SQL;
-$installer->run($sql);
-
 $version15 = '1.5.0.0';
+$version19 = '1.9.0.0';
+$version110 = '1.10.0.0';
 $isVersion15 = version_compare(Mage::getVersion(), $version15, '<') ? false : true;
+$isVersion19 = version_compare(Mage::getVersion(), $version19, '<') ? false : true;
+$isVersion110 = version_compare(Mage::getVersion(), $version110, '<') ? false : true;
 
-if (!$isVersion15) {
+if (!$isVersion15 || ($isVersion19 && !$isVersion110)) {
 	return;
 }
 

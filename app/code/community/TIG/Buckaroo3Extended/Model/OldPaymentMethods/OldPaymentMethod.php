@@ -16,7 +16,7 @@ class TIG_Buckaroo3Extended_Model_OldPaymentMethods_OldPaymentMethod extends Mag
     
     public function getOrderPlaceRedirectUrl()
     {
-
+        
     }
     
 	public function isAvailable($quote = null)

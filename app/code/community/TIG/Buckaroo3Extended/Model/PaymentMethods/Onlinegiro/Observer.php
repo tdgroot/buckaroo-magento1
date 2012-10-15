@@ -43,12 +43,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG
         $vars = $request->getVars();
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         
-        $array = array(
-            'customergender'        => $additionalFields['gender'],
-            'CustomerEmail'         => $additionalFields['mail'],
-            'CustomerFirstName'     => $additionalFields['firstname'],
-            'CustomerLastName'      => $additionalFields['lastname'],
-        );
+        if (is_array($additionalFields) 
+            && array_key_exists('gender', $additionalFields)
+            && array_key_exists('mail', $additionalFields)
+            && array_key_exists('firstname', $additionalFields)
+            && array_key_exists('lastname', $additionalFields)
+        ) {
+            $array = array(
+                'customergender'        => $additionalFields['gender'],
+                'CustomerEmail'         => $additionalFields['mail'],
+                'CustomerFirstName'     => $additionalFields['firstname'],
+                'CustomerLastName'      => $additionalFields['lastname'],
+            );
+        } else {
+            $array = array();
+        }
         
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
@@ -71,6 +80,46 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG
         $codeBits = explode('_', $this->_code);
         $code = end($codeBits);
         $request->setMethod($code);
+        
+        return $this;
+    }
+
+    /**
+     * While onlinegiro is the paymentmethod for this transaction, the transation is actually completed using another paymentmethod.
+     * This observer stores that paymentmethod in the database. This is currently only used for online refunds.
+     * 
+     * @param Varien_Event_Observer $observer
+     */
+    public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $push = $observer->getPush();
+        $order = $observer->getOrder();
+        $postArray = $push->getPostArray();
+        
+        if (
+            isset($postArray['brq_payment_method']) 
+            && !$order->getPaymentMethodUsedForTransaction() 
+            && $postArray['brq_statuscode'] == '190'
+            )
+        {
+            $order->setPaymentMethodUsedForTransaction($postArray['brq_payment_method']);
+        } elseif (
+            isset($postArray['brq_transaction_method']) 
+            && !$order->getPaymentMethodUsedForTransaction()
+            && $postArray['brq_statuscode'] == '190'
+            )
+        {
+            $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
+        }
+        $order->save();
+
+        //if set to true, the push processing will be stopped here. Needs to be set to false, to make
+        //sure the order is still updated.
+        $push->setCustomResponseProcessing(false);
         
         return $this;
     }

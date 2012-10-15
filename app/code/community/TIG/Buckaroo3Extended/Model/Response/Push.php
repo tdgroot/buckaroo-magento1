@@ -84,7 +84,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		$this->_debugEmail .= "New state: " . $newStates[0] . "\nNew status: " . $newStates[1] . "\n\n";
         
         Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
-                
+              
         if ($this->getCustomResponseProcessing()) {
             return true;
         }
@@ -130,7 +130,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	{
 	    $correctSignature = false;
 		$canUpdate = false;
-	    $signature = $this->_calculateSignature($isReturn);
+	    $signature = $this->_calculateSignature();
 	    if ($signature === $this->_postArray['brq_signature']) {
 	        $correctSignature = true;
 	    }
@@ -320,6 +320,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		//will retrieve it from the response array, if response actually is an array
 		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
+			$this->_order->save();
 		}
 		
 		$this->_order->addStatusHistoryComment($description, $newStates[1])
@@ -353,11 +354,15 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    	$this->_order->cancel()
 	    				 ->save();
 	    	if ($description) {
-	    		$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description))
-	    					 ->save();
+	    		$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
+	    				     ->save();
 	    	}
+    		$this->_order->setStatus($newStates[1])
+    					 ->save();
 	    } else {	    	
-	    	$this->_order->setState($newStates[0], $newStates[1], Mage::helper('buckaroo3extended')->__($description))
+	    	$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
+	    	             ->save();
+	    	$this->_order->setStatus($newStates[1])
 	    				 ->save();
 	    }
 	    return true;
@@ -492,17 +497,21 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     protected function _saveInvoice()
     {  
 	    if ($this->_order->canInvoice()) {
-	        $payment = $this->_order->getPayment()->registerCaptureNotification($this->_order->getBaseGrandTotal());
+	        $payment = $this->_order->getPayment();
+	        $payment->registerCaptureNotification($this->_order->getBaseGrandTotal());
+	        
 	        $this->_order->save();
 	        $this->_debugEmail .= 'Invoice created and saved. \n';
+	        
+    	    //sets the invoice's transaction ID as the Buckaroo TRX. This is to allow the order to be refunded using Buckaroo later on.
+            foreach($this->_order->getInvoiceCollection() as $invoice)
+    	    {
+    	        $invoice->setTransactionId($this->_postArray['brq_transactions'])
+    	                ->save();
+    	    }
 	        return true;
 	    }
 	    
-	    //sets the transaction id. Will allow for online refunds.
-        foreach($this->_order->getInvoiceCollection() as $invoice)
-	    {
-	        $invoice->setTransactionId($this->_postArray['brq_transactions']);
-	    }
         return false;
     }
     
@@ -511,7 +520,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * 
 	 * @return string $signature
 	 */
-	protected function _calculateSignature($isReturn = false)
+	protected function _calculateSignature()
 	{
 	    if (isset($this->_postArray['isOldPost']) && $this->_postArray['isOldPost'])
 	    {

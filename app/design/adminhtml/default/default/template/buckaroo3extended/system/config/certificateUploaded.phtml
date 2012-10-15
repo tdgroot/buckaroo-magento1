@@ -1,34 +1,13 @@
-<?php 
-
-$certificateBaseDir = preg_replace("#/design(.*)#", '', dirname(__FILE__));
-$certificate = $certificateBaseDir . '/code/community/TIG/Buckaroo3Extended/certificate/BuckarooPrivateKey.pem';
-
-$isUploaded = file_exists($certificate); ?>
-
-<?php if ($isUploaded): ?>
-	<div style="
-        background-image:url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/images/fam_bullet_success.gif');
-        background-repeat:no-repeat; 
-        background-color:rgb(255,255,255); 
-        padding:9px;
-        padding-left:28px;
-        height:27px;
-        border:1px solid #CCCCCC;
-        background-position:10px 10px;
-    ">
-        <h4><?php echo Mage::helper('buckaroo3extended')->__('You have successfully uploaded your Buckaroo private key certificate! You can use the form below to upload a replacement.');?></h4>
-    </div>
-<?php else: ?>
-	<div style="
-        background-image:url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/images/error_msg_icon.gif');
-        background-repeat:no-repeat; 
-        background-color:rgb(255,255,255); 
-        padding:9px;
-        padding-left:28px;
-        height:27px;
-        border:1px solid #CCCCCC;
-        background-position:10px 10px;
-    ">
-        <h4><?php echo Mage::helper('buckaroo3extended')->__('You have not yet uploaded a Buckaroo private key certificate. Please use the form below to do so.');?></h4>
-    </div>
-<?php endif; ?>
+<?php $this->isUploaded(); ?>
+<div style="
+    background-image:url('<?php echo $this->icon; ?>');
+    background-repeat:no-repeat; 
+    background-color:rgb(255,255,255); 
+    padding:9px;
+    padding-left:28px;
+    height:27px;
+    border:1px solid #CCCCCC;
+    background-position:10px 10px;
+">
+    <h4><?php echo Mage::helper('buckaroo3extended')->__($this->message); ?></h4>
+</div>

@@ -1,0 +1,7 @@
+<layout version = "0.1.0">
+	<default>
+		<reference name = "head">
+			<action method="addItem"><type>skin_css</type><name>css/tig_buckaroo3extended/buckaroo3extended.css</name></action>
+		</reference>
+	</default>
+</layout>
