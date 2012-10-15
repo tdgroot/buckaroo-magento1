@@ -304,6 +304,12 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 */
 	protected function _processSuccess($newStates, $description = false)
 	{	
+		//send new order email if it hasnt already been sent
+		if(!$this->_order->getEmailSent())
+        {
+        	$this->_order->sendNewOrderEmail();
+        }
+        
         $this->_autoInvoice();
 	    
 		$description = Mage::helper('buckaroo3extended')->__($description);
@@ -320,12 +326,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			         ->save();
 			         
 	    $this->_order->setStatus($newStates[1])->save();
-		
-		//send new order email if it hasnt already been sent
-		if(!$this->_order->getEmailSent())
-        {
-        	$this->_order->sendNewOrderEmail();
-        }
         
 		return true;
 	}

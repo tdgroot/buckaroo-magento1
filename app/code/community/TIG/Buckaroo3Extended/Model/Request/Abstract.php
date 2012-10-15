@@ -27,19 +27,38 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     public function __construct() {
         parent::__construct();
 
-        Mage::dispatchEvent('buckaroo3extended_request_setmethod', array('request' => $this, 'order' => $this->_order));
-
         $this->setVars(array());
     }
 
     public function sendRequest()
     {
+    	if (empty($this->_order)) {
+    		$this->_debugEmail .= "No order was set! :( \n";
+    		Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
+    	}
+    	
+        Mage::dispatchEvent('buckaroo3extended_request_setmethod', array('request' => $this, 'order' => $this->_order));
+        
+        $responseModelClass = Mage::helper('buckaroo3extended')->isAdmin() ? 'buckaroo3extended/response_backendOrder' : 'buckaroo3extended/response_abstract';
+        
         $this->_debugEmail .= 'Chosen payment method: ' . $this->_method . "\n";
 
         //if no method has been set (no payment method could identify the chosen method) process the order as if it had failed
         if (empty($this->_method)) {
             $this->_debugEmail .= "No method was set! :( \n";
-            Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
+            $responseModel = Mage::getModel(
+            	$responseModelClass, 
+            	array(
+            		'response' => false, 
+            		'XML' => false, 
+            		'debugEmail' => $this->_debugEmail
+            	)
+            );
+            if (!$responseModel->getOrder()) {
+            	$responseModel->setOrder($this->_order);
+            }
+            
+            $responseModel->processResponse();
         }
 
         //hack to prevent SQL errors when using onestepcheckout
@@ -81,14 +100,19 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
         $this->_debugEmail .= "Let's process that beautiful response! \n";
         //process the response
-        Mage::getModel(
-            'buckaroo3extended/response_abstract',
+        $responseModel = Mage::getModel(
+            $responseModelClass,
             array(
                 'response'   => $response,
                 'XML'        => $responseXML,
                 'debugEmail' => $this->_debugEmail,
             )
-        )->processResponse();
+        );
+        
+        if (!$responseModel->getOrder()) {
+            $responseModel->setOrder($this->_order);
+        }
+        $responseModel->processResponse();
     }
 
     protected function _addServices()
