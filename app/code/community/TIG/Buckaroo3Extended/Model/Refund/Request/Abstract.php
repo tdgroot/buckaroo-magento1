@@ -91,6 +91,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         $this->_addOrderVariables();
         $this->_addShopVariables();
         $this->_addRefundVariables();
+        $this->_addCustomParameters();
 
         $this->_debugEmail .= "Firing request events. \n";
         //event that allows individual payment methods to add additional variables such as bankaccount number
@@ -101,7 +102,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 
         //clean the array for a soap request
         $this->setVars($this->_cleanArrayForSoap($this->getVars()));
-
+		
         $this->_debugEmail .= "Variable array:" . var_export($this->_vars, true) . "\n\n";
         $this->_debugEmail .= "Building SOAP request... \n";
 
@@ -170,5 +171,18 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 	        $amount = round($this->_amount * $this->_order->getBaseToOrderRate(), 2);
 	        return array($currency, $amount);
 	    }
+	}
+	
+	protected function _addCustomParameters()
+	{
+		$array = array(
+			'refund_initiated_in_magento' => 1,	
+		);
+		
+		if (isset($this->_vars['customParaeters'])) {
+			$this->_vars['customParameters'] = array_merge($this->_vars['customParameters'], $array);
+		} else {
+			$this->_vars['customParameters'] = $array;
+		}
 	}
 }
