@@ -210,20 +210,24 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     protected function _error($client = false)
     {
         $response = false;
-        
+
+        $responseDomDOC = new DOMDocument();
+    	$requestDomDOC = new DOMDocument();
         if ($client) {
             $responseXML = $client->__getLastResponse();
             $requestXML = $client->__getLastRequest();
         
-            $responseDomDOC = new DOMDocument();
-            $responseDomDOC->loadXML($responseXML);
-    		$responseDomDOC->preserveWhiteSpace = FALSE;
-    		$responseDomDOC->formatOutput = TRUE;
+            if (!empty($responseXML)) {
+	            $responseDomDOC->loadXML($responseXML);
+	    		$responseDomDOC->preserveWhiteSpace = FALSE;
+	    		$responseDomDOC->formatOutput = TRUE;
+            }
     		
-    		$requestDomDOC = new DOMDocument();
-            $requestDomDOC->loadXML($requestXML);
-    		$requestDomDOC->preserveWhiteSpace = FALSE;
-    		$requestDomDOC->formatOutput = TRUE;
+            if (!empty($requestXML)) {
+	            $requestDomDOC->loadXML($requestXML);
+	    		$requestDomDOC->preserveWhiteSpace = FALSE;
+	    		$requestDomDOC->formatOutput = TRUE;
+            }
         }
         
         return array($response, $responseDomDOC, $requestDomDOC);
@@ -395,22 +399,17 @@ class SoapClientWSSEC extends SoapClient
     	//Canonicalize nodeset
     	$signedINFO = $this->GetCanonical($SignedInfoNodeSet);
     	
-    	//Get privatekey certificate
-    	if(!file_exists(CERTIFICATE_DIR . '/BuckarooPrivateKey.pem')) {
-    	    throw new Exception('Certificate file could not be located.');
-    	}
-    	
     	$certificateId = Mage::getStoreConfig('buckaroo/buckaroo3extended_certificate/certificate', Mage::app()->getStore()->getId());
     	$certificate = Mage::getModel('buckaroo3extended/certificate')->load($certificateId)->getCertificate();
     	$priv_key = substr($certificate, 0, 8192);
     	
     	if ($priv_key === false) {
-    	    throw new Exception('Unable to read certificate file.');
+    	    throw new Exception('Unable to read certificate.');
     	}
     	
     	$pkeyid = openssl_get_privatekey($priv_key, '');	
 	    if ($pkeyid === false) {
-    	    throw new Exception('Unable to retrieve private key from certificate file');
+    	    throw new Exception('Unable to retrieve private key from certificate.');
     	}
     	
     	//Sign signedinfo with privatekey

@@ -67,6 +67,48 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         return $this;
     }
     
+	/**
+     * Custom push processing for Paymentguarantee. Because paymentguarantee orders should have been invoiced as 
+     * soon as Buckaroo said that the guarantor had approved the transaction only a note should be added to the
+     * order.
+     * 
+     * @param Varien_Event_Observer $observer
+     */
+    public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $push = $observer->getPush();
+        $response = $observer->getResponse();
+        $order = $observer->getOrder();
+        $postArray = $push->getPostArray();
+
+        $push->addNote($response['message'], $this->_method);
+        
+        if (
+            isset($postArray['brq_payment_method']) 
+            && !$order->getPaymentMethodUsedForTransaction() 
+            && $postArray['brq_statuscode'] == '190'
+            )
+        {
+            $order->setPaymentMethodUsedForTransaction($postArray['brq_payment_method']);
+        } elseif (
+            isset($postArray['brq_transaction_method']) 
+            && !$order->getPaymentMethodUsedForTransaction()
+            && $postArray['brq_statuscode'] == '190'
+            )
+        {
+            $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
+        }
+        $order->save();
+
+        $push->setCustomResponseProcessing(true);
+        
+        return $this;
+    }
+    
     protected function _isChosenMethod($observer)
     {
         $ret = false;
