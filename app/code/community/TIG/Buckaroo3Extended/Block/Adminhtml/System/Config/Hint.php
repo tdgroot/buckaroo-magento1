@@ -18,11 +18,18 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'transfer',
         'visa',
         'payperemail',
-        'paymentguarantee'
+        'paymentguarantee',
+    	'giftcards',
+    	'empayment',
     );
     
     public $services = array(
         'refund',
+    );
+    
+    public $config = array(
+    	'advanced',
+    	'certificate',
     );
 
     /**

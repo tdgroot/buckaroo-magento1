@@ -27,11 +27,13 @@ jQuery('document').ready(
 		{
 			jQuery("#buckaroo_buckaroo3extended").prev().prev().css('background-color','rgb(137,197,64)');
 		}
-		
-		jQuery('#buckaroo_buckaroo3extended_advanced').prev().prev().css('background-color','rgb(245,111,9)')
 
-    	jQuery('.buckaroo-header').html('&nbsp;').css('background-image'
-    	    									      , "url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/buckaroo/images/buckaroo_large.png')").css('width','151').css('height','30');
+    	jQuery('.buckaroo-header').html('&nbsp;').css('background-image', "url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/buckaroo/images/buckaroo_large.png')").css('width','151').css('height','30');
+
+		<?php foreach($this->config as $config): ?>
+			jQuery('#buckaroo_buckaroo3extended_<?php echo $config; ?>').prev().prev().css('background-color','rgb(245,111,9)')
+		<?php endforeach;?>
+    	    									      
 		<?php foreach($this->methods as $method):?>
     		if (jQuery("#buckaroo_buckaroo3extended_<?php echo $method; ?>_active").val() == 0 ) {
     			jQuery("#buckaroo_buckaroo3extended_<?php echo $method; ?>").prev().prev().addClass('disabled');
