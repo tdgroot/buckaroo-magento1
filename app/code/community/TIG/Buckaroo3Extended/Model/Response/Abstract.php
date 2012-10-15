@@ -333,7 +333,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     	$signedInfo = $SignedInfoNodeSet->C14N(true, false);
 
     	//get the public key
-		$pubKey = openssl_get_publickey(openssl_x509_read(file_get_contents(CERTIFICATE_DIR . '/Checkout.pem')));
+		$pubKey = openssl_get_publickey(openssl_x509_read(file_get_contents(CERTIFICATE_DIR . DS .'Checkout.pem')));
 
 		//verify the signature
     	$sigVerify = openssl_verify($signedInfo, $sigDecoded, $pubKey);

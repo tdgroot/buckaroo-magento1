@@ -340,7 +340,16 @@
         <models>
             <buckaroo3extended>
                 <class>TIG_Buckaroo3Extended_Model</class>
+                <resourceModel>buckaroo3extended_resource</resourceModel>
             </buckaroo3extended>
+            <buckaroo3extended_resource>
+                <class>TIG_Buckaroo3Extended_Model_Resource</class>
+                <entities>
+                    <certificate>
+                        <table>buckaroo_certificates</table>
+                    </certificate>
+                </entities>
+            </buckaroo3extended_resource>
         </models>
         <helpers>
             <buckaroo3extended>
