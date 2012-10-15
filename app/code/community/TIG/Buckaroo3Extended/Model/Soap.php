@@ -87,6 +87,11 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
         
+        if (isset($this->_vars['customVars']['servicesSelectableByClient']) && isset($this->_vars['customVars']['continueOnImcomplete'])) {
+        	$TransactionRequest->ServicesSelectableByClient = $this->_vars['customVars']['servicesSelectableByClient'];
+        	$TransactionRequest->ContinueOnIncomplete       = $this->_vars['customVars']['continueOnImcomplete'];
+        }
+        
         $TransactionRequest->Services = new Services();
         
         $this->_addServices($TransactionRequest);
@@ -208,6 +213,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     {
         $services = array();
         foreach($this->_vars['services'] as $fieldName => $value) {
+        	if (empty($value)) {
+        		continue;
+        	}
+        	
             $service          = new Service();
             $service->Name    = $fieldName;
             $service->Action  = $value['action'];
