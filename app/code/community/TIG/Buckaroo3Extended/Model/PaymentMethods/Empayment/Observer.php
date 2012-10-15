@@ -72,7 +72,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
         $storeId = Mage::app()->getStore()->getId();
         
         $array = array(
-            'beneficiaryAccountNumber' => Mage::getStoreConfig('buckaroo/buckaroo3extended_empayment/account_number', $storeId),
+            //'beneficiaryAccountNumber' => Mage::getStoreConfig('buckaroo/buckaroo3extended_empayment/account_number', $storeId),
             'reference'                => $this->_order->getIncrementId(),
             'emailAddress'             => Mage::getStoreConfig('buckaroo/buckaroo3extended_empayment/email_address', $storeId),
         );
@@ -184,7 +184,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
                                 'group' => 'address',
                             ),
             'ZipCode'  => array(
-                                'value' => $this->_billingInfo['firstname'],
+                                'value' => $this->_billingInfo['zip'],
                                 'group' => 'address',
                             ),
         );

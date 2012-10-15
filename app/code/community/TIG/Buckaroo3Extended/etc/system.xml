@@ -2850,7 +2850,7 @@
                     </fields>
                 </buckaroo3extended_giftcards>
                 
-                <!-- <buckaroo3extended_empayment translate="label">
+                <buckaroo3extended_empayment translate="label">
                     <label>Buckaroo 3 extended èM! Payment</label>
                     <sort_order>300</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2903,16 +2903,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>	
-                        <account_number>
-                        	<label>Account number</label>
-                        	<comment>Please enter your bankaccount number</comment>
-                        	<frontend_type>text</frontend_type>
-                            <sort_order>42</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </account_number>
+                        </title>
                         <email_address>
                         	<label>E-mail address</label>
                         	<comment>Please enter your e-mail address</comment>
@@ -3037,7 +3028,7 @@
                             </depends>
                         </reminder_level>
                     </fields>
-                </buckaroo3extended_empayment> -->
+                </buckaroo3extended_empayment>
 
                 <buckaroo3extended_refund translate="label" module="paygate">
                     <label>Buckaroo 3 extended Refunding</label>
