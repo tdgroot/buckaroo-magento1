@@ -1,5 +1,5 @@
 <?php 
-class TIG_Buckaroo3Extended_Model_Response_return extends TIG_Buckaroo3Extended_Model_Response_Push
+class TIG_Buckaroo3Extended_Model_Response_Return extends TIG_Buckaroo3Extended_Model_Response_Push
 {
     public function processReturn()
     {

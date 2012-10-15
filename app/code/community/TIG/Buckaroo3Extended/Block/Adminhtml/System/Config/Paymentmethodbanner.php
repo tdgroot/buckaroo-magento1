@@ -1,6 +1,7 @@
 <?php 
-class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Paymentmethodbanner extends Mage_Adminhtml_Block_Abstract
-                                                                              implements Varien_Data_Form_Element_Renderer_Interface
+class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Paymentmethodbanner 
+    extends Mage_Adminhtml_Block_Abstract
+    implements Varien_Data_Form_Element_Renderer_Interface
 {
     protected $_template = 'buckaroo3extended/system/config/paymentmethodbanner.phtml';
 

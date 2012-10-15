@@ -1,6 +1,18 @@
 <?php 
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
+    protected $_payment;
+    
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+    
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+    
     public $allowedCurrencies = array(
 		'EUR',
 	);
@@ -13,10 +25,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
     protected $_canAuthorize            = true;
     protected $_canCapture              = true;
     protected $_canCapturePartial       = true;
-    protected $_canRefund               = true;
-    protected $_canRefundInvoicePartial = true;
+    protected $_canRefund               = false;
+    protected $_canRefundInvoicePartial = false;
     protected $_canVoid                 = true;
-    protected $_canUseInternal          = true;
+    protected $_canUseInternal          = false;
     protected $_canUseCheckout          = true;
     protected $_canUseForMultishipping  = false;
     protected $_canSaveCc 				= false;
@@ -46,9 +58,34 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }
     
+    public function refund(Varien_Object $payment, $amount)
+    {
+        if (!$this->canRefund()) {
+            Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
+        }
+        
+        $refundRequest = Mage::getModel(
+        	'buckaroo3extended/refund_request_abstract', 
+            array(
+            	'payment' => $payment, 
+            	'amount' => $amount
+            )
+        );
+        
+        try {
+	        $refundRequest->sendRefundRequest();
+	        $this->setPayment($refundRequest->getPayment());
+        } catch (Exception $e) {
+        	Mage::helper('buckaroo3extended')->logException($e);
+        	Mage::throwException($e->getMessage());
+        }
+        
+        return $this;
+    }
+    
     public function isAvailable($quote = null)
     {
-        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo()) {
+        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote)) {
     		return false;
     	}
     

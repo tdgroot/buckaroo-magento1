@@ -2,6 +2,8 @@
 
 final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model_Abstract
 {
+    const WSDL_URL = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
+    
     private $_vars;
     private $_method;
     
@@ -21,7 +23,20 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     {
         define(
         	   'LIB_DIR', 
-               Mage::getBaseDir() . DS . 'app' . DS . 'code' . DS . 'community' . DS . 'TIG' . DS . 'Buckaroo3Extended' . DS . 'lib' . DS
+               Mage::getBaseDir() 
+               . DS 
+               . 'app' 
+               . DS 
+               . 'code' 
+               . DS 
+               . 'community' 
+               . DS 
+               . 'TIG' 
+               . DS 
+               . 'Buckaroo3Extended' 
+               . DS 
+               . 'lib' 
+               . DS
         );
         
         $this->setVars($data['vars']);
@@ -40,13 +55,11 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     
     public function transactionRequest()
     {
-        $wsdlUrl = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
-        
         try
         {
             //first attempt: use the cached WSDL
         	$client = new SoapClientWSSEC(
-                $wsdlUrl,
+                self::WSDL_URL,
                 array(
                 	'trace' => 1,
                     'cache_wsdl' => WSDL_CACHE_DISK,
@@ -56,7 +69,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                 //second attempt: use an uncached WSDL
                 ini_set('soap.wsdl_cache_ttl', 1);
                 $client = new SoapClientWSSEC(
-                    $wsdlUrl,
+                    self::WSDL_URL,
                     array(
                     	'trace' => 1,
                         'cache_wsdl' => WSDL_CACHE_NONE,
@@ -80,12 +93,22 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $TransactionRequest = new Body();
         $TransactionRequest->Currency = $this->_vars['currency'];
-        $TransactionRequest->AmountDebit = round($this->_vars['totalAmount'], 2);
+        $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
+        $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
         $TransactionRequest->Invoice = $this->_vars['orderId'];
         $TransactionRequest->Order = $this->_vars['orderId'];
         $TransactionRequest->Description = $this->_vars['description'];
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
+        
+        if (isset($this->_vars['customVars']['servicesSelectableByClient']) && isset($this->_vars['customVars']['continueOnImcomplete'])) {
+        	$TransactionRequest->ServicesSelectableByClient = $this->_vars['customVars']['servicesSelectableByClient'];
+        	$TransactionRequest->ContinueOnIncomplete       = $this->_vars['customVars']['continueOnImcomplete'];
+        }
+        
+        if (array_key_exists('OriginalTransactionKey', $this->_vars)) {
+            $TransactionRequest->OriginalTransactionKey = $this->_vars['OriginalTransactionKey'];
+        }
         
         $TransactionRequest->Services = new Services();
         
@@ -156,10 +179,12 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         try
         {
         	$response = $client->TransactionRequest($TransactionRequest);
-        }
-        catch ( SoapFault $e )
-        {
+        } catch (SoapFault $e) {
+            $this->logException($e->getMessage());
         	return $this->_error($client);
+        } catch (Exception $e) {
+            $this->logException($e->getMessage());
+            return $this->_error($client);
         }
         
         if (is_null($response)) {
@@ -208,6 +233,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     {
         $services = array();
         foreach($this->_vars['services'] as $fieldName => $value) {
+        	if (empty($value)) {
+        		continue;
+        	}
+        	
             $service          = new Service();
             $service->Name    = $fieldName;
             $service->Action  = $value['action'];
@@ -366,17 +395,17 @@ class SoapClientWSSEC extends SoapClient
     	//Canonicalize nodeset
     	$signedINFO = $this->GetCanonical($SignedInfoNodeSet);
     	
-    	//Get privatekey certificate
-    	$fp = fopen(CERTIFICATE_DIR . '/BuckarooPrivateKey.pem', "r");
-    	$priv_key = fread($fp, 8192);
+    	$certificateId = Mage::getStoreConfig('buckaroo/buckaroo3extended_certificate/certificate', Mage::app()->getStore()->getId());
+    	$certificate = Mage::getModel('buckaroo3extended/certificate')->load($certificateId)->getCertificate();
+    	$priv_key = substr($certificate, 0, 8192);
+    	
     	if ($priv_key === false) {
-    	    echo 'cant read';exit;
+    	    throw new Exception('Unable to read certificate.');
     	}
-    	fclose($fp);
     	
     	$pkeyid = openssl_get_privatekey($priv_key, '');	
 	    if ($pkeyid === false) {
-    	    echo 'no pkeyid';exit;
+    	    throw new Exception('Unable to retrieve private key from certificate.');
     	}
     	
     	//Sign signedinfo with privatekey
@@ -488,9 +517,6 @@ class Body
  	public $OriginalTransactionKey;
  	public $StartRecurrent;
  	public $Services;
- 	//public $ContinueOnIncomplete;
- 	//public $CustomParameters;
- 	//public $AdditionalParameters;
 }
 
 class Services

@@ -13,6 +13,10 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	protected $_billingInfo = '';
 	protected $_session = '';
 	
+	/**
+	 *  List of possible response codes sent by buckaroo.
+	 *  This is the list for the BPE 3.0 gateway.
+	 */
 	public    $responseCodes = array(
 		    190 => array(
 		    	       'message' => 'Success',
@@ -65,6 +69,10 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	 */
 	protected function _loadLastOrder()
 	{
+	    if (!empty($this->_order)) {
+	        return;
+	    }
+	    
 	    $session = Mage::getSingleton('checkout/session');
 	    $orderId = $session->getLastRealOrderId();
 	    if (!empty($orderId)) {
@@ -76,7 +84,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    $this->_order = $order;
 	}
 	
-	public function getorder()
+	public function getOrder()
 	{
 	    return $this->_order;
 	}
@@ -123,10 +131,28 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	
 	public function __construct($debugEmail = false)
 	{
-	    if (strpos(dirname(__FILE__), '/Model') !== false) {
-	        $dir = str_replace('/Model', '/certificate', dirname(__FILE__));
+	    if (strpos(dirname(__FILE__), DS .'Model') !== false) {
+	        $dir = str_replace(DS .'Model', DS .'certificate', dirname(__FILE__));
 	    } else {
-	        $dir = str_replace('/includes/src', '/app/code/community/TIG/Buckaroo3Extended/certificate', dirname(__FILE__));
+	        $dir = str_replace(
+	        	DS 
+	        	.'includes' 
+	        	. DS 
+	        	. 'src', 
+	        	DS 
+	        	. 'app' 
+	        	. DS 
+	        	. 'code' 
+	        	. DS 
+	        	. 'community' 
+	        	. DS 
+	        	. 'TIG' 
+	        	. DS 
+	        	. 'Buckaroo3Extended' 
+	        	. DS 
+	        	. 'certificate',
+	        	dirname(__FILE__)
+	        );
 	    }
 	    
 	    if (!defined('CERTIFICATE_DIR')) {
@@ -134,7 +160,12 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    }
 	    
 		$this->_loadLastOrder();
-		$this->setSession(Mage::getSingleton('core/session'));
+		
+		if (!Mage::helper('buckaroo3extended')->isAdmin()) {
+			$this->setSession(Mage::getSingleton('checkout/session'));
+		} else {
+			$this->setSession(Mage::getSingleton('core/session'));
+		}
 		$this->_setOrderBillingInfo();
 		
 		if ($debugEmail) {
@@ -143,9 +174,14 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		    $this->setDebugEmail('');
 		}
 		
-		$this->_checkExpired();
+		if (!Mage::helper('buckaroo3extended')->isAdmin()) {
+			$this->_checkExpired();
+		}
 	}
 	
+	/**
+	 * Checks if the order object is still there. Prevents errors when session has expired.
+	 */
 	protected function _checkExpired()
 	{
 	    if (empty($this->_order)) {
@@ -196,6 +232,9 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         $this->setBillingInfo($billingInfo);
 	}
 	
+	/**
+	 * Restores a previously closed quote so that the cart stays filled after an unsuccessfull order
+	 */
     public function restoreQuote()
     {
     	$quoteId = $this->_order->getQuoteId();
@@ -206,6 +245,10 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
     }
     
+    /**
+	 *  Empties the cart after a successfull order. To prevent the cart from staying filled when the user
+	 *  has a modified shop that doesn't automatically clear the cart when placing an order.
+     */
     public function emptyCart()
     {
         if (!Mage::getStoreConfig('buckaroo/buckaroo3extended/manual_empty_cart', Mage::app()->getStore()->getStoreId())) {
@@ -222,6 +265,14 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         }
     }
     
+    /**
+     * Determines the totalamount of the order and the currency to be used based on which currencies are available
+     * and which currency the customer has selected.
+     * 
+     * Will default to base currency if the selected currency is unavailable.
+     * 
+     * @return array
+     */
     protected function _determineAmountAndCurrency()
 	{
 	    $code = $this->_order->getPayment()->getMethod();
@@ -319,7 +370,6 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	 * get locale based on country
 	 * locale is formatted as language-LOCALE
 	 * 
-	 * 
 	 * @return array
 	 */
 	protected function _getLocale()
@@ -341,7 +391,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 
 	
     /**
-     * Retreives an array with information related to a recieved response code.
+     * Retrieves an array with information related to a recieved response code.
      * This method will only be called when it's child cant find it itself. This list
      * is a general list of known status codes. Its not as inclusive as the lists used\
      * by its children. However, this list also contains general error codes not
@@ -357,7 +407,11 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		{
 		    $returnArray = $this->responseCodes[$code];
 		    
-		    if ($this->_response && isset($this->_response->Status->SubCode)) {
+		    if (is_object($this->_response)
+		        && isset($this->_response->Status->SubCode)) 
+		    {
+		        //the subcode is additional information sometimes returned by Buckaroo. Currently not used,
+		        //but it may be of use when debugging.
     		    $returnArray['subCode'] = array(
     		        'message' => $this->_response->Status->SubCode->_,
     		        'code'    => $this->_response->Status->SubCode->Code,
@@ -415,12 +469,15 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		}
 	}
 	
+	/**
+	 * Checks if the correct amount has been paid.
+	 */
 	protected function _checkCorrectAmount()
 	{
 	    $amountPaid = round($this->_postArray['brq_amount'] * 100, 0);
 	    
-	    if ($this->_postArray['brq_currency'] == $this->_order->getCurrencyCode()) {
-	        $amountOrdered = round($this->_order->getGrandTotal() * 100, 0);
+	    if ($this->_postArray['brq_currency'] == $this->_order->getStoreCurrencyCode()) {
+	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
 	    } else {
 	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
 	    }
@@ -472,14 +529,14 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 		return $string;
 	}
 	
-	public function log($string, $force = false)
+	public function log($message, $force = false)
 	{
-	    Mage::log($string, null, 'TIG_B3E.log', $force);
+	    Mage::helper('buckaroo3extended')->log($message, $force);
 	}
 
-	public function logException($string)
+	public function logException($e)
 	{
-	    Mage::log($string, null, 'TIG_B3E_Exception.log', true);
+	    Mage::helper('buckaroo3extended')->logException($e);
 	}
 	
 	public function sendDebugEmail()
@@ -496,7 +553,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    
 	    foreach($recipients as $recipient) {
     	    mail(
-    	        $recipient, 
+    	        trim($recipient), 
     	        'Buckaroo 3 Extended Debug Email', 
     	        $mail
     	    );
@@ -523,6 +580,38 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         return $sortedArray;
     }
 	
+	protected function _updateRefundedOrderStatus($success = false)
+	{	    
+	    $successString = $success ? 'success' : 'failed';
+	    $state = $this->_order->getState();
+	     
+	    if ($success) {
+	        $comment = 'Buckaroo refund request was successfully processed.';
+	    } else {
+	        $comment = 'Unfortunately the Buckaroo refund request could not be processed succesfully.';
+	    }
+	    
+	    if ($this->_order->getBaseGrandTotal() != $this->_order->getBaseTotalRefunded()) {
+	        $configField = "buckaroo/buckaroo3extended_refund/order_status_partial_{$state}_{$successString}";
+	        $status = Mage::getStoreConfig($configField);
+	    } else {
+	        $status = null;
+	    }
+	    
+	    if (!empty($status)) {
+    	    $this->_order->setStatus($status)->save();
+    	    $this->_order->addStatusHistoryComment($comment, $status)
+    	         ->save();
+	    } else {
+	        $this->_order->addStatusHistoryComment($comment)
+    	         ->save();
+	    }
+	}
+	
+    /**
+     * Long list of response codes used by BPE 2.0 gateway. Added here for backwards compatibility. Added
+     * to the bottem of the page so it doesn't take up as much space
+     */
 	public $oldResponseCodes = array(
           0	 => array( '*'=>array(	"omschrijving" => "De credit card transactie is pending.",
     					"code"		=> self::BUCKAROO_NEUTRAL,

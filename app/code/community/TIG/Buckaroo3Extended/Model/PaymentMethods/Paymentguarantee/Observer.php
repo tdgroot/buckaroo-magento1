@@ -81,10 +81,31 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer exten
 
         $push = $observer->getPush();
         $response = $observer->getResponse();
+        $order = $observer->getOrder();
+        $postArray = $push->getPostArray();
 
         $push->addNote($response['message'], $this->_method);
+        
+        if (
+            isset($postArray['brq_payment_method']) 
+            && !$order->getPaymentMethodUsedForTransaction() 
+            && $postArray['brq_statuscode'] == '190'
+            )
+        {
+            $order->setPaymentMethodUsedForTransaction($postArray['brq_payment_method']);
+        } elseif (
+            isset($postArray['brq_transaction_method']) 
+            && !$order->getPaymentMethodUsedForTransaction()
+            && $postArray['brq_statuscode'] == '190'
+            )
+        {
+            $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
+        }
+        $order->save();
 
         $push->setCustomResponseProcessing(true);
+        
+        return $this;
     }
 
     /**
@@ -140,7 +161,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer exten
      */
     protected function _addPaymentGuaranteeVariables(&$vars)
     {
-        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/due_date', Mage::app()->getStore()->getStoreId());
+        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/duedate', Mage::app()->getStore()->getStoreId());
         $dueDateInvoice = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays), date("Y")));
         $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays + 14), date("Y")));
 

@@ -1,6 +1,18 @@
 <?php 
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
+    protected $_payment;
+    
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+    
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+    
     public $allowedCurrencies = array(
 		'EUR',
 		'GBP',
@@ -36,7 +48,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends Mage
     protected $_canRefund               = true;
     protected $_canRefundInvoicePartial = true;
     protected $_canVoid                 = true;
-    protected $_canUseInternal          = true;
+    protected $_canUseInternal          = false;
     protected $_canUseCheckout          = true;
     protected $_canUseForMultishipping  = false;
     protected $_canSaveCc 				= false;
@@ -56,9 +68,34 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends Mage
     	return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }
     
+    public function refund(Varien_Object $payment, $amount)
+    {
+        if (!$this->canRefund()) {
+            Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
+        }
+        
+        $refundRequest = Mage::getModel(
+        	'buckaroo3extended/refund_request_abstract', 
+            array(
+            	'payment' => $payment, 
+            	'amount' => $amount
+            )
+        );
+        
+        try {
+	        $refundRequest->sendRefundRequest();
+	        $this->setPayment($refundRequest->getPayment());
+        } catch (Exception $e) {
+        	Mage::helper('buckaroo3extended')->logException($e);
+        	Mage::throwException($e->getMessage());
+        }
+        
+        return $this;
+    }
+    
     public function isAvailable($quote = null)
     {
-    	if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo()) {
+        if (!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote)) {
     		return false;
     	}
     
@@ -66,25 +103,25 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends Mage
     	if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_amex/active', Mage::app()->getStore()->getStoreId())) {
     		return false;
     	}
-    
-    	//limit by ip
-    	if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/buckaroo3extended_amex/limit_by_ip'))
-    	{
-    		$allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
-    		if (!in_array($_SERVER['REMOTE_ADDR'], $allowedIp))
-    		{
-    			return false;
-    		}
-    	}
-    
+    	
     	//check if the country specified in the billing address is allowed to use this payment method
-    	if (Mage::getStoreConfig('buckaroo/buckaroo3extendedamex/allowspecific', Mage::app()->getStore()->getStoreId()) == 1
+    	if (Mage::getStoreConfig('buckaroo/buckaroo3extended_amex/allowspecific', Mage::app()->getStore()->getStoreId()) == 1
     		&& $quote->getBillingAddress()->getCountry()) 
     	{
     		$allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/buckaroo3extended_amex/specificcountry', Mage::app()->getStore()->getStoreId()));
     		$country = $quote->getBillingAddress()->getCountry();
     		
     		if (!in_array($country,$allowedCountries)) {
+    			return false;
+    		}
+    	}
+    	
+    	//limit by ip
+    	if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/buckaroo3extended_amex/limit_by_ip'))
+    	{
+    		$allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
+    		if (!in_array($_SERVER['REMOTE_ADDR'], $allowedIp))
+    		{
     			return false;
     		}
     	}
@@ -97,7 +134,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends Mage
         {
             return false;
         }
-        
+                  
         return parent::isAvailable($quote);
     }
 }
