@@ -400,12 +400,13 @@ class SoapClientWSSEC extends SoapClient
     	    throw new Exception('Certificate file could not be located.');
     	}
     	
-    	$fp = fopen(CERTIFICATE_DIR . '/BuckarooPrivateKey.pem', "r");
-    	$priv_key = fread($fp, 8192);
+    	$certificateId = Mage::getStoreConfig('buckaroo/buckaroo3extended_certificate/certificate', Mage::app()->getStore()->getId());
+    	$certificate = Mage::getModel('buckaroo3extended/certificate')->load($certificateId)->getCertificate();
+    	$priv_key = substr($certificate, 0, 8192);
+    	
     	if ($priv_key === false) {
     	    throw new Exception('Unable to read certificate file.');
     	}
-    	fclose($fp);
     	
     	$pkeyid = openssl_get_privatekey($priv_key, '');	
 	    if ($pkeyid === false) {

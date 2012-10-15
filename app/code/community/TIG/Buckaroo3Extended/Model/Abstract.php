@@ -159,10 +159,6 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	        define('CERTIFICATE_DIR', $dir);
 	    }
 	    
-	    if (!defined('CERTIFICATE_DIR')) {
-	        define('CERTIFICATE_DIR', $dir);
-	    }
-	    
 		$this->_loadLastOrder();
 		
 		if (!Mage::helper('buckaroo3extended')->isAdmin()) {
