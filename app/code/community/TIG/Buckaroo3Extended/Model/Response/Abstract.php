@@ -67,7 +67,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     public function processResponse()
     {
         if ($this->_response === false) {
-            $this->_debugEmail .= "The transaction generated an error! :'( \n";
+            $this->_debugEmail .= "An error occurred in building or sending the SOAP request.. \n";
             $this->_error();
         }
 
@@ -75,7 +75,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $verified = $this->_verifyResponse();
 
         if ($verified !== true) {
-            $this->_debugEmail .= "I don't know where you got that message, but it sure wasn't authentic! \n";
+            $this->_debugEmail .= "The authenticity of the responw could NOT be verified. \n";
             $this->_verifyError();
         }
         $this->_debugEmail .= "Verified as authentic! \n\n";
@@ -88,22 +88,34 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 			$this->_order->save();
             $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->Key . "\n";
 		}
-
-		if (isset($this->_response->RequiredAction)) {
-            $requiredAction = $this->_response->RequiredAction->Type;
-		} else {
-		    $requiredAction = null;
+		
+		//sets the currency used by Buckaroo
+		if (!$this->_order->getCurrencyCodeUsedForTransaction() 
+		    && is_object($this->_response) 
+		    && isset($this->_response->Currency)) 
+		{
+		    $this->_order->setCurrencyCodeUsedForTransaction($this->_response->Currency);
+		    $this->_order->save();
 		}
 
-        if (!is_null($requiredAction) && $requiredAction == 'Redirect') {
-            $this->_debugEmail .= "Apparantely we need to redirect the customer. \n";
+		if (is_object($this->_response) && isset($this->_response->RequiredAction)) {
+		    $requiredAction = $this->_response->RequiredAction->Type;
+		} else {
+		    $requiredAction = false;
+		}
+
+        if (!is_null($requiredAction) 
+            && $requiredAction !== false 
+            && $requiredAction == 'Redirect') 
+        {
+            $this->_debugEmail .= "Redirecting customer... \n";
             $this->_redirectUser();
         }
 
         $parsedResponse = $this->_parseResponse();
-        $this->_debugEmail .= "Remember that big XMl message from a couple of lines up? This is what that whole thing comes down to: " . var_export($parsedResponse, true) . "\n";
+        $this->_debugEmail .= "Parsed response: " . var_export($parsedResponse, true) . "\n";
 
-        $this->_debugEmail .= "Dispatching custom order rpocessing event... \n";
+        $this->_debugEmail .= "Dispatching custom order processing event... \n";
         Mage::dispatchEvent(
         	'buckaroo3extended_response_custom_processing',
             array(
@@ -140,7 +152,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $redirectUrl = $this->_response->RequiredAction->RedirectURL;
 
         $this->_debugEmail .= "Redirecting user to…" . $redirectUrl . "\n";
-        $this->_debugEmail .= "So long and thanks for all the fish! \n";
 
         $this->sendDebugEmail();
 
@@ -150,7 +161,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _success()
     {
-        $this->_debugEmail .= "Yay! A success response :) \n";
+        $this->_debugEmail .= "The response indicates a successful request. \n";
 		if(!$this->_order->getEmailSent())
         {
         	$this->_order->sendNewOrderEmail();
@@ -168,7 +179,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
-        $this->_debugEmail .= "So long and thanks for all the fish! \n";
 
         $this->sendDebugEmail();
 
@@ -178,7 +188,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _failed()
     {
-        $this->_debugEmail .= 'Oh no! A failed response :( \n';
+        $this->_debugEmail .= 'The transaction was unsucessful. \n';
         $this->restoreQuote();
 
         Mage::getSingleton('core/session')->addError(
@@ -195,7 +205,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
-        $this->_debugEmail .= "So long and thanks for all the fish! \n";
 
         $this->sendDebugEmail();
         header('Location:' . $returnUrl);
@@ -204,16 +213,15 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _error()
     {
-        $this->_debugEmail .= "Oh no! An error response :( \n";
+        $this->_debugEmail .= "The transaction generated an error. \n";
         Mage::getSingleton('core/session')->addError(
             Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
         );
 
         $this->_order->cancel()->save();
-        
-        $this->_debugEmail .= "I have cancelled the order! \n";
+        $this->_debugEmail .= "The order has been cancelled. \n";
         $this->restoreQuote();
-        $this->_debugEmail .= "I've also restored the quote. \n";
+        $this->_debugEmail .= "The quote has been restored. \n";
 
         $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
 			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
@@ -221,7 +229,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
-        $this->_debugEmail .= "So long and thanks for all the fish! \n";
 
         $this->sendDebugEmail();
         header('Location:' . $returnUrl);
@@ -230,7 +237,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _neutral()
     {
-        $this->_debugEmail .= "A neutral response... that's ok :) \n";
+        $this->_debugEmail .= "The response is neutral (not successful, not unsuccessful). \n";
 
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__(
@@ -244,7 +251,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . '\n';
-        $this->_debugEmail .= "So long and thanks for all the fish! \n";
 
         $this->sendDebugEmail();
 		header('Location:' . $returnUrl);
@@ -263,13 +269,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _verifyError()
     {
-        $this->_debugEmail .= "Oh no! A verification error response :( \n";
+        $this->_debugEmail .= "The transaction's authenticity was not verified. \n";
         Mage::getSingleton('core/session')->addNotice(
             Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not recieve an e-mail regarding your order within 30 minutes, please contact the shop owner.')
         );
-
-        $this->_order->cancel()->save();
-        $this->_debugEmail .= "I have cancelled the order! \n";
 
         $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
 			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
@@ -277,14 +280,13 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
-        $this->_debugEmail .= "So long and thanks for all the fish! \n";
 
         $this->sendDebugEmail();
         header('Location:' . $returnUrl);
         exit;
     }
 
-    private function _verifyResponse()
+    protected function _verifyResponse()
     {
         $verified = false;
 
@@ -298,7 +300,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         return $verified;
     }
 
-    private function _verifySignature()
+    protected function _verifySignature()
     {
         $verified = false;
 
@@ -343,7 +345,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     	return $verified;
     }
 
-    private function _verifyDigest()
+    protected function _verifyDigest()
     {
         $verified = false;
 

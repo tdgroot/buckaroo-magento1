@@ -2,16 +2,64 @@
 <config>
 	<modules>
 		<TIG_Buckaroo3Extended>
-			<version>4.0.4</version>
+			<version>4.1.0</version>
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<global>
 		<events>
+			<sales_order_payment_refund>
+            	<observers>
+            		<buckaroo3extended_refund_observer>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/refund_observer</class>
+            			<method>sales_order_payment_refund</method>
+            		</buckaroo3extended_refund_observer>
+            	</observers>
+			</sales_order_payment_refund>
+            <buckaroo3extended_refund_request_setmethod>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_payperemail>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_payperemail_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_payperemail>
+            		<buckaroo3extended_paymentmethod_observer_ideal>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_ideal_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_ideal>
+            	</observers>
+            </buckaroo3extended_refund_request_setmethod>
+            <buckaroo3extended_refund_request_addservices>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_ideal>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_ideal_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_ideal>
+            	</observers>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_payperemail>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_payperemail_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_payperemail>
+            	</observers>
+            </buckaroo3extended_refund_request_addservices>
+            <buckaroo3extended_refund_request_addcustomvars>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_ideal>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_ideal_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_ideal>
+            	</observers>
+            </buckaroo3extended_refund_request_addcustomvars>
             <controller_action_postdispatch_adminhtml_system_config_save>
             	<observers>
             		<buckaroo3extended_config_observer>
             			<type>Singleton</type>
-            			<class>TIG_Buckaroo3Extended_Model_Observer</class>
+            			<class>buckaroo3extended/observer</class>
             			<method>controller_action_postdispatch_adminhtml_system_config_save</method>
             		</buckaroo3extended_config_observer>
             	</observers>
@@ -266,6 +314,13 @@
             			<method>buckaroo3extended_push_custom_processing</method>
             		</buckaroo3extended_paymentmethod_observer_paymentguarantee>
             	</observers>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_payperemail>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_payperemail_observer</class>
+            			<method>buckaroo3extended_push_custom_processing</method>
+            		</buckaroo3extended_paymentmethod_observer_payperemail>
+            	</observers>
             </buckaroo3extended_push_custom_processing>
             <buckaroo3extended_response_custom_processing>
             	<observers>
@@ -343,7 +398,7 @@
     	<layout>
 		    <updates>
 		        <TIG_Buckaroo3Extended>
-		        	<file>buckaroo3extended.xml</file>
+		        	<file>tig_buckaroo3extended/layout.xml</file>
 		        </TIG_Buckaroo3Extended>
 		    </updates>
 		</layout>
@@ -451,7 +506,7 @@
             <buckaroo3extended_payperemail translate="title">
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_payperemail_paymentMethod</model>
-                <title>PayPerEmail</title>
+                <title>PayperEmail</title>
                 <sort_order>500</sort_order>
             </buckaroo3extended_payperemail>
             <buckaroo3extended_onlinegiro translate="title">
@@ -742,7 +797,7 @@
          	<buckaroo3extended_paymentguarantee>
          		<active>0</active>
          		<mode>0</mode>
-         		<title>Achteraf betalen</title>
+         		<title>Achteraf Betalen</title>
          		<allowspecific>410</allowspecific>
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
@@ -807,6 +862,17 @@
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_empayment> -->
+         	
+         	<buckaroo3extended_refund>
+         		<active>0</active>
+         		<allow_push>1</allow_push>
+         		<order_status_processing_success></order_status_processing_success>
+         		<order_status_processing_failed></order_status_processing_failed>
+         		<order_status_closed_success></order_status_closed_success>
+         		<order_status_closed_failed></order_status_closed_failed>
+         		<order_status_complete_success></order_status_complete_success>
+         		<order_status_complete_failed></order_status_complete_failed>
+         	</buckaroo3extended_refund>
          </buckaroo>
 	</default>
 </config>

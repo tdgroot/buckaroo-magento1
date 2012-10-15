@@ -3,7 +3,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
 {
     protected $_code = 'buckaroo3extended_ideal';
     protected $_method = 'ideal';
-
+    
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -126,5 +126,55 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         }
 
         return $issuerCode;
+    }
+    
+    public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+
+        $codeBits = explode('_', $this->_code);
+        $code = end($codeBits);
+        $request->setMethod($code);
+
+        return $this;
+    }
+    
+    public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $refundRequest = $observer->getRequest();
+        
+        $vars = $refundRequest->getVars();
+
+        $array = array(
+            'action'	=> 'Refund',
+            'version'   => 1,
+        );
+        
+        if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
+
+        $refundRequest->setVars($vars);
+
+        return $this;
+    }
+    
+    public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        return $this;
     }
 }

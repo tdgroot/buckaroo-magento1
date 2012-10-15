@@ -1,0 +1,60 @@
+.buckaroo-section:hover {
+	background-image: url("../../images/tabs_span_bg.gif") repeat-x scroll 0 100% transparent !important;
+	background-color: #D8E6E6 !important;
+	border-bottom: medium none !important;
+	height: 14px !important;
+	padding: 6px 6px 3px 18px !important;
+}
+.buckaroo-section {
+	background: url("../../images/tabs_span_bg.gif") repeat-x scroll 0 100% transparent !important;
+    border-bottom: medium none !important;
+	height: 14px !important;
+	padding: 6px 6px 3px 18px !important;
+}
+.buckaroo-section span {
+	background: url("../../images/tig_buckaroo3extended/buckaroo_small.png") no-repeat scroll 0 0 transparent !important;
+    overflow: hidden !important;
+    padding: 14px 0 0 !important;
+	height: 0 !important;
+}
+.buckaroo-section.active {
+	background-color:white !important;
+}
+.buckaroo_payment_method_banner {
+	background:url('../../images/tig_buckaroo3extended/buckaroo_large.png') no-repeat; 
+	padding-top:5px;
+	padding-left:170px;
+	height:25px;
+	border:1px solid #CCCCCC;
+	margin-bottom:20px;
+}
+.buckaroo_refunding_no_options_available {
+	background-image: url('../../images/fam_bullet_error.gif');
+	background-repeat:no-repeat; 
+	background-color:rgb(255,255,255); 
+	padding:9px;
+	padding-left:28px;
+	height:27px;
+	border:1px solid #CCCCCC;
+	background-position:10px 10px;	
+}
+.buckaroo_certificate_is_uploaded_banner {
+    background-image:url('../../images/fam_bullet_success.gif');
+    background-repeat:no-repeat; 
+    background-color:rgb(255,255,255); 
+    padding:9px;
+    padding-left:28px;
+    height:27px;
+    border:1px solid #CCCCCC;
+    background-position:10px 10px;	
+}
+.buckaroo_certificate_is_not_uploaded_banner {
+    background-image:url('../../images/error_msg_icon.gif');
+    background-repeat:no-repeat; 
+    background-color:rgb(255,255,255); 
+    padding:9px;
+    padding-left:28px;
+    height:27px;
+    border:1px solid #CCCCCC;
+    background-position:10px 10px;	
+}

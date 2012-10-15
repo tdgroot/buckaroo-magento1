@@ -1,12 +1,12 @@
 <?php
 
-class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends TIG_Buckaroo3Extended_Model_Abstract
+class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends Mage_Core_Model_Abstract
 {
-    public function __construct()
-    {
-
-    }
-
+    /**
+     * Uploads the certificate file.
+     * 
+     * @param Varien_Object $object
+     */
     public function uploadAndImport(Varien_Object $object)
     {   
         if (
@@ -23,11 +23,37 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends TIG_Buckaroo3E
 
                 $uploader = new Varien_File_Uploader('certificate');
 
-                $path = str_replace('/Model/Certificate', '/certificate', dirname(__FILE__));
-                if (strpos(dirname(__FILE__), '/Model/Certificate') !== false) {
-        	        $path = str_replace('/Model/Certificate', '/certificate', dirname(__FILE__));
+                $path = str_replace(
+                	DS 
+                	. 'Model' 
+                	. DS 
+                	. 'Certificate', 
+                	DS 
+                	. 'certificate', 
+                	dirname(__FILE__)
+                );
+                if (strpos(dirname(__FILE__), DS . 'Model' . DS . 'Certificate') !== false) {
+        	        $path = str_replace(DS . 'Model' . DS . 'Certificate', DS . 'certificate', dirname(__FILE__));
         	    } else {
-        	        $path = str_replace('/includes/src', '/app/code/community/TIG/Buckaroo3Extended/certificate', dirname(__FILE__));
+        	        $path = str_replace(
+        	        	DS 
+        	        	. 'includes' 
+        	        	. DS 
+        	        	. 'src', 
+        	        	DS 
+        	        	. 'app' 
+        	        	. DS 
+        	        	. 'code' 
+        	        	. DS 
+        	        	. 'community' 
+        	        	. DS 
+        	        	. 'TIG' 
+        	        	. DS 
+        	        	. 'Buckaroo3Extended'
+        	        	. DS 
+        	        	. 'certificate', 
+        	        	dirname(__FILE__)
+        	        );
         	    }
 
                 $certName = 'BuckarooPrivateKey.pem';
