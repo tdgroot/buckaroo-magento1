@@ -321,13 +321,6 @@
             			<method>buckaroo3extended_push_custom_processing</method>
             		</buckaroo3extended_paymentmethod_observer_payperemail>
             	</observers>
-            	<observers>
-            		<buckaroo3extended_paymentmethod_observer_giftcards>
-            			<type>Singleton</type>
-            			<class>buckaroo3extended/paymentMethods_giftcards_observer</class>
-            			<method>buckaroo3extended_push_custom_processing</method>
-            		</buckaroo3extended_paymentmethod_observer_giftcards>
-            	</observers>
             </buckaroo3extended_push_custom_processing>
             <buckaroo3extended_response_custom_processing>
             	<observers>
