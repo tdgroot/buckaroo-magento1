@@ -110,6 +110,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             $TransactionRequest->OriginalTransactionKey = $this->_vars['OriginalTransactionKey'];
         }
         
+        if (isset($this->_vars['customParameters'])) {
+        	$TransactionRequest = $this->_addCustomParameters($TransactionRequest);
+        }
+        
         $TransactionRequest->Services = new Services();
         
         $this->_addServices($TransactionRequest);
@@ -289,6 +293,42 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         } else {
             $TransactionRequest->Services->Service[$key]->RequestParameter = $requestParameters;
         }
+    }
+    
+    protected function _addCustomParameters(&$TransactionRequest) 
+    {
+        $requestParameters = array();
+        foreach($this->_vars['customParameters'] as $fieldName => $value) {
+            if (
+                (is_null($value) || $value === '')
+                || (
+                    is_array($value)
+                    && (is_null($value['value']) || $value['value'] === '')
+                   )
+            ) {
+                continue;
+            }
+
+            $requestParameter = new RequestParameter();
+            $requestParameter->Name = $fieldName;
+            if (is_array($value)) {
+                $requestParameter->Group = $value['group'];
+                $requestParameter->_ = $value['value'];
+            } else {
+                $requestParameter->_ = $value;
+            }
+            
+            $requestParameters[] = $requestParameter;
+        }
+        
+        if (empty($requestParameters)) {
+            unset($TransactionRequest->AdditionalParameters);
+            return;
+        } else {
+            $TransactionRequest->AdditionalParameters = $requestParameters;
+        }
+        
+        return $TransactionRequest;
     }
 }
 

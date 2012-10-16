@@ -1,41 +1,40 @@
 <?php 
 class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extended_Model_Refund_Response_Push
 {
-	/**
-	 * This is called when a refund is made in Buckaroo Payment Plaza.
-	 * This Function will result in a creditmemo being created for the order in question.
-	 */
-	public function processBuckarooRefundPush()
-	{
-		//check if the push is valid and if the order can be updated
-		list($valid, $canProcess) = $this->_canProcessRefundPush();
-		
-		$this->_debugEmail .= "Is the PUSH valid? " . $valid . "\nCan the creditmemo be created? " . $canProcess . "\n";
-		
-		if (!$valid || !$canProcess) {
-			return false;
-		}
-	    
-		$success = $this->_createCreditmemo();
-		
-		if ($success === false) { //if $success === true, the observer will update the status instead
-		    $this->_updateRefundedOrderStatus($success);
-		}
-		
-		return true;
-	}
-	
-	protected function _createCreditmemo()
-	{
-		$data = $this->_getCreditmemoData();
-		
+    /**
+     * This is called when a refund is made in Buckaroo Payment Plaza.
+     * This Function will result in a creditmemo being created for the order in question.
+     */
+    public function processBuckarooRefundPush()
+    {
+        //check if the push is valid and if the order can be updated
+        list($valid, $canProcess) = $this->_canProcessRefundPush();
+        
+        $this->_debugEmail .= "Is the PUSH valid? " . $valid . "\nCan the creditmemo be created? " . $canProcess . "\n";
+        
+        if (!$valid || !$canProcess) {
+            return false;
+        }
+        
+        $success = $this->_createCreditmemo();
+        
+        if ($success === false) { //if $success === true, the observer will update the status instead
+            $this->_updateRefundedOrderStatus($success);
+        }
+        
+        return true;
+    }
+    
+    protected function _createCreditmemo()
+    {
+        $data = $this->_getCreditmemoData();
+        
         try {
             $creditmemo = $this->_initCreditmemo($data);
-            
             if ($creditmemo) {
                 if (($creditmemo->getGrandTotal() <= 0) && (!$creditmemo->getAllowZeroGrandTotal())) {
                     Mage::throwException(
-                        $this->__('Credit memo\'s total must be positive.')
+                        Mage::helper('buckaroo3extended')->__('Credit memo\'s total must be positive.')
                     );
                 }
 
@@ -83,8 +82,8 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             return false;
         }
         return true;
-	}
-	
+    }
+    
     protected function _initCreditmemo($data, $update = false)
     {
         $creditmemo = false;
@@ -102,15 +101,14 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             }
         }
         $data['qtys'] = $qtys;
+        mage::log($data, null, 'TIG_RF4.log', true);
         $creditmemo = $service->prepareCreditmemo($data);
+        mage::log($creditmemo->debug(), null, 'TIG_RF4.log', true);
     
         /**
          * Process back to stock flags
          */
         foreach ($creditmemo->getAllItems() as $creditmemoItem) {
-            $orderItem = $creditmemoItem->getOrderItem();
-            $parentId = $orderItem->getParentItemId();
-            
             $creditmemoItem->setBackToStock(false);
         }
         
@@ -128,8 +126,8 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
     protected function _saveCreditmemo($creditmemo)
     {
         $transactionSave = Mage::getModel('core/resource_transaction')
-            ->addObject($creditmemo)
-            ->addObject($creditmemo->getOrder());
+                               ->addObject($creditmemo)
+                               ->addObject($creditmemo->getOrder());
         if ($creditmemo->getInvoice()) {
             $transactionSave->addObject($creditmemo->getInvoice());
         }
@@ -169,10 +167,19 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         
         $totalToRefund = $totalAmount + $this->_order->getBaseTotalRefunded();
         if ($totalToRefund == $this->_order->getBaseGrandTotal()) {
+            
+            //calculates the total adjustments made by previous creditmemos
+            $creditmemos = $this->_order->getCreditmemosCollection();
+            $totalAdjustment = 0;
+            foreach($creditmemos as $creditmemo) {
+                $adjustment = $creditmemo->getBaseAdjustmentPositive() - $creditmemo->getBaseAdjustmentNegative();
+                $totalAdjustment += $adjustment;
+            }
+            
             //if the amount to be refunded + the amount that has already been refunded equals the order's base grandtotal
             //all products from that order will be refunded as well
             $data['shipping_amount']     = $this->_order->getBaseShippingAmount() - $this->_order->getBaseShippingRefunded();
-            $data['adjustment_negative'] = $this->_order->getBaseTotalRefunded() - $this->_order->getBaseShippingRefunded();
+            $data['adjustment_negative'] = $totalAdjustment;
             
             $remainder = $this->_calculateRemainder();
             
@@ -188,6 +195,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         $items = $this->_getCreditmemoDataItems();
         
         $data['items'] = $items;
+        
         return $data;
     }
     
@@ -197,13 +205,13 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         
         $baseCurrency  = $this->_order->getBaseCurrency()->getCode();
         $currency      = $this->_postArray['brq_currency'];
-	    
-	    if ($baseCurrency == $currency) {
-	        return $amountPushed;
-	    } else {
-	        $amount = round($amountPushed * $this->_order->getBaseToOrderRate(), 2);
-	        return $amount;
-	    }
+        
+        if ($baseCurrency == $currency) {
+            return $amountPushed;
+        } else {
+            $amount = round($amountPushed * $this->_order->getBaseToOrderRate(), 2);
+            return $amount;
+        }
     }
     
     /**
@@ -240,7 +248,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
     
     /**
      * Determines which items need to be refunded. If the amount to be refunded equals the order base grandtotal
-     * thern all items are refunded, otherwise none are
+     * then all items are refunded, otherwise none are
      */
     protected function _getCreditmemoDataItems()
     {
@@ -248,13 +256,13 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         foreach ($this->_order->getAllItems() as $orderItem)
         {
             if (!in_array($orderItem->getId(), array_flip($items))) {
-               if (($this->_postArray['brq_amount_credit'] + $this->_order->getBaseTotalRefunded()) == $this->_order->getBaseGrandTotal()) {
-                    $qty = $orderItem->getQtyInvoiced();
+                if (($this->_postArray['brq_amount_credit'] + $this->_order->getBaseTotalRefunded()) == $this->_order->getBaseGrandTotal()) {
+                    $qty = $orderItem->getQtyInvoiced() - $orderItem->getQtyRefunded();
                 } else {
                     $qty = 0;
                 }
                 $items[$orderItem->getId()] = array(
-                	'qty' => $qty,
+                    'qty' => $qty,
                 );
             }
         }
@@ -262,44 +270,44 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         return $items;
     }
     
-	/**
+    /**
      * Checks if the post recieved is valid by checking its signature field.
      * This field is unique for every payment and every store.
      * Also calls a method that checks if the order is able to have a creditmemo
      * 
      * @return array $return
      */
-	protected function _canProcessRefundPush()
-	{
-	    $correctSignature = false;
-		$canProcess = false;
-	    $signature = $this->_calculateSignature();
-	    if ($signature === $this->_postArray['brq_signature']) {
-	        $correctSignature = true;
-	    }
-	    
-		//check if the order can recieve a new creditmemo
-		if ($correctSignature === true) {
-			$canProcess = $this->_canProcessCreditmemo();
-		}
-		
-		$return = array(
-			(bool) $correctSignature,
-			(bool) $canProcess,
-		);
-		return $return;
-	}
-	
-	protected function _canProcessCreditmemo()
-	{
-	    if (!$this->_order->canCreditmemo()) {
-	        return false;
-	    }
-	    
-	    if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_refund/allow_push')) {
-	        return false;
-	    }
-	    
-	    return true;
-	}
+    protected function _canProcessRefundPush()
+    {
+        $correctSignature = false;
+        $canProcess = false;
+        $signature = $this->_calculateSignature();
+        if ($signature === $this->_postArray['brq_signature']) {
+            $correctSignature = true;
+        }
+        
+        //check if the order can recieve a new creditmemo
+        if ($correctSignature === true) {
+            $canProcess = $this->_canProcessCreditmemo();
+        }
+        
+        $return = array(
+            (bool) $correctSignature,
+            (bool) $canProcess,
+        );
+        return $return;
+    }
+    
+    protected function _canProcessCreditmemo()
+    {
+        if (!$this->_order->canCreditmemo()) {
+            return false;
+        }
+        
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_refund/allow_push')) {
+            return false;
+        }
+        
+        return true;
+    }
 }
