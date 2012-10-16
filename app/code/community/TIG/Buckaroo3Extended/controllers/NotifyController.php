@@ -6,285 +6,294 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     protected $_debugEmail;
     protected $_paymentMethodCode;
         
-	public function setCurrentOrder($order)
+    public function setCurrentOrder($order)
     {
-    	$this->_order = $order;
+        $this->_order = $order;
     }
     
     public function getCurrentOrder()
     {
-    	return $this->_order;
+        return $this->_order;
     }
     
     public function setPostArray($array)
     {
-    	$this->_postArray = $array;
+        $this->_postArray = $array;
     }
     
     public function getPostArray()
     {
-    	return $this->_postArray;
+        return $this->_postArray;
     }
     
     public function setMethod($paymentMethod)
     {
-    	$this->_paymentMethodCode = $paymentMethod;
+        $this->_paymentMethodCode = $paymentMethod;
     }
     
     public function getMethod()
     {
-    	return $this->_paymentMethodCode;
+        return $this->_paymentMethodCode;
     }
     
     public function setDebugEmail($debugEmail)
     {
-    	$this->_debugEmail = $debugEmail;
+        $this->_debugEmail = $debugEmail;
     }
     
     public function getDebugEmail()
     {
-    	return $this->_debugEmail;
+        return $this->_debugEmail;
     }
     
-	/**
-	 *
-	 * Prevents the page from being displayed using GET
-	 */
-	public function preDispatch()
-	{
-		if (empty($_POST)) {
-			echo 'Only Buckaroo can call this page properly.';
-			exit;
-		}
-		return parent::preDispatch();
-	}
-
-	/**
-	 *
-	 * Handles 'pushes' sent by Buckaroo meant to update the current status of payments/orders
-	 */
-    public function pushAction()
+    /**
+     *
+     * Prevents the page from being displayed using GET
+     */
+    public function preDispatch()
     {
-	    $this->_debugEmail = '';
-    	if (isset($_POST['brq_invoicenumber'])) {
-    	    $this->_postArray = $_POST;
-    	    $orderId = $this->_postArray['brq_invoicenumber'];
-    	} else if (isset($_POST['bpe_invoice'])) {
-    	    $this->_restructurePostArray();
-    	    $orderId = $this->_postArray['brq_invoicenumber'];
-    	} else {
-    		return;
-    	}
-
-    	$this->_debugEmail .= 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
-    	$this->_debugEmail .= 'Order ID: ' . $orderId . "\n";
-
-    	if (isset($_POST['brq_test']) && $_POST['brq_test'] == 'true') {
-    	    $this->_debugEmail .= "\n/////////// TEST /////////\n";
-    	}
-    	
-    	$this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-
-    	$this->_paymentCode = $this->_order->getPayment()->getMethod();
-
-    	$this->_debugEmail .= 'Payment code: ' . $this->_paymentCode . "\n\n";
-    	$this->_debugEmail .= 'POST variables recieved: ' . var_export($this->_postArray, true) . "\n\n";
-	    
-    	try {
-	        list($module, $processedPush) = $this->_processPushAccordingToType();
-    	} catch (Exception $e) {
-    	    $this->_debugEmail .= "An Exception occurred: " . $e->getMessage() . "\n";
-    	    $this->_debugEmail .= "\nException trace: " . $e->getTraceAsString() . "\n";
-    	    
-    	    Mage::logException($e);
-    	    
-    	    //this will allow the script to continue unhindered
-    	    $processedPush = false;
-    	    $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
-    	}
-
-    	$this->_debugEmail = $module->getDebugEmail();
-    	
-    	if ($processedPush === false) {
-    		$this->_debugEmail .= 'Push was not fully processed!';
-    	}
-
-    	$this->_debugEmail .= '\n sent from: ' . __FILE__ . '@' . __LINE__;
-    	$module->setDebugEmail($this->_debugEmail);
-    	$module->sendDebugEmail();
+        if (empty($_POST)) {
+            echo 'Only Buckaroo can call this page properly.';
+            exit;
+        }
+        return parent::preDispatch();
     }
 
-	public function returnAction()
-	{
-	    if (isset($_POST['brq_invoicenumber'])) {
-    	    $orderId = $_POST['brq_invoicenumber'];
-    	} else {
-    		return;
-    	}
+    /**
+     *
+     * Handles 'pushes' sent by Buckaroo meant to update the current status of payments/orders
+     */
+    public function pushAction()
+    {
+        $this->_debugEmail = '';
+        if (isset($_POST['brq_invoicenumber'])) {
+            $this->_postArray = $_POST;
+            $orderId = $this->_postArray['brq_invoicenumber'];
+        } else if (isset($_POST['bpe_invoice'])) {
+            $this->_restructurePostArray();
+            $orderId = $this->_postArray['brq_invoicenumber'];
+        } else {
+            return;
+        }
 
-    	$this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        $this->_debugEmail .= 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
+        $this->_debugEmail .= 'Order ID: ' . $orderId . "\n";
 
-    	$this->_paymentCode = $this->_order->getPayment()->getMethod();
+        if (isset($_POST['brq_test']) && $_POST['brq_test'] == 'true') {
+            $this->_debugEmail .= "\n/////////// TEST /////////\n";
+        }
+        
+        $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-    	$debugEmail = 'Payment code: ' . $this->_paymentCode . "\n\n";
-    	$debugEmail .= 'POST variables recieved: ' . var_export($_POST, true) . "\n\n";
+        $this->_paymentCode = $this->_order->getPayment()->getMethod();
 
-    	$module = Mage::getModel(
-    	    'TIG_Buckaroo3Extended_Model_Response_Return',
-    	    array(
-    	        'order'      => $this->_order,
-    	        'postArray'  => $_POST,
-    	        'debugEmail' => $this->_debugEmail,
-    	        'method'     => $this->_paymentCode,
-    	    )
-    	);
+        $this->_debugEmail .= 'Payment code: ' . $this->_paymentCode . "\n\n";
+        $this->_debugEmail .= 'POST variables recieved: ' . var_export($this->_postArray, true) . "\n\n";
+        
+        try {
+            list($module, $processedPush) = $this->_processPushAccordingToType();
+        } catch (Exception $e) {
+            $this->_debugEmail .= "An Exception occurred: " . $e->getMessage() . "\n";
+            $this->_debugEmail .= "\nException trace: " . $e->getTraceAsString() . "\n";
+            
+            Mage::logException($e);
+            
+            //this will allow the script to continue unhindered
+            $processedPush = false;
+            $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
+        }
 
-    	$module->processReturn();
-	}
-	
-	protected function _processPushAccordingToType()
-	{
-    	if ($this->_order->getTransactionKey() == $this->_postArray['brq_transactions']) {
-    	    list($processedPush, $module) = $this->_updateOrderWithKey();
-    	} elseif ($this->_pushIsCreditmemo($this->_postArray)) {
-        	list($processedPush, $module) = $this->_updateCreditmemo();
-    	} elseif (isset($this->_postArray['brq_amount_credit'])) {
-    	    list($processedPush, $module) = $this->_newRefund();
-    	} elseif (!$this->_order->getTransactionKey()) {
-    	    list($processedPush, $module) = $this->_updateOrderWithoutKey();
-    	}
-    	
-    	return array($module, $processedPush);
-	}
-	
-	protected function _updateOrderWithKey()
-	{
-	    $this->_debugEmail .= "Transaction key matches the order. \n";
-    	    
-    	$module = Mage::getModel(
-    	    'TIG_Buckaroo3Extended_Model_Response_Push',
-    	    array(
-    	        'order'      => $this->_order,
-    	        'postArray'  => $this->_postArray,
-    	        'debugEmail' => $this->_debugEmail,
-    	        'method'     => $this->_paymentCode,
-    	    )
-    	);
-    	
-    	$processedPush = $module->processPush();
-    	
-	    return array($processedPush, $module);
-	}
-	
+        $this->_debugEmail = $module->getDebugEmail();
+        
+        if ($processedPush === false) {
+            $this->_debugEmail .= 'Push was not fully processed!';
+        }
+
+        $this->_debugEmail .= '\n sent from: ' . __FILE__ . '@' . __LINE__;
+        $module->setDebugEmail($this->_debugEmail);
+        $module->sendDebugEmail();
+    }
+
+    public function returnAction()
+    {
+        if (isset($_POST['brq_invoicenumber'])) {
+            $orderId = $_POST['brq_invoicenumber'];
+        } else {
+            return;
+        }
+
+        $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+
+        $this->_paymentCode = $this->_order->getPayment()->getMethod();
+
+        $debugEmail = 'Payment code: ' . $this->_paymentCode . "\n\n";
+        $debugEmail .= 'POST variables recieved: ' . var_export($_POST, true) . "\n\n";
+
+        $module = Mage::getModel(
+            'TIG_Buckaroo3Extended_Model_Response_Return',
+            array(
+                'order'      => $this->_order,
+                'postArray'  => $_POST,
+                'debugEmail' => $this->_debugEmail,
+                'method'     => $this->_paymentCode,
+            )
+        );
+
+        $module->processReturn();
+    }
+    
+    protected function _processPushAccordingToType()
+    {
+        if ($this->_order->getTransactionKey() == $this->_postArray['brq_transactions']) {
+            mage::log('1', null, 'TIG.log', true);
+            list($processedPush, $module) = $this->_updateOrderWithKey();
+        } elseif ($this->_pushIsCreditmemo($this->_postArray)) {
+            mage::log('2', null, 'TIG.log', true);
+            list($processedPush, $module) = $this->_updateCreditmemo();
+        } elseif (isset($this->_postArray['brq_amount_credit'])) {
+            mage::log('3', null, 'TIG.log', true);
+            list($processedPush, $module) = $this->_newRefund();
+        } elseif (!$this->_order->getTransactionKey()) {
+            mage::log('4', null, 'TIG.log', true);
+            list($processedPush, $module) = $this->_updateOrderWithoutKey();
+        }
+        
+        return array($module, $processedPush);
+    }
+    
+    protected function _updateOrderWithKey()
+    {
+        $this->_debugEmail .= "Transaction key matches the order. \n";
+            
+        $module = Mage::getModel(
+            'TIG_Buckaroo3Extended_Model_Response_Push',
+            array(
+                'order'      => $this->_order,
+                'postArray'  => $this->_postArray,
+                'debugEmail' => $this->_debugEmail,
+                'method'     => $this->_paymentCode,
+            )
+        );
+        
+        $processedPush = $module->processPush();
+        
+        return array($processedPush, $module);
+    }
+    
     protected function _updateOrderWithoutKey()
-	{
-	    $this->_debugEmail .= "Order does not yet have a transaction key and the PUSH does not constitute a refund. \n";
-	    
-	    $this->_order->setTransactionKey($this->_postArray['brq_transactions'])
-	          ->save();
-	          
-	    $this->_debugEmail .= "Transaction key saved: {$this->_postArray['brq_transactions']}";
-	    
-    	$module = Mage::getModel(
-    	    'TIG_Buckaroo3Extended_Model_Response_Push',
-    	    array(
-    	        'order'      => $this->_order,
-    	        'postArray'  => $this->_postArray,
-    	        'debugEmail' => $this->_debugEmail,
-    	        'method'     => $this->_paymentCode,
-    	    )
-    	);
-    	
-	    $processedPush = $module->processPush();
-	    
-	    return array($processedPush, $module);
-	}    
-	
-	/**
-	 * Creditmemo updates are currently not supported
-	 */
-	protected function _updateCreditmemo()
-	{
-	    $this->_debugEmail .= "Recieved PUSH to update creditmemo. Unfortunately the module does not support creditmemo updates at this time. The PUSH is ignored.";
-	    
-	    $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId());
-	    if (empty($debugEmailConfig))
-	    {
-	        return;
-	    }
-	    
-	    $mail = $this->_debugEmail;
-	    
-	    mail(
-	        Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
-	        'Buckaroo 3 Extended Debug Email', 
-	        $mail
-	    );
-	    exit;
-	    
-//	    $this->_debugEmail .= "Transaction key matches a creditmemo. \n";
-//	    
-//	    $module = Mage::getModel(
-//    	    'TIG_Buckaroo3Extended_Model_Refund_Response_Push',
-//    	    array(
-//    	        'order'      => $this->_order,
-//    	        'postArray'  => $this->_postArray,
-//    	        'debugEmail' => $this->_debugEmail,
-//    	    )
-//    	);
-//    	
-//	    $processedPush = /*$module->processPush()*/false; //TODO: create code to update creditmemo
-//	    
-//	    return array($processedPush, $module);
-	}
-	
-	protected function _newRefund()
-	{
-	    $this->_debugEmail .= "The PUSH constitutes a new refund. \n";
-	    
-	    if (isset($this->_postArray['ADD_refund_initiated_in_magento'])) {
-	    	$this->_debugEmail .= "The order is already being refunded. \n";
-		     mail(
-		        Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
-		        'Buckaroo 3 Extended Debug Email', 
-		        $this->_debugEmail
-		    );
-		    exit;
-	    }
-	    
-	    $module = Mage::getModel(
-    	    'TIG_Buckaroo3Extended_Model_Refund_Creditmemo',
-    	    array(
-    	        'order'      => $this->_order,
-    	        'postArray'  => $this->_postArray,
-    	        'debugEmail' => $this->_debugEmail,
-    	    )
-    	);
-    	
-	    $processedPush = $module->processBuckarooRefundPush();
-	    
-	    return array($processedPush, $module);
-	}
-	
-	protected function _pushIsCreditmemo()
-	{
-	    foreach ($this->_order->getCreditmemosCollection() as $creditmemo)
-	    {
-	        if ($creditmemo->getTransactionKey() == $this->_postArray['brq_transactions']) {
-	            return true;
-	        }
-	    }
-	    return false;
-	}
+    {
+        $this->_debugEmail .= "Order does not yet have a transaction key and the PUSH does not constitute a refund. \n";
+        
+        $this->_order->setTransactionKey($this->_postArray['brq_transactions'])
+              ->save();
+              
+        $this->_debugEmail .= "Transaction key saved: {$this->_postArray['brq_transactions']}";
+        
+        $module = Mage::getModel(
+            'TIG_Buckaroo3Extended_Model_Response_Push',
+            array(
+                'order'      => $this->_order,
+                'postArray'  => $this->_postArray,
+                'debugEmail' => $this->_debugEmail,
+                'method'     => $this->_paymentCode,
+            )
+        );
+        
+        $processedPush = $module->processPush();
+        
+        return array($processedPush, $module);
+    }    
+    
+    /**
+     * Creditmemo updates are currently not supported
+     */
+    protected function _updateCreditmemo()
+    {
+        $this->_debugEmail .= "Recieved PUSH to update creditmemo. Unfortunately the module does not support creditmemo updates at this time. The PUSH is ignored.";
+        
+        $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId());
+        if (empty($debugEmailConfig))
+        {
+            return;
+        }
+        
+        $mail = $this->_debugEmail;
+        
+        mail(
+            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
+            'Buckaroo 3 Extended Debug Email', 
+            $mail
+        );
+        exit;
+        
+//      $this->_debugEmail .= "Transaction key matches a creditmemo. \n";
+//      
+//      $module = Mage::getModel(
+//          'TIG_Buckaroo3Extended_Model_Refund_Response_Push',
+//          array(
+//              'order'      => $this->_order,
+//              'postArray'  => $this->_postArray,
+//              'debugEmail' => $this->_debugEmail,
+//          )
+//      );
+//      
+//      $processedPush = /*$module->processPush()*/false; //TODO: create code to update creditmemo
+//      
+//      return array($processedPush, $module);
+    }
+    
+    protected function _newRefund()
+    {
+        $this->_debugEmail .= "The PUSH constitutes a new refund. \n";
+        
+        if (isset($this->_postArray['ADD_refund_initiated_in_magento'])) {
+            $this->_debugEmail .= "The order is already being refunded. \n";
+             mail(
+                Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
+                'Buckaroo 3 Extended Debug Email', 
+                $this->_debugEmail
+            );
+            exit;
+        }
+        
+        $module = Mage::getModel(
+            'TIG_Buckaroo3Extended_Model_Refund_Creditmemo',
+            array(
+                'order'      => $this->_order,
+                'postArray'  => $this->_postArray,
+                'debugEmail' => $this->_debugEmail,
+            )
+        );
+        $module->setRequest($this->getRequest());
+        
+        try {
+            $processedPush = $module->processBuckarooRefundPush();
+        } catch (Exception $e) {
+            Mage::logException($e);exit;
+        }
+        
+        return array($processedPush, $module);
+    }
+    
+    protected function _pushIsCreditmemo()
+    {
+        foreach ($this->_order->getCreditmemosCollection() as $creditmemo)
+        {
+            if ($creditmemo->getTransactionKey() == $this->_postArray['brq_transactions']) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Restructure the Push message sent by the BPE 2.0 to one resembling a push message sent by BPE 3.0.
-	 * This way push messages sent to update a 2.0 transaction can still be processed.
-	 */
-	protected function _restructurePostArray()
-	{
-	    $postArray = array(
-	        'brq_amount'             => round($_POST['bpe_amount'] / 100, 2),
+    /**
+     * Restructure the Push message sent by the BPE 2.0 to one resembling a push message sent by BPE 3.0.
+     * This way push messages sent to update a 2.0 transaction can still be processed.
+     */
+    protected function _restructurePostArray()
+    {
+        $postArray = array(
+            'brq_amount'             => round($_POST['bpe_amount'] / 100, 2),
             'brq_currency'           => $_POST['bpe_currency'],
             'brq_invoicenumber'      => $_POST['bpe_invoice'],
             'brq_statuscode'         => $_POST['bpe_result'],
@@ -295,10 +304,10 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             'brq_transaction_type'   => null,
             'brq_transactions'       => $_POST['bpe_trx'],
             'brq_signature'          => $_POST['bpe_signature2'],
-	        'isOldPost'              => true,
-	        'oldPost'                => $_POST,
-	    );
+            'isOldPost'              => true,
+            'oldPost'                => $_POST,
+        );
 
-	    $this->setPostArray($postArray);
-	}
+        $this->setPostArray($postArray);
+    }
 }

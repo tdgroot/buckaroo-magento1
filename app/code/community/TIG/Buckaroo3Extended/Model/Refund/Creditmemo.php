@@ -1,6 +1,8 @@
 <?php 
 class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extended_Model_Refund_Response_Push
 {
+    protected $_request;
+    
     /**
      * This is called when a refund is made in Buckaroo Payment Plaza.
      * This Function will result in a creditmemo being created for the order in question.
@@ -86,6 +88,10 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
     
     protected function _initCreditmemo($data, $update = false)
     {
+        $request = $this->getRequest();
+        $request->setParam('creditmemo', $data);
+        
+        
         $creditmemo = false;
         
         $order  = $this->_order;
@@ -110,7 +116,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             $creditmemoItem->setBackToStock(false);
         }
         
-        $args = array('creditmemo' => $creditmemo, 'request' => $data);
+        $args = array('creditmemo' => $creditmemo, 'request' => $request);
         Mage::dispatchEvent('adminhtml_sales_order_creditmemo_register_before', $args);
 
         Mage::register('current_creditmemo', $creditmemo);
