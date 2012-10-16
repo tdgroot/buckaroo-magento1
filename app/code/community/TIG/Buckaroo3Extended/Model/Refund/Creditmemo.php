@@ -101,9 +101,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             }
         }
         $data['qtys'] = $qtys;
-        mage::log($data, null, 'TIG_RF4.log', true);
         $creditmemo = $service->prepareCreditmemo($data);
-        mage::log($creditmemo->debug(), null, 'TIG_RF4.log', true);
     
         /**
          * Process back to stock flags
