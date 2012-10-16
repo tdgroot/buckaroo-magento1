@@ -242,7 +242,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 	{
 	    $this->_debugEmail .= "The PUSH constitutes a new refund. \n";
 	    
-	    if (isset($_POST['ADD_refund_initiated_in_magento'])) {
+	    if (isset($this->_postArray['ADD_refund_initiated_in_magento'])) {
 	    	$this->_debugEmail .= "The order is already being refunded. \n";
 		     mail(
 		        Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
