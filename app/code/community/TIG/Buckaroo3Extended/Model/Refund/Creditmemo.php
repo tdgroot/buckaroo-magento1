@@ -167,17 +167,24 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         
         $totalToRefund = $totalAmount + $this->_order->getBaseTotalRefunded();
         if ($totalToRefund == $this->_order->getBaseGrandTotal()) {
-                    mage::log('test1', null, 'TIG_RF3.log', true);
+            
+            //calculates the total adjustments made by previous creditmemos
+            $creditmemos = $this->_order->getCreditmemosCollection();
+            $totalAdjustment = 0;
+            foreach($creditmemos as $creditmemo) {
+                $adjustment = $creditmemo->getBaseAdjustmentPositive() - $creditmemo->getBaseAdjustmentNegative();
+                $totalAdjustment += $adjustment;
+            }
+            
             //if the amount to be refunded + the amount that has already been refunded equals the order's base grandtotal
             //all products from that order will be refunded as well
             $data['shipping_amount']     = $this->_order->getBaseShippingAmount() - $this->_order->getBaseShippingRefunded();
-            $data['adjustment_negative'] = /*$this->_order->getBaseTotalRefunded() - $this->_order->getBaseShippingRefunded()*/0;
+            $data['adjustment_negative'] = $totalAdjustment;
             
             $remainder = $this->_calculateRemainder();
             
             $data['adjustment_positive'] = $remainder;
         } else {
-                    mage::log('test2', null, 'TIG_RF3.log', true);
             //if the above is not the case; no products will be refunded and this refund will be considered an
             //adjustment refund
             $data['shipping_amount']     = '0';
@@ -188,7 +195,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         $items = $this->_getCreditmemoDataItems();
         
         $data['items'] = $items;
-                    mage::log($data, null, 'TIG_RF3.log', true);
+        
         return $data;
     }
     
