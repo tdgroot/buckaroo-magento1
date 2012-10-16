@@ -1,0 +1,65 @@
+<?php $_helper = $this->helper('buckaroo3extended'); ?>
+<style type="text/css">
+a.pdf {
+	background-image: url('<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/glyph_pdf.gif'); ?>');
+}
+.contentWrap .tigLogo span {
+	background-image: url('<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/logo_tig.gif'); ?>');
+	margin-top:20px;
+}
+</style>
+<div class="contentWrap">
+	<h1 class="contentHeading">
+	    <?php echo $_helper->__('Buckaroo 3 Extended Module version ');?>
+	    <?php echo Mage::getConfig()->getModuleConfig("TIG_Buckaroo3Extended")->version;?>
+	</h1>
+    <div id="leftColumn">
+    	<div class="versionCompatibility">
+    		<h2><?php echo $_helper->__('Version compatibility');?></h2>
+    		<p><?php echo $_helper->__('Magento CE 1.5, 1.6 &amp; 1.7');?><br />
+    		<?php echo $_helper->__('Magento EE 1.11 &amp; 1.12');?></p>
+    	</div>
+    	<div class="firstSteps">
+    		<h2><?php echo $_helper->__('First steps');?></h2>
+    		<ul>
+    			<li><?php echo $_helper->__('Vul de merchantkey en digitale handtekening in die u kunt vinden in Buckaroo Payment Plaza.');?></li>
+    			<li><?php echo $_helper->__('Upload uw private key certificaat en vul de bijbehorende thumbprint in.');?></li>
+    			<li><?php echo $_helper->__('Activeer de gewenste betaalmethodes en plaats enkele test bestellingen.');?></li> 
+    			<li><?php echo $_helper->__('Wanneer de testbestellingen succesvol verlopen zijn, kunt u de module op live modus zetten.');?></li>
+    		</ul>
+    	</div>
+    </div>
+    <div id="rightColumn">
+    	<div class="manualInstallation">
+    		<h2><?php echo $_helper->__('Manual &amp; Installation');?></h2>
+    		<p><?php echo $_helper->__('The manual will help you install &amp; configure the module.');?></p>
+    		<div class="manualDownloads">
+    			<a class="pdf" href="#" title="Download the Module manual PDF"><?php echo $_helper->__('Module manual');?></a>
+    		</div>
+    	</div>
+    	<div class="supportService">
+    		<p>
+    		    <?php echo $_helper->__(
+    		    	'You can find additional information at: %s',
+    		        $this->buckarooUrl
+    		    );?>
+    		</p>
+            <p>
+                <?php echo $_helper->__(
+                    'For questions regarding the Buckaroo module and Buckaroo payment methods, please contact: %s',
+                    $this->buckarooSupport
+                );?>
+            </p>
+    		<p>
+    		    <?php echo $_helper->__(
+    		    	'Please email your feedback to %sTotal Internet Group%s.',
+    		        $this->totalEmail,
+    		        $this->anchorClose
+    		    );?>
+    		</p>
+    	</div>
+    </div>
+    <div class="tigLogo">
+    	<span><?php echo $_helper->__('Total Internet Group');?></span>
+    </div>
+</div>

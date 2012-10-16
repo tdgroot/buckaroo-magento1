@@ -23,6 +23,22 @@
 		    <show_in_website>1</show_in_website>
 		    <show_in_store>1</show_in_store>
 		    <groups>
+		    	<buckaroo3extended_support>
+		    		<label>Buckaroo 3 Extended Version &amp; Support</label>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                    	<support>
+                            <sort_order>10</sort_order> 
+                    		<frontend_model>buckaroo3extended/adminhtml_system_config_supportTab</frontend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                    	</support>
+                    </fields>
+		    	</buckaroo3extended_support>
 				<buckaroo3extended translate="label" module="paygate">
                     <label>Buckaroo 3 Extended Basic Configuration</label>
                     <sort_order>200</sort_order>
@@ -30,13 +46,6 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                    	<versionbanner>
-		                    <frontend_model>buckaroo3extended/adminhtml_system_config_versionbanner</frontend_model>
-		                    <sort_order>5</sort_order>
-		                    <show_in_default>1</show_in_default>
-		                    <show_in_website>1</show_in_website>
-		                    <show_in_store>1</show_in_store>
-		                </versionbanner>
 		                <certificate_is_uploaded>
 		                	<frontend_model>buckaroo3extended/adminhtml_system_config_certificateUploaded</frontend_model>
                             <sort_order>39</sort_order>
