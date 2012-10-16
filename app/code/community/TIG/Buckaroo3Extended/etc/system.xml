@@ -46,13 +46,6 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-		                <certificate_is_uploaded>
-		                	<frontend_model>buckaroo3extended/adminhtml_system_config_certificateUploaded</frontend_model>
-                            <sort_order>39</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-		                </certificate_is_uploaded>
                         <active translate="label">
                             <label>Enabled</label>
                             <comment>Enable or disable Buckaroo</comment>
