@@ -214,20 +214,24 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     protected function _error($client = false)
     {
         $response = false;
-        
+
+        $responseDomDOC = new DOMDocument();
+    	$requestDomDOC = new DOMDocument();
         if ($client) {
             $responseXML = $client->__getLastResponse();
             $requestXML = $client->__getLastRequest();
         
-            $responseDomDOC = new DOMDocument();
-            $responseDomDOC->loadXML($responseXML);
-    		$responseDomDOC->preserveWhiteSpace = FALSE;
-    		$responseDomDOC->formatOutput = TRUE;
+            if (!empty($responseXML)) {
+	            $responseDomDOC->loadXML($responseXML);
+	    		$responseDomDOC->preserveWhiteSpace = FALSE;
+	    		$responseDomDOC->formatOutput = TRUE;
+            }
     		
-    		$requestDomDOC = new DOMDocument();
-            $requestDomDOC->loadXML($requestXML);
-    		$requestDomDOC->preserveWhiteSpace = FALSE;
-    		$requestDomDOC->formatOutput = TRUE;
+            if (!empty($requestXML)) {
+	            $requestDomDOC->loadXML($requestXML);
+	    		$requestDomDOC->preserveWhiteSpace = FALSE;
+	    		$requestDomDOC->formatOutput = TRUE;
+            }
         }
         
         return array($response, $responseDomDOC, $requestDomDOC);
