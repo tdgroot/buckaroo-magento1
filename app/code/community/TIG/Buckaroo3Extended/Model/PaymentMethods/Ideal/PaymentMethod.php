@@ -57,7 +57,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_PaymentMethod extends Mag
     
     public function refund(Varien_Object $payment, $amount)
     {
-    	mage::log(microtime(), null, 'TIG_RF.log', true);
         if (!$this->canRefund() || !$this->isRefundAvailable($payment)) {
             Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
         }
