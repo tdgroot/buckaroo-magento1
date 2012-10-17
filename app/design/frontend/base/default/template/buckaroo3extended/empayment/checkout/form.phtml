@@ -12,7 +12,7 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
     <?php $_code=$this->getMethodCode() ?>
     <ul id="payment_form_<?php echo $_code ?>" style="display:none">
         <li>
-            <?php echo $this->__('You will receive an email with further payment instructions when you place your order.') ?>
+            <?php echo $this->__('You will be redirected to the èM! Payment website to finalize your payment.') ?>
         </li>
         <li>
             <label><?php echo $this->__('Bank identification') ?>:</label>

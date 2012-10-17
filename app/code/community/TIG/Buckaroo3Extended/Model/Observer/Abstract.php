@@ -3,6 +3,18 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 {  
     protected $_order;
     protected $_bilingInfo;
+    protected $_method = '';
+    
+    public function getMethod()
+    {
+        return $this->_method;
+    }
+    
+    public function setMethod($method)
+    {
+        $this->_method = $method;
+        return $this;
+    }
     
     public function __construct()
     {
@@ -24,6 +36,9 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         
         if ($chosenMethod === $this->_code) {
             $ret = true;
+            if($observer->getOrder()->getPaymentMethodUsedForTransaction()) {
+                $this->setMethod($observer->getOrder()->getPaymentMethodUsedForTransaction());
+            }
         }
         return $ret;
     }
@@ -303,7 +318,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         //checks if the number is valid, if not: try to fix it
         $invalidNotations = array("00310", "0310", "310", "31");
         foreach($invalidNotations as $invalid) {
-            if( strpos( substr( $number, 0, 6 ), $invalid ) !== false ) {
+            if( strpos( substr( $number, 0, strlen($invalid) ), $invalid ) !== false ) {
                 $valid = substr($invalid, 0, -1);
                 if (substr($valid, 0, 2) == '31') { 
                     $valid = "00" . $valid;
