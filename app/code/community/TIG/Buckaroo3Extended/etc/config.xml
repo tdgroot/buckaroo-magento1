@@ -28,6 +28,51 @@
             			<class>buckaroo3extended/paymentMethods_ideal_observer</class>
             			<method>buckaroo3extended_refund_request_setmethod</method>
             		</buckaroo3extended_paymentmethod_observer_ideal>
+            		<buckaroo3extended_paymentmethod_observer_amex>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_amex_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_amex>
+            		<buckaroo3extended_paymentmethod_observer_directdebit>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_directdebit_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_directdebit>
+            		<buckaroo3extended_paymentmethod_observer_empayment>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_empayment>
+            		<buckaroo3extended_paymentmethod_observer_giropay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_giropay_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_giropay>
+            		<buckaroo3extended_paymentmethod_observer_mastercard>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_mastercard_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_mastercard>
+            		<buckaroo3extended_paymentmethod_observer_onlinegiro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_onlinegiro_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_onlinegiro>
+            		<buckaroo3extended_paymentmethod_observer_paypal>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_paypal_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_paypal>
+            		<buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_visa>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visa_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_visa>
             	</observers>
             </buckaroo3extended_refund_request_setmethod>
             <buckaroo3extended_refund_request_addservices>
@@ -37,13 +82,56 @@
             			<class>buckaroo3extended/paymentMethods_ideal_observer</class>
             			<method>buckaroo3extended_refund_request_addservices</method>
             		</buckaroo3extended_paymentmethod_observer_ideal>
-            	</observers>
-            	<observers>
             		<buckaroo3extended_paymentmethod_observer_payperemail>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_payperemail_observer</class>
             			<method>buckaroo3extended_refund_request_addservices</method>
             		</buckaroo3extended_paymentmethod_observer_payperemail>
+            		<buckaroo3extended_paymentmethod_observer_amex>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_amex_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_amex>
+            		<buckaroo3extended_paymentmethod_observer_directdebit>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_directdebit_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_directdebit>
+            		<buckaroo3extended_paymentmethod_observer_empayment>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_empayment>
+            		<buckaroo3extended_paymentmethod_observer_giropay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_giropay_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_giropay>
+            		<buckaroo3extended_paymentmethod_observer_mastercard>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_mastercard_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_mastercard>
+            		<buckaroo3extended_paymentmethod_observer_onlinegiro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_onlinegiro_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_onlinegiro>
+            		<buckaroo3extended_paymentmethod_observer_paypal>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_paypal_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_paypal>
+            		<buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_visa>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visa_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_visa>
             	</observers>
             </buckaroo3extended_refund_request_addservices>
             <buckaroo3extended_refund_request_addcustomvars>
@@ -53,6 +141,56 @@
             			<class>buckaroo3extended/paymentMethods_ideal_observer</class>
             			<method>buckaroo3extended_refund_request_addcustomvars</method>
             		</buckaroo3extended_paymentmethod_observer_ideal>
+            		<buckaroo3extended_paymentmethod_observer_payperemail>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_payperemail_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_payperemail>
+            		<buckaroo3extended_paymentmethod_observer_amex>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_amex_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_amex>
+            		<buckaroo3extended_paymentmethod_observer_directdebit>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_directdebit_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_directdebit>
+            		<buckaroo3extended_paymentmethod_observer_empayment>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_empayment>
+            		<buckaroo3extended_paymentmethod_observer_giropay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_giropay_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_giropay>
+            		<buckaroo3extended_paymentmethod_observer_mastercard>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_mastercard_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_mastercard>
+            		<buckaroo3extended_paymentmethod_observer_onlinegiro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_onlinegiro_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_onlinegiro>
+            		<buckaroo3extended_paymentmethod_observer_paypal>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_paypal_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_paypal>
+            		<buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_visa>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visa_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_visa>
             	</observers>
             </buckaroo3extended_refund_request_addcustomvars>
             <controller_action_postdispatch_adminhtml_system_config_save>

@@ -145,17 +145,15 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     protected function _processPushAccordingToType()
     {
         if ($this->_order->getTransactionKey() == $this->_postArray['brq_transactions']) {
-            mage::log('1', null, 'TIG.log', true);
             list($processedPush, $module) = $this->_updateOrderWithKey();
         } elseif ($this->_pushIsCreditmemo($this->_postArray)) {
-            mage::log('2', null, 'TIG.log', true);
             list($processedPush, $module) = $this->_updateCreditmemo();
         } elseif (isset($this->_postArray['brq_amount_credit'])) {
-            mage::log('3', null, 'TIG.log', true);
             list($processedPush, $module) = $this->_newRefund();
         } elseif (!$this->_order->getTransactionKey()) {
-            mage::log('4', null, 'TIG.log', true);
             list($processedPush, $module) = $this->_updateOrderWithoutKey();
+        } else {
+            Mage::throwException('unable to process PUSH');
         }
         
         return array($module, $processedPush);
@@ -273,6 +271,21 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         }
         
         return array($processedPush, $module);
+    }
+
+    protected function _updateOrderWithoutMatchingKey()
+    {
+        //the following payment methods allow the payment to be performed with a different method than the initial transaction request
+        if (
+            $this->_order->getpayment()->getMethod() != $this->_postArray['brq_transaction_method']
+            && 
+                ($this->_order->getpayment()->getMethod() == 'payperemail'
+                || $this->_order->getpayment()->getMethod() == 'onlinegiro'
+                )
+        ) {
+            return $this->_updateOrderWithKey();
+        }
+        Mage::throwException('Unable to match push to order or creditmemo');
     }
     
     protected function _pushIsCreditmemo()

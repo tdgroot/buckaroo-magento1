@@ -147,18 +147,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         return $this;
     }
     
-    protected function _isChosenMethod($observer)
-    {
-        $ret = false;
-        
-        $chosenMethod = $observer->getOrder()->getPayment()->getMethod();
-        
-        if ($chosenMethod === $this->_code) {
-            $ret = true;
-        }
-        return $ret;
-    }
-    
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -185,7 +173,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         $vars = $refundRequest->getVars();
 
         $array = array(
-            'action'	=> 'Refund',
+            'action'    => 'Refund',
             'version'   => 1,
         );
         
