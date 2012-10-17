@@ -506,6 +506,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     	    //sets the invoice's transaction ID as the Buckaroo TRX. This is to allow the order to be refunded using Buckaroo later on.
             foreach($this->_order->getInvoiceCollection() as $invoice)
     	    {
+    	        if (!isset($this->_postArray['brq_transactions'])) {
+    	            continue;
+                }
     	        $invoice->setTransactionId($this->_postArray['brq_transactions'])
     	                ->save();
     	    }
