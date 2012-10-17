@@ -1,5 +1,5 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
     protected $_code = 'buckaroo3extended_paymentguarantee';
     protected $_method = 'paymentguarantee';
@@ -15,14 +15,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_paymentguarantee_Observer exten
         $vars = $request->getVars();
         
         $array = array(
-            'action'	=> 'PaymentInvitation',
-            'version'   => 1,
+            $this->_method     => array(
+                'action'    => 'PaymentInvitation',
+                'version'   => 1,
+            ),
         );
         
-        if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
-            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
         } else {
-            $vars['services'][$this->_method] = $array;
+            $vars['services'] = $array;
         }
 
         $request->setVars($vars);
