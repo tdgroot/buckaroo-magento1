@@ -56,12 +56,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
-        
-        if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
-        } else {
-            $vars['customVars'][$this->_method] = $array;
-        }
+
         $request->setVars($vars);
         
         return $this;
