@@ -14,8 +14,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         
         $vars = $request->getVars();
         
-        $vars['services'][$this->_method] = false;
+        $array = array();
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+            $array['creditmanagement'] = array(
+                    'action'    => 'Invoice',
+                    'version'   => 1,
+            );
+        }
         
+        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
+        } else {
+            $vars['services'] = $array;
+        }
+
         $request->setVars($vars);
         
         return $this;
@@ -29,6 +41,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
 
         $request = $observer->getRequest();
         $vars = $request->getVars();
+
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+            $this->_addCustomerVariables($vars);
+            $this->_addCreditManagement($vars);
+            $this->_addAdditionalCreditManagementVariables($vars);
+        }
         
         $availableCards = Mage::getStoreConfig('buckaroo/buckaroo3extended_giftcards/cards_allowed', Mage::app()->getStore()->getId());
         
@@ -37,14 +55,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         		'continueOnImcomplete'       => 'RedirectToHTML',
         );
         
-        if (
-        	array_key_exists('customVars', $vars)
-        	&& array_key_exists($this->_method, $vars['customVars']) 
-        	&& is_array($vars['customVars'][$this->_method])
-        ) {
-        	$vars['customVars'] = array_merge($vars['customVars'], $array);
+        if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
         } else {
-        	$vars['customVars'] = $array;
+            $vars['customVars'][$this->_method] = $array;
         }
         
         $request->setVars($vars);

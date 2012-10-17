@@ -92,7 +92,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
             'emailAddress'             => Mage::getStoreConfig('buckaroo/buckaroo3extended_empayment/email_address', $storeId),
         );
         
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+        if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
         } else {
             $vars['customVars'][$this->_method] = $array;
