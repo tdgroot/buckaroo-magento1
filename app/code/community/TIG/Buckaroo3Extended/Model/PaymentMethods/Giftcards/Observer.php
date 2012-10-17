@@ -49,16 +49,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         }
         
         $availableCards = Mage::getStoreConfig('buckaroo/buckaroo3extended_giftcards/cards_allowed', Mage::app()->getStore()->getId());
+        $availableCards .= ',ideal';
         
         $array = array(
         		'servicesSelectableByClient' => $availableCards,
         		'continueOnImcomplete'       => 'RedirectToHTML',
         );
         
-        if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        if (array_key_exists('customVars', $vars)) {
+            $vars['customVars'] = array_merge($vars['customVars'], $array);
         } else {
-            $vars['customVars'][$this->_method] = $array;
+            $vars['customVars'] = $array;
         }
         
         $request->setVars($vars);
