@@ -13,8 +13,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_PaymentMethod extends
     protected $_canAuthorize            = true;
     protected $_canCapture              = true;
     protected $_canCapturePartial       = true;
-    protected $_canRefund               = true;
-    protected $_canRefundInvoicePartial = true;
+    protected $_canRefund               = false;
+    protected $_canRefundInvoicePartial = false;
     protected $_canVoid                 = true;
     protected $_canUseInternal          = false;
     protected $_canUseCheckout          = true;

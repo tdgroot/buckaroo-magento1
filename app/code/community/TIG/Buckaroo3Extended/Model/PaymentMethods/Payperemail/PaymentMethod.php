@@ -92,19 +92,19 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
         }
         
         $refundRequest = Mage::getModel(
-        	'buckaroo3extended/refund_request_abstract', 
+            'buckaroo3extended/refund_request_abstract', 
             array(
-            	'payment' => $payment, 
-            	'amount' => $amount
+                'payment' => $payment, 
+                'amount' => $amount
             )
         );
-
+        
         try {
-        	$refundRequest->sendRefundRequest();
-        	$this->setPayment($refundRequest->getPayment());
+            $refundRequest->sendRefundRequest();
+            $this->setPayment($refundRequest->getPayment());
         } catch (Exception $e) {
-        	Mage::helper('buckaroo3extended')->logException($e);
-        	Mage::throwException($e->getMessage());
+            Mage::helper('buckaroo3extended')->logException($e);
+            Mage::throwException($e->getMessage());
         }
         
         return $this;
@@ -116,7 +116,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
             Mage::getSingleton('adminhtml/session')
                 ->addError(
                     Mage::helper('buckaroo3extended')->__(
-                    	'The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.'
+                        'The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.'
                     )
                 );
             throw new Exception('The order is missing a transaction key. Possibly this order was created using an older version of the Buckaroo module that did not yet support refunding.');
@@ -127,7 +127,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
             Mage::getSingleton('adminhtml/session')
                 ->addError(
                     Mage::helper('buckaroo3extended')->__(
-                    	'Buckaroo refunding is currently disabled in the configuration menu.'
+                        'Buckaroo refunding is currently disabled in the configuration menu.'
                     )
                 );
             throw new Exception('Buckaroo refunding is currently disabled in the configuration menu.');
