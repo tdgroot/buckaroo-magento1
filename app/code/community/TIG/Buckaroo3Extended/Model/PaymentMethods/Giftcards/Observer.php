@@ -49,6 +49,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         }
         
         $availableCards = Mage::getStoreConfig('buckaroo/buckaroo3extended_giftcards/cards_allowed', Mage::app()->getStore()->getId());
+        if (empty($availableCards)) {
+            Mage::throwException('no giftcards available');
+        }
         $availableCards .= ',ideal';
         
         $array = array(
