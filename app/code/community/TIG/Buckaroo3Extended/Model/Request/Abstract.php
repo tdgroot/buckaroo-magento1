@@ -146,24 +146,10 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
     protected function _addShopVariables()
     {
-        $url = Mage::getUrl('', array('_secure' => true));
-
-		if (empty($url)) {
-			$url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
-		}
-
-		$url .= (
-			Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1
-				? ''
-				: Mage::app()->getStore()->getCode()
-			. '/'
-		);
-
-		$returnUrl = $url . 'buckaroo3extended/notify/return';
-
+        $returnUrl   = Mage::getUrl('buckaroo3extended/notify/return', array('_secure'=>true));
 		$merchantKey = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId());
 		$description = Mage::getStoreConfig('buckaroo/buckaroo3extended/payment_description', Mage::app()->getStore()->getStoreId());
-		$thumbprint = Mage::getStoreConfig('buckaroo/buckaroo3extended_certificate/thumbprint', Mage::app()->getStore()->getStoreId());
+		$thumbprint  = Mage::getStoreConfig('buckaroo/buckaroo3extended_certificate/thumbprint', Mage::app()->getStore()->getStoreId());
 
 		$this->_vars['returnUrl']      = $returnUrl;
 		$this->_vars['merchantKey']    = $merchantKey;
@@ -177,10 +163,10 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         list($currency, $totalAmount) = $this->_determineAmountAndCurrency();
 
-        $this->_vars['currency']    = $currency;
+        $this->_vars['currency']     = $currency;
         $this->_vars['amountCredit'] = 0;
-        $this->_vars['amountDebit'] = $totalAmount;
-        $this->_vars['orderId']     = $this->_order->getIncrementId();
+        $this->_vars['amountDebit']  = $totalAmount;
+        $this->_vars['orderId']      = $this->_order->getIncrementId();
 
         $this->_debugEmail .= "Order variables added! \n";
     }

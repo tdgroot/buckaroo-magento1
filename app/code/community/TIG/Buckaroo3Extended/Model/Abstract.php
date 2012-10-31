@@ -185,11 +185,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	protected function _checkExpired()
 	{
 	    if (empty($this->_order)) {
-		    $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) 
-    			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'') 
-    			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
-    			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-			
+		    $returnUrl = Mage::getUrl(Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId()));
 	        header('location:' . $returnUrl);
 	    }
 	}
