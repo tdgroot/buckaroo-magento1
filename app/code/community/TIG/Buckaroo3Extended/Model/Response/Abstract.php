@@ -173,10 +173,8 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 		    Mage::helper('buckaroo3extended')->__('Your order has been placed succesfully.')
 		);
 
-		$returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
-			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
+		$return = Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
+        $returnUrl = Mage::getUrl($return);
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
@@ -199,10 +197,8 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             $this->_order->cancel()->save();
         }
 
-        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
-			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $return = Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $returnUrl = Mage::getUrl($return);
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
@@ -223,10 +219,8 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->restoreQuote();
         $this->_debugEmail .= "The quote has been restored. \n";
 
-        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
-			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $return = Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $returnUrl = Mage::getUrl($return);
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
@@ -245,10 +239,8 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 		    )
 		);
 
-		$returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
-			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
+        $return = Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
+        $returnUrl = Mage::getUrl($return);
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . '\n';
 
@@ -274,10 +266,8 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not recieve an e-mail regarding your order within 30 minutes, please contact the shop owner.')
         );
 
-        $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
-			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'')
-			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $return = Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $returnUrl = Mage::getUrl($return);
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
