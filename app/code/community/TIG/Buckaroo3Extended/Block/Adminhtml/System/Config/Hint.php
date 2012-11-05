@@ -21,6 +21,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'paymentguarantee',
     	'giftcards',
     	'empayment',
+    	'bancontactmrcash',
     );
     
     public $services = array(
