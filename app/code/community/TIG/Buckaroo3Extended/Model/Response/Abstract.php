@@ -162,11 +162,12 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _success()
     {
         $this->_debugEmail .= "The response indicates a successful request. \n";
-		if(!$this->_order->getEmailSent())
+        
+        if(!$this->_order->getEmailSent())
         {
-        	$this->_order->sendNewOrderEmail();
+        	$this->sendNewOrderEmail();
         }
-
+        
         $this->emptyCart();
         
 		Mage::getSingleton('core/session')->addSuccess(
@@ -373,5 +374,19 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     	}
 
     	return $verified;
+    }
+
+    public function sendNewOrderEmail()
+    {
+        $currentStore = Mage::app()->getStore()->getId();
+        $orderStore = $this->_order->getStoreId();
+        
+        Mage::app()->setCurrentStore($orderStore);
+        
+        $this->_order->sendNewOrderEmail();
+        
+        Mage::app()->setCurrentStore($currentStore);
+        
+        return $this;
     }
 }
