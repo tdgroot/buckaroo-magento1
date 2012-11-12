@@ -199,8 +199,8 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         }
         
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-        $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
-
+        $returnUrl = Mage::getUrl($returnLocatiom, array('_secure' => true));
+        
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
@@ -221,7 +221,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= "The quote has been restored. \n";
 
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-        $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
+        $returnUrl = Mage::getUrl($returnLocatiom, array('_secure' => true));
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
@@ -241,7 +241,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 		);
         
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended/success_redirect', Mage::app()->getStore()->getStoreId());
-        $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
+        $returnUrl = Mage::getUrl($returnLocatiom, array('_secure' => true));
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . '\n';
 
@@ -268,7 +268,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         );
         
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-        $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
+        $returnUrl = Mage::getUrl($returnLocatiom, array('_secure' => true));
         
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
