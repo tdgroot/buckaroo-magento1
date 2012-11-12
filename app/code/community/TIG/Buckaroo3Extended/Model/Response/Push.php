@@ -307,7 +307,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		//send new order email if it hasnt already been sent
 		if(!$this->_order->getEmailSent())
         {
-        	$this->_order->sendNewOrderEmail();
+        	$this->sendNewOrderEmail();
         }
         
         $this->_autoInvoice();
