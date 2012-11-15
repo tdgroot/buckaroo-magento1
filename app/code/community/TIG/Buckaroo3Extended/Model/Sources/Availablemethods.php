@@ -16,6 +16,7 @@ class TIG_Buckaroo3Extended_Model_Sources_Availablemethods
     		 array('value' => 'sofortueberweisung', 'label' => Mage::helper('buckaroo3extended')->__('Sofort Banking')),
     		 array('value' => 'transfer', 'label' => Mage::helper('buckaroo3extended')->__('Overboeking')),
     		 array('value' => 'visa', 'label' => Mage::helper('buckaroo3extended')->__('Visa')),
+             array('value' => 'bancontactmrcash', 'label' => Mage::helper('buckaroo3extended')->__('Bancontact / Mr. Cash')),
     	);
     	return $array;
     }
