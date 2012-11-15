@@ -100,7 +100,11 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     
     protected function _addCustomerVariables(&$vars, $serviceName = 'creditmanagement')
     {
-        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        if (Mage::helper('buckaroo3extended')->isAdmin()) {
+            $additionalFields = Mage::getSingleton('core/session')->getData('additionalFields');
+        } else {
+            $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        }
     
         if (isset($additionalFields['BPE_Customergender'])) {
         	$gender = $additionalFields['BPE_Customergender'];
@@ -393,6 +397,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                 'sofortueberweisung',
                 'transfer',
                 'visa',
+                'bancontactmrcash',
             );
         } else {
             $allowedArray = explode(',', $configAllowed);
@@ -410,6 +415,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                     'sofortueberweisung',
                     'transfer',
                     'visa',
+                    'bancontactmrcash',
                 );
             }
         }

@@ -12,7 +12,8 @@ class TIG_Buckaroo3Extended_Model_Observer_BackendOrder extends Mage_Core_Model_
         
         try {
             $request = Mage::getModel('buckaroo3extended/request_abstract');
-            $request->setOrder($order);
+            $request->setOrder($order)
+                    ->setOrderBillingInfo();
             
             $request->sendRequest();
 	    } catch (Exception $e) {

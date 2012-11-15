@@ -28,7 +28,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
     protected $_canRefund               = false;
     protected $_canRefundInvoicePartial = false;
     protected $_canVoid                 = true;
-    protected $_canUseInternal          = true;
+    protected $_canUseInternal          = false;
     protected $_canUseCheckout          = true;
     protected $_canUseForMultishipping  = false;
     protected $_canSaveCc 				= false;

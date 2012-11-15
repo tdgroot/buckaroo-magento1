@@ -184,14 +184,30 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         {
         	$response = $client->TransactionRequest($TransactionRequest);
         } catch (SoapFault $e) {
+            $responseXML = $client->__getLastResponse();
+        $requestXML = $client->__getLastRequest();
+        
+        $responseDomDOC = new DOMDocument();
+        $responseDomDOC->loadXML($responseXML);
+        $responseDomDOC->preserveWhiteSpace = FALSE;
+        $responseDomDOC->formatOutput = TRUE;
+        
+        $requestDomDOC = new DOMDocument();
+        $requestDomDOC->loadXML($requestXML);
+        $requestDomDOC->preserveWhiteSpace = FALSE;
+        $requestDomDOC->formatOutput = TRUE;
+        echo '<pre>'; var_dump($requestDomDOC->saveXML());
+            echo '<pre>'; var_dump($responseDomDOC->saveXML());exit;
             $this->logException($e->getMessage());
         	return $this->_error($client);
         } catch (Exception $e) {
+            echo $e->getMessage();exit;
             $this->logException($e->getMessage());
             return $this->_error($client);
         }
         
         if (is_null($response)) {
+            echo 'exit';exit;
             $response = false;
         }
         

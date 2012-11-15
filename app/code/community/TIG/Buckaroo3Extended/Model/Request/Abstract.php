@@ -12,6 +12,8 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     public function setVars($vars = array())
     {
         $this->_vars = $vars;
+        
+        return $this;
     }
 
     public function getMethod()
@@ -22,6 +24,8 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     public function setMethod($method = '')
     {
         $this->_method = $method;
+        
+        return $this;
     }
 
     public function __construct() {
