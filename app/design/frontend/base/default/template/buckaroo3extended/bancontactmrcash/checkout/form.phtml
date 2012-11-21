@@ -1,0 +1,10 @@
+<div id="payment-errors" class="validation-advice" style="display:none;"></div>
+
+<fieldset class="form-list">
+    <?php $_code = $this->getMethodCode() ?>
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+        <li>
+            <?php echo $this->__('You will be redirected to the Bancontact / Mr. Cash page when you place your order.') ?>
+        </li>
+    </ul>
+</fieldset> 
