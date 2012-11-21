@@ -78,10 +78,14 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	    if (!empty($orderId)) {
             $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 	    }
+        
+        return $this;
 	}
 	
 	public function setOrder($order) {
 	    $this->_order = $order;
+        
+        return $this;
 	}
 	
 	public function getOrder()
@@ -92,6 +96,8 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	public function setLastOrder($order)
 	{
 		$this->_order = $order;
+        
+        return $this;
 	}
 	
 	public function getLastOrder()
@@ -102,6 +108,8 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	public function setDebugEmail($debugEmail)
 	{
 		$this->_debugEmail = $debugEmail;
+        
+        return $this;
 	}
 	
 	public function getDebugEmail()
@@ -112,6 +120,8 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	public function setBillingInfo($billingInfo)
 	{
 		$this->_billingInfo = $billingInfo;
+        
+        return $this;
 	}
 	
 	public function getBillingInfo()
@@ -122,6 +132,8 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	public function setSession($session)
 	{
 		$this->_session = $session;
+        
+        return $this;
 	}
 	
 	public function getSession()
@@ -185,15 +197,15 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	protected function _checkExpired()
 	{
 	    if (empty($this->_order)) {
-		    $returnUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) 
-    			. (Mage::getStoreConfig('web/seo/use_rewrites', Mage::app()->getStore()->getStoreId()) != 1 ? 'index.php/':'') 
-    			. (Mage::getStoreConfig('web/url/use_store', Mage::app()->getStore()->getStoreId()) != 1 ? '' : Mage::app()->getStore()->getCode() . '/')
-    			. Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId());
-			
+		    $returnUrl = Mage::getUrl(Mage::getStoreConfig('buckaroo/buckaroo3extended/failure_redirect', Mage::app()->getStore()->getStoreId()));
 	        header('location:' . $returnUrl);
 	    }
 	}
 	
+    public function setOrderBillingInfo() {
+        return $this->_setOrderBillingInfo();
+    }
+    
 	/**
 	 * retrieve billing information from order
 	 * 
@@ -230,6 +242,8 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
         );
         
         $this->setBillingInfo($billingInfo);
+        
+        return $this;
 	}
 	
 	/**
