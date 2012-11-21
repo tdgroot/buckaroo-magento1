@@ -73,6 +73,21 @@
             			<class>buckaroo3extended/paymentMethods_visa_observer</class>
             			<method>buckaroo3extended_refund_request_setmethod</method>
             		</buckaroo3extended_paymentmethod_observer_visa>
+            		<buckaroo3extended_paymentmethod_observer_maestro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_maestro_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_maestro>
+            		<buckaroo3extended_paymentmethod_observer_visaelectron>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visaelectron_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_visaelectron>
+            		<buckaroo3extended_paymentmethod_observer_vpay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_vpay_observer</class>
+            			<method>buckaroo3extended_refund_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_vpay>
             	</observers>
             </buckaroo3extended_refund_request_setmethod>
             <buckaroo3extended_refund_request_addservices>
@@ -132,6 +147,21 @@
             			<class>buckaroo3extended/paymentMethods_visa_observer</class>
             			<method>buckaroo3extended_refund_request_addservices</method>
             		</buckaroo3extended_paymentmethod_observer_visa>
+            		<buckaroo3extended_paymentmethod_observer_maestro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_maestro_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_maestro>
+            		<buckaroo3extended_paymentmethod_observer_visaelectron>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visaelectron_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_visaelectron>
+            		<buckaroo3extended_paymentmethod_observer_vpay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_vpay_observer</class>
+            			<method>buckaroo3extended_refund_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_vpay>
             	</observers>
             </buckaroo3extended_refund_request_addservices>
             <buckaroo3extended_refund_request_addcustomvars>
@@ -191,6 +221,21 @@
             			<class>buckaroo3extended/paymentMethods_visa_observer</class>
             			<method>buckaroo3extended_refund_request_addcustomvars</method>
             		</buckaroo3extended_paymentmethod_observer_visa>
+            		<buckaroo3extended_paymentmethod_observer_maestro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_maestro_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_maestro>
+            		<buckaroo3extended_paymentmethod_observer_visaelectron>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visaelectron_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_visaelectron>
+            		<buckaroo3extended_paymentmethod_observer_vpay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_vpay_observer</class>
+            			<method>buckaroo3extended_refund_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_vpay>
             	</observers>
             </buckaroo3extended_refund_request_addcustomvars>
             <controller_action_postdispatch_adminhtml_system_config_save>
@@ -284,6 +329,21 @@
             			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
             			<method>buckaroo3extended_request_addservices</method>
             		</buckaroo3extended_paymentmethod_observer_empayment>
+            		<buckaroo3extended_paymentmethod_observer_maestro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_maestro_observer</class>
+            			<method>buckaroo3extended_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_maestro>
+            		<buckaroo3extended_paymentmethod_observer_visaelectron>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visaelectron_observer</class>
+            			<method>buckaroo3extended_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_visaelectron>
+            		<buckaroo3extended_paymentmethod_observer_vpay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_vpay_observer</class>
+            			<method>buckaroo3extended_request_addservices</method>
+            		</buckaroo3extended_paymentmethod_observer_vpay>
             	</observers>
             </buckaroo3extended_request_addservices>
             <buckaroo3extended_request_addcustomvars>
@@ -363,6 +423,21 @@
             			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
             			<method>buckaroo3extended_request_addcustomvars</method>
             		</buckaroo3extended_paymentmethod_observer_empayment>
+            		<buckaroo3extended_paymentmethod_observer_maestro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_maestro_observer</class>
+            			<method>buckaroo3extended_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_maestro>
+            		<buckaroo3extended_paymentmethod_observer_visaelectron>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visaelectron_observer</class>
+            			<method>buckaroo3extended_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_visaelectron>
+            		<buckaroo3extended_paymentmethod_observer_vpay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_vpay_observer</class>
+            			<method>buckaroo3extended_request_addcustomvars</method>
+            		</buckaroo3extended_paymentmethod_observer_vpay>
             	</observers>
             </buckaroo3extended_request_addcustomvars>
             <buckaroo3extended_request_setmethod>
@@ -442,6 +517,21 @@
             			<class>buckaroo3extended/paymentMethods_empayment_observer</class>
             			<method>buckaroo3extended_request_setmethod</method>
             		</buckaroo3extended_paymentmethod_observer_empayment>
+            		<buckaroo3extended_paymentmethod_observer_maestro>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_maestro_observer</class>
+            			<method>buckaroo3extended_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_maestro>
+            		<buckaroo3extended_paymentmethod_observer_visaelectron>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_visaelectron_observer</class>
+            			<method>buckaroo3extended_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_visaelectron>
+            		<buckaroo3extended_paymentmethod_observer_vpay>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_vpay_observer</class>
+            			<method>buckaroo3extended_request_setmethod</method>
+            		</buckaroo3extended_paymentmethod_observer_vpay>
             	</observers>
             </buckaroo3extended_request_setmethod>
             <buckaroo3extended_push_custom_processing>
@@ -674,6 +764,24 @@
                 <title>éM! Payment</title>
                 <sort_order>600</sort_order>
             </buckaroo3extended_empayment>
+            <buckaroo3extended_maestro translate="title">
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_maestro_paymentMethod</model>
+                <title>eMaestro</title>
+                <sort_order>600</sort_order>
+            </buckaroo3extended_maestro>
+            <buckaroo3extended_visaelectron translate="title">
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_visaelectron_paymentMethod</model>
+                <title>Visa Electron</title>
+                <sort_order>600</sort_order>
+            </buckaroo3extended_visaelectron>
+            <buckaroo3extended_vpay translate="title">
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_vpay_paymentMethod</model>
+                <title>V PAY</title>
+                <sort_order>600</sort_order>
+            </buckaroo3extended_vpay>
             <buckaroo2012ideal translate="title">
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
@@ -983,6 +1091,7 @@
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_onlinegiro>
+         	
          	<buckaroo3extended_giftcards>
          		<active>0</active>
          		<mode>0</mode>
@@ -1008,6 +1117,45 @@
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_empayment>
+         	
+         	<buckaroo3extended_maestro>
+         		<active>0</active>
+         		<mode>0</mode>
+         		<title>eMaestro</title>
+         		<allowspecific>0</allowspecific>
+         		<specificcountry></specificcountry>
+         		<order_status_success></order_status_success>
+         		<order_status_failed></order_status_failed>
+         		<sort_order>600</sort_order>
+         		<limit_by_ip>0</limit_by_ip>
+         		<allowed_currencies>EUR</allowed_currencies>
+         	</buckaroo3extended_maestro>
+         	
+         	<buckaroo3extended_visaelectron>
+         		<active>0</active>
+         		<mode>0</mode>
+         		<title>Visa Electron</title>
+         		<allowspecific>0</allowspecific>
+         		<specificcountry></specificcountry>
+         		<order_status_success></order_status_success>
+         		<order_status_failed></order_status_failed>
+         		<sort_order>600</sort_order>
+         		<limit_by_ip>0</limit_by_ip>
+         		<allowed_currencies>EUR</allowed_currencies>
+         	</buckaroo3extended_visaelectron>
+         	
+         	<buckaroo3extended_vpay>
+         		<active>0</active>
+         		<mode>0</mode>
+         		<title>V PAY</title>
+         		<allowspecific>0</allowspecific>
+         		<specificcountry></specificcountry>
+         		<order_status_success></order_status_success>
+         		<order_status_failed></order_status_failed>
+         		<sort_order>600</sort_order>
+         		<limit_by_ip>0</limit_by_ip>
+         		<allowed_currencies>EUR</allowed_currencies>
+         	</buckaroo3extended_vpay>
          	
          	<buckaroo3extended_refund>
          		<active>0</active>

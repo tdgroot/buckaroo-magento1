@@ -384,7 +384,9 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     {
         $configAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowed_methods', Mage::app()->getStore()->getStoreId());
         
-        if ($configAllowed == 'all') {
+        $allowedArray = explode(',', $configAllowed);
+        
+        if (in_array('all', $allowedArray)) {
             $allowedArray = array(
                 'amex',
                 'directdebit',
@@ -397,25 +399,10 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                 'sofortueberweisung',
                 'transfer',
                 'visa',
+                'maestro',
+                'visaelectron',
+                'vpay',
             );
-        } else {
-            $allowedArray = explode(',', $configAllowed);
-            
-            if (in_array('all', $allowedArray)) {
-                $allowedArray = array(
-                    'amex',
-                    'directdebit',
-                    'giropay',
-                    'ideal',
-                    'mastercard',
-                    'onlinegiro',
-                    'paypal',
-                    'paysafecard',
-                    'sofortueberweisung',
-                    'transfer',
-                    'visa',
-                );
-            }
         }
         
         $allowedString = implode(',', $allowedArray);

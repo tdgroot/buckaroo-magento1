@@ -16,6 +16,9 @@ class TIG_Buckaroo3Extended_Model_Sources_Availablemethods
     		 array('value' => 'sofortueberweisung', 'label' => Mage::helper('buckaroo3extended')->__('Sofort Banking')),
     		 array('value' => 'transfer', 'label' => Mage::helper('buckaroo3extended')->__('Overboeking')),
     		 array('value' => 'visa', 'label' => Mage::helper('buckaroo3extended')->__('Visa')),
+             array('value' => 'maestro', 'label' => Mage::helper('buckaroo3extended')->__('eMaestro')),
+             array('value' => 'visaelectron', 'label' => Mage::helper('buckaroo3extended')->__('Visa Electron')),
+             array('value' => 'vpay', 'label' => Mage::helper('buckaroo3extended')->__('V PAY')),
     	);
     	return $array;
     }
