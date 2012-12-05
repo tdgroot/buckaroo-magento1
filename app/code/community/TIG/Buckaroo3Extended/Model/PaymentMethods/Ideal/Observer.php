@@ -104,6 +104,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         $issuer = $additionalFields['Issuer'];
 
+        $issuerCode = '';
         switch ($issuer) {
             case 'ABNAMRO':     $issuerCode = '0031';
                                 break;
@@ -122,6 +123,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
             case 'TRIODOS':     $issuerCode = '0511';
                                 break;
             case 'LANSCHOT':    $issuerCode = '0161';
+                                break;
+            case 'KNAB':        $issuerCode = '9998';
                                 break;
         }
 
