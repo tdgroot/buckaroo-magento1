@@ -24,6 +24,8 @@
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php $_issuerList = $this->getIssuerList();?>
+<?php $validation = ''; ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list">
@@ -34,52 +36,20 @@
         </li>
         <li>
         	<div id = "radiogroup-container">
-                <label style ="padding:0;"><?php echo $this->__('Please, choose your bank:'); ?></label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="ABNAMRO" /> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/logo_abn_s.gif");?>"/> 
-                    <?php echo $this->__('ABN AMRO');?>
-                </label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="ASNBANK" /> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/icon_asn.gif");?>"/> 
-                    <?php echo $this->__('ASN Bank');?>
-                </label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="FRIESLAND" /> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/logo_friesland_s.gif");?>"/> 
-                    <?php echo $this->__('Friesland Bank');?>
-                </label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="INGBANK" /> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/logo_ing_s.gif");?>"/> 
-                    <?php echo $this->__('ING');?>
-                </label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="RABOBANK" /> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/logo_rabo_s.gif");?>"/> 
-                    <?php echo $this->__('Rabobank');?>
-                </label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="SNSBANK" /> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/logo_sns_s.gif");?>"/> 
-                    <?php echo $this->__('SNS Bank');?>
-                </label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="SNSREGIO" /> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/logo_sns_s.gif");?>"/> 
-                    <?php echo $this->__('RegioBank');?>
-                </label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="TRIODOS" /> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/logo_triodos.gif");?>"/> 
-                    <?php echo $this->__('Triodos Bank');?>
-                </label><br/>
-                <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                    <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="LANSCHOT" class = 'validate-one-required-by-name'/> 
-                    <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/logo_lanschot_s.gif");?>"/> 
-                    <?php echo $this->__('Van Lanschot');?>
-                </label><br/>
+        	    <label style ="padding:0;"><?php echo $this->__('Please, choose your bank:'); ?></label><br/>
+        	    <?php $i = 0; ?>
+        	    <?php foreach($_issuerList as $issuer => $issuerDetails): ?>
+                    <?php $i++; ?>
+                    <?php if ($i == count($_issuerList)): ?>
+                        <?php $validation = "class='validate-one-required-by-name'"; ?>
+                    <?php endif; ?>
+        	        <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+                        <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="<?php echo $issuer; ?>" <?php echo $validation; ?>/> 
+                        <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/" . $issuerDetails['logo']);?>"/> 
+                        <?php echo $this->__($issuerDetails['name']);?>
+                    </label>
+                    <br/>
+        	    <?php endforeach; ?>
             </div>
         </li>
     </ul>
