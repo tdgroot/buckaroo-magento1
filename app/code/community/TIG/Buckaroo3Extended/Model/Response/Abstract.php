@@ -187,7 +187,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _failed()
     {
-        $this->_debugEmail .= 'The transaction was unsucessful. \n';
+        $this->_debugEmail .= 'The transaction was unsuccessful. \n';
         $this->restoreQuote();
 
         Mage::getSingleton('core/session')->addError(

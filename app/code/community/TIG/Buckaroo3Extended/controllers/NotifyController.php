@@ -97,12 +97,10 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_debugEmail .= "\nException trace: " . $e->getTraceAsString() . "\n";
             
             Mage::logException($e);
-            
             //this will allow the script to continue unhindered
             $processedPush = false;
             $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
         }
-
         $this->_debugEmail = $module->getDebugEmail();
         
         if ($processedPush === false) {
@@ -144,7 +142,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     
     protected function _processPushAccordingToType()
     {
-        if ($this->_order->getTransactionKey() == $this->_postArray['brq_transactions']) {
+        if ($this->_order->getTransactionKey() == $this->_postArray['brq_transactions'] || (isset($this->_postArray['brq_relatedtransaction_partialpayment']) && $this->_order->getTransactionKey() == $this->_postArray['brq_relatedtransaction_partialpayment'])) {
             list($processedPush, $module) = $this->_updateOrderWithKey();
         } elseif ($this->_pushIsCreditmemo($this->_postArray)) {
             list($processedPush, $module) = $this->_updateCreditmemo();

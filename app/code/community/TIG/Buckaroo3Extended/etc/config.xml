@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<TIG_Buckaroo3Extended>
-			<version>4.3.1</version>
+			<version>4.3.2</version>
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<global>
@@ -579,7 +579,23 @@
             			<method>buckaroo3extended_push_custom_processing</method>
             		</buckaroo3extended_paymentmethod_observer_payperemail>
             	</observers>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_giftcard>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_giftcards_observer</class>
+            			<method>buckaroo3extended_push_custom_processing</method>
+            		</buckaroo3extended_paymentmethod_observer_giftcard>
+            	</observers>
             </buckaroo3extended_push_custom_processing>
+            <buckaroo3extended_return_custom_processing>
+            	<observers>
+            		<buckaroo3extended_paymentmethod_observer_giftcard_return>
+            			<type>Singleton</type>
+            			<class>buckaroo3extended/paymentMethods_giftcards_observer</class>
+            			<method>buckaroo3extended_return_custom_processing</method>
+            		</buckaroo3extended_paymentmethod_observer_giftcard_return>
+            	</observers>
+            </buckaroo3extended_return_custom_processing>
             <buckaroo3extended_response_custom_processing>
             	<observers>
             		<buckaroo3extended_paymentmethod_observer_paymentguarantee>
