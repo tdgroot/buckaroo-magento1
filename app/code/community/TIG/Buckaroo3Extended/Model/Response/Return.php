@@ -12,8 +12,28 @@ class TIG_Buckaroo3Extended_Model_Response_Return extends TIG_Buckaroo3Extended_
 			$this->_verifyError();
 		}
 		
+        Mage::dispatchEvent('buckaroo3extended_return_custom_processing', array('return' => $this, 'order' => $this->getCurrentOrder()));  
+              
+        if ($this->getCustomResponseProcessing()) {
+            return true;
+        }
+		
 		$parsedResponse = $this->_parsePostResponse($this->_postArray['brq_statuscode']);
 		
 		$this->_requiredAction($parsedResponse);
+    }
+    
+    public function customSuccess()
+    {
+        if ($this->getCustomResponseProcessing()) {
+            $this->_success();
+        }
+    }
+    
+    public function customFailed()
+    {
+        if ($this->getCustomResponseProcessing()) {
+            $this->_failed();
+        }
     }
 }

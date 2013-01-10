@@ -96,4 +96,52 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         }
         return $ret;
     }
+    
+    public function buckaroo3extended_push_custom_processing($observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+        
+        $push = $observer->getPush();
+        $postData = $push->getPostArray();
+        if (!empty($postData['brq_relatedtransaction_partialpayment'])) {
+            $order = $observer->getOrder();
+            if ($postData['brq_amount'] < $order->getGrandTotal()) {
+                $order->setTransactionKey($postData['brq_relatedtransaction_partialpayment']);
+                
+                $processingPaymentStatus  = Mage::getStoreConfig('buckaroo/buckaroo3extended_giftcards/order_status_giftcard', Mage::app()->getStore()->getStoreId());
+                if (!empty($processingPaymentStatus)) {
+                    $order->setStatus($processingPaymentStatus);
+                }
+                
+                $order->save();
+                $push->setCustomResponseProcessing(true);
+            }
+        }
+    }
+    
+    
+    public function buckaroo3extended_return_custom_processing($observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+        
+        $return = $observer->getReturn();
+        $postData = $return->getPostArray();
+        $order = $observer->getOrder();
+        $code = $order->getPayment()->getMethodInstance()->getCode();
+        if ($code == 'buckaroo3extended_giftcards' && $postData['brq_statuscode'] == 190 && $postData['brq_amount'] < $order->getGrandTotal()){
+            $return->setCustomResponseProcessing(true);
+            $return->customSuccess();
+        }
+        
+        if ($code == 'buckaroo3extended_giftcards' && $postData['brq_statuscode'] == 890 && $postData['brq_amount'] < $order->getGrandTotal()) {
+            $return->setCustomResponseProcessing(true);
+            $return->customFailed();
+        }
+    }
+    
+    
 }

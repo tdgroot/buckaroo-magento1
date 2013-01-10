@@ -76,6 +76,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			return false;
 		}
 		
+		if (strcmp($this->_order->getPayment()->getMethodInstance()->getCode(), 'buckaroo3extended_giftcards') === 0) {
+            Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder()));  
+                  
+            if ($this->getCustomResponseProcessing()) {
+                return true;
+            }
+		}
+		
 		$response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);
 		$newStates = $this->_getNewStates($response['status']);
 		
