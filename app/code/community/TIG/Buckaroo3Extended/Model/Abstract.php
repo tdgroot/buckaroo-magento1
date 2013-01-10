@@ -1,5 +1,5 @@
 <?php 
-abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abstract
+class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abstract
 {    
 	const BUCKAROO_SUCCESS           = 'BUCKAROO_SUCCESS';
     const BUCKAROO_FAILED            = 'BUCKAROO_FAILED';
@@ -114,7 +114,7 @@ abstract class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_M
 	
 	public function getDebugEmail()
 	{
-		return $this->_debugEmail();
+		return $this->_debugEmail;
 	}
 	
 	public function setBillingInfo($billingInfo)
