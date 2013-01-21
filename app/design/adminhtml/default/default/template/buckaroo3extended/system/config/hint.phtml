@@ -10,7 +10,7 @@
 ">
     <h4><?php echo Mage::helper('buckaroo3extended')->__('These options are only intended for expert users. Tampering with the default settings may negatively affect the workflow and performance of all Buckaroo payment methods. Use at your own risk.')?></h4>
 </div>
-<script type="text/javascript" charset="utf-8" src="<?php echo $this->getSkinUrl("buckaroo/js/jquery-1.4.4.min.js");?>"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $this->getSkinUrl("js/tig_buckaroo3extended/jquery-1.4.4.min.js");?>"></script>
 <script type = 'text/javascript'>
 jQuery.noConflict();
 jQuery('document').ready(
@@ -28,7 +28,7 @@ jQuery('document').ready(
 			jQuery("#buckaroo_buckaroo3extended").prev().prev().css('background-color','rgb(137,197,64)');
 		}
 
-    	jQuery('.buckaroo-header').html('&nbsp;').css('background-image', "url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/buckaroo/images/buckaroo_large.png')").css('width','151').css('height','30');
+    	jQuery('.buckaroo-header').html('&nbsp;').css('background-image', "url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/images/tig_buckaroo3extended/buckaroo_large.png')").css('width','151').css('height','30');
 
 		<?php foreach($this->config as $config): ?>
 			jQuery('#buckaroo_buckaroo3extended_<?php echo $config; ?>').prev().prev().css('background-color','rgb(245,111,9)')

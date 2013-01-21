@@ -161,3 +161,9 @@
 
 "You will be redirected to the èM! Payment website to finalize your payment. ","U wordt doorgestuurd naar de website van èM! Payment om uw betaling af te ronden."
 "You will be redirected to the Buckaroo website when you place your order. ","U wordt naar de website van Buckaroo doorverwezen wanneer u uw bestelling plaatst."
+
+"Billing Address","Factuur Adres"
+"Store Settings","Website Instellingen"
+
+"Buckaroo language type","Buckaroo taal selectie"
+"Should the language code sent to Buckaroo be based on billing address or storeview settings","Selecteer of de taalcode die naar Buckaroo gestuurd wordt uit het factuur adres of uit de website instellingen moet worden gehaald."

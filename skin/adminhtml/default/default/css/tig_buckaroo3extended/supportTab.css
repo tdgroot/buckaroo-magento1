@@ -1,0 +1,61 @@
+/* Global */
+ #buckaroo_buckaroo3extended_support { width:100%; font:12px/1.5em Arial,Helvetica,sans-serif; color:#333; }
+ #buckaroo_buckaroo3extended_support h1 { font-size:18px; font-weight:bold; color:#eb5e01; border-bottom:1px solid #d6d6d6; padding:0 0 7px; margin:0 0 10px; }
+ #buckaroo_buckaroo3extended_support h2 { font-size:13px; font-weight:bold; padding:10px 0 4px; }
+ #buckaroo_buckaroo3extended_support p { padding:0 0 11px; }
+ #buckaroo_buckaroo3extended_support a { color:#6f8992; text-decoration:underline; }
+ #buckaroo_buckaroo3extended_support a.pdf { background: no-repeat; display:block; height:23px; padding:0 0 0 26px; margin:0 0 7px; background-image:url('../../images/tig_buckaroo3extended/glyph_pdf.gif');}
+ 
+
+/* Content */
+ #buckaroo_buckaroo3extended_support .contentWrap .tigLogo { clear:both; width:900px;	}
+ #buckaroo_buckaroo3extended_support .contentWrap .tigLogo span { display:block; width:117px; height:9px; text-indent:-999em; background:no-repeat; float:right; background-image:url('../../images/tig_buckaroo3extended/logo_tig.gif');}
+
+ #buckaroo_buckaroo3extended_support #leftColumn { float:left; width:435px; padding-right:15px; }
+
+ #buckaroo_buckaroo3extended_support #rightColumn { float:left; width:435px; padding-left:15px; }
+ #buckaroo_buckaroo3extended_support #rightColumn .supportService { background:#fff; border:1px solid #d9d9d9; padding:15px 15px 10px; }
+
+/* ClearFix */
+ #buckaroo_buckaroo3extended_support .contentWrap:after { content:"."; display:block; clear:both; font-size:0; height:0; line-height:0; overflow:hidden;  }
+
+ #buckaroo_buckaroo3extended_support .firstSteps ul li { list-style:disc inside none; }
+ 
+.buckaroo_payment_method_banner {
+	background:url('../../images/tig_buckaroo3extended/buckaroo_large.png') no-repeat; 
+	padding-top:5px;
+	padding-left:170px;
+	height:25px;
+	border:1px solid #CCCCCC;
+	margin-bottom:20px;
+}
+.buckaroo_refunding_no_options_available {
+	background-image: url('../../images/fam_bullet_error.gif');
+	background-repeat:no-repeat; 
+	background-color:rgb(255,255,255); 
+	padding:9px;
+	padding-left:28px;
+	height:27px;
+	border:1px solid #CCCCCC;
+	background-position:10px 10px;	
+}
+.buckaroo_certificate_is_uploaded_banner {
+    background-image:url('../../images/fam_bullet_success.gif');
+    background-repeat:no-repeat; 
+    background-color:rgb(255,255,255); 
+    padding:9px;
+    padding-left:28px;
+    height:27px;
+    border:1px solid #CCCCCC;
+    background-position:10px 10px;	
+}
+.buckaroo_certificate_is_not_uploaded_banner {
+    background-image:url('../../images/error_msg_icon.gif');
+    background-repeat:no-repeat; 
+    background-color:rgb(255,255,255); 
+    padding:9px;
+    padding-left:28px;
+    height:27px;
+    border:1px solid #CCCCCC;
+    background-position:10px 10px;	
+}

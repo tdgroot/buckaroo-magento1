@@ -388,16 +388,24 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	 */
 	protected function _getLocale()
 	{
-		$country = $this->_order->getBillingAddress()->getCountry();
-		switch ($country)
-		{
-    		case 'BE': 
-    		case 'NL': $locale = 'nl-' . $country; 
-    		           $lang = 'NL';
-    				   break;
-    		default:   $locale = 'en-US';
-    		           $lang = 'EN';
-		}
+        $country = $this->_order->getBillingAddress()->getCountry();
+	    $cultureSetting = Mage::getStoreConfig('buckaroo/buckaroo3extended/culture_type', Mage::app()->getStore()->getId());
+        
+        if ($cultureSetting == 'billing') {
+            switch ($country)
+            {
+                case 'BE': 
+                case 'NL': $locale = 'nl-' . $country; 
+                           $lang = 'NL';
+                           break;
+                default:   $locale = 'en-US';
+                           $lang = 'EN';
+            }
+        } elseif ($cultureSetting == 'store') {
+            $locale = Mage::app()->getLocale()->getLocaleCode();
+            $locale = str_replace('_', '-', $locale);
+            $lang = strtoupper(substr($locale, 0, 2));
+        }
 		
 		return array($country, $locale, $lang);
 	}

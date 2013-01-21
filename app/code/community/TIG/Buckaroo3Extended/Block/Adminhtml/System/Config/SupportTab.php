@@ -10,6 +10,13 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_SupportTab
     public $totalEmail           = '<a href="mailto:info@totalinternetgroup.nl">';
     public $buckarooUrl          = '<a href="http://www.buckaroo.nl">Buckaroo</a>';
     
+    protected function _prepareLayout()
+    {
+        //placed here, instead of in layout.xml to make sure it is only loaded for Buckaroo's section
+        $this->getLayout()->getBlock('head')->addCss('css/tig_buckaroo3extended/supportTab.css');
+        return parent::_prepareLayout();
+    }
+    
     /**
      * Render fieldset html
      *
