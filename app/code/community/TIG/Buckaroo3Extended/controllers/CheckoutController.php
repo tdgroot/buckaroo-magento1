@@ -6,4 +6,9 @@ class TIG_Buckaroo3Extended_CheckoutController extends Mage_Core_Controller_Fron
         $request = Mage::getModel('buckaroo3extended/request_abstract');
         $request->sendRequest();
 	}
+    
+    public function saveDataAction()
+    {
+        
+    }
 }

@@ -10,7 +10,7 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
 
 <fieldset class="form-list">
     <?php $_code=$this->getMethodCode() ?>
-    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
             <?php echo $this->__('You will be redirected to the èM! Payment website to finalize your payment.') ?>
         </li>

@@ -23,7 +23,7 @@
     <div id="payment-errors" class="validation-advice" style="display:none;"></div>
     <fieldset class="form-list">
         <?php $_code=$this->getMethodCode() ?>
-        <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+        <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
             <li>
                 <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
             </li>
