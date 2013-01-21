@@ -954,6 +954,7 @@
 				<success_redirect>checkout/onepage/success</success_redirect>
 				<failure_redirect>checkout/onepage</failure_redirect>
                 <display_expert>0</display_expert>
+                <culture_type>billing</culture_type>
 			</buckaroo3extended>
 			
 			<buckaroo3extended_advanced>
