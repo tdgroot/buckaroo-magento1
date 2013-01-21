@@ -403,13 +403,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             }
         } elseif ($cultureSetting == 'store') {
             $locale = Mage::app()->getLocale()->getLocaleCode();
-            
-            if ($locale == 'nl-NL') {
-                $lang = 'NL';
-            } else {
-                $locale = 'en-US';
-                $lang = 'EN';
-            }
+            $locale = str_replace('_', '-', $locale);
+            $lang = strtoupper(substr($locale, 0, 2));
         }
 		
 		return array($country, $locale, $lang);
