@@ -243,9 +243,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		
 		//get the possible default new status for the order based on the general config options
 		//these should always be set
-		$defaultSuccessStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended/order_status_success', Mage::app()->getStore()->getStoreId());
-		$defaultFailureStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended/order_status_failed', Mage::app()->getStore()->getStoreId());
-		$defaultPendingPaymentStatus = Mage::getStoreConfig('buckaroo/buckaroo3extended/order_status_pendingpayment', Mage::app()->getStore()->getStoreId());
+		$defaultSuccessStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', Mage::app()->getStore()->getStoreId());
+		$defaultFailureStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', Mage::app()->getStore()->getStoreId());
+		$defaultPendingPaymentStatus = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', Mage::app()->getStore()->getStoreId());
 		
 		//determine whether to use the default or custom status
 		if ($customSuccessStatus && !empty($customSuccessStatus)) 

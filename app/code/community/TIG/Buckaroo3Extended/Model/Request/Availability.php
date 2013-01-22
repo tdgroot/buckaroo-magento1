@@ -119,7 +119,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
     {
         $ipAllowed = false;
 
-        if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/buckaroo3extended/limit_by_ip'))
+        if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/limit_by_ip'))
     	{
     		$allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
     		if (in_array($_SERVER['REMOTE_ADDR'], $allowedIp))
