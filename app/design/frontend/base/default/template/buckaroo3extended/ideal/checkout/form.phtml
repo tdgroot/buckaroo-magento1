@@ -24,13 +24,15 @@
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php $_session = Mage::getSingleton('checkout/session'); ?>
+<?php $_code = $this->getMethodCode() ?>
+<?php $_value = $_session->getData($_code . '_BPE_Issuer'); ?>
 <?php $_issuerList = $this->getIssuerList();?>
 <?php $validation = ''; ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list">
-    <?php $_code = $this->getMethodCode() ?>
-    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
             <?php echo $this->__('You will be redirected to the iDEAL page of your chosen bank when you place your order.') ?>
         </li>
@@ -44,7 +46,7 @@
                         <?php $validation = "class='validate-one-required-by-name'"; ?>
                     <?php endif; ?>
         	        <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
-                        <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="<?php echo $issuer; ?>" <?php echo $validation; ?>/> 
+                        <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="<?php echo $issuer; ?>" <?php echo $validation; ?> <?php echo $issuer == $_value ? "checked" : ''; ?>/> 
                         <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/" . $issuerDetails['logo']);?>"/> 
                         <?php echo $this->__($issuerDetails['name']);?>
                     </label>

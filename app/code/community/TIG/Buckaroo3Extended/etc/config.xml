@@ -658,6 +658,13 @@
         </resources>
 	</global>
 	<frontend>
+    	<layout>
+		    <updates>
+		        <TIG_Buckaroo3Extended>
+		        	<file>TIG/buckaroo3extended.xml</file>
+		        </TIG_Buckaroo3Extended>
+		    </updates>
+		</layout>
 	    <routers>
 	        <buckaroo3extended>
 	            <use>standard</use>
@@ -681,7 +688,7 @@
     	<layout>
 		    <updates>
 		        <TIG_Buckaroo3Extended>
-		        	<file>tig_buckaroo3extended/layout.xml</file>
+		        	<file>TIG/buckaroo3extended.xml</file>
 		        </TIG_Buckaroo3Extended>
 		    </updates>
 		</layout>
