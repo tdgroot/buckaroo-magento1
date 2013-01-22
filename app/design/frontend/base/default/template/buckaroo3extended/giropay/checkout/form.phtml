@@ -24,6 +24,7 @@
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php $_session = Mage::getSingleton('checkout/session'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list">
@@ -34,7 +35,7 @@
         </li>
         <li>
                 <label style ="padding:0;"><?php echo $this->__('Please enter your Bankleitzahl.'); ?></label><br/>
-                <input type="text" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="" /></label><br/>
+                <input type="text" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="<?php echo $_session->getData($_code . '_BPE_Bankleitzahl'); ?>" /></label><br/>
         </li>
     </ul>
 </fieldset>

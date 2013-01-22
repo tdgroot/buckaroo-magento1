@@ -24,6 +24,7 @@
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php $_session = Mage::getSingleton('checkout/session'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list">
@@ -37,13 +38,13 @@
         <li>
             <label for="<?php echo $_code ?>_account_owner" class="required"><em>*</em><?php echo $this->__('Account name') ?></label>
             <div class="input-box">
-                <input type="text" title="<?php echo $this->__('Account name') ?>" class="input-text required-entry" id="<?php echo $_code ?>_account_owner" name="payment[account_owner]" value="" />
+                <input type="text" title="<?php echo $this->__('Account name') ?>" class="input-text required-entry" id="<?php echo $_code ?>_account_owner" name="payment[account_owner]" value="<?php echo $_session->getData('payment[account_owner]'); ?>" />
             </div>
         </li>
         <li>
             <label for="<?php echo $_code ?>_account_number" class="required"><em>*</em><?php echo $this->__('Account number') ?></label>
             <div class="input-box">
-                <input type="text" title="<?php echo $this->__('Account number') ?>" class="input-text required-entry" id="<?php echo $_code ?>_account_number" name="payment[account_number]" value="" />
+                <input type="text" title="<?php echo $this->__('Account number') ?>" class="input-text required-entry" id="<?php echo $_code ?>_account_number" name="payment[account_number]" value="<?php echo $_session->getData('payment[account_number]'); ?>" />
             </div>
         </li>
 	</ul>

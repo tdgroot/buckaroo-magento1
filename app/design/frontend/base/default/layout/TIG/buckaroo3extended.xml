@@ -38,5 +38,23 @@
         		<name>js/TIG/Buckaroo3Extended/saveData.js</name>
 			</action>
 		</reference>
+		<reference name="before_body_end">
+			<block type="core/template" name="buckaroo_save_sata_js" template="buckaroo3extended/saveData.phtml"/>
+		</reference>
 	</checkout_onepage_index>
+	<onestepcheckout_index_index>
+		<reference name="head">
+			<action method="addItem">
+				<type>skin_js</type>
+        		<name>js/TIG/Buckaroo3Extended/jquery-1.4.4.min.js</name>
+			</action>
+			<action method="addItem">
+				<type>skin_js</type>
+        		<name>js/TIG/Buckaroo3Extended/saveData.js</name>
+			</action>
+		</reference>
+		<reference name="before_body_end">
+			<block type="core/template" name="buckaroo_save_sata_js" template="buckaroo3extended/saveData.phtml"/>
+		</reference>
+	</onestepcheckout_index_index>
 </layout>

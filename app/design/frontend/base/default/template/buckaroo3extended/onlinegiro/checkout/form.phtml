@@ -1,3 +1,5 @@
+<?php $_code=$this->getMethodCode() ?>
+<?php $_session = Mage::getSingleton('checkout/session'); ?>
 <?php
 $billing_info=Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress();
 $firstname=$billing_info->getFirstname();
@@ -5,11 +7,15 @@ $lastname=$billing_info->getLastname();
 $email=$billing_info->getEmail();
 
 $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
+$gender = $gender ? $gender : (int) $_session->getData($_code . '_BPE_Customergender');
 ?>
+
+<?php $firstname = $firstname ? $firstname : $_session->getData($_code . '_BPE_Customerfirstname'); ?>
+<?php $lastname = $lastname ? $lastname : $_session->getData($_code . '_BPE_Customerlastname'); ?>
+<?php $email = $email ? $email : $_session->getData($_code . '_BPE_Customermail'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list">
-    <?php $_code=$this->getMethodCode() ?>
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
             <?php echo $this->__('You will receive an email with further payment instructions when you place your order.') ?>

@@ -6,6 +6,7 @@ $email=$billing_info->getEmail();
 
 $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
 ?>
+<?php $_session = Mage::getSingleton('checkout/session'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list">
@@ -17,17 +18,17 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
         <li>
             <label><?php echo $this->__('Bank identification') ?>:</label>
             <div class="input-box">
-            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Bankid" value="" />
+            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Bankid" value="<?php echo $_session->getData($_code . '_BPE_Bankid'); ?>" />
             </div>
         </li>
         <li>
             <label><?php echo $this->__('Account holder') ?>:</label>
             <div class="input-box">
-            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountholder" value="" />
+            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountholder" value="<?php echo $_session->getData($_code . '_BPE_Accountholder'); ?>" />
             </div>
             <label><?php echo $this->__('Account number') ?>:</label>
             <div class="input-box">
-            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountnumber" value="" />
+            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountnumber" value="<?php echo $_session->getData($_code . '_BPE_Accountnumber'); ?>" />
             </div>
         </li>
     </ul>
