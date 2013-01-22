@@ -189,6 +189,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             'CustomerEmail'         => $this->_billingInfo['email'],
             'CustomerAccountNumber' => $accountNumber,
             'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
+            'SendMail'              => Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/sendmail', Mage::app()->getStore()->getId()) ? 'TRUE' : 'FALSE',
         );
         
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
