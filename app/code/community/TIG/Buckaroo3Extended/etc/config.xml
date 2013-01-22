@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<TIG_Buckaroo3Extended>
-			<version>4.3.2.1</version>
+			<version>4.3.3.0</version>
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<global>
@@ -658,6 +658,13 @@
         </resources>
 	</global>
 	<frontend>
+    	<layout>
+		    <updates>
+		        <TIG_Buckaroo3Extended>
+		        	<file>TIG/buckaroo3extended.xml</file>
+		        </TIG_Buckaroo3Extended>
+		    </updates>
+		</layout>
 	    <routers>
 	        <buckaroo3extended>
 	            <use>standard</use>
@@ -681,7 +688,7 @@
     	<layout>
 		    <updates>
 		        <TIG_Buckaroo3Extended>
-		        	<file>tig_buckaroo3extended/layout.xml</file>
+		        	<file>TIG/buckaroo3extended.xml</file>
 		        </TIG_Buckaroo3Extended>
 		    </updates>
 		</layout>
@@ -719,123 +726,123 @@
     </admin>
 	<default>
         <payment>
-            <buckaroo3extended_ideal translate="title">
+            <buckaroo3extended_ideal>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_ideal_paymentMethod</model>
                 <title>iDEAL</title>
-                <sort_order>450</sort_order>
+                <sort_order>10</sort_order>
                 <sort_order></sort_order>
             </buckaroo3extended_ideal>
-            <buckaroo3extended_visa translate="title">
+            <buckaroo3extended_visa>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_visa_paymentMethod</model>
                 <title>Visa</title>
-                <sort_order>530</sort_order>
+                <sort_order>40</sort_order>
             </buckaroo3extended_visa>
-            <buckaroo3extended_mastercard translate="title">
+            <buckaroo3extended_mastercard>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_mastercard_paymentMethod</model>
                 <title>Mastercard</title>
-                <sort_order>460</sort_order>
+                <sort_order>30</sort_order>
             </buckaroo3extended_mastercard>
-            <buckaroo3extended_amex translate="title">
+            <buckaroo3extended_amex>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_amex_paymentMethod</model>
                 <title>American Express</title>
-                <sort_order>420</sort_order>
+                <sort_order>50</sort_order>
             </buckaroo3extended_amex>
-            <buckaroo3extended_sofortueberweisung translate="title">
+            <buckaroo3extended_sofortueberweisung>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_sofortueberweisung_paymentMethod</model>
                 <title>Sofortbanking</title>
-                <sort_order>520</sort_order>
+                <sort_order>150</sort_order>
             </buckaroo3extended_sofortueberweisung>
-            <buckaroo3extended_paypal translate="title">
+            <buckaroo3extended_paypal>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paypal_paymentMethod</model>
                 <title>PayPal</title>
-                <sort_order>490</sort_order>
+                <sort_order>90</sort_order>
             </buckaroo3extended_paypal>
-            <buckaroo3extended_giropay translate="title">
+            <buckaroo3extended_giropay>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_giropay_paymentMethod</model>
                 <title>Giropay</title>
-                <sort_order>440</sort_order>
+                <sort_order>160</sort_order>
             </buckaroo3extended_giropay>
-            <buckaroo3extended_paysafecard translate="title">
+            <buckaroo3extended_paysafecard>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paysafecard_paymentMethod</model>
                 <title>Paysafecard</title>
-                <sort_order>510</sort_order>
+                <sort_order>130</sort_order>
             </buckaroo3extended_paysafecard>
-            <buckaroo3extended_transfer translate="title">
+            <buckaroo3extended_transfer>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_transfer_paymentMethod</model>
                 <title>Overboeking</title>
-                <sort_order>480</sort_order>
+                <sort_order>100</sort_order>
             </buckaroo3extended_transfer>
-            <buckaroo3extended_directdebit translate="title">
+            <buckaroo3extended_directdebit>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_directdebit_paymentMethod</model>
                 <title>Eenmalige Machtiging</title>
-                <sort_order>430</sort_order>
+                <sort_order>110</sort_order>
             </buckaroo3extended_directdebit>
-            <buckaroo3extended_paymentguarantee translate="title">
+            <buckaroo3extended_paymentguarantee>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paymentguarantee_paymentMethod</model>
                 <title>Achteraf Betalen</title>
-                <sort_order>410</sort_order>
+                <sort_order>20</sort_order>
             </buckaroo3extended_paymentguarantee>
-            <buckaroo3extended_payperemail translate="title">
+            <buckaroo3extended_payperemail>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_payperemail_paymentMethod</model>
                 <title>PayperEmail</title>
-                <sort_order>500</sort_order>
+                <sort_order>180</sort_order>
             </buckaroo3extended_payperemail>
-            <buckaroo3extended_onlinegiro translate="title">
+            <buckaroo3extended_onlinegiro>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_onlinegiro_paymentMethod</model>
                 <title>Online Giro</title>
-                <sort_order>470</sort_order>
+                <sort_order>190</sort_order>
             </buckaroo3extended_onlinegiro>
-            <buckaroo3extended_giftcards translate="title">
+            <buckaroo3extended_giftcards>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_giftcards_paymentMethod</model>
                 <title>Cadeaukaarten</title>
-                <sort_order>600</sort_order>
+                <sort_order>170</sort_order>
             </buckaroo3extended_giftcards>
-            <buckaroo3extended_empayment translate="title">
+            <buckaroo3extended_empayment>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_empayment_paymentMethod</model>
                 <title>éM! Payment</title>
-                <sort_order>600</sort_order>
+                <sort_order>120</sort_order>
             </buckaroo3extended_empayment>
-            <buckaroo3extended_maestro translate="title">
+            <buckaroo3extended_maestro>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_maestro_paymentMethod</model>
                 <title>eMaestro</title>
-                <sort_order>600</sort_order>
+                <sort_order>70</sort_order>
             </buckaroo3extended_maestro>
-            <buckaroo3extended_visaelectron translate="title">
+            <buckaroo3extended_visaelectron>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_visaelectron_paymentMethod</model>
                 <title>Visa Electron</title>
-                <sort_order>600</sort_order>
+                <sort_order>60</sort_order>
             </buckaroo3extended_visaelectron>
-            <buckaroo3extended_vpay translate="title">
+            <buckaroo3extended_vpay>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_vpay_paymentMethod</model>
                 <title>V PAY</title>
-                <sort_order>600</sort_order>
+                <sort_order>80</sort_order>
             </buckaroo3extended_vpay>
-            <buckaroo3extended_bancontactmrcash translate="title">
+            <buckaroo3extended_bancontactmrcash>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_bancontactmrcash_paymentMethod</model>
                 <title>Bancontact/ Mister Cash</title>
-                <sort_order>425</sort_order>
+                <sort_order>140</sort_order>
                 <sort_order></sort_order>
             </buckaroo3extended_bancontactmrcash>
-            <buckaroo2012ideal translate="title">
+            <buckaroo2012ideal>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012ideal>
@@ -847,7 +854,7 @@
             	<active>0</active>
             	<model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckarooideal>
-            <buckaroo2012betaalgarant translate="title">
+            <buckaroo2012betaalgarant>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012betaalgarant>
@@ -855,7 +862,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckarootransfergarant>
-            <buckaroo2012cashticketpaysafecard translate="title">
+            <buckaroo2012cashticketpaysafecard>
                 <active>o</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012cashticketpaysafecard>
@@ -867,7 +874,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroopaysafecard>
-            <buckaroo2012creditcard translate="title">
+            <buckaroo2012creditcard>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012creditcard>
@@ -875,7 +882,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroocc>
-            <buckaroo2012giftcard translate="title">
+            <buckaroo2012giftcard>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012giftcard>
@@ -883,7 +890,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroogiftcard>
-            <buckaroo2012giropay translate="title">
+            <buckaroo2012giropay>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012giropay>
@@ -891,7 +898,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroogiropay>
-            <buckaroo2012machtiging translate="title">
+            <buckaroo2012machtiging>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012machtiging>
@@ -899,7 +906,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroocollect>
-            <buckaroo2012onlinegiro translate="title">
+            <buckaroo2012onlinegiro>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012onlinegiro>
@@ -911,7 +918,7 @@
             	<active>0</active>
             	<model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckarooonlinegiro>
-            <buckaroo2012overschrijving translate="title">
+            <buckaroo2012overschrijving>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012overschrijving>
@@ -919,7 +926,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckarootransfer>
-            <buckaroo2012paypal translate="title">
+            <buckaroo2012paypal>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012paypal>
@@ -927,7 +934,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroopaypal>
-            <buckaroo2012payperemail translate="title">
+            <buckaroo2012payperemail>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012payperemail>
@@ -935,7 +942,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroopayperemail>
-            <buckaroo3 translate="title">
+            <buckaroo3>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo3>
@@ -948,17 +955,16 @@
                 <thumbprint></thumbprint>
                 <mode>1</mode>
                 <payment_description>Betaling aan de webwinkel</payment_description>
-                <order_status_success>processing</order_status_success>
-                <order_status_failed>canceled</order_status_failed>
-                <order_status_pendingpayment>buckaroo_pending_payment</order_status_pendingpayment>
-				<success_redirect>checkout/onepage/success</success_redirect>
-				<failure_redirect>checkout/onepage</failure_redirect>
-                <display_expert>0</display_expert>
                 <culture_type>billing</culture_type>
 			</buckaroo3extended>
 			
 			<buckaroo3extended_advanced>
 				<order_status>pending</order_status>
+                <order_status_success>processing</order_status_success>
+                <order_status_failed>canceled</order_status_failed>
+                <order_status_pendingpayment>buckaroo_pending_payment</order_status_pendingpayment>
+				<success_redirect>checkout/onepage/success</success_redirect>
+				<failure_redirect>checkout/onepage</failure_redirect>
 				<auto_invoice>1</auto_invoice>
                 <invoice_mail>1</invoice_mail>
 				<order_state_success>processing</order_state_success>
@@ -977,7 +983,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>450</sort_order>
+         		<sort_order>10</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_ideal>
@@ -990,7 +996,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>530</sort_order>
+         		<sort_order>40</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_visa>
@@ -1003,7 +1009,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>460</sort_order>
+         		<sort_order>30</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_mastercard>
@@ -1016,7 +1022,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>420</sort_order>
+         		<sort_order>50</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_amex>
@@ -1029,7 +1035,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>490</sort_order>
+         		<sort_order>90</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_paypal>
@@ -1042,7 +1048,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>520</sort_order>
+         		<sort_order>150</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_sofortueberweisung>
@@ -1055,7 +1061,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>440</sort_order>
+         		<sort_order>160</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_giropay>
@@ -1068,7 +1074,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>510</sort_order>
+         		<sort_order>130</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_paysafecard>
@@ -1081,7 +1087,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>480</sort_order>
+         		<sort_order>100</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          		<due_date_invoice>0</due_date_invoice>
@@ -1098,7 +1104,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>430</sort_order>
+         		<sort_order>110</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_directdebit>
@@ -1107,11 +1113,11 @@
          		<active>0</active>
          		<mode>0</mode>
          		<title>Achteraf Betalen</title>
-         		<allowspecific>410</allowspecific>
+         		<allowspecific>0</allowspecific>
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>6</sort_order>
+         		<sort_order>20</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          		<allowed_methods>all</allowed_methods>
@@ -1126,7 +1132,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>500</sort_order>
+         		<sort_order>180</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          		<allowed_methods>all</allowed_methods>
@@ -1141,7 +1147,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>470</sort_order>
+         		<sort_order>190</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_onlinegiro>
@@ -1154,7 +1160,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>470</sort_order>
+         		<sort_order>170</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_giftcards>
@@ -1167,7 +1173,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>600</sort_order>
+         		<sort_order>120</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_empayment>
@@ -1180,7 +1186,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>600</sort_order>
+         		<sort_order>70</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_maestro>
@@ -1193,7 +1199,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>600</sort_order>
+         		<sort_order>60</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_visaelectron>
@@ -1206,7 +1212,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>600</sort_order>
+         		<sort_order>80</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_vpay>
@@ -1219,7 +1225,7 @@
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>
-         		<sort_order>425</sort_order>
+         		<sort_order>140</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
          	</buckaroo3extended_bancontactmrcash>

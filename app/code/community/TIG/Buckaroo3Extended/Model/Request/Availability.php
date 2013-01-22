@@ -71,9 +71,9 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
         //config values that need to be entered
     	$configEnabled = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/active', Mage::app()->getStore()->getStoreId());
     	$merchantKeyEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId());
-    	$thumbprintEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_certificate/thumbprint', Mage::app()->getStore()->getStoreId());
-    	$orderStatusSuccessEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/order_status_success', Mage::app()->getStore()->getStoreId());
-    	$orderStatusFailedEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/order_status_failed', Mage::app()->getStore()->getStoreId());
+    	$thumbprintEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', Mage::app()->getStore()->getStoreId());
+    	$orderStatusSuccessEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', Mage::app()->getStore()->getStoreId());
+    	$orderStatusFailedEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', Mage::app()->getStore()->getStoreId());
 
     	//advanced config values that need to be entered
     	$newOrderStatusEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status', Mage::app()->getStore()->getStoreId());
@@ -119,7 +119,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
     {
         $ipAllowed = false;
 
-        if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/buckaroo3extended/limit_by_ip'))
+        if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/limit_by_ip'))
     	{
     		$allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
     		if (in_array($_SERVER['REMOTE_ADDR'], $allowedIp))

@@ -24,6 +24,8 @@
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php $_code=$this->getMethodCode() ?>
+<?php $_session = Mage::getSingleton('checkout/session'); ?>
 <?php
 $billing_info=Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress();
 $firstname=$billing_info->getFirstname();
@@ -41,40 +43,39 @@ else
     list($DD, $MM, $YYYY)=array(false, false, false);
 }
 
-$DD=($DD!==false)?$DD:'';
-$MM=($MM!==false)?$MM:'';
-$YYYY=($YYYY!==false)?$YYYY:'';
+$DD=($DD!==false)?$DD:$_session->getData($_code . '_customerbirthdate[day]');
+$MM=($MM!==false)?$MM:$_session->getData($_code . '_customerbirthdate[month]');
+$YYYY=($YYYY!==false)?$YYYY:$_session->getData($_code . '_customerbirthdate[year]');
+$gender = $gender ? $gender : (int) $_session->getData($_code . '_BPE_Customergender');
 ?>
+<?php if (!$firstname || !$lastname) {
+    $name = $_session->getData($_code . '_BPE_Customername');
+} else {
+    $name = $firstname . ' ' . $lastname;
+}?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 <fieldset class="form-list">
-    <?php $_code=$this->getMethodCode() ?>
-    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
             <?php echo Mage::helper('buckaroo3extended')->__('This information, combined with the information filled out in the billing information step, will be used for a credit check by Buckaroo Payment Services. Please make sure all fields are filled in correctly before proceeding.')?>
         </li>
         <li>
-            <label class="required"><?php echo $this->__('Name');?> <em>*</em></label>
-            <div class="input-box">  
-                <div class="v-fix">
-                    <select  <?php if ($gender) echo "hidden=\"true\""; ?>  name="<?php echo $_code;?>_BPE_Customergender" style="width:80px;" class="validate-select validate-number">
-                        <option value="" <?php echo ($gender===0)?'selected':'';?>><?php echo $this->__('unknown'); ?></option>
-                        <option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
-                        <option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
-                    </select>
-                </div>
-
-                <div class="v-fix">
-                    &nbsp;<input class="input-text required-entry" type="text" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $firstname.' '.$lastname; ?>" style="width: 170px;" />
-                </div>
+            <label class="required"><?php echo $this->__('Name');?> <em>*</em></label><br/>
+            <div class="field">  
+                <select name="<?php echo $_code;?>_BPE_Customergender" style="width:80px;" class="validate-select validate-number">
+                    <option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
+                    <option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
+                </select>
+                <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $name; ?>" style="width: 170px;" />
             </div>
         </li>
         <li>
-            <label class="required"><?php echo $this->__('Bank account') ?> <em>*</em></label>
-            <div class="input-box">
-                <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_bpe_customer_account_number" value="" />
+            <label class="required"><?php echo $this->__('Bank account') ?> <em>*</em></label><br/>
+            <div class="field">
+                <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_bpe_customer_account_number" value="<?php echo $_session->getData($_code . '_bpe_customer_account_number'); ?>" />
             </div>
         </li>
-        <li <?php if ($DD && $MM && $YYYY) echo "hidden=\"true\""; ?>>
+        <li>
             <div class="field">
                 <label class="required" for="payment:month"><?php echo $this->__('Date of Birth') ?><em>*</em></label>
                 <div class="input-box customer-dob customer-billing-dob" id="">

@@ -24,17 +24,20 @@
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php $_session = Mage::getSingleton('checkout/session'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list">
     <?php $_code=$this->getMethodCode() ?>
-    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
             <?php echo $this->__('You will be redirected to our payment service provider to process your payment.') ?>
         </li>
         <li>
-                <label style ="padding:0;"><?php echo $this->__('Please enter your Bankleitzahl.'); ?></label><br/>
-                <input type="text" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="" /></label><br/>
+            <label style ="padding:0;"><?php echo $this->__('Please enter your Bankleitzahl.'); ?></label><br/>
+            <div class="input-box">
+                <input type="text" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="<?php echo $_session->getData($_code . '_BPE_Bankleitzahl'); ?>" />
+            </div>
         </li>
     </ul>
 </fieldset>

@@ -439,8 +439,9 @@ class SoapClientWSSEC extends SoapClient
     	//Canonicalize nodeset
     	$signedINFO = $this->GetCanonical($SignedInfoNodeSet);
     	
-    	$certificateId = Mage::getStoreConfig('buckaroo/buckaroo3extended_certificate/certificate', Mage::app()->getStore()->getId());
+    	$certificateId = Mage::getStoreConfig('buckaroo/buckaroo3extended/certificate_selection', Mage::app()->getStore()->getId());
     	$certificate = Mage::getModel('buckaroo3extended/certificate')->load($certificateId)->getCertificate();
+        
     	$priv_key = substr($certificate, 0, 8192);
     	
     	if ($priv_key === false) {
