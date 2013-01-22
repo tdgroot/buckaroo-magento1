@@ -34,8 +34,10 @@
             <?php echo $this->__('You will be redirected to our payment service provider to process your payment.') ?>
         </li>
         <li>
-                <label style ="padding:0;"><?php echo $this->__('Please enter your Bankleitzahl.'); ?></label><br/>
-                <input type="text" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="<?php echo $_session->getData($_code . '_BPE_Bankleitzahl'); ?>" /></label><br/>
+            <label style ="padding:0;"><?php echo $this->__('Please enter your Bankleitzahl.'); ?></label><br/>
+            <div class="input-box">
+                <input type="text" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="<?php echo $_session->getData($_code . '_BPE_Bankleitzahl'); ?>" />
+            </div>
         </li>
     </ul>
 </fieldset>

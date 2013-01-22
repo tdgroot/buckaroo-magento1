@@ -21,15 +21,14 @@ $gender = $gender ? $gender : (int) $_session->getData($_code . '_BPE_Customerge
             <?php echo $this->__('You will receive an email with further payment instructions when you place your order.') ?>
         </li>
         <li>
-            <label><?php echo $this->__('Name') ?>:</label>
+            <label><?php echo $this->__('Name') ?>:</label><br/>
             <div class="field">
            		<select name="<?php echo $_code;?>_BPE_Customergender" style="width:80px;" class = "validate-select">
-           			<option value="" <?php echo ($gender===0)?'selected':'';?>><?php echo $this->__('unknown'); ?></option>
            			<option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
            			<option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
            		</select>
-       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php echo $firstname; ?>" style="width: 80px;" />
-       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php echo $lastname; ?>" style="width: 81px;" />
+       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php echo $firstname; ?>" style="width: 85px;" />
+       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php echo $lastname; ?>" style="width: 84px;" />
            	</div>
         </li>
         <li>

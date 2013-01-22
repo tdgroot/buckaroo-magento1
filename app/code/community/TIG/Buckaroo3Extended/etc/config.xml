@@ -1114,7 +1114,7 @@
          		<active>0</active>
          		<mode>0</mode>
          		<title>Achteraf Betalen</title>
-         		<allowspecific>410</allowspecific>
+         		<allowspecific>0</allowspecific>
          		<specificcountry></specificcountry>
          		<order_status_success></order_status_success>
          		<order_status_failed></order_status_failed>

@@ -89,7 +89,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
         $array = array(
             //'beneficiaryAccountNumber' => Mage::getStoreConfig('buckaroo/buckaroo3extended_empayment/account_number', $storeId),
             'reference'                => $this->_order->getIncrementId(),
-            'emailAddress'             => Mage::getStoreConfig('buckaroo/buckaroo3extended_empayment/email_address', $storeId),
+            'emailAddress'             => $this->_billingInfo['email'],
         );
         
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {

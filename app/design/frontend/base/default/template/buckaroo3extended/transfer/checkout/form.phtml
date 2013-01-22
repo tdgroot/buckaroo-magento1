@@ -37,10 +37,9 @@
                 <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
             </li>
             <li>
-                <label class="required"><?php echo $this->__('Name');?> <em>*</em></label>
+                <label class="required"><?php echo $this->__('Name');?> <em>*</em></label><br/>
                 <div class="field">  
                     <select name="<?php echo $_code;?>_BPE_Customergender" style="width:80px;" class="validate-select validate-number">
-                        <option value="" <?php echo ($gender===0)?'selected':'';?>><?php echo $this->__('unknown'); ?></option>
                         <option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
                         <option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
                     </select>

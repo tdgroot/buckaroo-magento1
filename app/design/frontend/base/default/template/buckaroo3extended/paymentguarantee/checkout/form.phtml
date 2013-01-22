@@ -60,18 +60,17 @@ $gender = $gender ? $gender : (int) $_session->getData($_code . '_BPE_Customerge
             <?php echo Mage::helper('buckaroo3extended')->__('This information, combined with the information filled out in the billing information step, will be used for a credit check by Buckaroo Payment Services. Please make sure all fields are filled in correctly before proceeding.')?>
         </li>
         <li>
-            <label class="required"><?php echo $this->__('Name');?> <em>*</em></label>
+            <label class="required"><?php echo $this->__('Name');?> <em>*</em></label><br/>
             <div class="field">  
                 <select name="<?php echo $_code;?>_BPE_Customergender" style="width:80px;" class="validate-select validate-number">
-                    <option value="" <?php echo ($gender===0)?'selected':'';?>><?php echo $this->__('unknown'); ?></option>
                     <option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
                     <option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
                 </select>
-                <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $name; ?>" style="width: 160px;" />
+                <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $name; ?>" style="width: 170px;" />
             </div>
         </li>
         <li>
-            <label class="required"><?php echo $this->__('Bank account') ?> <em>*</em></label>
+            <label class="required"><?php echo $this->__('Bank account') ?> <em>*</em></label><br/>
             <div class="field">
                 <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_bpe_customer_account_number" value="<?php echo $_session->getData($_code . '_bpe_customer_account_number'); ?>" />
             </div>
