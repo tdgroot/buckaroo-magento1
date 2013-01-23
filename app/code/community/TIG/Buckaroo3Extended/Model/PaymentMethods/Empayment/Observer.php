@@ -87,7 +87,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
         $storeId = Mage::app()->getStore()->getId();
         
         $array = array(
-            //'beneficiaryAccountNumber' => Mage::getStoreConfig('buckaroo/buckaroo3extended_empayment/account_number', $storeId),
             'reference'                => $this->_order->getIncrementId(),
             'emailAddress'             => $this->_billingInfo['email'],
         );
@@ -124,14 +123,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
                                                       'value' => $additionalFields['DOM']['accountNumber'],
                                                       'group' => 'bankaccount',
                                                   ),
-//            'InternationalAccountHolderName'   => $additionalFields['INT']['accountHolder'],
-//            'InternationalBankAddress'         => $additionalFields['INT']['bankAddress'],
-//            'InternationalBankName'            => $additionalFields['INT']['bankName'],
-//            'InternationalBankSwiftCode'       => $additionalFields['INT']['swiftCode'],
-//            'InternationalAccountNumber'       => $additionalFields['INT']['accountNumber'],
-//            'InternationalAccountHolderAddres' => $additionalFields['INT']['accountHolderAddress'],
-//            'SepaBIC'                          => $additionalFields['SEPA']['BIC'],
-//            'SepaIBAN'                         => $additionalFields['SEPA']['IBAN'],
             'Collect'                          => array(
                                                       'value' => 1,
                                                       'group' => 'bankaccount',
@@ -148,17 +139,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
     protected function _addPersonVars(&$vars)
     {
         $array = array(
-            'FirstName'  => array(
+            'FirstName'     => array(
                                 'value' => $this->_billingInfo['firstname'],
                                 'group' => 'person',
                             ),
-            'Initials'   => array(
+            'Initials'      => array(
                                 'value' => $this->_getInitialsCM(),
                                 'group' => 'person',
                             ),
-            'LastName'   => array(
+            'LastName'      => array(
                                 'value' => $this->_billingInfo['lastname'],
                                 'group' => 'person',
+                            ),
+            'browserAgent'  => array(
+                                'value' => $_SERVER['HTTP_USER_AGENT'],
+                                'group' => 'clientInfo'
                             ),
         );
         
