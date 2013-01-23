@@ -73,6 +73,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         $this->_addBaseVariables();
         $this->_addOrderVariables();
         $this->_addShopVariables();
+        $this->_addSoftwareVariables();
 
         $this->_debugEmail .= "Firing request events. \n";
         //event that allows individual payment methods to add additional variables such as bankaccount number
@@ -162,6 +163,32 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 		$this->_vars['thumbprint']     = $thumbprint;
 
         $this->_debugEmail .= "Shop variables added! \n";
+    }
+    
+    protected function _addSoftwareVariables()
+    {
+        $platformName = 'Magento';
+        
+        if (method_exists('Mage', 'getEdition')) {
+            $platformName .= ' ' . Mage::getEdition();
+        }
+        
+        $platformVersion = Mage::getVersion();
+        $moduleSupplier = 'Total Internet Group';
+        $moduleName = 'Buckaroo3Extended';
+        $moduleVersion = (string) Mage::getConfig()->getModuleConfig("TIG_Buckaroo3Extended")->version;
+        
+        $array = array(
+            'PlatformName'    => $platformName,
+            'PlatformVersion' => $platformVersion,
+            'ModuleSupplier'  => $moduleSupplier,
+            'ModuleName'      => $moduleName,
+            'ModuleVersion'   => $moduleVersion,
+        );
+        
+        $this->_vars['Software'] = $array;
+        
+        $this->_debugEmail .= "Software variables added! \n";
     }
 
     protected function _addOrderVariables()

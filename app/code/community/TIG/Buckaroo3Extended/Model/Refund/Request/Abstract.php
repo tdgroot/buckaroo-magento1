@@ -92,6 +92,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         $this->_addShopVariables();
         $this->_addRefundVariables();
         $this->_addCustomParameters();
+        $this->_addSoftwareVariables();
 
         $this->_debugEmail .= "Firing request events. \n";
         //event that allows individual payment methods to add additional variables such as bankaccount number
