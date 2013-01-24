@@ -2,11 +2,91 @@
 <config>
 	<modules>
 		<TIG_Buckaroo3Extended>
-			<version>4.3.3.0</version>
+			<version>4.4.0.0</version>
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<global>
+		<payment>
+            <groups>
+                <buckaroo3extended>Buckaroo3Extended</buckaroo3extended>
+            </groups>
+        </payment>
+		<sales>
+			<quote>
+				<totals>
+                	<paymentFee>
+                		<class>buckaroo3extended/paymentFee_quote_address_total</class>
+                        <renderer>buckaroo3extended/paymentFee_checkout_fee</renderer>
+                		<after>tax</after>
+                	</paymentFee>
+				</totals>
+			</quote>
+			<order_invoice>
+                <totals>
+                    <buckaroo3extended>
+                        <class>buckaroo3extended/paymentFee_order_invoice_total</class>
+                        <after>tax</after>
+                    </buckaroo3extended>
+                </totals>
+            </order_invoice>
+            <order_creditmemo>
+            	<totals>
+                    <buckaroo3extended>
+                        <class>buckaroo3extended/paymentFee_order_creditmemo_total</class>
+                        <after>tax</after>
+                    </buckaroo3extended>
+                </totals>
+            </order_creditmemo>
+		</sales>
+		<fieldsets>
+		    <sales_convert_quote>
+		        <paymentfee>
+		        	<to_order>*</to_order>
+	                <base_payment_fee><to_order>*</to_order></base_payment_fee>
+		        </paymentfee>
+		        <sales_convert_quote_address>
+	                <payment_fee><to_order>*</to_order></payment_fee>
+	                <base_payment_fee><to_order>*</to_order></base_payment_fee>
+	            </sales_convert_quote_address>
+		    </sales_convert_quote>
+		</fieldsets>
 		<events>
+			<sales_quote_collect_totals_after>
+                <observers>
+                    <paymentfee>
+                        <type>singleton</type>
+                        <class>buckaroo3extended/paymentFee_observer</class>
+                        <method>sales_quote_collect_totals_after</method>
+                    </paymentfee>
+                </observers>
+            </sales_quote_collect_totals_after>
+            <sales_order_payment_place_end>
+                <observers>
+                    <paymentfee>
+                        <type>singleton</type>
+                        <class>buckaroo3extended/paymentFee_observer</class>
+                        <method>sales_order_payment_place_end</method>
+                    </paymentfee>
+                </observers>
+            </sales_order_payment_place_end>
+            <paymentfee_order_creditmemo_refund_before>
+            	<observers>
+            		<paymentfee>
+            			<type>singleton</type>
+            			<class>buckaroo3extended/paymentFee_observer</class>
+            			<method>paymentfee_order_creditmemo_refund_before</method>
+            		</paymentfee>
+            	</observers>
+            </paymentfee_order_creditmemo_refund_before>
+            <sales_order_invoice_register>
+            	<observers>
+            		<paymentfee>
+            			<type>singleton</type>
+            			<class>buckaroo3extended/paymentFee_observer</class>
+            			<method>sales_order_invoice_register</method>
+            		</paymentfee>
+            	</observers>
+            </sales_order_invoice_register>
 			<sales_order_payment_refund>
             	<observers>
             		<buckaroo3extended_refund_observer>
@@ -606,12 +686,35 @@
             	</observers>
             </buckaroo3extended_response_custom_processing>
         </events>
+		<pdf>
+            <totals>
+                <paymentfee translate="title">
+                    <title>Payment Fee</title>
+                    <source_field>PaymentFee</source_field>
+                    <font_size>7</font_size>
+                    <display_zero>0</display_zero>
+                    <sort_order>650</sort_order>
+                    <amount_prefix></amount_prefix>
+                </paymentfee>
+            </totals>
+        </pdf>
 		<blocks>
 	        <buckaroo3extended>
 	            <class>TIG_Buckaroo3Extended_Block</class>
 	        </buckaroo3extended>
+	        <adminhtml>
+	        	<rewrite>
+	        		<sales_order_totals_tax>TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Tax</sales_order_totals_tax>
+	        	</rewrite>
+	        </adminhtml>
 	    </blocks>
         <models>
+            <sales>
+            	<rewrite>
+            		<order_creditmemo>TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo</order_creditmemo>
+            		<service_order>TIG_Buckaroo3Extended_Model_PaymentFee_Service_Order</service_order>
+            	</rewrite>
+            </sales>
             <buckaroo3extended>
                 <class>TIG_Buckaroo3Extended_Model</class>
                 <resourceModel>buckaroo3extended_resource</resourceModel>
@@ -732,108 +835,126 @@
                 <title>iDEAL</title>
                 <sort_order>10</sort_order>
                 <sort_order></sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_ideal>
             <buckaroo3extended_visa>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_visa_paymentMethod</model>
                 <title>Visa</title>
                 <sort_order>40</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_visa>
             <buckaroo3extended_mastercard>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_mastercard_paymentMethod</model>
                 <title>Mastercard</title>
                 <sort_order>30</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_mastercard>
             <buckaroo3extended_amex>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_amex_paymentMethod</model>
                 <title>American Express</title>
                 <sort_order>50</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_amex>
             <buckaroo3extended_sofortueberweisung>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_sofortueberweisung_paymentMethod</model>
                 <title>Sofortbanking</title>
                 <sort_order>150</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_sofortueberweisung>
             <buckaroo3extended_paypal>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paypal_paymentMethod</model>
                 <title>PayPal</title>
                 <sort_order>90</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_paypal>
             <buckaroo3extended_giropay>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_giropay_paymentMethod</model>
                 <title>Giropay</title>
                 <sort_order>160</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_giropay>
             <buckaroo3extended_paysafecard>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paysafecard_paymentMethod</model>
                 <title>Paysafecard</title>
                 <sort_order>130</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_paysafecard>
             <buckaroo3extended_transfer>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_transfer_paymentMethod</model>
                 <title>Overboeking</title>
                 <sort_order>100</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_transfer>
             <buckaroo3extended_directdebit>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_directdebit_paymentMethod</model>
                 <title>Eenmalige Machtiging</title>
                 <sort_order>110</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_directdebit>
             <buckaroo3extended_paymentguarantee>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paymentguarantee_paymentMethod</model>
                 <title>Achteraf Betalen</title>
                 <sort_order>20</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_paymentguarantee>
             <buckaroo3extended_payperemail>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_payperemail_paymentMethod</model>
                 <title>PayperEmail</title>
                 <sort_order>180</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_payperemail>
             <buckaroo3extended_onlinegiro>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_onlinegiro_paymentMethod</model>
                 <title>Online Giro</title>
                 <sort_order>190</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_onlinegiro>
             <buckaroo3extended_giftcards>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_giftcards_paymentMethod</model>
                 <title>Cadeaukaarten</title>
                 <sort_order>170</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_giftcards>
             <buckaroo3extended_empayment>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_empayment_paymentMethod</model>
                 <title>éM! Payment</title>
                 <sort_order>120</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_empayment>
             <buckaroo3extended_maestro>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_maestro_paymentMethod</model>
                 <title>eMaestro</title>
                 <sort_order>70</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_maestro>
             <buckaroo3extended_visaelectron>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_visaelectron_paymentMethod</model>
                 <title>Visa Electron</title>
                 <sort_order>60</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_visaelectron>
             <buckaroo3extended_vpay>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_vpay_paymentMethod</model>
                 <title>V PAY</title>
                 <sort_order>80</sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_vpay>
             <buckaroo3extended_bancontactmrcash>
                 <active>1</active>
@@ -841,6 +962,7 @@
                 <title>Bancontact/ Mister Cash</title>
                 <sort_order>140</sort_order>
                 <sort_order></sort_order>
+                <group>buckaroo3extended</group>
             </buckaroo3extended_bancontactmrcash>
             <buckaroo2012ideal>
                 <active>0</active>
