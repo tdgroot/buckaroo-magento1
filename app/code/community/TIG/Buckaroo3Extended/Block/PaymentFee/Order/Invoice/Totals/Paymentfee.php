@@ -7,8 +7,8 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Invoice_Totals_Paymentfee ext
         $this->_invoice  = $parent->getInvoice();
         
         if (
-            ($this->_invoice->getPaymentFee() < 0.01 || $this->_invoice->getPaymentFee() < 0.01)
-            && ($this->_invoice->getOrder()->getBasePaymentFee() - $this->_invoice->getOrder()->getBasePaymentFeeInvoiced()) < 0.01
+            ($this->_invoice->getBuckarooFee() < 0.01 || $this->_invoice->getBuckarooFee() < 0.01)
+            && ($this->_invoice->getOrder()->getBaseBuckarooFee() - $this->_invoice->getOrder()->getBaseBuckarooFeeInvoiced()) < 0.01
            ) 
         {
             return $this;
@@ -17,13 +17,13 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Invoice_Totals_Paymentfee ext
         $paymentmethodCode = $this->_invoice->getOrder()->getPayment()->getMethod();
         $feeLabel = Mage::helper('buckaroo3extended')->getfeeLabel($paymentmethodCode);
         
-        $paymentFee = new Varien_Object();
-        $paymentFee->setLabel($feeLabel);
-        $paymentFee->setValue($this->_invoice->getPaymentFee());
-        $paymentFee->setBaseValue($this->_invoice->getBasePaymentFee());
-        $paymentFee->setCode('payment_fee');
+        $buckarooFee = new Varien_Object();
+        $buckarooFee->setLabel($feeLabel);
+        $buckarooFee->setValue($this->_invoice->getBuckarooFee());
+        $buckarooFee->setBaseValue($this->_invoice->getBaseBuckarooFee());
+        $buckarooFee->setCode('buckaroo_fee');
         
-        $parent->addTotalBefore($paymentFee, 'tax');
+        $parent->addTotalBefore($buckarooFee, 'tax');
 
         return $this;
     }

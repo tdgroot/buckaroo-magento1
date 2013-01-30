@@ -19,16 +19,16 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Tax extends Mage_Admin
                 $taxClassAmount =  Mage::getSingleton('tax/calculation')->reproduceProcess($rates['items']);
             } else {
                 $shippingTax    = Mage::helper('tax')->getShippingTax($source);
-                if ($source->getBasePaymentFeeTax()) {
-                    $paymentFeeTax = array(
+                if ($source->getBaseBuckarooFeeTax()) {
+                    $buckarooFeeTax = array(
                         array(
-                            'tax_amount'      => $source->getPaymentFeeTax(),
-                            'base_tax_amount' => $source->getBasePaymentFeeTax(),
-                            'title'           => 'AfterPay Servicekosten Tax',
+                            'tax_amount'      => $source->getBuckarooFeeTax(),
+                            'base_tax_amount' => $source->getBaseBuckarooFeeTax(),
+                            'title'           => Mage::helper('buckaroo3extended')->__('Buckaroo Servicekosten Tax'),
                             'percent'         => NULL,
                         ),
                     );
-                    $taxClassAmount = array_merge($shippingTax, $paymentFeeTax, $taxClassAmount);
+                    $taxClassAmount = array_merge($shippingTax, $buckarooFeeTax, $taxClassAmount);
                 } else {
                     $taxClassAmount = array_merge($shippingTax, $taxClassAmount);
                 }

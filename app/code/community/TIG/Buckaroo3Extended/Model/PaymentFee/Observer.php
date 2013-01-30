@@ -2,7 +2,7 @@
 class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Abstract 
 {    
 	/**
-     * Collects paymentFee from quote/addresses to quote
+     * Collects buckarooFee from quote/addresses to quote
      *
      * @param Varien_Event_Observer $observer
      */
@@ -10,24 +10,24 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
     {
         $quote = $observer->getEvent()->getQuote();
         
-        $quote->setPaymentFee(0);
-        $quote->setBasePaymentFee(0);
-        $quote->setPaymentFeeTax(0);
-        $quote->setBasePaymentFeeTax(0);
+        $quote->setBuckarooFee(0);
+        $quote->setBaseBuckarooFee(0);
+        $quote->setBuckarooFeeTax(0);
+        $quote->setBaseBuckarooFeeTax(0);
                 
         foreach ($quote->getAllAddresses() as $address) 
         {
-            if (!$quote->getPaymentFee()) {
-                $quote->setPaymentFee((float) $address->getPaymentFee());
+            if (!$quote->getBuckarooFee()) {
+                $quote->setBuckarooFee((float) $address->getBuckarooFee());
             }
-            if (!$quote->getBasePaymentFee()) {
-                $quote->setBasePaymentFee((float) $address->getBasePaymentFee());
+            if (!$quote->getBaseBuckarooFee()) {
+                $quote->setBaseBuckarooFee((float) $address->getBaseBuckarooFee());
             }
-            if (!$quote->getPaymentFeeTax()) {
-                $quote->setPaymentFeeTax((float) $address->getPaymentFeeTax());
+            if (!$quote->getBuckarooFeeTax()) {
+                $quote->setBuckarooFeeTax((float) $address->getBuckarooFeeTax());
             }
-            if (!$quote->getBasePaymentFeeTax()) {
-                $quote->setBasePaymentFeeTax((float) $address->getBasePaymentFeeTax());
+            if (!$quote->getBaseBuckarooFeeTax()) {
+                $quote->setBaseBuckarooFeeTax((float) $address->getBaseBuckarooFeeTax());
             }
         }
         
@@ -35,7 +35,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
     }
 
     /**
-     * Adds PaymentFee to order
+     * Adds BuckarooFee to order
      * 
      * @param Varien_Event_Observer $observer
      */
@@ -50,11 +50,11 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
             $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
         }
         
-        $order->setBasePaymentFee($quote->getBasePaymentFee());
-        $order->setPaymentFee($quote->getPaymentFee());
+        $order->setBaseBuckarooFee($quote->getBaseBuckarooFee());
+        $order->setBuckarooFee($quote->getBuckarooFee());
         
-        $order->setBasePaymentFeeTax($quote->getBasePaymentFeeTax());
-        $order->setPaymentFeeTax($quote->getPaymentFeeTax());
+        $order->setBaseBuckarooFeeTax($quote->getBaseBuckarooFeeTax());
+        $order->setBuckarooFeeTax($quote->getBuckarooFeeTax());
         
         $order->setBaseTaxAmount($order->getBaseTaxAmount());
         $order->setTaxAmount($order->getTaxAmount());
@@ -63,11 +63,11 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
         
         $info = $payment->getMethodInstance()->getInfoInstance();
         
-        $info->setAdditionalInformation('payment_fee', $quote->getPaymentFee());
-        $info->setAdditionalInformation('base_payment_fee', $quote->getBasePaymentFee());
+        $info->setAdditionalInformation('buckaroo_fee', $quote->getBuckarooFee());
+        $info->setAdditionalInformation('base_buckaroo_fee', $quote->getBaseBuckarooFee());
         
-        $info->setAdditionalInformation('payment_fee_tax', $quote->getPaymentFeeTax());
-        $info->setAdditionalInformation('base_payment_fee_tax', $quote->getBasePaymentFeeTax());
+        $info->setAdditionalInformation('buckaroo_fee_tax', $quote->getBuckarooFeeTax());
+        $info->setAdditionalInformation('base_buckaroo_fee_tax', $quote->getBaseBuckarooFeeTax());
         
         $info->save();
     }
@@ -81,8 +81,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
     {
         $creditmemo = $observer->getCreditmemo();
         
-        $paymentFee = Mage::getModel('buckaroo3extended/paymentFee_refund', $creditmemo);
-        $creditmemo = $paymentFee->paymentFeeRefund();
+        $buckarooFee = Mage::getModel('buckaroo3extended/paymentFee_refund', $creditmemo);
+        $creditmemo = $buckarooFee->buckarooFeeRefund();
     }
     
     /**
@@ -95,11 +95,11 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
         $invoice = $observer->getInvoice();
         $order = $invoice->getOrder();
         
-        $order->setBasePaymentFeeInvoiced($invoice->getBasePaymentFee());
-        $order->setPaymentFeeInvoiced($invoice->getPaymentFee());
+        $order->setBaseBuckarooFeeInvoiced($invoice->getBaseBuckarooFee());
+        $order->setBuckarooFeeInvoiced($invoice->getBuckarooFee());
         
-        $order->setBasePaymentFeeTaxInvoiced($invoice->getBasePaymentFeeTax());
-        $order->setPaymentFeeTaxInvoiced($invoice->getPaymentFeeTax());
+        $order->setBaseBuckarooFeeTaxInvoiced($invoice->getBaseBuckarooFeeTax());
+        $order->setBuckarooFeeTaxInvoiced($invoice->getBuckarooFeeTax());
         $order->save();
     }
 }

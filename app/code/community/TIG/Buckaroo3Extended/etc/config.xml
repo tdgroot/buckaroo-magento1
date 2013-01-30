@@ -14,11 +14,11 @@
 		<sales>
 			<quote>
 				<totals>
-                	<paymentFee>
+                	<buckarooFee>
                 		<class>buckaroo3extended/paymentFee_quote_address_total</class>
                         <renderer>buckaroo3extended/paymentFee_checkout_fee</renderer>
                 		<after>tax</after>
-                	</paymentFee>
+                	</buckarooFee>
 				</totals>
 			</quote>
 			<order_invoice>
@@ -40,10 +40,10 @@
 		</sales>
 		<fieldsets>
 		    <sales_convert_quote>
-		        <paymentfee>
+		        <buckaroofee>
 		        	<to_order>*</to_order>
 	                <base_payment_fee><to_order>*</to_order></base_payment_fee>
-		        </paymentfee>
+		        </buckaroofee>
 		        <sales_convert_quote_address>
 	                <payment_fee><to_order>*</to_order></payment_fee>
 	                <base_payment_fee><to_order>*</to_order></base_payment_fee>
@@ -53,38 +53,38 @@
 		<events>
 			<sales_quote_collect_totals_after>
                 <observers>
-                    <paymentfee>
+                    <buckaroofee>
                         <type>singleton</type>
                         <class>buckaroo3extended/paymentFee_observer</class>
                         <method>sales_quote_collect_totals_after</method>
-                    </paymentfee>
+                    </buckaroofee>
                 </observers>
             </sales_quote_collect_totals_after>
             <sales_order_payment_place_end>
                 <observers>
-                    <paymentfee>
+                    <buckaroofee>
                         <type>singleton</type>
                         <class>buckaroo3extended/paymentFee_observer</class>
                         <method>sales_order_payment_place_end</method>
-                    </paymentfee>
+                    </buckaroofee>
                 </observers>
             </sales_order_payment_place_end>
-            <paymentfee_order_creditmemo_refund_before>
+            <buckaroofee_order_creditmemo_refund_before>
             	<observers>
-            		<paymentfee>
+            		<buckaroofee>
             			<type>singleton</type>
             			<class>buckaroo3extended/paymentFee_observer</class>
-            			<method>paymentfee_order_creditmemo_refund_before</method>
-            		</paymentfee>
+            			<method>buckaroofee_order_creditmemo_refund_before</method>
+            		</buckaroofee>
             	</observers>
-            </paymentfee_order_creditmemo_refund_before>
+            </buckaroofee_order_creditmemo_refund_before>
             <sales_order_invoice_register>
             	<observers>
-            		<paymentfee>
+            		<buckaroofee>
             			<type>singleton</type>
             			<class>buckaroo3extended/paymentFee_observer</class>
             			<method>sales_order_invoice_register</method>
-            		</paymentfee>
+            		</buckaroofee>
             	</observers>
             </sales_order_invoice_register>
 			<sales_order_payment_refund>
@@ -688,14 +688,14 @@
         </events>
 		<pdf>
             <totals>
-                <paymentfee translate="title">
+                <buckaroofee translate="title">
                     <title>Payment Fee</title>
                     <source_field>PaymentFee</source_field>
                     <font_size>7</font_size>
                     <display_zero>0</display_zero>
                     <sort_order>650</sort_order>
                     <amount_prefix></amount_prefix>
-                </paymentfee>
+                </buckaroofee>
             </totals>
         </pdf>
 		<blocks>

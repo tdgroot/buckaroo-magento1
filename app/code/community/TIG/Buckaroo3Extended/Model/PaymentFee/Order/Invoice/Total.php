@@ -11,16 +11,16 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         $order = $invoice->getOrder();
         
         //retrieve all base fee-related values from order
-        $basePaymentFee             = $order->getBasePaymentFee();
-        $basePaymentFeeInvoiced     = $order->getBasePaymentFeeInvoiced();
-        $basePaymentFeeTax          = $order->getBasePaymentFeeTax();
-        $basePaymentFeeTaxInvoiced  = $order->getBasePaymentFeeTaxInvoiced();
+        $baseBuckarooFee             = $order->getBaseBuckarooFee();
+        $baseBuckarooFeeInvoiced     = $order->getBaseBuckarooFeeInvoiced();
+        $baseBuckarooFeeTax          = $order->getBaseBuckarooFeeTax();
+        $baseBuckarooFeeTaxInvoiced  = $order->getBaseBuckarooFeeTaxInvoiced();
         
         //retrieve all fee-related values from order
-        $paymentFee                 = $order->getPaymentFee();
-        $paymentFeeInvoiced         = $order->getPaymentFeeInvoiced();
-        $paymentFeeTax              = $order->getPaymentFeeTax();
-        $paymentFeeTaxInvoiced      = $order->getPaymentFeeTaxInvoiced();
+        $buckarooFee                 = $order->getBuckarooFee();
+        $buckarooFeeInvoiced         = $order->getBuckarooFeeInvoiced();
+        $buckarooFeeTax              = $order->getBuckarooFeeTax();
+        $buckarooFeeTaxInvoiced      = $order->getBuckarooFeeTaxInvoiced();
         
         //get current invoice totals
         $baseInvoiceTotal            = $invoice->getBaseGrandTotal();
@@ -30,17 +30,17 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         $taxAmountTotal              = $invoice->getTaxAmount();
 
         //calculate how much needs to be invoiced
-        $basePaymentFeeToInvoice    = $basePaymentFee - $basePaymentFeeInvoiced;
-        $paymentFeeToInvoice        = $paymentFee - $paymentFeeInvoiced;
+        $baseBuckarooFeeToInvoice    = $baseBuckarooFee - $baseBuckarooFeeInvoiced;
+        $buckarooFeeToInvoice        = $buckarooFee - $buckarooFeeInvoiced;
         
-        $basePaymentFeeTaxToInvoice = $basePaymentFeeTax - $basePaymentFeeTaxInvoiced;
-        $paymentFeeTaxToInvoice     = $paymentFeeTax - $paymentFeeTaxInvoiced;
+        $baseBuckarooFeeTaxToInvoice = $baseBuckarooFeeTax - $baseBuckarooFeeTaxInvoiced;
+        $buckarooFeeTaxToInvoice     = $buckarooFeeTax - $buckarooFeeTaxInvoiced;
         
-        $basePaymentFeeTaxToInvoice -= $basePaymentFeeTaxInvoiced;
-        $paymentFeeTaxToInvoice     -= $paymentFeeTaxInvoiced;
+        $baseBuckarooFeeTaxToInvoice -= $baseBuckarooFeeTaxInvoiced;
+        $buckarooFeeTaxToInvoice     -= $buckarooFeeTaxInvoiced;
         
-        $baseInvoiceTotal           += $basePaymentFeeToInvoice;
-        $invoiceTotal               += $paymentFeeToInvoice;
+        $baseInvoiceTotal           += $baseBuckarooFeeToInvoice;
+        $invoiceTotal               += $buckarooFeeToInvoice;
         
         $invoice->setBaseGrandTotal($baseInvoiceTotal);
         $invoice->setGrandTotal($invoiceTotal);
@@ -48,20 +48,20 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         //fix for issue where invoice totals is sometimes missing paymentfee tax
         //underlying cause currently unknown
         if ($invoice->getBaseGrandTotal() < $order->getBaseGrandTotal()
-        	&& $invoice->getBaseGrandTotal() + $basePaymentFeeTaxToInvoice == $order->getBaseGrandTotal()
+        	&& $invoice->getBaseGrandTotal() + $baseBuckarooFeeTaxToInvoice == $order->getBaseGrandTotal()
         ) {
-        	$invoice->setBaseGrandTotal($baseInvoiceTotal + $basePaymentFeeTaxToInvoice);
-        	$invoice->setGrandTotal($invoiceTotal + $paymentFeeTaxToInvoice);
+        	$invoice->setBaseGrandTotal($baseInvoiceTotal + $baseBuckarooFeeTaxToInvoice);
+        	$invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice);
         }
         
         $invoice->setBaseTaxAmount($baseTaxAmountTotal);
         $invoice->setTaxAmount($taxAmountTotal);
         
-        $invoice->setBasePaymentFee($basePaymentFeeToInvoice);
-        $invoice->setPaymentFee($paymentFeeToInvoice);
+        $invoice->setBaseBuckarooFee($baseBuckarooFeeToInvoice);
+        $invoice->setBuckarooFee($buckarooFeeToInvoice);
         
-        $invoice->setBasePaymentFeeTax($basePaymentFeeTaxToInvoice);
-        $invoice->setPaymentFeeTax($paymentFeeTaxToInvoice);
+        $invoice->setBaseBuckarooFeeTax($baseBuckarooFeeTaxToInvoice);
+        $invoice->setBuckarooFeeTax($buckarooFeeTaxToInvoice);
         
         return $this;
     }

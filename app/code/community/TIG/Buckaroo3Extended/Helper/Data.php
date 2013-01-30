@@ -32,7 +32,7 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
     public function getFeeLabel($paymentMethodCode = false)
     {
         if ($paymentMethodCode) {
-            $feeLabel = Mage::getStoreConfig('buckaroo3extended/buckaroo3extended_' . $paymentMethodCode . '/portfolio_payment_fee_label', Mage::app()->getStore()->getId());
+            $feeLabel = Mage::getStoreConfig('buckaroo/' . $paymentMethodCode . '/payment_fee_label', Mage::app()->getStore()->getId());
             if (empty($feeLabel)) {
                 $feeLabel = 'Buckaroo servicekosten';
             }
@@ -40,28 +40,28 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
             $feeLabel = 'Buckaroo servicekosten';
         }
         
-        $feeLabel = $this->__($feeLabel);
+        $feeLabel = Mage::helper('buckaroo3extended')->__($feeLabel);
         
         return $feeLabel;
     }
     
-    public function resetPaymentFeeInvoicedValues($order, $invoice)
+    public function resetBuckarooFeeInvoicedValues($order, $invoice)
     {
-        $basePaymentFee    = $invoice->getBasePaymentFee();
-        $paymentFee        = $invoice->getPaymentFee();
-        $basePaymentFeeTax = $invoice->getBasePaymentFeeTax();
-        $paymentFeeTax     = $invoice->getPaymentFeeTax();
+        $baseBuckarooFee    = $invoice->getBaseBuckarooFee();
+        $paymentFee        = $invoice->getBuckarooFee();
+        $baseBuckarooFeeTax = $invoice->getBaseBuckarooFeeTax();
+        $paymentFeeTax     = $invoice->getBuckarooFeeTax();
          
-        $basePaymentFeeInvoiced    = $order->getBasePaymentFeeInvoiced();
-        $paymentFeeInvoiced        = $order->getPaymentFeeInvoiced();
-        $basePaymentFeeTaxInvoiced = $order->getBasePaymentFeeTaxInvoiced();
-        $paymentFeeTaxInvoiced     = $order->getPaymentFeeTaxInvoiced();
+        $baseBuckarooFeeInvoiced    = $order->getBaseBuckarooFeeInvoiced();
+        $paymentFeeInvoiced        = $order->getBuckarooFeeInvoiced();
+        $baseBuckarooFeeTaxInvoiced = $order->getBaseBuckarooFeeTaxInvoiced();
+        $paymentFeeTaxInvoiced     = $order->getBuckarooFeeTaxInvoiced();
          
-        if ($basePaymentFeeInvoiced && $basePaymentFee && $basePaymentFeeInvoiced >= $basePaymentFee) {
-            $order->setBasePaymentFeeInvoiced($basePaymentFeeInvoiced - $basePaymentFee)
-                  ->setPaymentFeeInvoiced($paymentFeeInvoiced - $paymentFee)
-                  ->setBasePaymentFeeTaxInvoiced($basePaymentFeeTaxInvoiced - $basePaymentFeeTax)
-                  ->setBasePaymentFeeInvoiced($paymentFeeTaxInvoiced - $paymentFeeTax);
+        if ($baseBuckarooFeeInvoiced && $baseBuckarooFee && $baseBuckarooFeeInvoiced >= $baseBuckarooFee) {
+            $order->setBaseBuckarooFeeInvoiced($baseBuckarooFeeInvoiced - $baseBuckarooFee)
+                  ->setBuckarooFeeInvoiced($paymentFeeInvoiced - $paymentFee)
+                  ->setBaseBuckarooFeeTaxInvoiced($baseBuckarooFeeTaxInvoiced - $baseBuckarooFeeTax)
+                  ->setBaseBuckarooFeeInvoiced($paymentFeeTaxInvoiced - $paymentFeeTax);
             $order->save();
         }
     }

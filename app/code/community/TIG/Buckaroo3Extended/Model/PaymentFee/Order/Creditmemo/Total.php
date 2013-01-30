@@ -11,16 +11,16 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total extends Mage
         $order = $creditmemo->getOrder();
 
         //retreive all base fee-related values from order
-        $basePaymentFee             = $order->getBasePaymentFeeInvoiced();
-        $basePaymentFeeRefunded     = $order->getBasePaymentFeeRefunded();
-        $basePaymentFeeTax          = $order->getBasePaymentFeeTaxInvoiced();
-        $basePaymentFeeTaxRefunded  = $order->getBasePaymentFeeTaxRefunded();
+        $baseBuckarooFee             = $order->getBaseBuckarooFeeInvoiced();
+        $baseBuckarooFeeRefunded     = $order->getBaseBuckarooFeeRefunded();
+        $baseBuckarooFeeTax          = $order->getBaseBuckarooFeeTaxInvoiced();
+        $baseBuckarooFeeTaxRefunded  = $order->getBaseBuckarooFeeTaxRefunded();
         
         //retreive all fee-related values from order
-        $paymentFee                 = $order->getPaymentFeeInvoiced();
-        $paymentFeeRefunded         = $order->getPaymentFeeRefunded();
-        $paymentFeeTax              = $order->getPaymentFeeTaxInvoiced();
-        $paymentFeeTaxRefunded      = $order->getPaymentFeeTaxRefunded();
+        $buckarooFee                 = $order->getBuckarooFeeInvoiced();
+        $buckarooFeeRefunded         = $order->getBuckarooFeeRefunded();
+        $buckarooFeeTax              = $order->getBuckarooFeeTaxInvoiced();
+        $buckarooFeeTaxRefunded      = $order->getBuckarooFeeTaxRefunded();
         
         //get current creditmemo totals
         $baseRefundTotal             = $creditmemo->getBaseGrandTotal();
@@ -30,30 +30,30 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total extends Mage
         $taxAmountTotal              = $creditmemo->getTaxAmount();
 
         //calculate how much needs to be creditmemod
-        $basePaymentFeeToRefund     = $basePaymentFee - $basePaymentFeeRefunded;
-        $paymentFeeToRefund         = $paymentFee - $paymentFeeRefunded;
+        $baseBuckarooFeeToRefund     = $baseBuckarooFee - $baseBuckarooFeeRefunded;
+        $buckarooFeeToRefund         = $buckarooFee - $buckarooFeeRefunded;
         
-        $basePaymentFeeTaxToRefund  = $basePaymentFeeTax - $basePaymentFeeTaxRefunded;
-        $paymentFeeTaxToRefund      = $paymentFeeTax - $paymentFeeTaxRefunded;
+        $baseBuckarooFeeTaxToRefund  = $baseBuckarooFeeTax - $baseBuckarooFeeTaxRefunded;
+        $buckarooFeeTaxToRefund      = $buckarooFeeTax - $buckarooFeeTaxRefunded;
         
-        $baseRefundTotal            += $basePaymentFeeToRefund;
-        $creditmemoTotal            += $paymentFeeToRefund;
+        $baseRefundTotal            += $baseBuckarooFeeToRefund;
+        $creditmemoTotal            += $buckarooFeeToRefund;
         
-        $baseTaxAmountTotal         += $basePaymentFeeTaxToRefund;
-        $taxAmountTotal             += $paymentFeeTaxToRefund;
+        $baseTaxAmountTotal         += $baseBuckarooFeeTaxToRefund;
+        $taxAmountTotal             += $buckarooFeeTaxToRefund;
         
         //set the new creditmemod values
-        $creditmemo->setBaseGrandTotal($baseRefundTotal + $basePaymentFeeTaxToRefund);
-        $creditmemo->setGrandTotal($creditmemoTotal + $paymentFeeTaxToRefund);
+        $creditmemo->setBaseGrandTotal($baseRefundTotal + $baseBuckarooFeeTaxToRefund);
+        $creditmemo->setGrandTotal($creditmemoTotal + $buckarooFeeTaxToRefund);
         
         $creditmemo->setBaseTaxAmount($baseTaxAmountTotal);
         $creditmemo->setTaxAmount($taxAmountTotal);
 
-        $creditmemo->setBasePaymentFee($basePaymentFeeToRefund);
-        $creditmemo->setPaymentFee($paymentFeeToRefund);
+        $creditmemo->setBaseBuckarooFee($baseBuckarooFeeToRefund);
+        $creditmemo->setBuckarooFee($buckarooFeeToRefund);
         
-        $creditmemo->setBasePaymentFeeTax($basePaymentFeeTax);
-        $creditmemo->setPaymentFeeTax($paymentFeeTax);
+        $creditmemo->setBaseBuckarooFeeTax($baseBuckarooFeeTax);
+        $creditmemo->setBuckarooFeeTax($buckarooFeeTax);
         
         return $this;
     }

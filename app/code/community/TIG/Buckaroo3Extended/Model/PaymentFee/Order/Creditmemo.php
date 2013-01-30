@@ -3,7 +3,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo extends Mage_Sales
 {
     public function refund()
     {
-        Mage::dispatchEvent('paymentfee_order_creditmemo_refund_before', array($this->_eventObject => $this));
+        Mage::dispatchEvent('buckaroofee_order_creditmemo_refund_before', array($this->_eventObject => $this));
         
         parent::refund();
     }

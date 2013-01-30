@@ -55,7 +55,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
         $this->_setInvoiceFromCreditmemo();
     }
     
-    public function paymentFeeRefund()
+    public function buckarooFeeRefund()
     {
         $quoteConvertRate                        = $this->_order->getBaseToQuoteRate();
         
@@ -64,85 +64,85 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
         }
         
         //get amounts that are to be refunded
-        $basePaymentFeeToRefund                  = (float) $this->_creditmemo->getPaymentFeeToRefund();
+        $baseBuckarooFeeToRefund                  = (float) $this->_creditmemo->getBuckarooFeeToRefund();
         
         //in order to prevent rounding errors from causing errors
         if (
-            $basePaymentFeeToRefund > $this->_order->getBasePaymentFee() 
-            && $basePaymentFeeToRefund == round($this->_order->getBasePaymentFee(), 2)
+            $baseBuckarooFeeToRefund > $this->_order->getBaseBuckarooFee() 
+            && $baseBuckarooFeeToRefund == round($this->_order->getBaseBuckarooFee(), 2)
         ) {
-            $basePaymentFeeToRefund = $this->_order->getBasePaymentFee();
+            $baseBuckarooFeeToRefund = $this->_order->getBaseBuckarooFee();
         }
         
-        $paymentFeeToRefund                      = (float) $basePaymentFeeToRefund * $quoteConvertRate;
+        $buckarooFeeToRefund                      = (float) $baseBuckarooFeeToRefund * $quoteConvertRate;
         
-        $basePaymentFeeTaxToRefund               = (float) $this->_calculatePaymentFeeTaxToRefund($basePaymentFeeToRefund, true);
-        $paymentFeeTaxToRefund                   = (float) $this->_calculatePaymentFeeTaxToRefund($paymentFeeToRefund);
+        $baseBuckarooFeeTaxToRefund               = (float) $this->_calculateBuckarooFeeTaxToRefund($baseBuckarooFeeToRefund, true);
+        $buckarooFeeTaxToRefund                   = (float) $this->_calculateBuckarooFeeTaxToRefund($buckarooFeeToRefund);
         
-        $paymentFeeToRefund                     -= $paymentFeeTaxToRefund;
-        $basePaymentFeeToRefund                 -= $basePaymentFeeTaxToRefund;
+        $buckarooFeeToRefund                     -= $buckarooFeeTaxToRefund;
+        $baseBuckarooFeeToRefund                 -= $baseBuckarooFeeTaxToRefund;
         
         if ($this->_invoice) {
             //get the amounts that are available to refund (cant refund more than is available)
-            $paymentFeeAvailableForRefund        = $this->_invoice->getPaymentFee() - $this->_order->getPaymentFeeRefunded() + ($this->_invoice->getPaymentFeeTax() - $this->_order->getPaymentFeeTaxRefunded());
-            $basePaymentFeeAvailableForRefund    = $this->_invoice->getBasePaymentFee() - $this->_order->getBasePaymentFeeRefunded() + ($this->_invoice->getBasePaymentFeeTax() - $this->_order->getBasePaymentFeeTaxRefunded());
+            $buckarooFeeAvailableForRefund        = $this->_invoice->getBuckarooFee() - $this->_order->getBuckarooFeeRefunded() + ($this->_invoice->getBuckarooFeeTax() - $this->_order->getBuckarooFeeTaxRefunded());
+            $baseBuckarooFeeAvailableForRefund    = $this->_invoice->getBaseBuckarooFee() - $this->_order->getBaseBuckarooFeeRefunded() + ($this->_invoice->getBaseBuckarooFeeTax() - $this->_order->getBaseBuckarooFeeTaxRefunded());
             
-            $paymentFeeTaxAvailableForRefund     = $this->_invoice->getPaymentFeeTax() - $this->_order->getPaymentFeeTaxRefunded();
-            $basePaymentFeeTaxAvailableForRefund = $this->_invoice->getBasePaymentFeeTax() - $this->_order->getBasePaymentFeeTaxRefunded();
+            $buckarooFeeTaxAvailableForRefund     = $this->_invoice->getBuckarooFeeTax() - $this->_order->getBuckarooFeeTaxRefunded();
+            $baseBuckarooFeeTaxAvailableForRefund = $this->_invoice->getBaseBuckarooFeeTax() - $this->_order->getBaseBuckarooFeeTaxRefunded();
         } else {
             //get the amounts that are available to refund (cant refund more than is available)
-            $paymentFeeAvailableForRefund        = $this->_order->getPaymentFee() - $this->_order->getPaymentFeeRefunded() + ($this->_order->getPaymentFeeTax() - $this->_order->getPaymentFeeTaxRefunded());
-            $basePaymentFeeAvailableForRefund    = $this->_order->getBasePaymentFee() - $this->_order->getBasePaymentFeeRefunded() + ($this->_order->getBasePaymentFeeTax() - $this->_order->getBasePaymentFeeTaxRefunded());
+            $buckarooFeeAvailableForRefund        = $this->_order->getBuckarooFee() - $this->_order->getBuckarooFeeRefunded() + ($this->_order->getBuckarooFeeTax() - $this->_order->getBuckarooFeeTaxRefunded());
+            $baseBuckarooFeeAvailableForRefund    = $this->_order->getBaseBuckarooFee() - $this->_order->getBaseBuckarooFeeRefunded() + ($this->_order->getBaseBuckarooFeeTax() - $this->_order->getBaseBuckarooFeeTaxRefunded());
             
-            $paymentFeeTaxAvailableForRefund     = $this->_order->getPaymentFeeTax() - $this->_order->getPaymentFeeTaxRefunded();
-            $basePaymentFeeTaxAvailableForRefund = $this->_order->getBasePaymentFeeTax() - $this->_order->getBasePaymentFeeTaxRefunded();
+            $buckarooFeeTaxAvailableForRefund     = $this->_order->getBuckarooFeeTax() - $this->_order->getBuckarooFeeTaxRefunded();
+            $baseBuckarooFeeTaxAvailableForRefund = $this->_order->getBaseBuckarooFeeTax() - $this->_order->getBaseBuckarooFeeTaxRefunded();
         }
         
         //check if the amount that is to be invoiced exceeds the available amount
 //        if (
-//            $paymentFeeAvailableForRefund           < $paymentFeeToRefund
-//            || $basePaymentFeeAvailableForRefund    < $basePaymentFeeToRefund
-//            || $paymentFeeTaxAvailableForRefund     < $paymentFeeTaxToRefund
-//            || $basePaymentFeeTaxAvailableForRefund < $basePaymentFeeTaxToRefund
+//            $buckarooFeeAvailableForRefund           < $buckarooFeeToRefund
+//            || $baseBuckarooFeeAvailableForRefund    < $baseBuckarooFeeToRefund
+//            || $buckarooFeeTaxAvailableForRefund     < $buckarooFeeTaxToRefund
+//            || $baseBuckarooFeeTaxAvailableForRefund < $baseBuckarooFeeTaxToRefund
 //           )
 //        {
 //            Mage::getSingleton('adminhtml/session')->addError(
 //                Mage::helper('buckaroo3extended')->__(
 //                	'You cannot refund a larger amount than is available. Maximum Payment Fee available for refund: '
-//                ) . $paymentFeeAvailableForRefund
+//                ) . $buckarooFeeAvailableForRefund
 //           );
 //            Mage::throwException();
 //        }        
         
-        $this->_order->setPaymentFeeRefunded($this->_order->getPaymentFeeRefunded() + $paymentFeeToRefund);
-        $this->_order->setBasePaymentFeeRefunded($this->_order->getBasePaymentFeeRefunded() + $basePaymentFeeToRefund);
+        $this->_order->setBuckarooFeeRefunded($this->_order->getBuckarooFeeRefunded() + $buckarooFeeToRefund);
+        $this->_order->setBaseBuckarooFeeRefunded($this->_order->getBaseBuckarooFeeRefunded() + $baseBuckarooFeeToRefund);
         
-        $this->_order->setPaymentFeeTaxRefunded($this->_order->getPaymentFeeTaxRefunded() + $paymentFeeTaxToRefund);
-        $this->_order->setBasePaymentFeeTaxRefunded($this->_order->getBasePaymentFeeTaxRefunded() + $basePaymentFeeTaxToRefund);
+        $this->_order->setBuckarooFeeTaxRefunded($this->_order->getBuckarooFeeTaxRefunded() + $buckarooFeeTaxToRefund);
+        $this->_order->setBaseBuckarooFeeTaxRefunded($this->_order->getBaseBuckarooFeeTaxRefunded() + $baseBuckarooFeeTaxToRefund);
         
-        $this->_creditmemo->setGrandTotal($this->_creditmemo->getGrandTotal() - ($this->_creditmemo->getPaymentFee() + $this->_creditmemo->getPaymentFeeTax()) + ($paymentFeeToRefund + $paymentFeeTaxToRefund));
-        $this->_creditmemo->setBaseGrandTotal($this->_creditmemo->getBaseGrandTotal() - ($this->_creditmemo->getBasePaymentFee() + $this->_creditmemo->getBasePaymentFeeTax()) + ($basePaymentFeeToRefund + $basePaymentFeeTaxToRefund));
+        $this->_creditmemo->setGrandTotal($this->_creditmemo->getGrandTotal() - ($this->_creditmemo->getBuckarooFee() + $this->_creditmemo->getBuckarooFeeTax()) + ($buckarooFeeToRefund + $buckarooFeeTaxToRefund));
+        $this->_creditmemo->setBaseGrandTotal($this->_creditmemo->getBaseGrandTotal() - ($this->_creditmemo->getBaseBuckarooFee() + $this->_creditmemo->getBaseBuckarooFeeTax()) + ($baseBuckarooFeeToRefund + $baseBuckarooFeeTaxToRefund));
         
-        $this->_creditmemo->setBasePaymentFee($basePaymentFeeToRefund);
-        $this->_creditmemo->setPaymentFee($paymentFeeToRefund);
+        $this->_creditmemo->setBaseBuckarooFee($baseBuckarooFeeToRefund);
+        $this->_creditmemo->setBuckarooFee($buckarooFeeToRefund);
         
-        $this->_creditmemo->setBasePaymentFeeTax($basePaymentFeeTaxToRefund);
-        $this->_creditmemo->setPaymentFeeTax($paymentFeeTaxToRefund);
+        $this->_creditmemo->setBaseBuckarooFeeTax($baseBuckarooFeeTaxToRefund);
+        $this->_creditmemo->setBuckarooFeeTax($buckarooFeeTaxToRefund);
         
-        $this->_creditmemo->setTaxAmount($this->_creditmemo->getTaxAmount() + $paymentFeeTaxToRefund);
-        $this->_creditmemo->setBaseTaxAmount($this->_creditmemo->getBaseTaxAmount() + $basePaymentFeeTaxToRefund);
+        $this->_creditmemo->setTaxAmount($this->_creditmemo->getTaxAmount() + $buckarooFeeTaxToRefund);
+        $this->_creditmemo->setBaseTaxAmount($this->_creditmemo->getBaseTaxAmount() + $baseBuckarooFeeTaxToRefund);
         
         return $this->_creditmemo;
     }
     
-    protected function _calculatePaymentFeeTaxToRefund($feeToRefund, $base = false)
+    protected function _calculateBuckarooFeeTaxToRefund($feeToRefund, $base = false)
     {
         if ($base === true) {
-            $fee = $this->_order->getBasePaymentFeeInvoiced() - $this->_order->getBasePaymentFeeRefunded() + ($this->_order->getBasePaymentFeeTaxInvoiced() - $this->_order->getBasePaymentFeeTaxRefunded());
-            $tax = $this->_order->getBasePaymentFeeTaxInvoiced() - $this->_order->getBasePaymentFeeTaxRefunded();
+            $fee = $this->_order->getBaseBuckarooFeeInvoiced() - $this->_order->getBaseBuckarooFeeRefunded() + ($this->_order->getBaseBuckarooFeeTaxInvoiced() - $this->_order->getBaseBuckarooFeeTaxRefunded());
+            $tax = $this->_order->getBaseBuckarooFeeTaxInvoiced() - $this->_order->getBaseBuckarooFeeTaxRefunded();
         } else {
-            $fee = $this->_order->getPaymentFeeInvoiced() - $this->_order->getPaymentFeeRefunded() + ($this->_order->getPaymentFeeTaxInvoiced() - $this->_order->getPaymentFeeTaxRefunded());
-            $tax = $this->_order->getPaymentFeeTaxInvoiced() - $this->_order->getPaymentFeeTaxRefunded();
+            $fee = $this->_order->getBuckarooFeeInvoiced() - $this->_order->getBuckarooFeeRefunded() + ($this->_order->getBuckarooFeeTaxInvoiced() - $this->_order->getBuckarooFeeTaxRefunded());
+            $tax = $this->_order->getBuckarooFeeTaxInvoiced() - $this->_order->getBuckarooFeeTaxRefunded();
         }
         
         if ($fee == 0) {

@@ -9,62 +9,62 @@ $conn = $installer->getConnection();
  */
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'payment_fee',
+    'buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'base_payment_fee',
+    'base_buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'payment_fee_invoiced',
+    'buckaroo_fee_invoiced',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'base_payment_fee_invoiced',
+    'base_buckaroo_fee_invoiced',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'payment_fee_tax',
+    'buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'base_payment_fee_tax',
+    'base_buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'payment_fee_tax_invoiced',
+    'buckaroo_fee_tax_invoiced',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'base_payment_fee_tax_invoiced',
+    'base_buckaroo_fee_tax_invoiced',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'payment_fee_refunded',
+    'buckaroo_fee_refunded',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'base_payment_fee_refunded',
+    'base_buckaroo_fee_refunded',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'payment_fee_tax_refunded',
+    'buckaroo_fee_tax_refunded',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/order'),
-    'base_payment_fee_tax_refunded',
+    'base_buckaroo_fee_tax_refunded',
     "decimal(12,4) null"
 );
 
@@ -73,22 +73,22 @@ $conn->addColumn(
  */
 $conn->addColumn(
     $installer->getTable('sales/invoice'),
-    'payment_fee',
+    'buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/invoice'),
-    'base_payment_fee',
+    'base_buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/invoice'),
-    'payment_fee_tax',
+    'buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/invoice'),
-    'base_payment_fee_tax',
+    'base_buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 
@@ -97,22 +97,22 @@ $conn->addColumn(
  */
 $conn->addColumn(
     $installer->getTable('sales/quote'),
-    'payment_fee',
+    'buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/quote'),
-    'base_payment_fee',
+    'base_buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/quote'),
-    'payment_fee_tax',
+    'buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/quote'),
-    'base_payment_fee_tax',
+    'base_buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 
@@ -121,22 +121,22 @@ $conn->addColumn(
  */
 $conn->addColumn(
     $installer->getTable('sales/quote_address'),
-    'payment_fee',
+    'buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/quote_address'),
-    'base_payment_fee',
+    'base_buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/quote_address'),
-    'payment_fee_tax',
+    'buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/quote_address'),
-    'base_payment_fee_tax',
+    'base_buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 
@@ -145,22 +145,22 @@ $conn->addColumn(
  */
 $conn->addColumn(
     $installer->getTable('sales/creditmemo'),
-    'payment_fee',
+    'buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/creditmemo'),
-    'base_payment_fee',
+    'base_buckaroo_fee',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/creditmemo'),
-    'payment_fee_tax',
+    'buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 $conn->addColumn(
     $installer->getTable('sales/creditmemo'),
-    'base_payment_fee_tax',
+    'base_buckaroo_fee_tax',
     "decimal(12,4) null"
 );
 

@@ -215,7 +215,7 @@
                             	<show_advanced>1</show_advanced>
                             </depends>                            
                         </order_status_failed>
-                        <payment_fee>
+                        <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
@@ -225,7 +225,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </payment_fee>
-                        <payment_fee_label>
+                        <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee label</label>
                         	<comment>Label that will be shown next to the payment fee.</comment>
                         	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
@@ -498,6 +498,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>101</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>102</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                                                                     
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed Currencies</label>
@@ -655,6 +675,26 @@
                         	<show_advanced>1</show_advanced>
                         </depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -869,6 +909,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -1081,6 +1141,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -1314,6 +1394,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -1547,6 +1647,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -1780,6 +1900,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -1995,6 +2135,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -2228,6 +2388,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
  
                         <send_mail translate="label comment">
 						 	<label>Send Payment Instruction Email</label>
@@ -2477,6 +2657,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -2710,6 +2910,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -2933,6 +3153,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -3148,6 +3388,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -3364,6 +3624,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -3579,6 +3859,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>                            
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -3840,6 +4140,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>101</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>102</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -4098,6 +4418,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>91</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>92</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -4332,6 +4672,26 @@
                         		<show_advanced>1</show_advanced>
                         	</depends>
                         </order_status_failed>
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>72</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -4614,7 +4974,29 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </order_status_failed>  
+                        </order_status_failed>
+                        
+                        <payment_fee translate="label comment tooltip">
+                        	<label>Payment fee</label>
+                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
+                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>81</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee>
+                        
+                        <payment_fee_label translate="label comment tooltip">
+                        	<label>Payment fee label</label>
+                        	<comment>Label that will be shown next to the payment fee.</comment>
+                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        	<frontend_type>text</frontend_type>
+                            <sort_order>82</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_fee_label>  
                         
                         <invoice_mail translate="label comment">
                             <label>Send Transactional Invoice Mail</label>
@@ -4671,7 +5053,7 @@
                             <show_in_store>1</show_in_store>
 						</manual_empty_cart> 
 						
-                        <paymentfee_tax_class>
+                        <buckaroofee_tax_class>
                             <label>Tax class for Payment Fee</label>
                             <comment>Select which tax class should be used for the Payment Fee</comment>
                             <tooltip>Must be a 'high VAT' tax class</tooltip>
@@ -4681,7 +5063,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </paymentfee_tax_class>                    
+                        </buckaroofee_tax_class>                    
                     </fields>
                 </buckaroo3extended_advanced>
 			</groups>

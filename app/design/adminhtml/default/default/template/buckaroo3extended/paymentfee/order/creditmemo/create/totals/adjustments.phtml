@@ -33,7 +33,7 @@
 <?php if ($_source): ?>
     <tr>
         <td class="label"><?php echo $this->helper('buckaroo3extended')->__('Refund Buckaroo Fee') ?></td>
-        <td><input type="text" name="creditmemo[paymentfee]" value="<?php echo number_format(round($fee, 2), 2); ?>" class="input-text not-negative-amount" style="width:60px;text-align:right" id="paymentfee"/></td>
+        <td><input type="text" name="creditmemo[buckaroofee]" value="<?php echo number_format(round($fee, 2), 2); ?>" class="input-text not-negative-amount" style="width:60px;text-align:right" id="buckaroofee"/></td>
     </tr>
     <tr>
         <td class="label"><?php echo $this->getShippingLabel() ?></td>

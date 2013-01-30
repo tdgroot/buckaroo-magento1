@@ -1,27 +1,22 @@
 <?php
 class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sales_Model_Quote_Address_Total_Abstract
 {
-    protected $_code = 'paymentFee';
+    protected $_code = 'buckarooFee';
     
     protected $_tempAddress = '';
     protected $_method = '';
     protected $_rate = '';
     protected $_collection = '';
     
-    protected function _construct()
-    {
-        $this->setCode('paymentFee');
-    }
-    
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
         $this->_tempAddress = $address;
         $this->_method = $this->_tempAddress->getQuote()->getPayment()->getMethod();
                 
-        $this->_tempAddress->setBasePaymentFee(0);
-        $this->_tempAddress->setPaymentFee(0);
-        $this->_tempAddress->setBasePaymentFeeTax(0);
-        $this->_tempAddress->setPaymentFeeTax(0);
+        $this->_tempAddress->setBaseBuckarooFee(0);
+        $this->_tempAddress->setBuckarooFee(0);
+        $this->_tempAddress->setBaseBuckarooFeeTax(0);
+        $this->_tempAddress->setBuckarooFeeTax(0);
         
         $allowed = $this->_isAllowed();
         if ($allowed !== true) {
@@ -43,11 +38,11 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
         $baseFeeTax = $this->_calulateTaxForFee($baseFee, true);
         $feeTax = $this->_calulateTaxForFee($baseFee);
                 
-        $this->_tempAddress->setBasePaymentFee($baseFee - $baseFeeTax);
-        $this->_tempAddress->setPaymentFee($fee - $feeTax);
+        $this->_tempAddress->setBaseBuckarooFee($baseFee - $baseFeeTax);
+        $this->_tempAddress->setBuckarooFee($fee - $feeTax);
         
-        $this->_tempAddress->setBasePaymentFeeTax($baseFeeTax);
-        $this->_tempAddress->setPaymentFeeTax($feeTax);
+        $this->_tempAddress->setBaseBuckarooFeeTax($baseFeeTax);
+        $this->_tempAddress->setBuckarooFeeTax($feeTax);
         
         if (Mage::helper('buckaroo3extended')->isEnterprise()) {
             $this->_tempAddress->setBaseGrandTotal($this->_tempAddress->getBaseGrandTotal() + $baseFee);
@@ -82,16 +77,16 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
         
         if (
             ($address->getShippingAmount() != 0 || $address->getShippingDescription())
-            && $address->getBasePaymentFee()    > 0.01    
+            && $address->getBaseBuckarooFee()    > 0.01    
             && $currentUrl                 != Mage::helper('checkout/cart')->getCartUrl()
         ) {
             $label = Mage::helper('buckaroo3extended')->getFeeLabel($this->_method);
                     
             $address->addTotal(
                 array(
-                    'code'  => 'paymentFee',
+                    'code'  => 'buckarooFee',
                     'title' => $label,
-                    'value' => $address->getBasePaymentFee(),
+                    'value' => $address->getBaseBuckarooFee(),
                 )
             );
         }
@@ -128,8 +123,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
             $quote->load($this->_tempAddress->getQuote()->getId());
             
             //calculate the fee. If the fee has already been added, remove it to prevent it from being taken into account in the calculation
-            if ($quote->getBasePaymentFee()) {
-                $fee = ($quote->getBaseGrandTotal() - $quote->getBasePaymentFee()) * ($feePercentage / 100);
+            if ($quote->getBaseBuckarooFee()) {
+                $fee = ($quote->getBaseGrandTotal() - $quote->getBaseBuckarooFee()) * ($feePercentage / 100);
             } elseif(!$quote->getBaseGrandTotal()) {
                 $grandTotal = Mage::registry('buckaroo3extended_quote_basegrandtotal');
                 $fee = $grandTotal * ($feePercentage / 100);

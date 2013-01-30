@@ -10,27 +10,27 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Creditmemo_Totals_Paymentfee 
         $feeLabel = Mage::helper('buckaroo3extended')->getfeeLabel($paymentmethodCode);
         
         if ($this->_creditmemo->getinvoice()) {
-            $paymentFee = new Varien_Object();
-            $paymentFee->setLabel($feeLabel . ' available for refund');
-            $paymentFee->setValue($this->_creditmemo->getInvoice()->getPaymentFee() - $this->_creditmemo->getOrder()->getPaymentFeeRefunded() + ($this->_creditmemo->getInvoice()->getPaymentFeeTax() - $this->_creditmemo->getOrder()->getPaymentFeeTaxefunded()));
-            $paymentFee->setBaseValue($this->_creditmemo->getInvoice()->getBasePaymentFee() - $this->_creditmemo->getOrder()->getBasePaymentFeeRefunded() + ($this->_creditmemo->getInvoice()->getBasePaymentFeeTax() - $this->_creditmemo->getOrder()->getBasePaymentFeeTaxRefunded()));
-            $paymentFee->setCode('payment_fee');
+            $buckarooFee = new Varien_Object();
+            $buckarooFee->setLabel($feeLabel . ' available for refund');
+            $buckarooFee->setValue($this->_creditmemo->getInvoice()->getBuckarooFee() - $this->_creditmemo->getOrder()->getBuckarooFeeRefunded() + ($this->_creditmemo->getInvoice()->getBuckarooFeeTax() - $this->_creditmemo->getOrder()->getBuckarooFeeTaxefunded()));
+            $buckarooFee->setBaseValue($this->_creditmemo->getInvoice()->getBaseBuckarooFee() - $this->_creditmemo->getOrder()->getBaseBuckarooFeeRefunded() + ($this->_creditmemo->getInvoice()->getBaseBuckarooFeeTax() - $this->_creditmemo->getOrder()->getBaseBuckarooFeeTaxRefunded()));
+            $buckarooFee->setCode('buckaroo_fee');
         } else {
-            $paymentFee = new Varien_Object();
-            $paymentFee->setLabel($feeLabel . ' available for refund');
-            $paymentFee->setValue($this->_creditmemo->getOrder()->getPaymentFee() - $this->_creditmemo->getOrder()->getPaymentFeeRefunded() + ($this->_creditmemo->getOrder()->getPaymentFeeTax() - $this->_creditmemo->getOrder()->getPaymentFeeTaxRefunded()));
-            $paymentFee->setBaseValue($this->_creditmemo->getOrder()->getBasePaymentFee() - $this->_creditmemo->getOrder()->getBasePaymentFeeRefunded() + ($this->_creditmemo->getOrder()->getBasePaymentFeeTax() - $this->_creditmemo->getOrder()->getBasePaymentFeeTaxRefunded()));
-            $paymentFee->setCode('payment_fee');
+            $buckarooFee = new Varien_Object();
+            $buckarooFee->setLabel($feeLabel . ' available for refund');
+            $buckarooFee->setValue($this->_creditmemo->getOrder()->getBuckarooFee() - $this->_creditmemo->getOrder()->getBuckarooFeeRefunded() + ($this->_creditmemo->getOrder()->getBuckarooFeeTax() - $this->_creditmemo->getOrder()->getBuckarooFeeTaxRefunded()));
+            $buckarooFee->setBaseValue($this->_creditmemo->getOrder()->getBaseBuckarooFee() - $this->_creditmemo->getOrder()->getBaseBuckarooFeeRefunded() + ($this->_creditmemo->getOrder()->getBaseBuckarooFeeTax() - $this->_creditmemo->getOrder()->getBaseBuckarooFeeTaxRefunded()));
+            $buckarooFee->setCode('buckaroo_fee');
         }
         
-        $paymentFeeRefunded = new Varien_Object();
-        $paymentFeeRefunded->setLabel($feeLabel . ' refunded');
-        $paymentFeeRefunded->setValue($this->_creditmemo->getOrder()->getPaymentFeeRefunded() + $this->_creditmemo->getOrder()->getPaymentFeeTaxRefunded());
-        $paymentFeeRefunded->setBaseValue($this->_creditmemo->getOrder()->getBasePaymentFeeRefunded() + $this->_creditmemo->getOrder()->getBasePaymentFeeTaxRefunded());
-        $paymentFeeRefunded->setCode('payment_fee_refunded');
+        $buckarooFeeRefunded = new Varien_Object();
+        $buckarooFeeRefunded->setLabel($feeLabel . ' refunded');
+        $buckarooFeeRefunded->setValue($this->_creditmemo->getOrder()->getBuckarooFeeRefunded() + $this->_creditmemo->getOrder()->getBuckarooFeeTaxRefunded());
+        $buckarooFeeRefunded->setBaseValue($this->_creditmemo->getOrder()->getBaseBuckarooFeeRefunded() + $this->_creditmemo->getOrder()->getBaseBuckarooFeeTaxRefunded());
+        $buckarooFeeRefunded->setCode('buckaroot_fee_refunded');
         
-        $parent->addTotalBefore($paymentFee, 'tax');
-        $parent->addTotalBefore($paymentFeeRefunded, 'payment_fee');
+        $parent->addTotalBefore($buckarooFee, 'tax');
+        $parent->addTotalBefore($buckarooFeeRefunded, 'buckaroo_fee');
 
         return $this;
     }

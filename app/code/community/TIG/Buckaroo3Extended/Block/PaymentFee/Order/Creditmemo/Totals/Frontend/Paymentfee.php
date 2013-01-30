@@ -9,13 +9,13 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Creditmemo_Totals_Frontend_Pa
         $paymentmethodCode = $this->_creditmemo->getOrder()->getPayment()->getMethod();
         $feeLabel = Mage::helper('buckaroo3extended')->getfeeLabel($paymentmethodCode);
         
-        $paymentFeeRefunded = new Varien_Object();
-        $paymentFeeRefunded->setLabel($feeLabel);
-        $paymentFeeRefunded->setValue($this->_creditmemo->getOrder()->getPaymentFeeRefunded() + $this->_creditmemo->getOrder()->getPaymentFeeTaxRefunded());
-        $paymentFeeRefunded->setBaseValue($this->_creditmemo->getOrder()->getBasePaymentFeeRefunded() + $this->_creditmemo->getOrder()->getBasePaymentFeeTaxRefunded());
-        $paymentFeeRefunded->setCode('payment_fee_refunded');
+        $buckarooFeeRefunded = new Varien_Object();
+        $buckarooFeeRefunded->setLabel($feeLabel);
+        $buckarooFeeRefunded->setValue($this->_creditmemo->getOrder()->getBuckarooFeeRefunded() + $this->_creditmemo->getOrder()->getBuckarooFeeTaxRefunded());
+        $buckarooFeeRefunded->setBaseValue($this->_creditmemo->getOrder()->getBaseBuckarooFeeRefunded() + $this->_creditmemo->getOrder()->getBaseBuckarooFeeTaxRefunded());
+        $buckarooFeeRefunded->setCode('buckaroo_fee_refunded');
         
-        $parent->addTotalBefore($paymentFeeRefunded, 'tax');
+        $parent->addTotalBefore($buckarooFeeRefunded, 'tax');
 
         return $this;
     }
