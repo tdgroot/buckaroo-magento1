@@ -10,7 +10,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Service_Order extends Mage_Sales_Mo
     protected function _initCreditmemoData($creditmemo, $data)
     {
         if (isset($data['buckaroofee'])) {
-            $creditmemo->setPaymentFeeToRefund($data['buckaroofee']);
+            $creditmemo->setBuckarooFeeToRefund($data['buckaroofee']);
         }
         
         return parent::_initCreditmemoData($creditmemo, $data);

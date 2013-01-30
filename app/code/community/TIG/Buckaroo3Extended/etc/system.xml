@@ -4974,29 +4974,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </order_status_failed>
-                        
-                        <payment_fee translate="label comment tooltip">
-                        	<label>Payment fee</label>
-                        	<comment>Fee for using this payment method for the customer. Can be both a set amount or a percentage.</comment>
-                        	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                        	<frontend_type>text</frontend_type>
-                            <sort_order>81</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </payment_fee>
-                        
-                        <payment_fee_label translate="label comment tooltip">
-                        	<label>Payment fee label</label>
-                        	<comment>Label that will be shown next to the payment fee.</comment>
-                        	<tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                        	<frontend_type>text</frontend_type>
-                            <sort_order>82</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </payment_fee_label>  
+                        </order_status_failed> 
                         
                         <invoice_mail translate="label comment">
                             <label>Send Transactional Invoice Mail</label>

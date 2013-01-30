@@ -45,7 +45,9 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
     protected function _setInvoiceFromCreditmemo()
     {
         $invoice = $this->_creditmemo->getInvoice();
-        $this->setInvoice($invoice);
+        if ($invoice) {
+            $this->setInvoice($invoice);
+        }
     }
     
     public function __construct(Mage_Sales_Model_Order_Creditmemo $creditmemo)

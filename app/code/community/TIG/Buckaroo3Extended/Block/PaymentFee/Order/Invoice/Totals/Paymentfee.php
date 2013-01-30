@@ -4,6 +4,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Invoice_Totals_Paymentfee ext
     public function initTotals()
     {
         $parent = $this->getParentBlock();
+        $display = (int) Mage::getStoreConfig('tax/sales_display/subtotal', Mage::app()->getStore()->getId());
         $this->_invoice  = $parent->getInvoice();
         
         if (
@@ -23,7 +24,28 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Invoice_Totals_Paymentfee ext
         $buckarooFee->setBaseValue($this->_invoice->getBaseBuckarooFee());
         $buckarooFee->setCode('buckaroo_fee');
         
-        $parent->addTotalBefore($buckarooFee, 'tax');
+        if ($display === 1) {
+            $parent->addTotalBefore($buckarooFee, 'shipping');
+        } elseif ($display === 2) {
+            $buckarooFee->setValue($this->_invoice->getBuckarooFee() + $this->_invoice->getBuckarooFeeTax());
+            $buckarooFee->setBaseValue($this->_invoice->getBuckarooBaseFee() + $this->_invoice->getBaseBuckarooFeeTax());
+            
+            $parent->addTotalBefore($buckarooFee, 'shipping');
+        } else {
+            $feeInclLabel = $feeLabel . Mage::helper('buckaroo3extended')->__(' (Incl. Tax)');
+            $feeExclLabel = $feeLabel . Mage::helper('buckaroo3extended')->__(' (Excl. Tax)');
+            
+            $buckarooFee->setLabel($feeExclLabel);
+            
+            $buckarooFeeInclTax = new Varien_Object();
+            $buckarooFeeInclTax->setLabel($feeInclLabel);
+            $buckarooFeeInclTax->setValue($this->_invoice->getBuckarooFee() + $this->_invoice->getBuckarooFeeTax());
+            $buckarooFeeInclTax->setBaseValue($this->_invoice->getBuckarooBaseFee() + $this->_invoice->getBaseBuckarooFeeTax());
+            $buckarooFeeInclTax->setCode('buckaroo_fee_incl_tax');
+            
+            $parent->addTotalBefore($buckarooFee, 'shipping');
+            $parent->addTotalBefore($buckarooFeeInclTax, 'shipping');
+        }
 
         return $this;
     }

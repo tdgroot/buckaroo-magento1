@@ -77,7 +77,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
      * 
      * @param Varien_Event_Observer $observer
      */
-    public function paymentfee_order_creditmemo_refund_before(Varien_Event_Observer $observer)
+    public function buckaroofee_order_creditmemo_refund_before(Varien_Event_Observer $observer)
     {
         $creditmemo = $observer->getCreditmemo();
         

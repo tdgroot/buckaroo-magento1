@@ -149,9 +149,9 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
     protected function _getRate()
     {
         $quote = $this->_tempAddress->getQuote();
-        $taxClass = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/paymentfee_tax_class', Mage::app()->getStore()->getId());
+        $taxClass = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/buckaroofee_tax_class', Mage::app()->getStore()->getId());
         
-        if ($taxClass == 0) {
+        if (!$taxClass) {
             $this->_rate = 1;
             return;
         }
@@ -159,7 +159,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
         $taxCalculationModel = Mage::getSingleton('tax/calculation');
         
         $request = $taxCalculationModel->getRateRequest($quote->getShippingAddress(), $quote->getBillingAddress(), $quote->getCustomerTaxClassId(), Mage::app()->getStore()->getId());
-        $request->setStore(Mage::app()->getStore())->setProductClassId($taxClass);
+        $request->setStore(Mage::app()->getStore())
+                ->setProductClassId($taxClass);
         
         $rate = $taxCalculationModel->getRate($request);
         

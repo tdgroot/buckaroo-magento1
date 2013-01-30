@@ -4,6 +4,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Creditmemo_Totals_Paymentfee 
     public function initTotals()
     {
         $parent = $this->getParentBlock();
+        $display = (int) Mage::getStoreConfig('tax/sales_display/subtotal', Mage::app()->getStore()->getId());
         $this->_creditmemo  = $parent->getCreditmemo();
         
         $paymentmethodCode = $this->_creditmemo->getOrder()->getPayment()->getMethod();
@@ -27,7 +28,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Creditmemo_Totals_Paymentfee 
         $buckarooFeeRefunded->setLabel($feeLabel . ' refunded');
         $buckarooFeeRefunded->setValue($this->_creditmemo->getOrder()->getBuckarooFeeRefunded() + $this->_creditmemo->getOrder()->getBuckarooFeeTaxRefunded());
         $buckarooFeeRefunded->setBaseValue($this->_creditmemo->getOrder()->getBaseBuckarooFeeRefunded() + $this->_creditmemo->getOrder()->getBaseBuckarooFeeTaxRefunded());
-        $buckarooFeeRefunded->setCode('buckaroot_fee_refunded');
+        $buckarooFeeRefunded->setCode('buckaroo_fee_refunded');
         
         $parent->addTotalBefore($buckarooFee, 'tax');
         $parent->addTotalBefore($buckarooFeeRefunded, 'buckaroo_fee');
