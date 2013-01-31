@@ -23,18 +23,18 @@
 			</quote>
 			<order_invoice>
                 <totals>
-                    <buckaroo3extended>
+                    <buckarooFee>
                         <class>buckaroo3extended/paymentFee_order_invoice_total</class>
                         <after>tax</after>
-                    </buckaroo3extended>
+                    </buckarooFee>
                 </totals>
             </order_invoice>
             <order_creditmemo>
             	<totals>
-                    <buckaroo3extended>
+                    <buckarooFee>
                         <class>buckaroo3extended/paymentFee_order_creditmemo_total</class>
                         <after>tax</after>
-                    </buckaroo3extended>
+                    </buckarooFee>
                 </totals>
             </order_creditmemo>
 		</sales>
@@ -1363,5 +1363,11 @@
          		<order_status_complete_failed></order_status_complete_failed>
          	</buckaroo3extended_refund>
          </buckaroo>
+         
+         <sales>
+         	<totals_sort>
+         		<buckarooFee>0</buckarooFee>
+         	</totals_sort>
+         </sales>
 	</default>
 </config>

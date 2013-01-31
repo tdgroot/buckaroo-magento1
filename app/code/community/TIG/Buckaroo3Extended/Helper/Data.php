@@ -29,6 +29,16 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 	    }
 	}
     
+    public function isOneStepCheckout()
+    {
+        $moduleName = Mage::app()->getRequest()->getModuleName();
+        
+        if ($moduleName == 'onestepcheckout') {
+            return true;
+        }
+        return false;
+    }
+    
     public function getFeeLabel($paymentMethodCode = false)
     {
         if ($paymentMethodCode) {

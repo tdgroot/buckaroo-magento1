@@ -12,6 +12,22 @@
                 </buckaroo_banner>
             </groups>
         </payment>
+        <sales>
+        	<groups>
+        		<totals_sort>
+        			<fields>
+        				<buckarooFee translate="label comment tooltip">
+                            <label>Buckaroo Fee</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+        				</buckarooFee>
+        			</fields>
+        		</totals_sort>
+        	</groups>
+        </sales>
 		<buckaroo translate="label">
 			<label>Buckaroo</label>
 			<tab>sales</tab>

@@ -254,9 +254,6 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     	$quoteId = $this->_order->getQuoteId();
     	
         $quote = Mage::getModel('sales/quote')->load($quoteId)->setIsActive(true)->save();
-        
-        Mage::getSingleton('checkout/session')->getQuote()->setIsActive(true)->save();
-        Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
     }
     
     /**
