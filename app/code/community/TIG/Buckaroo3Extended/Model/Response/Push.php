@@ -474,7 +474,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 */
 	protected function _autoInvoice()
 	{		
-        $this->_order->getPayment()->authorize($this->_order->getPayment(), $this->_order->getBaseGrandTotal());
 		if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', Mage::app()->getStore()->getStoreId()))
 	    {
 	    	return false;
