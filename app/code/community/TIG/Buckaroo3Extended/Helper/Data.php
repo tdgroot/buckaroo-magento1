@@ -50,6 +50,8 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
             $feeLabel = 'Buckaroo servicekosten';
         }
         
+        $feeLabel = ucwords($feeLabel);
+        
         $feeLabel = Mage::helper('buckaroo3extended')->__($feeLabel);
         
         return $feeLabel;

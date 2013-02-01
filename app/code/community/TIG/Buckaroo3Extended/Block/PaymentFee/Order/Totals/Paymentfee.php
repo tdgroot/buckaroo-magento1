@@ -18,7 +18,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Paymentfee extends Mag
         $buckarooFee->setLabel($feeLabel);
         $buckarooFee->setValue($this->_order->getBuckarooFee());
         $buckarooFee->setBaseValue($this->_order->getBaseBuckarooFee());
-        $buckarooFee->setCode('buckaroo_fee');
+        $buckarooFee->setCode('buckarooFee');
         
         if ($display === 1) {
             $parent->addTotalBefore($buckarooFee, 'shipping');

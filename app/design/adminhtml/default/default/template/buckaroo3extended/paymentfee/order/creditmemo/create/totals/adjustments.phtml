@@ -25,14 +25,15 @@
  */
 ?>
 <?php $_source  = $this->getSource() ?>
-<?php if ($_source->getInvoice()) {
-    $fee = $_source->getInvoice()->getBasePaymentFee() - $_source->getOrder()->getBasePaymentFeeRefunded() + ($_source->getInvoice()->getBasePaymentFeeTax() - $_source->getOrder()->getBasePaymentFeeTaxRefunded());
-} else {
-    $fee = $_source->getOrder()->getBasePaymentFee() - $_source->getOrder()->getBasePaymentFeeRefunded() + ($_source->getOrder()->getBasePaymentFeeTax() - $_source->getOrder()->getBasePaymentFeeTaxRefunded());
-}?>
 <?php if ($_source): ?>
+    <?php if ($_source->getInvoice()) {
+        $fee = $_source->getInvoice()->getBaseBuckarooFee() - $_source->getOrder()->getBaseBuckarooFeeRefunded() + ($_source->getInvoice()->getBaseBuckarooFeeTax() - $_source->getOrder()->getBaseBuckarooFeeTaxRefunded());
+    } else {
+        $fee = $_source->getOrder()->getBaseBuckarooFee() - $_source->getOrder()->getBaseBuckarooFeeRefunded() + ($_source->getOrder()->getBaseBuckarooFeeTax() - $_source->getOrder()->getBaseBuckarooFeeTaxRefunded());
+    }?>
+    <?php $feeLabel = Mage::helper('buckaroo3extended')->getFeeLabel($_source->getOrder()->getPayment()->getMethod()); ?>
     <tr>
-        <td class="label"><?php echo $this->helper('buckaroo3extended')->__('Refund Buckaroo Fee') ?></td>
+        <td class="label"><?php echo $this->helper('buckaroo3extended')->__('Refund %s', $feeLabel) ?></td>
         <td><input type="text" name="creditmemo[buckaroofee]" value="<?php echo number_format(round($fee, 2), 2); ?>" class="input-text not-negative-amount" style="width:60px;text-align:right" id="buckaroofee"/></td>
     </tr>
     <tr>
