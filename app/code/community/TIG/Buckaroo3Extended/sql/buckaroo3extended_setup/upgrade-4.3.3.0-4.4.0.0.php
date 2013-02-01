@@ -4,6 +4,13 @@ $installer = $this;
 $installer->startSetup();
 $conn = $installer->getConnection();
 
+$installer->getConnection()->changeColumn(
+    $this->getTable('buckaroo3extended/certificate'),
+    'certificate_name',
+    'certificate_name',
+    'varchar(255) NOT NULL'
+    );
+
 /**
  * Add PaymentFee columns to sales/order
  */

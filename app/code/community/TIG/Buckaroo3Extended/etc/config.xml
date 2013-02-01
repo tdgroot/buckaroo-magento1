@@ -1366,7 +1366,7 @@
          
          <sales>
          	<totals_sort>
-         		<buckarooFee>0</buckarooFee>
+         		<buckarooFee>25</buckarooFee>
          	</totals_sort>
          </sales>
 	</default>

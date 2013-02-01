@@ -17,7 +17,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Creditmemo_Totals_Frontend_Pa
         $buckarooFeeRefunded->setCode('buckaroo_fee_refunded');
         
         if ($display === 1) {
-            $parent->addTotalBefore($buckarooFee, 'shipping');
+            $parent->addTotalBefore($buckarooFeeRefunded, 'shipping');
         } elseif ($display === 2) {
             $buckarooFeeRefunded->setValue($this->_creditmemo->getBuckarooFee() + $this->_creditmemo->getBuckarooFeeTax());
             $buckarooFeeRefunded->setBaseValue($this->_creditmemo->getBuckarooBaseFee() + $this->_creditmemo->getBaseBuckarooFeeTax());
