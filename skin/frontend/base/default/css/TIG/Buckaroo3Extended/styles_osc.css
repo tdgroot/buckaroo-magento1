@@ -1,0 +1,17 @@
+#onestepcheckout-form .payment-methods label { float:none; }
+#onestepcheckout-form .payment-methods input.input-text { width:218px !important; }
+#onestepcheckout-form .payment-methods .dob-month input.input-text,
+#onestepcheckout-form .payment-methods .dob-day input.input-text { width:46px !important; }
+#onestepcheckout-form .payment-methods .dob-year input.input-text { width:98px !important; }
+#onestepcheckout-form .payment-methods .field-set input.f-name,
+#onestepcheckout-form .payment-methods .field-set input.l-name { width:132px !important; }
+
+#onestepcheckout-form .payment-methods .payment-method select { width:80px !important; }
+#onestepcheckout-form .payment-methods .payment-method ul.form-list { padding:0; }
+#onestepcheckout-form .payment-methods .payment-method #radiogroup-container label { display:block; float:none; margin-bottom:2px; }
+#onestepcheckout-form .payment-methods .payment-method #radiogroup-container label img { height:15px; width:auto; margin-top:1px; }
+#onestepcheckout-form .payment-methods .payment-method .buckaroo3extended_input { width:210px; }
+#onestepcheckout-form .payment-methods .payment-method .field { float:none; }
+#onestepcheckout-form .payment-methods .payment-method .disabled { display:inline-block; padding:2px; width:132px; height:15px; line-height:16px; background:#f1f1f1; border:1px solid #b6b6b6; color:#aaa; margin-left:3px; }
+#onestepcheckout-form .payment-methods .payment-method .field-set input.input-text { width:168px; margin-left:3px; }
+#onestepcheckout-form .payment-methods .payment-method .field-set input.l-name { margin:8px 0 0 86px !important; }

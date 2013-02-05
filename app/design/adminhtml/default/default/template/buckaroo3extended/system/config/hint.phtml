@@ -1,13 +1,4 @@
-<div style="
-    background-image:url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/images/fam_bullet_error.gif');
-    background-repeat:no-repeat; 
-    background-color:rgb(255,255,255); 
-    padding:9px;
-    padding-left:28px;
-    height:27px;
-    border:1px solid #CCCCCC;
-    background-position:10px 10px;
-">
+<div class="message warning">
     <h4><?php echo Mage::helper('buckaroo3extended')->__('These options are only intended for expert users. Tampering with the default settings may negatively affect the workflow and performance of all Buckaroo payment methods. Use at your own risk.')?></h4>
 </div>
 <script type="text/javascript" charset="utf-8" src="<?php echo $this->getSkinUrl("js/tig_buckaroo3extended/jquery-1.4.4.min.js");?>"></script>

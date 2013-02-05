@@ -37,13 +37,13 @@
                 <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
             </li>
             <li>
-                <label class="required"><?php echo $this->__('Name');?> <em>*</em></label><br/>
+                <label class="required"><?php echo $this->__('Name');?> <em>*</em></label>
                 <div class="field">  
-                    <select name="<?php echo $_code;?>_BPE_Customergender" style="width:80px;" class="validate-select validate-number">
+                    <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number">
                         <option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
                         <option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
                     </select>
-                    <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $name; ?>" style="width: 170px;" />
+                    <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $name; ?>" />
                 </div>
             </li>
             <li <?php if ($email) echo "hidden=\"true\""; ?>>
@@ -92,7 +92,7 @@ DATE_INPUT_YYYY;
     
     echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputYYYY);
     ?>
-                            <div style="display: none;" class="dob-full">
+                            <div style="display:none;" class="dob-full">
                              <input type="hidden" name="<?php echo $_code;?>_payment[dob]" id="payment:dob">
                             </div>
                         <div style="display: none;" class="validation-advice"></div>
