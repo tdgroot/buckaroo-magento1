@@ -29,6 +29,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_payperemail_checkout_form';
     
+    protected $_canUseInternal = true;
+    
     public function assignData($data)
     {
     	if (!Mage::helper('buckaroo3extended')->isAdmin()) {
