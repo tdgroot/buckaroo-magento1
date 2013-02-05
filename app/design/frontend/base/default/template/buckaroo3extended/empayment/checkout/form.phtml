@@ -16,18 +16,18 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
             <?php echo $this->__('You will be redirected to the èM! Payment website to finalize your payment.') ?>
         </li>
         <li>
-            <label><?php echo $this->__('Bank identification') ?>:</label>
+            <label class="required"><?php echo $this->__('Bank identification') ?>: <em>*</em></label>
             <div class="input-box">
             	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Bankid" value="<?php echo $_session->getData($_code . '_BPE_Bankid'); ?>" />
             </div>
         </li>
         <li>
-            <label><?php echo $this->__('Account holder') ?>:</label>
+            <label class="required"><?php echo $this->__('Account holder') ?>: <em>*</em></label>
             <div class="input-box">
             	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountholder" value="<?php echo $_session->getData($_code . '_BPE_Accountholder'); ?>" />
             </div>
-            <label><?php echo $this->__('Account number') ?>:</label>
             <div class="input-box">
+                <label class="required"><?php echo $this->__('Account number') ?>: <em>*</em></label>
             	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountnumber" value="<?php echo $_session->getData($_code . '_BPE_Accountnumber'); ?>" />
             </div>
         </li>

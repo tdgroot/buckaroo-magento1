@@ -36,23 +36,22 @@
         <li>
             <?php echo $this->__('You will be redirected to the iDEAL page of your chosen bank when you place your order.') ?>
         </li>
+        <li><label class="required"><?php echo $this->__('Please, choose your bank'); ?>: <em>*</em></label></li>
         <li>
-        	<div id = "radiogroup-container">
-        	    <label style ="padding:0;"><?php echo $this->__('Please, choose your bank:'); ?></label><br/>
+        	<div id="radiogroup-container">
         	    <?php $i = 0; ?>
         	    <?php foreach($_issuerList as $issuer => $issuerDetails): ?>
                     <?php $i++; ?>
                     <?php if ($i == count($_issuerList)): ?>
                         <?php $validation = "class='validate-one-required-by-name'"; ?>
                     <?php endif; ?>
-        	        <label style="font-weight: normal; height: 22px; float: none; padding:0px;">
+        	        <label>
                         <input type="radio" name="<?php echo $_code;?>_BPE_Issuer" value="<?php echo $issuer; ?>" <?php echo $validation; ?> <?php echo $issuer == $_value ? "checked" : ''; ?>/> 
                         <img src="<?php echo $this->getSkinUrl("images/tig_buckaroo3extended/" . $issuerDetails['logo']);?>"/> 
                         <?php echo $this->__($issuerDetails['name']);?>
                     </label>
-                    <br/>
         	    <?php endforeach; ?>
             </div>
         </li>
     </ul>
-</fieldset> 
+</fieldset>

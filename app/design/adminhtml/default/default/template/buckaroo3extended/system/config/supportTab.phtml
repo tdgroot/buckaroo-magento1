@@ -1,65 +1,136 @@
 <?php $_helper = $this->helper('buckaroo3extended'); ?>
-<style type="text/css">
-a.pdf {
-	background-image: url('<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/glyph_pdf.gif'); ?>');
-}
-.contentWrap .tigLogo span {
-	background-image: url('<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/logo_tig.gif'); ?>');
-	margin-top:20px;
-}
-</style>
-<div class="contentWrap">
-	<h1 class="contentHeading">
-	    <?php echo $_helper->__('Buckaroo 3 Extended Module version ');?>
-	    <?php echo Mage::getConfig()->getModuleConfig("TIG_Buckaroo3Extended")->version;?>
-	</h1>
-    <div id="leftColumn">
-    	<div class="versionCompatibility">
-    		<h2><?php echo $_helper->__('Version compatibility');?></h2>
-    		<p><?php echo $_helper->__('Magento CE 1.5, 1.6 &amp; 1.7');?><br />
-    		<?php echo $_helper->__('Magento EE 1.11 &amp; 1.12');?></p>
-    	</div>
-    	<div class="firstSteps">
-    		<h2><?php echo $_helper->__('First steps');?></h2>
-    		<ul>
-    			<li><?php echo $_helper->__('Vul de merchantkey en digitale handtekening in die u kunt vinden in Buckaroo Payment Plaza.');?></li>
-    			<li><?php echo $_helper->__('Upload uw private key certificaat en vul de bijbehorende thumbprint in.');?></li>
-    			<li><?php echo $_helper->__('Activeer de gewenste betaalmethodes en plaats enkele test bestellingen.');?></li> 
-    			<li><?php echo $_helper->__('Wanneer de testbestellingen succesvol verlopen zijn, kunt u de module op live modus zetten.');?></li>
-    		</ul>
-    	</div>
-    </div>
-    <div id="rightColumn">
-    	<div class="manualInstallation">
-    		<h2><?php echo $_helper->__('Manual &amp; Installation');?></h2>
-    		<p><?php echo $_helper->__('The manual will help you install &amp; configure the module.');?></p>
-    		<div class="manualDownloads">
-    			<a class="pdf" href="#" title="Download the Module manual PDF"><?php echo $_helper->__('Module manual');?></a>
-    		</div>
-    	</div>
-    	<div class="supportService">
-    		<p>
-    		    <?php echo $_helper->__(
-    		    	'You can find additional information at: %s',
-    		        $this->buckarooUrl
-    		    );?>
-    		</p>
-            <p>
-                <?php echo $_helper->__(
-                    'For questions regarding the Buckaroo module and Buckaroo payment methods, please contact: %s',
-                    $this->buckarooSupport
-                );?>
-            </p>
-    		<p>
-    		    <?php echo $_helper->__(
-    		    	'Please email your feedback to %sTotal Internet Group%s.',
-    		        $this->totalEmail,
-    		        $this->anchorClose
-    		    );?>
-    		</p>
-    	</div>
-    </div>
-    <div class="tigLogo">
-    	<span><?php echo $_helper->__('Total Internet Group');?></span>
+
+<?php /*
+
+<div class="message success">
+    <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
+</div>
+
+<div class="message info">
+    <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
+</div>
+
+<div class="message warning">
+    <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
+</div>
+
+<div class="message error">
+    <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
+</div>
+*/  ?>
+<tr><td>
+<h2 class="content-heading"><?php echo $_helper->__('BPE 3.0 version');?> <?php echo Mage::getConfig()->getModuleConfig("TIG_Buckaroo3Extended")->version;?></h2>
+<div class="col-left">
+    <div class="text-box">
+        <h3><?php echo $_helper->__('Quick reference guide');?></h3>
+        <ol>
+            <li><strong><?php echo $_helper->__('Log in to the ');?> <a target="_blank" href="https://payment.buckaroo.nl/"><?php echo $_helper->__('Buckaroo Payment Plaza');?></a> <?php echo $_helper->__(' to collect the following security settings:');?></strong>
+                <ol>
+                    <li><?php echo $_helper->__('(Merchant) Key - Profile &rarr; Websites &rarr; Key.');?></li>
+                    <li><?php echo $_helper->__('Secret Key - Configuration &rarr; Secret key for Digitale signature &rarr; Secret Key.');?></li>
+                    <li><?php echo $_helper->__('Certificate - Configuration &rarr; Manage certificates (BPE 3.0).');?></li>
+                    <li><?php echo $_helper->__('Certificate Thumbprint - Configuration &rarr; Manage certificates (BPE 3.0).');?></li>
+                </ol>
+            </li>
+            <li><strong><?php echo $_helper->__('Upload the Certificate to the Magento database under the Certificate Management tab.');?></strong>
+                <ol>
+                    <li><?php echo $_helper->__('Give a name which is used for storing the certificate.');?></li>
+                    <li><?php echo $_helper->__('Select the certificate file to upload and Save Config.');?></li>
+                </ol>
+            </li>
+            <li><strong><?php echo $_helper->__('Enter the collected Merchant- &amp; Secret Key under the Base Configuration tab.');?></strong>
+                <ol>
+                    <li><?php echo $_helper->__('After adding the keys Save Config.');?></li>
+                    <li><?php echo $_helper->__('Select the uploaded certificate from the dropdown.');?></li>
+                    <li><?php echo $_helper->__('Add the corresponding thumbprint and Save Config.');?></li>
+                </ol>
+            </li>
+            <li><strong><?php echo $_helper->__('Configure and enable the individual payment methods.');?></strong>
+                <ol>
+                    <li><?php echo $_helper->__('Payment method specific settings are set under the corresponding tab.');?></li>
+                    <li><?php echo $_helper->__('Payment methods must be enabled within Buckaroo and Magento.');?></li>
+                    <li><?php echo $_helper->__('Contact Buckaroo support for activating or availale payment methods.');?></li>
+                </ol>
+            </li>
+            <li><strong><?php echo $_helper->__('Enable the module and select the Test or Live modus.');?></strong>
+                <ol>
+                   <li><?php echo $_helper->__('The module has many options to adapt to your business rules.');?></li>
+                   <li><?php echo $_helper->__('The manual gives more detailed information per subject.');?></li>
+                   <li><?php echo $_helper->__('The scope of the individual setting is presented as [GLOBAL], [WEBSITE] or [STOREVIEW].');?></li> 
+                </ol>
+            </li>
+        </ol>
     </div>
 </div>
+
+<div class="col-right">
+    <div class="text-box">
+        <h3><?php echo $_helper->__('Magento &amp; 3rd party version compatibility');?></h3>
+        <ul>
+            <li><?php echo $_helper->__('Magento Community Edition version');?> 1.5, 1.6 &amp; 1.7</li>
+            <li><?php echo $_helper->__('Magento Enterprise Edition version');?> 1.11 &amp; 1.12</li>
+        </ul>
+        <ul>
+            <li><?php echo $_helper->__('OneStepCheckout version');?> 4.0.x</li>
+        </ul>
+    </div>
+    <div class="text-box">
+        <h3><?php echo $_helper->__('Support');?></h3>
+        <p><?php echo $_helper->__('The module is developed by Total Internet Group, commissioned by Buckaroo. Depending on the nature of the issue or question you should contact either Buckaroo or Total Internet Group.');?></p>
+        <h4><?php echo $_helper->__('Module basic configuration and account information');?></h4>
+        <p><?php echo $_helper->__('Acquire your (Merchant) key, Secret key, certificate and certificate thumbprint prior contacting Buckaroo technical support:');?></p>
+        <table class="contact">
+             <tr>
+                <td class="first"><?php echo $_helper->__('Buckaroo Payment Plaza:');?></td>
+                <td class="last"><a target="_blank" href="https://payment.buckaroo.nl/">payment.buckaroo.nl</a></td>
+            </tr>
+            <tr>
+                <td class="first"><?php echo $_helper->__('Phone:');?></td>
+                <td class="last">+31(0)30-711 50 50</td>
+            </tr>
+            <tr>
+                <td class="first"><?php echo $_helper->__('E-mail:');?></td>
+                <td class="last"><a href="mailto:support@buckaroo.nl">support@buckaroo.nl</a></td>
+            </tr>
+        </table>
+        <h4><?php echo $_helper->__('Module support and advanced configuration');?></h4>
+        <p><?php echo $_helper->__('For configuration conflicts, bugs and Magento based support contact Total Internet Group:');?></p>
+        <p><a href="http://www.totalinternetgroup.nl"><img src="http://markaroo.totalsandbox.nl/skin/adminhtml/default/default/images/tig_buckaroo3extended/tig_logo_medium.gif" alt="" /></a></p>
+        <table class="contact">
+             <tr>
+                <td class="first"><?php echo $_helper->__('Online support form:');?></td>
+                <td class="last"><a target="_blank" href="http://support.totalinternetgroup.nl/anonymous_requests/new">support.totalinternetgroup.nl</a></td>
+            </tr>
+            <tr>
+                <td class="first"><?php echo $_helper->__('E-mail:');?></td>
+                <td class="last"><a href="mailto:support@totalinternetgroup.nl">support@totalinternetgroup.nl</a></td>
+            </tr>
+            <tr>
+                <td class="first"><?php echo $_helper->__('Online Documentation');?></td>
+                <td class="last"><a target="_blank" href="http://www.totalinternetgroup.nl/support">www.totalinternetgroup.nl/support</a></td>
+            </tr>
+        </table>
+    </div>
+    <div class="text-box">
+        <h3><?php echo $_helper->__('Documentation');?></h3>
+        <p><?php echo $_helper->__('The list of the documents related to the module.');?></p>
+        <ul>
+            <li><a class="pdf" href="#" title="<?php echo $_helper->__('Download a pdf format of the manual. Currently the manual is only available in Dutch.');?>"><?php echo $_helper->__('buckaroo magent bpe3 v4.0.4.pdf (NL)');?></a></li>
+        </li>
+    </div>
+</div>
+</td></tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
