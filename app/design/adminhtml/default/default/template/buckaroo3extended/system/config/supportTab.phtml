@@ -2,21 +2,21 @@
 
 <?php /*
 
-<div class="message success">
-    <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
-</div>
-
-<div class="message info">
-    <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
-</div>
-
-<div class="message warning">
-    <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
-</div>
-
-<div class="message error">
-    <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
-</div>
+    <div class="message success">
+        <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
+    </div>
+    
+    <div class="message info">
+        <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
+    </div>
+    
+    <div class="message warning">
+        <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
+    </div>
+    
+    <div class="message error">
+        <h4><?php echo Mage::helper('buckaroo3extended')->__('These options only apply to this specific payment option. Other payment options are not affected.')?></h4>
+    </div>
 */  ?>
 <tr><td>
 <h2 class="content-heading"><?php echo $_helper->__('BPE 3.0 version');?> <?php echo Mage::getConfig()->getModuleConfig("TIG_Buckaroo3Extended")->version;?></h2>
@@ -61,6 +61,17 @@
             </li>
         </ol>
     </div>
+<?php /* 
+    <div class="text-box">
+        <h3><?php echo $_helper->__('Legend');?></h3>
+            <ul id="legend">
+                <li class="disabled"><?php echo $_helper->__('Payment method - Disabled');?></li>
+                <li class="test"><?php echo $_helper->__('Payment method - Test Modus');?></li>
+                <li class="live"><?php echo $_helper->__('Payment method - Live Modus');?></li>
+                <li class="advanced"><?php echo $_helper->__('Advanced Configuration');?></li>
+            </ul>
+    </div>
+*/ ?>
 </div>
 
 <div class="col-right">
@@ -71,7 +82,7 @@
             <li><?php echo $_helper->__('Magento Enterprise Edition version');?> 1.11 &amp; 1.12</li>
         </ul>
         <ul>
-            <li><?php echo $_helper->__('OneStepCheckout version');?> 4.0.x</li>
+            <li><?php echo $_helper->__('OneStepCheckout version');?> 4.0.7</li>
         </ul>
     </div>
     <div class="text-box">
@@ -79,6 +90,7 @@
         <p><?php echo $_helper->__('The module is developed by Total Internet Group, commissioned by Buckaroo. Depending on the nature of the issue or question you should contact either Buckaroo or Total Internet Group.');?></p>
         <h4><?php echo $_helper->__('Module basic configuration and account information');?></h4>
         <p><?php echo $_helper->__('Acquire your (Merchant) key, Secret key, certificate and certificate thumbprint prior contacting Buckaroo technical support:');?></p>
+        <p><a href="http://www.buckaroo.nl" target="_blank"><img src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/'); ?>buckaroo_small.png" alt="" /></a></p>
         <table class="contact">
              <tr>
                 <td class="first"><?php echo $_helper->__('Buckaroo Payment Plaza:');?></td>
@@ -95,7 +107,7 @@
         </table>
         <h4><?php echo $_helper->__('Module support and advanced configuration');?></h4>
         <p><?php echo $_helper->__('For configuration conflicts, bugs and Magento based support contact Total Internet Group:');?></p>
-        <p><a href="http://www.totalinternetgroup.nl"><img src="http://markaroo.totalsandbox.nl/skin/adminhtml/default/default/images/tig_buckaroo3extended/tig_logo_medium.gif" alt="" /></a></p>
+        <p><a href="http://www.totalinternetgroup.nl" target="_blank"><img src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/'); ?>tig_logo_medium.gif" alt="" /></a></p>
         <table class="contact">
              <tr>
                 <td class="first"><?php echo $_helper->__('Online support form:');?></td>
