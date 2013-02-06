@@ -9,9 +9,9 @@ $email=$billing_info->getEmail();
 $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
 $gender = $gender ? $gender : (int) $_session->getData($_code . '_BPE_Customergender');
 ?>
-<?php $firstname = $firstname ? $firstname : $_session->getData($_code . '_BPE_Customerfirstname'); ?>
-<?php $lastname = $lastname ? $lastname : $_session->getData($_code . '_BPE_Customerlastname'); ?>
-<?php $email = $email ? $email : $_session->getData($_code . '_BPE_Customermail'); ?>
+<?php $firstname = $_session->getData($_code . '_BPE_Customerfirstname') ? $_session->getData($_code . '_BPE_Customerfirstname') : $firstname; ?>
+<?php $lastname = $_session->getData($_code . '_BPE_Customerlastname') ? $_session->getData($_code . '_BPE_Customerlastname') : $lastname; ?>
+<?php $email = $_session->getData($_code . '_BPE_Customermail') ? $_session->getData($_code . '_BPE_Customermail') : $email; ?>
 <?php $_session = Mage::getSingleton('checkout/session'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
