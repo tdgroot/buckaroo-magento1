@@ -56,9 +56,9 @@
 .entry-edit .entry-edit-head.advanced { background-color:#f86000; }
 
 /* Messages */
-.message { padding:9px 9px 9px 30px; margin-bottom:20px; border:1px solid #ccc; }
-.message.success { background:#fff url(../../images/tig_buckaroo3extended/glyph_success.gif) 9px 9px no-repeat; } 
-.message.info { background:#fff url(../../images/tig_buckaroo3extended/glyph_info.gif) 9px 9px no-repeat;  } 
-.message.warning { background:#fff url(../../images/tig_buckaroo3extended/glyph_warning.gif) 9px 9px no-repeat;  }
-.message.error { background:#fff url(../../images/tig_buckaroo3extended/glyph_error.gif) 9px 9px no-repeat;  } 
-.message.buckaroo { margin-bottom:20px; }
+.module-message { padding:9px 9px 9px 30px; margin-bottom:20px; border:1px solid #ccc; }
+.module-message.success { background:#fff url(../../images/tig_buckaroo3extended/glyph_success.gif) 9px 9px no-repeat; } 
+.module-message.info { background:#fff url(../../images/tig_buckaroo3extended/glyph_info.gif) 9px 9px no-repeat;  } 
+.module-message.warning { background:#fff url(../../images/tig_buckaroo3extended/glyph_warning.gif) 9px 9px no-repeat;  }
+.module-message.error { background:#fff url(../../images/tig_buckaroo3extended/glyph_error.gif) 9px 9px no-repeat;  } 
+.module-message.buckaroo { margin-bottom:20px; }
