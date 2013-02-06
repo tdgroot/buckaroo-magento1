@@ -14,6 +14,13 @@
 #buckaroo_buckaroo3extended_support table.contact td { padding:0; }
 #buckaroo_buckaroo3extended_support table.contact td.first { width:150px; padding-right:5px; }
 
+/* Legend */
+#buckaroo_buckaroo3extended_support #legend li { background:url(../../images/tig_buckaroo3extended/legend.gif) 0 0 no-repeat; padding-left:14px;  }
+#buckaroo_buckaroo3extended_support #legend li.disabled { background-position:0 4px; }
+#buckaroo_buckaroo3extended_support #legend li.test { background-position:0 -25px; }
+#buckaroo_buckaroo3extended_support #legend li.live { background-position:0 -54px; }
+#buckaroo_buckaroo3extended_support #legend li.advanced { background-position:0 -83px; }
+
 /* Structure */
 #buckaroo_buckaroo3extended_support .col-left { margin-right:20px; }
 #buckaroo_buckaroo3extended_support .col-left,
@@ -23,26 +30,30 @@
     #buckaroo_buckaroo3extended_support .col-left,
     #buckaroo_buckaroo3extended_support .col-right { width:304px; }
 }
-
 @media (min-width: 1280px) and (max-width: 1440px) {
     #buckaroo_buckaroo3extended_support .col-left,
     #buckaroo_buckaroo3extended_support .col-right { width:455px; }
 }
-
 @media (min-width: 1440px) and (max-width: 1680px) {
     #buckaroo_buckaroo3extended_support .col-left,
     #buckaroo_buckaroo3extended_support .col-right { width:535px; }
 }
-
 @media (min-width: 1680px) and (max-width: 1920px) {
     #buckaroo_buckaroo3extended_support .col-left,
     #buckaroo_buckaroo3extended_support .col-right { width:655px; }
 }
-
 @media (min-width: 1920px) {
     #buckaroo_buckaroo3extended_support .col-left,
     #buckaroo_buckaroo3extended_support .col-right { width:775px; }
 }
+
+/* Labels */
+.entry-edit .entry-edit-head { background-color:#97c600; }
+.entry-edit .entry-edit-head.disabled { background-color:#c6cbc9; }
+.entry-edit .entry-edit-head.test { background-color:#fff000; }
+.entry-edit .entry-edit-head.test a { color:#222; }
+.entry-edit .entry-edit-head.live { background-color:#97c600; }
+.entry-edit .entry-edit-head.advanced { background-color:#f86000; }
 
 /* Messages */
 .message { padding:9px 9px 9px 30px; margin-bottom:20px; border:1px solid #ccc; }
