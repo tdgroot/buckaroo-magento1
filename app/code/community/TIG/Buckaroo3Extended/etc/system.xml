@@ -1368,7 +1368,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1621,7 +1621,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1874,7 +1874,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2362,7 +2362,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2631,7 +2631,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2884,7 +2884,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4114,7 +4114,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4392,7 +4392,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4646,7 +4646,7 @@
                             <label>Method Specific Pending Status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4952,7 +4952,7 @@
                             <label>New Status</label>
                             <comment>This status will be given to new orders.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4963,7 +4963,7 @@
                             <label>Pending Payment Status</label>
                             <comment>This status will be given to orders pending payment.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesPending</source_model>
+                            <source_model>buckaroo3extended/sources_statusesPendingPayment</source_model>
                             <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
