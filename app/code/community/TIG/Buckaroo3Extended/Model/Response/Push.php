@@ -349,32 +349,30 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * @return boolean
 	 */
 	protected function _processFailed($newStates, $description = false)
-	{
-		$description .= " (#{$this->_postArray['brq_statuscode']})";
-		
-	    //sets the transaction key if its defined ('brq_transactions')
-		//will retrieve it from the response array, if response actually is an array
-		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
-			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
-		}
-		
-		if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', Mage::app()->getStore()->getStoreId())) {
-	    	$this->_order->cancel()
-	    				 ->save();
-	    	if ($description) {
-	    		$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
-	    				     ->save();
-	    	}
-    		$this->_order->setStatus($newStates[1])
-    					 ->save();
-	    } else {	    	
-	    	$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
-	    	             ->save();
-	    	$this->_order->setStatus($newStates[1])
-	    				 ->save();
-	    }
-	    return true;
-	}
+    {
+        $description .= " (#{$this->_postArray['brq_statuscode']})";
+        
+        //sets the transaction key if its defined ('brq_transactions')
+        //will retrieve it from the response array, if response actually is an array
+        if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
+            $this->_order->setTransactionKey($this->_postArray['brq_transactions']);
+        }
+        
+        if (
+          Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', Mage::app()->getStore()->getStoreId())
+          && $this->_order->canCancel()
+        ) {
+            $this->_order->cancel()
+                         ->save();
+        }        
+         
+        $this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
+                     ->save();
+        $this->_order->setStatus($newStates[1])
+                     ->save();
+                     
+        return true;
+    }
 	
 	/**
 	 * Processes an order for which an incorrect amount has been paid (can only happen with Transfer)
@@ -387,9 +385,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		$amount = round($this->_order->getBaseGrandTotal()*100, 0);
 		$currency = $this->_order->getBaseCurrencyCode();
 		
+        $setState = $newStates[0];
+        $setStatus = $newStates[1];
 		if ($amount > $this->_postArray['brq_amount']) {
-	    	$setState = $newStates[0];
-            $setStatus = $newStates[1];
             $description = Mage::helper('buckaroo3extended')->__('Not enough paid: ') 
                			 . round(($this->_postArray['brq_amount'] / 100), 2)
                			 . ' '
@@ -398,9 +396,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
               			 . round($this->_order->getGrandTotal(), 2)
                			 . ' '
                			 . $currency;
-	    } elseif ($amount < $this->_postArray['bpe_amount']) {
-	    	$setState = $newStates[0];
-            $setStatus = $newStates[1];
+	    } elseif ($amount < $this->_postArray['brq_amount']) {
             $description = Mage::helper('buckaroo3extended')->__('Too much paid: ') 
                			 . round(($this->_postArray['brq_amount'] / 100), 2)
                			 . ' '
