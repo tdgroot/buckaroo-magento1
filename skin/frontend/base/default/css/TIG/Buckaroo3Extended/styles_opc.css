@@ -5,6 +5,8 @@
 #checkout-step-payment .form-list #radiogroup-container label { display:block; float:none; margin-bottom:2px; }
 #checkout-step-payment .form-list #radiogroup-container label img { height:15px; width:auto; margin-top:1px; }
 #checkout-step-payment .form-list .field { float:none; }
-#checkout-step-payment .form-list .disabled { display:inline-block; padding:2px; width:168px; height:15px; line-height:16px; background:#f1f1f1; border:1px solid #b6b6b6; color:#aaa; margin-left:3px; }
 #checkout-step-payment .form-list .field-set input.input-text { width:168px; margin-left:3px; }
 #checkout-step-payment .form-list .field-set input.l-name { margin:8px 0 0 86px !important; }
+
+#payment_form_buckaroo3extended_paymentguarantee .field-set select { float:left; }
+#payment_form_buckaroo3extended_paymentguarantee .field-set .disabled { display:block; float:left; margin-left:5px; width:190px; }
