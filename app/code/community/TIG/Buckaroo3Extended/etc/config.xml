@@ -1076,7 +1076,7 @@
                 <key></key>
                 <thumbprint></thumbprint>
                 <mode>1</mode>
-                <payment_description>Betaling aan de webwinkel</payment_description>
+                <payment_description>Magento Buckaroo</payment_description>
                 <culture_type>billing</culture_type>
 			</buckaroo3extended>
 			

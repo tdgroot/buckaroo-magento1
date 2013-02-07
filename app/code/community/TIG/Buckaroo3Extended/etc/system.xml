@@ -69,7 +69,7 @@
                             <comment>Enable or disable the Buckaroo module</comment>
                             <tooltip>Selecting 'No' will overrule all individual settings.</tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -157,7 +157,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -195,7 +195,7 @@
                            <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -262,7 +262,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -273,7 +273,7 @@
                         </use_creditmanagement>
                        	<due_date_invoice>
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>82</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -329,7 +329,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -352,11 +352,11 @@
                             </depends>
 						</specificcountry>
 						<limit_by_ip translate="label comment">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -386,7 +386,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -436,7 +436,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>55</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -463,7 +463,7 @@
 						 	<comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
 						 	<tooltip>Set to 'No' leaves the customer uninformed on the payment obligations.</tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -560,7 +560,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>130</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -589,7 +589,7 @@
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>150</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -619,7 +619,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -659,7 +659,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -729,7 +729,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -741,7 +741,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>72</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -801,7 +801,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>90</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -830,7 +830,7 @@
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -860,7 +860,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -899,7 +899,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -969,7 +969,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -981,7 +981,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>72</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -1041,7 +1041,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>90</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -1070,7 +1070,7 @@
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1100,7 +1100,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1138,7 +1138,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1207,7 +1207,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1219,7 +1219,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>72</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -1279,7 +1279,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>90</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -1308,7 +1308,7 @@
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1339,7 +1339,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1381,7 +1381,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1466,7 +1466,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1478,7 +1478,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>82</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -1538,7 +1538,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -1567,7 +1567,7 @@
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1597,7 +1597,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1639,7 +1639,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1725,7 +1725,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1737,7 +1737,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>82</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -1797,7 +1797,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -1822,11 +1822,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1857,7 +1857,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1899,7 +1899,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1984,7 +1984,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -1996,7 +1996,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>82</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -2056,7 +2056,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -2081,11 +2081,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2116,7 +2116,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2155,7 +2155,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2225,7 +2225,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2237,7 +2237,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>72</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -2297,7 +2297,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>90</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -2322,11 +2322,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2357,7 +2357,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2399,7 +2399,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2484,7 +2484,7 @@
 						 	<comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
 						 	<tooltip>Set to 'No' the customer is informed once online.</tooltip>	
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                         	<sort_order>80</sort_order>
                         	<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -2500,7 +2500,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2512,7 +2512,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>92</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -2572,7 +2572,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>110</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -2597,11 +2597,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>130</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2632,7 +2632,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2674,7 +2674,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2759,7 +2759,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2771,7 +2771,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>82</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -2831,7 +2831,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -2856,11 +2856,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2891,7 +2891,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2933,7 +2933,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3018,7 +3018,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3030,7 +3030,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>82</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -3087,7 +3087,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -3112,11 +3112,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3148,7 +3148,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3197,7 +3197,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>55</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3267,7 +3267,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3279,7 +3279,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>82</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -3339,7 +3339,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -3364,11 +3364,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3399,7 +3399,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3438,7 +3438,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3508,7 +3508,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3520,7 +3520,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>72</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -3580,7 +3580,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>90</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -3605,11 +3605,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3640,7 +3640,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3679,7 +3679,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3750,7 +3750,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3762,7 +3762,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>72</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -3822,7 +3822,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>90</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -3847,11 +3847,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3882,7 +3882,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3921,7 +3921,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -3991,7 +3991,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4003,7 +4003,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>72</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -4063,7 +4063,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>90</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -4088,11 +4088,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4123,7 +4123,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4177,7 +4177,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4189,7 +4189,7 @@
 						 	<comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
 						 	<tooltip>Set to 'No' leaves the customer uninformed on the payment obligations.</tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4278,7 +4278,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4290,7 +4290,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>112</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -4350,7 +4350,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -4375,11 +4375,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4410,7 +4410,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4453,7 +4453,7 @@
 						 	<comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
 						 	<tooltip>Set to 'No' leaves the customer uninformed on the payment obligations.</tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4477,7 +4477,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>65</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4562,7 +4562,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4574,7 +4574,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>102</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -4634,7 +4634,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>120</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -4659,11 +4659,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>140</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4694,7 +4694,7 @@
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4736,7 +4736,7 @@
                             <label>Show Method Specific Advanced Options</label>
                             <comment>Enable or disable this payment method.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4822,7 +4822,7 @@
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
                             <tooltip>Contact Buckaroo before activating Credit Management. By default this is excluded in the contract. </tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4834,7 +4834,7 @@
                         
                         <due_date_invoice translate="label comment">
                         	<label>Invoice Date (in days)</label>
-                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the 'Overschrijving' mail.</comment>
+                        	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
                         	<frontend_type>text</frontend_type>
                         	<sort_order>82</sort_order>
                         	<show_in_default>1</show_in_default>
@@ -4894,7 +4894,7 @@
                         <allowspecific translate="label">
 							<label>Payment from Applicable Countries</label>
 							<frontend_type>allowspecific</frontend_type>
-							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<source_model>buckaroo3extended/sources_allspecificcountries</source_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -4919,11 +4919,11 @@
 						</specificcountry>
 						
 						<limit_by_ip translate="label comment tooltip">
-                        	<label>Display only for Selected IP's. </label>
+                        	<label>Display only for Selected IP's.</label>
                         	<comment>Show method only Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -4954,7 +4954,7 @@
                             <comment>Enable or disable refunding</comment>
                             <tooltip>Set to 'No' refunds must be done manualy in Payment Plaza.</tooltip>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
 						</active>
@@ -4962,7 +4962,7 @@
 							<label>Push Payment Plaza refunds to Magento</label>
                             <comment>Allow 2-way refunding from Magento and Payment Plaza.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <depends>
@@ -5029,7 +5029,7 @@
                         	<label>Display only for Selected IP's.</label>
                         	<comment>Show module only for Magento set IP's.</comment>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>20</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -5104,7 +5104,7 @@
                             <label>Send Transactional Invoice Mail</label>
                             <comment>Send a mail after successful payment.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -5115,7 +5115,7 @@
                             <label>Create Invoice After Success</label>
                             <comment>If set to 'No' the order is not invoiced.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -5126,7 +5126,7 @@
                             <label>Cancel State On Failed Payment</label>
                             <comment>Orders will stay open after failed payments.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -5137,7 +5137,7 @@
                         	<label>Display Buckaroo Updates On Finalized Orders</label>
                         	<comment>Register all Buckaroo updates.</comment>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -5148,7 +5148,7 @@
                         	<label>Force Empty Shopping Cart</label>
                         	<comment>Overrule settings to always empty related cart after payment.</comment>
                         	<frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>130</sort_order> 
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
