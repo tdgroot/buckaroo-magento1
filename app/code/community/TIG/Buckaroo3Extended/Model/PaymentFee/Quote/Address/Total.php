@@ -203,7 +203,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
                 'rates' => array(
                     array(
                         'code' => 'buckaroo3extended_fee_tax',
-                        'title' => 'Buckaroo Servicekosten Tax',
+                        'title' => Mage::helper('buckaroo3extended')->__('Buckaroo Servicekosten Tax'),
                         'percent' => (float) $taxRate,
                         'position' => '0',
                         'priority' => '1',

@@ -233,13 +233,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -250,6 +253,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use Credit Management</label>
@@ -516,7 +522,7 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>101</sort_order>
@@ -693,13 +699,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -710,6 +719,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -927,13 +939,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -944,6 +959,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -1159,13 +1177,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -1176,6 +1197,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -1412,13 +1436,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -1429,6 +1456,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -1665,13 +1695,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -1682,6 +1715,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -1918,13 +1954,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -1935,6 +1974,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -2153,13 +2195,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -2170,6 +2215,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -2406,13 +2454,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -2423,6 +2474,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
  
                         <send_mail translate="label comment">
@@ -2675,13 +2729,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -2692,6 +2749,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -2928,13 +2988,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -2945,6 +3008,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -3171,13 +3237,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -3188,6 +3257,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -3406,13 +3478,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -3423,6 +3498,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -3642,13 +3720,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -3659,6 +3740,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -3877,13 +3961,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -3894,6 +3981,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -4158,13 +4248,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>101</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -4175,6 +4268,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -4436,13 +4532,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>91</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -4453,6 +4552,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
@@ -4690,13 +4792,16 @@
                         </order_status_failed>
                         <payment_fee translate="label comment tooltip">
                         	<label>Buckaroo fee</label>
-                        	<comment>Fee for using this payment method. Can be both a set amount or a percentage.</comment>
+                        	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
                             <sort_order>71</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Buckaroo fee label</label>
@@ -4707,6 +4812,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            </depends> 
                         </payment_fee_label>
                         
                         <use_creditmanagement translate="label comment tooltip">
