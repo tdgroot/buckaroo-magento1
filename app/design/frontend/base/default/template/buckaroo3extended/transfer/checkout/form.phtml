@@ -20,13 +20,13 @@
     }
     
     $DD=($DD!==false)?$DD:$_session->getData($_code . '_customerbirthdate[day]');
-    $MM=($MM!==false)?$MM:$_session->getData($_code . '_customerbirthdate[day]');
-    $YYYY=($YYYY!==false)?$YYYY:$_session->getData($_code . '_customerbirthdate[day]');
+    $MM=($MM!==false)?$MM:$_session->getData($_code . '_customerbirthdate[month]');
+    $YYYY=($YYYY!==false)?$YYYY:$_session->getData($_code . '_customerbirthdate[year]');
     ?>
 
-    <?php if (!$firstname || !$lastname) {
+    <?php if ($_session->getData($_code . '_BPE_Customername')) {
         $name = $_session->getData($_code . '_BPE_Customername');
-    } else {
+    } elseif ($firstname && $lastname) {
         $name = $firstname . ' ' . $lastname;
     }?>
     <?php $email = $email ? $email : $_session->getData($_code . '_BPE_Customermail'); ?>
