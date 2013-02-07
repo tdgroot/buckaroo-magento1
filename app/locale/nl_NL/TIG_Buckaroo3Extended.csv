@@ -147,3 +147,4 @@
 "These options are only intended for expert users. Tampering with the default settings may negatively affect the workflow and performance of all Buckaroo payment methods. Use at your own risk.","Deze opties zijn enkel bedoeld voor expert gebruikers. Het aanpassen van deze instellingen kan de werking van de module en de webshop negatief beïnvloeden. Het aanpassen van deze instellingen is op eigen risico."
 "Tax class for Buckaroo Fee","BTW groep voor Buckaroo toeslag"
 "Select which tax class should be used for the Buckaroo Fee","Selecteer welke BTW groep gebruikt moet worden voor de Buckaroo toeslag."
+"Buckaroo Fee","Buckaroo toeslag"
