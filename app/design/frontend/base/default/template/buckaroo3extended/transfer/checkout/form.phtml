@@ -28,6 +28,8 @@
         $name = $_session->getData($_code . '_BPE_Customername');
     } elseif ($firstname && $lastname) {
         $name = $firstname . ' ' . $lastname;
+    } else {
+        $name = '';
     }?>
     <?php $email = $email ? $email : $_session->getData($_code . '_BPE_Customermail'); ?>
     <div id="payment-errors" class="validation-advice" style="display:none;"></div>

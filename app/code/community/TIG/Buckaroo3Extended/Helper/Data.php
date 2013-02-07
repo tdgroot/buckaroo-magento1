@@ -44,15 +44,11 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         if ($paymentMethodCode) {
             $feeLabel = Mage::getStoreConfig('buckaroo/' . $paymentMethodCode . '/payment_fee_label', Mage::app()->getStore()->getId());
             if (empty($feeLabel)) {
-                $feeLabel = 'Buckaroo servicekosten';
+                $feeLabel = Mage::helper('buckaroo3extended')->__('Buckaroo Servicekosten');
             }
         } else {
-            $feeLabel = 'Buckaroo servicekosten';
+            $feeLabel = Mage::helper('buckaroo3extended')->__('Buckaroo Servicekosten');
         }
-        
-        $feeLabel = ucwords($feeLabel);
-        
-        $feeLabel = Mage::helper('buckaroo3extended')->__($feeLabel);
         
         return $feeLabel;
     }
