@@ -97,7 +97,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 		    $this->_order->setCurrencyCodeUsedForTransaction($this->_response->Currency);
 		    $this->_order->save();
 		}
-
+        
 		if (is_object($this->_response) && isset($this->_response->RequiredAction)) {
 		    $requiredAction = $this->_response->RequiredAction->Type;
 		} else {

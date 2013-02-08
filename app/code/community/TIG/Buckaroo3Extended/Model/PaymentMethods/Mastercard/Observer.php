@@ -126,4 +126,65 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Mastercard_Observer extends TIG
 
         return $this;
     }
+    
+    public function buckaroo3extended_return_custom_processing(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+        
+        $response = $observer->getPostArray();
+        $order = $observer->getOrder();
+        
+        $enrolled = false;
+        $authenticated = false;
+        if (isset($response['brq_SERVICE_mastercard_Enrolled']) && isset($response['brq_SERVICE_mastercard_Authentication'])) {
+            $enrolled = $response['brq_SERVICE_mastercard_Enrolled'];
+            $enrolled = ($enrolled == 'Y') ? true : false;
+            
+            $authenticated = $response['brq_SERVICE_mastercard_Authentication'];
+            $authenticated = ($authenticated == 'Y') ? true : false;
+        }
+        
+        $order->setBuckarooSecureEnrolled($enrolled)
+              ->setBuckarooSecureAuthenticated($authenticated)
+              ->save();
+        
+        return $this;
+    }
+    
+    public function buckaroo3extended_push_custom_processing_after(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+        
+        $order = $observer->getOrder();
+        $enrolled = $order->getBuckarooSecureEnrolled();
+        $authenticated = $order->getBuckarooSecureEnrolled();
+        
+        $shouldHold= Mage::getStoreConfig('buckaroo/buckaroo3extended_mastercard/unsecure_hold', $order->getStoreId());
+        
+        if ($shouldHold && $order->canHold()) {
+            $order->hold()->save();
+        }
+        
+        $status = $this->_getSecureStatus($enrolled, $authenticated, $order);
+                
+        $enrolledString = $enrolled ? 'yes' : 'no';
+        $authenticatedString = $authenticated ? 'yes' : 'no';
+        if ($status) {
+            $order->setStatus($status)
+                  ->addStatusHistoryComment(
+                      Mage::helper('buckaroo3extended')->__("3D Secure enrolled: %s<br/>3D Secure authenticated: %s", $enrolledString, $authenticatedString),
+                      $status
+                  );
+        } else {
+            $order->addStatusHistoryComment(
+                      Mage::helper('buckaroo3extended')->__("3D Secure enrolled: %s<br/>3D Secure authenticated: %s", $enrolledString, $authenticatedString)
+                  );
+        }
+        
+        $order->save();
+    }
 }

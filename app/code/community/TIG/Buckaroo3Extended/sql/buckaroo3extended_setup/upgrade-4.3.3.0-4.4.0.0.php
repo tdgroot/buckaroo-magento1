@@ -4,12 +4,26 @@ $installer = $this;
 $installer->startSetup();
 $conn = $installer->getConnection();
 
-$installer->getConnection()->changeColumn(
+$conn->changeColumn(
     $this->getTable('buckaroo3extended/certificate'),
     'certificate_name',
     'certificate_name',
     'varchar(255) NOT NULL'
     );
+    
+$conn->addColumn($installer->getTable('sales/order'), 'buckaroo_secure_enrolled', array(
+        'TYPE'      => Varien_Db_Ddl_Table::TYPE_SMALLINT,
+        'DEFAULT'   => NULL,
+        'NULLABLE'  => true,
+        'COMMENT'   => 'Buckaroo 3DSecure Enrolled',
+    ));
+    
+$conn->addColumn($installer->getTable('sales/order'), 'buckaroo_secure_authenticated', array(
+        'TYPE'      => Varien_Db_Ddl_Table::TYPE_SMALLINT,
+        'DEFAULT'   => NULL,
+        'NULLABLE'  => true,
+        'COMMENT'   => 'Buckaroo 3DSecure Authenticated',
+    ));
 
 /**
  * Add PaymentFee columns to sales/order
