@@ -111,6 +111,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $this->_processIncorrectPayment($newStates);
 			                                       break;
 		}
+        
+        Mage::dispatchEvent('buckaroo3extended_push_custom_processing_after', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
 		
 		if (isset($updatedFailed) && $updatedFailed) {
 			$this->_debugEmail .= "Succesfully updated 'failed' state and status \n";
