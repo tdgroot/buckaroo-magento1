@@ -24,7 +24,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Tax extends Mage_Admin
                         array(
                             'tax_amount'      => $source->getBuckarooFeeTax(),
                             'base_tax_amount' => $source->getBaseBuckarooFeeTax(),
-                            'title'           => Mage::helper('buckaroo3extended')->__('Buckaroo Servicekosten Tax'),
+                            'title'           => Mage::helper('buckaroo3extended')->__('Fee'),
                             'percent'         => NULL,
                         ),
                     );
