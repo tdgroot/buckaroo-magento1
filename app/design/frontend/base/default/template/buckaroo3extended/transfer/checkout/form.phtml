@@ -36,7 +36,7 @@
     <fieldset class="form-list">
         <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
             <li>
-                <label class="required"><?php echo $this->__('Salutation');?> <em>*</em></label>
+                <label class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label><label style="margin-left:27px;"><?php echo $this->__('Name');?>:</label>
                 <div class="input-box">  
                     <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number">
                         <option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
@@ -54,7 +54,7 @@
             </li>
             <li>
                 <div class="field">
-                    <label class="required" for="overschrijving:payment:month"><?php echo $this->__('Date of Birth') ?><em>*</em></label>
+                    <label class="required" for="overschrijving:payment:month"><?php echo $this->__('Date of Birth') ?>: <em>*</em></label>
                     <div class="input-box customer-dob overschrijving_customer-billing-dob" id="">
     <?php 
     $dateInputDD = <<< DATE_INPUT_DD
