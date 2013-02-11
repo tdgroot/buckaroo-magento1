@@ -7,10 +7,11 @@
             <label class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label><label style="margin-left:27px;"><?php echo $this->__('Name');?>:</label>
             <div class="input-box">  
                 <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number">
+                    <option><?php echo $this->__('--Please Select--'); ?></option>
                     <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
                     <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
                 </select>
-                <span class="disabled"><?php echo $this->getName(); ?></span>
+                <span class="disabled" id="<?php echo $_code;?>_BPE_Customername"><?php echo $this->getName(); ?></span>
             </div>
         </li>
         <li>

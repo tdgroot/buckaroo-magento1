@@ -1,0 +1,54 @@
+<script type="text/javascript">
+    oldFirstname = '';
+    oldLastname = '';
+    jQuery("#billing\\:firstname").change(
+        function() {
+            firstname = jQuery(this).val();
+            
+            if (!jQuery('#buckaroo3extended_onlinegiro_BPE_Customerfirstname').val() || jQuery('#buckaroo3extended_onlinegiro_BPE_Customerfirstname').val() == oldFirstname) {
+                jQuery('#buckaroo3extended_onlinegiro_BPE_Customerfirstname').val(firstname);
+                sendData(jQuery('#buckaroo3extended_onlinegiro_BPE_Customerfirstname'));
+            }
+            
+            if (!jQuery('#buckaroo3extended_payperemail_BPE_Customerfirstname').val() || jQuery('#buckaroo3extended_payperemail_BPE_Customerfirstname').val() == oldFirstname) {
+                jQuery('#buckaroo3extended_payperemail_BPE_Customerfirstname').val(firstname);
+                sendData(jQuery('#buckaroo3extended_payperemail_BPE_Customerfirstname'));
+            }
+            
+            jQuery('#buckaroo3extended_paymentguarantee_BPE_Customername').html(
+                firstname + ' ' + jQuery("#billing\\:lastname").val()
+            );
+            
+            jQuery('#buckaroo3extended_transfer_BPE_Customername').html(
+                firstname + ' ' + jQuery("#billing\\:lastname").val()
+            );
+            
+            oldFirstname = firstname;
+        }
+    );
+    jQuery("#billing\\:lastname").change(
+        function() {
+            lastname = jQuery(this).val();
+            
+            if (!jQuery('#buckaroo3extended_onlinegiro_BPE_Customerlastname').val() || jQuery('#buckaroo3extended_onlinegiro_BPE_Customerlastname').val() == oldLastname) {
+                jQuery('#buckaroo3extended_onlinegiro_BPE_Customerlastname').val(lastname);
+                sendData(jQuery('#buckaroo3extended_onlinegiro_BPE_Customerlastname'));
+            }
+            
+            if (!jQuery('#buckaroo3extended_payperemail_BPE_Customerlastname').val() || jQuery('#buckaroo3extended_payperemail_BPE_Customerlastname').val() == oldLastname) {
+                jQuery('#buckaroo3extended_payperemail_BPE_Customerlastname').val(lastname);
+                sendData(jQuery('#buckaroo3extended_payperemail_BPE_Customerlastname'));
+            }
+            
+            jQuery('#buckaroo3extended_paymentguarantee_BPE_Customername').html(
+                jQuery("#billing\\:firstname").val() + ' ' + lastname
+            );
+            
+            jQuery('#buckaroo3extended_transfer_BPE_Customername').html(
+                jQuery("#billing\\:firstname").val() + ' ' + lastname
+            );
+            
+            oldLastname = lastname;
+        }
+    );
+</script>
