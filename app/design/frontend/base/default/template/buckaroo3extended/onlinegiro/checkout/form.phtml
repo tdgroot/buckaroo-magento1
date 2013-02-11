@@ -6,9 +6,10 @@
         <li>
             <label class="required"><?php echo $this->__('Salutation') ?>: <em>*</em></label>
             <div class="input-box">
-               	<select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select">
-               		<option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
-               		<option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
+               	<select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select" name="<?php echo $_code;?>_BPE_Customergender">
+               	    <option><?php echo $this->__('--Please Select--'); ?></option>
+               		<option id="gender_value_1" value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
+               		<option id="gender_value_2" value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
                	</select>
            	</div>
        	</li>
@@ -16,21 +17,21 @@
        	<li>
        	    <label class="required"><?php echo $this->__('First Name') ?>: <em>*</em></label>
        	    <div class="input-box">
-       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php echo $this->getFirstname(); ?>" />
+       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php echo $this->getFirstname(); ?>" id="<?php echo $_code;?>_BPE_Customerfirstname"/>
        		</div>
        	</li>
        	
        	<li>
        	    <label class="required"><?php echo $this->__('Last Name') ?>: <em>*</em></label>
        	    <div class="input-box">
-       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php echo $this->getLastname(); ?>" />
+       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php echo $this->getLastname(); ?>" id="<?php echo $_code;?>_BPE_Customerlastname"/>
        		</div>
         </li>
         
         <li>
             <label class="required"><?php echo $this->__('E-mail') ?>: <em>*</em></label>
             <div class="input-box">
-            	<input class="input-text required-entry validate-email" type="input" name="<?php echo $_code;?>_BPE_Customermail" value="<?php echo $this->getEmail(); ?>" />
+            	<input class="input-text required-entry validate-email" type="input" name="<?php echo $_code;?>_BPE_Customermail" value="<?php echo $this->getEmail(); ?>" id="<?php echo $_code;?>_BPE_Customermail"/>
             </div>
         </li>
         <li>

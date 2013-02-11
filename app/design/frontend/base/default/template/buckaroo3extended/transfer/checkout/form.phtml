@@ -2,13 +2,10 @@
 <?php $_code=$this->getMethodCode() ?>
 <?php if (Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/use_creditmanagement', Mage::app()->getStore()->getStoreId())): ?>
     <?php
-    $billing_info=Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress();
-    $firstname=$billing_info->getFirstname();
-    $lastname=$billing_info->getLastname();
-    $email=$billing_info->getEmail();
+    $name = $this->getName();
+    $email = $this->getEmail();
     
-    $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
-    $gender = $gender ? $gender : (int) $_session->getData($_code . '_BPE_Customergender');
+    $gender = $this->getGender();
     
     if(strtotime(Mage::getSingleton('checkout/session')->getQuote()->getCustomerDob()))
     {
@@ -23,15 +20,6 @@
     $MM=($MM!==false)?$MM:$_session->getData($_code . '_customerbirthdate[month]');
     $YYYY=($YYYY!==false)?$YYYY:$_session->getData($_code . '_customerbirthdate[year]');
     ?>
-
-    <?php if ($_session->getData($_code . '_BPE_Customername')) {
-        $name = $_session->getData($_code . '_BPE_Customername');
-    } elseif ($firstname && $lastname) {
-        $name = $firstname . ' ' . $lastname;
-    } else {
-        $name = '';
-    }?>
-    <?php $email = $email ? $email : $_session->getData($_code . '_BPE_Customermail'); ?>
     <div id="payment-errors" class="validation-advice" style="display:none;"></div>
     <fieldset class="form-list">
         <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
@@ -39,14 +27,15 @@
                 <label class="required"><?php echo $this->__('Salutation');?> <em>*</em></label>
                 <div class="input-box">  
                     <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number">
+                    <option><?php echo $this->__('--Please Select--'); ?></option>
                         <option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
                         <option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
                     </select>
-                    <span class="disabled"><?php echo $name; ?></span>
+                    <span class="disabled" id="<?php echo $_code;?>_BPE_Customername"><?php echo $name; ?></span>
                 </div>
             </li>
             
-            <li <?php if ($email) echo "hidden=\"true\""; ?>>
+            <li>
                 <label class="required"><?php echo $this->__('E-mail') ?> <em>*</em></label>
                 <div class="input-box">
                     <input class="input-text validate-email required-entry" type="text" name="<?php echo $_code ?>_BPE_Customermail" value="<?php echo $email ?>" />

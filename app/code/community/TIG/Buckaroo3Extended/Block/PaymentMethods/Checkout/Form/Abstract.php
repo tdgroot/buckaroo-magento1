@@ -5,6 +5,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     {
         $session = Mage::getSingleton('checkout/session');
         $this->setSession($session);
+        $this->setCustomer(Mage::getSingleton('customer/session')->getCustomer());
         $this->setAddress($session->getQuote()->getBillingAddress());
         $this->setQuote($session->getQuote());
         
@@ -65,6 +66,10 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
             $firstname = $this->getAddress()->getFirstname();
         }
         
+        if (!$firstname && $this->getCustomer()) {
+            $firstname = $this->getCustomer()->getFirstname();
+        }
+        
         return $firstname;
     }
     
@@ -74,6 +79,10 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         
         if (!$lastname) {
             $lastname = $this->getAddress()->getLastname();
+        }
+        
+        if (!$lastname && $this->getCustomer()) {
+            $lastname = $this->getCustomer()->getLastname();
         }
         
         return $lastname;
@@ -117,6 +126,10 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         
         if (!$email) {
             $this->getAddress()->getEmail();
+        }
+        
+        if (!$email && $this->getCustomer()) {
+            $email = $this->getCustomer()->getEmail();
         }
         
         return $email;
