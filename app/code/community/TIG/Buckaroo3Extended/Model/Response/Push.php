@@ -365,7 +365,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         }
         
         if (
-          Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', Mage::app()->getStore()->getStoreId())
+          Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
           && $this->_order->canCancel()
         ) {
             $this->_order->cancel()
@@ -476,14 +476,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 */
 	protected function _autoInvoice()
 	{		
-		if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', Mage::app()->getStore()->getStoreId()))
+		if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', $this->_order->getStoreId()))
 	    {
 	    	return false;
 	    }
 	    
 	    $this->_saveInvoice();
 	                            
-	    if(Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', Mage::app()->getStore()->getStoreId()))
+	    if(Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', $this->_order->getStoreId()))
 	    {
 		    foreach($this->_order->getInvoiceCollection() as $invoice)
 		    {
@@ -552,7 +552,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             $value = urldecode($value);
 	        $signatureString .= $key . '=' . $value;
 	    }
-	    $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', Mage::app()->getStore()->getStoreId());
+	    $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId());
 	    
 	    $this->_debugEmail .= "\nSignaturestring: {$signatureString}\n";
 	    
@@ -572,14 +572,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $signature2 = md5(
 			$this->_postArray['oldPost']["bpe_trx"]
 			. $this->_postArray['oldPost']["bpe_timestamp"]
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId())
+			. Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId())
 			. $this->_postArray['oldPost']["bpe_invoice"]
 			. $this->_postArray['oldPost']["bpe_reference"]
 			. $this->_postArray['oldPost']["bpe_currency"]
 			. $this->_postArray['oldPost']["bpe_amount"]
 			. $this->_postArray['oldPost']["bpe_result"]
 			. $this->_postArray['oldPost']["bpe_mode"]
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', Mage::app()->getStore()->getStoreId())
+			. Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId())
 		);
 		
 		return $signature2;

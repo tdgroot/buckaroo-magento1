@@ -174,7 +174,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 		    Mage::helper('buckaroo3extended')->__('Your order has been placed succesfully.')
 		);
 
-		$returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/success_redirect', Mage::app()->getStore()->getStoreId());
+		$returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/success_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
         
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
@@ -194,11 +194,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             Mage::helper('buckaroo3extended')->__('Your payment was unsuccesful. Please try again or choose another payment method.')
         );
 
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', Mage::app()->getStore()->getStoreId())) {
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())) {
             $this->_order->cancel()->save();
         }
         
-        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
         
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
@@ -220,7 +220,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->restoreQuote();
         $this->_debugEmail .= "The quote has been restored. \n";
 
-        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
@@ -240,7 +240,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 		    )
 		);
         
-        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/success_redirect', Mage::app()->getStore()->getStoreId());
+        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/success_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
 
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . '\n';
@@ -267,7 +267,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not recieve an e-mail regarding your order within 30 minutes, please contact the shop owner.')
         );
         
-        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', Mage::app()->getStore()->getStoreId());
+        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
         
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
