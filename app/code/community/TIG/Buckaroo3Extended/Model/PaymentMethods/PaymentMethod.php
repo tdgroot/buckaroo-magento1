@@ -53,7 +53,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
                      ->createBlock('buckaroo3extended/paymentMethods_ideal_checkout_form')
                      ->setMethod($this);
                      
-        $title = parent::getTitle() . ' ' . $block->getMethodLabelAfterHtml();
+        $title = parent::getTitle() . ' ' . $block->getMethodLabelAfterHtml(false);
         
         return $title;
     }
@@ -123,6 +123,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
                 return false;
             }
         }
+
+        $areaAllowed = null;
+        if ($this->canUseInternal()) {
+            $areaAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/area', Mage::app()->getStore()->getStoreId());
+        }
+        
+        //check if the paymentmethod is available in the current shop area (frontend or backend)
+        if ($areaAllowed == 'backend'
+            && !Mage::helper('buckaroo3extended')->isAdmin()
+        ) {
+            return false;
+        } elseif ($areaAllowed == 'frontend'
+            && Mage::helper('buckaroo3extended')->isAdmin()
+        ) {
+            return false;
+        }
+        
 
         //check if the module is set to enabled
         if (!Mage::getStoreConfig('buckaroo/' . $this->_code . '/active', Mage::app()->getStore()->getStoreId())) {

@@ -1289,6 +1289,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
          		<allowed_methods>all</allowed_methods>
          		<send_mail>1</send_mail>
+         		<area>backend</area>
          	</buckaroo3extended_payperemail>
          	
          	<buckaroo3extended_onlinegiro>
@@ -1302,6 +1303,7 @@
          		<sort_order>190</sort_order>
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
+         		<area>backend</area>
          	</buckaroo3extended_onlinegiro>
          	
          	<buckaroo3extended_giftcards>

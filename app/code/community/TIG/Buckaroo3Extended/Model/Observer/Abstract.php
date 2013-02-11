@@ -53,7 +53,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         $invoiceDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDaysInvoice), date("Y")));
         $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDaysInvoice + $dueDays), date("Y")));
         
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$serviceName])) {
+        if (array_key_exists('customVars', $vars) && array_key_exists($serviceName, $vars['customVars']) && is_array($vars['customVars'][$serviceName])) {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
             	'DateDue'			     => $dueDate,
             	'InvoiceDate'			 => $invoiceDate,
@@ -183,7 +183,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
             )
         );
         
-		if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$serviceName])) {
+		if (array_key_exists('customVars', $vars) && array_key_exists($serviceName, $vars['customVars']) && is_array($vars['customVars'][$serviceName])) {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], $array);
 		} else {
     		$vars['customVars'][$serviceName] = $array;
@@ -192,12 +192,14 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		if ($processedPhoneNumber['mobile']) {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
 		        'MobilePhoneNumber' => $processedPhoneNumber['clean'],
+                'PhoneNumber'       => $processedPhoneNumber['clean'],
 		    ));
 		} else {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
 		        'PhoneNumber' => $processedPhoneNumber['clean'],
 		    ));
 		}
+        
 		return $vars;
     }
     
@@ -414,13 +416,19 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     protected function _getSecureStatus($enrolled, $authenticated, $order)
     {
         $status = null;
+        $useStatus = Mage::getStoreConfig('buckaroo/' . $this->_code . '/active_status', $order->getStoreId());
+        
+        if (!$useStatus) {
+            return $status;
+        }
+        
         if ($enrolled && $authenticated) {
             switch($order->getState()) {
-                case Mage_Sales_Model_Order::STATE_NEW:        $status = Mage::getStoreConfig(
-                                                                   'buckaroo/' . $this->_code . '/secure_status_new',
-                                                                    $order->getStoreId())
-                                                               ;
-                                                               break;
+                // case Mage_Sales_Model_Order::STATE_NEW:        $status = Mage::getStoreConfig(
+                                                                   // 'buckaroo/' . $this->_code . '/secure_status_new',
+                                                                    // $order->getStoreId())
+                                                               // ;
+                                                               // break;
                 case Mage_Sales_Model_Order::STATE_PROCESSING: $status = Mage::getStoreConfig(
                                                                    'buckaroo/' . $this->_code . '/secure_status_processing',
                                                                     $order->getStoreId())
@@ -429,26 +437,26 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
             }
         } else {
             switch($order->getState()) {
-                case Mage_Sales_Model_Order::STATE_NEW:        $status = Mage::getStoreConfig(
-                                                                   'buckaroo/' . $this->_code . '/secure_status_new',
-                                                                    $order->getStoreId())
-                                                               ;
-                                                               break;
+                // case Mage_Sales_Model_Order::STATE_NEW:        $status = Mage::getStoreConfig(
+                                                                   // 'buckaroo/' . $this->_code . '/secure_status_new',
+                                                                    // $order->getStoreId())
+                                                               // ;
+                                                               // break;
                 case Mage_Sales_Model_Order::STATE_PROCESSING: $status = Mage::getStoreConfig(
-                                                                   'buckaroo/' . $this->_code . '/secure_status_processing',
+                                                                   'buckaroo/' . $this->_code . '/unsecure_status_processing',
                                                                     $order->getStoreId())
                                                                ;
                                                                break;
-                case Mage_Sales_Model_Order::STATE_HOLDED:     $status = Mage::getStoreConfig(
-                                                                   'buckaroo/' . $this->_code . '/secure_status_holded',
-                                                                    $order->getStoreId())
-                                                               ;
-                                                               break;
-                case Mage_Sales_Model_Order::STATE_CANCELED:  $status = Mage::getStoreConfig(
-                                                                   'buckaroo/' . $this->_code . '/secure_status_canceled',
-                                                                    $order->getStoreId())
-                                                               ;
-                                                               break;
+                // case Mage_Sales_Model_Order::STATE_HOLDED:     $status = Mage::getStoreConfig(
+                                                                   // 'buckaroo/' . $this->_code . '/secure_status_holded',
+                                                                    // $order->getStoreId())
+                                                               // ;
+                                                               // break;
+                // case Mage_Sales_Model_Order::STATE_CANCELED:  $status = Mage::getStoreConfig(
+                                                                   // 'buckaroo/' . $this->_code . '/secure_status_canceled',
+                                                                    // $order->getStoreId())
+                                                               // ;
+                                                               // break;
             }
         }
 

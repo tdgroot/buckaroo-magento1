@@ -57,7 +57,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG
             $this->_addAdditionalCreditManagementVariables($vars);
         }
         
-        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        if (!Mage::helper('buckaroo3extended')->isAdmin()) {
+            $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        } else {
+            $additionalFields = Mage::getSingleton('core/session')->getData('additionalFields');
+        }
         
         if (is_array($additionalFields) 
             && array_key_exists('gender', $additionalFields)
