@@ -36,9 +36,6 @@
     <fieldset class="form-list">
         <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
             <li>
-                <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
-            </li>
-            <li>
                 <label class="required"><?php echo $this->__('Name');?> <em>*</em></label>
                 <div class="field">  
                     <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number">
@@ -105,7 +102,10 @@ DATE_INPUT_YYYY;
                     //]]&gt;
                     </script>
                  </div>
-            </li>   
+            </li> 
+            <li>
+                <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
+            </li>  
         </ul>
     </fieldset>
 <?php else: ?>

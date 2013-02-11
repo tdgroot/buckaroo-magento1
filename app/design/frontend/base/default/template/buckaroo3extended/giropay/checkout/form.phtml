@@ -31,10 +31,7 @@
     <?php $_code=$this->getMethodCode() ?>
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
-            <?php echo $this->__('You will be redirected to our payment service provider to process your payment.') ?>
-        </li>
-        <li>
-            <label class="required"><?php echo $this->__('Please, enter your Bankleitzahl'); ?>: <em>*</em></label>
+            <label class="required"><?php echo $this->__('Bankleitzahl'); ?>: <em>*</em></label>
             <div class="input-box">
                 <input type="text" class="input-text required-entry" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="<?php echo $_session->getData($_code . '_BPE_Bankleitzahl'); ?>" />
             </div>
