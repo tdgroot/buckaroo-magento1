@@ -11,7 +11,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return parent::_construct();
     }
     
-    public function getMethodLabelAfterHtml()
+    public function getMethodLabelAfterHtml($useSpan = true)
     {
         $code = $this->getMethod()->getCode();
         
@@ -27,11 +27,18 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
             $fee = Mage::helper('core')->currency($fee, true, false);
         }
         
-        $feeText = '<span class="buckaroo_fee '
-                 . $code
-                 . '">'
-                 . Mage::helper('buckaroo3extended')->__('%s fee', $fee)
-                 . '</span>';
+        $feeText = '';
+        if ($useSpan) {
+            $feeText .= '<span class="buckaroo_fee '
+                      . $code
+                      . '">';
+        }
+        
+        $feeText .= Mage::helper('buckaroo3extended')->__('%s fee', $fee);
+                 
+        if ($useSpan) {
+            $feeText .= '</span>';
+        }
 
         return $feeText;
     }

@@ -232,38 +232,42 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 */
 	protected function _getNewStates($code)
 	{
+	    $order = $this->getorder();
+        $storeId = $order->getStoreId();
+        
+        $useStatus = Mage::getStoreConfig('buckaroo/' . $this->_method . '/active_status', $storeId);
+        
 	    //get the possible new states for the order
-		$stateSuccess                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', Mage::app()->getStore()->getStoreId());
-		$stateFailure                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', Mage::app()->getStore()->getStoreId());
-		$statePendingpayment         = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', Mage::app()->getStore()->getStoreId());
+		$stateSuccess                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', $storeId);
+		$stateFailure                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', $storeId);
+		$statePendingpayment         = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', $storeId);
 		
 		//get the possible new status for the order based on the payment method's individual config options
-		//good chance these are not set
-		$customSuccessStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_success', Mage::app()->getStore()->getStoreId());
-		$customFailureStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_failed', Mage::app()->getStore()->getStoreId());
-		$customPendingPaymentStatus  = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_pendingpayment', Mage::app()->getStore()->getStoreId());
+		//these are optional
+		$customSuccessStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_success', $storeId);
+		$customFailureStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_failed', $storeId);
+		$customPendingPaymentStatus  = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_pendingpayment', $storeId);
 		
 		//get the possible default new status for the order based on the general config options
 		//these should always be set
-		$defaultSuccessStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', Mage::app()->getStore()->getStoreId());
-		$defaultFailureStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', Mage::app()->getStore()->getStoreId());
-		$defaultPendingPaymentStatus = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', Mage::app()->getStore()->getStoreId());
-		
+		$defaultSuccessStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', $storeId);
+		$defaultFailureStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', $storeId);
+		$defaultPendingPaymentStatus = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', $storeId);
+        
 		//determine whether to use the default or custom status
-		if ($customSuccessStatus && !empty($customSuccessStatus)) 
-		{
+		if ($useStatus && $customSuccessStatus && !empty($customSuccessStatus)) {
 			$statusSuccess = $customSuccessStatus;
 		} else {
 			$statusSuccess = $defaultSuccessStatus;
 		}
 		
-		if ($customFailureStatus && !empty($customFailureStatus)) {
+		if ($useStatus && $customFailureStatus && !empty($customFailureStatus)) {
 			$statusFailure = $customFailureStatus;
 		} else {
 			$statusFailure = $defaultFailureStatus;
 		}
 		
-		if ($customPendingPaymentStatus && !empty($customPendingPaymentStatus)) {
+		if ($useStatus && $customPendingPaymentStatus && !empty($customPendingPaymentStatus)) {
 			$statusPendingpayment = $customPendingPaymentStatus;
 		} else {
 			$statusPendingpayment = $defaultPendingPaymentStatus;
