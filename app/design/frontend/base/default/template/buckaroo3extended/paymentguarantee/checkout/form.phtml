@@ -4,9 +4,6 @@
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
-            <?php echo Mage::helper('buckaroo3extended')->__('This information, combined with the information filled out in the billing information step, will be used for a credit check by Buckaroo Payment Services. Please make sure all fields are filled in correctly before proceeding.')?>
-        </li>
-        <li>
             <label class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label>
             <div class="field field-set">  
                 <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number">
@@ -74,6 +71,9 @@ echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputY
                 //]]&gt;
                 </script>
              </div>
+        </li>
+        <li>
+            <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.')?>
         </li>   
     </ul>
 </fieldset>
