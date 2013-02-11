@@ -13,9 +13,6 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
     <?php $_code=$this->getMethodCode() ?>
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
-            <?php echo $this->__('You will be redirected to the èM! Payment website to finalize your payment.') ?>
-        </li>
-        <li>
             <label class="required"><?php echo $this->__('Bank identification') ?>: <em>*</em></label>
             <div class="input-box">
             	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Bankid" value="<?php echo $_session->getData($_code . '_BPE_Bankid'); ?>" />
@@ -30,6 +27,9 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
                 <label class="required"><?php echo $this->__('Account number') ?>: <em>*</em></label>
             	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountnumber" value="<?php echo $_session->getData($_code . '_BPE_Accountnumber'); ?>" />
             </div>
+        </li>
+        <li>
+            <?php echo $this->__('You will be redirected to the èM! Payment website to finalize your payment.') ?>
         </li>
     </ul>
 </fieldset>

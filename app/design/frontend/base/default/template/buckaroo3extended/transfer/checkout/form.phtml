@@ -28,14 +28,13 @@
         $name = $_session->getData($_code . '_BPE_Customername');
     } elseif ($firstname && $lastname) {
         $name = $firstname . ' ' . $lastname;
+    } else {
+        $name = '';
     }?>
     <?php $email = $email ? $email : $_session->getData($_code . '_BPE_Customermail'); ?>
     <div id="payment-errors" class="validation-advice" style="display:none;"></div>
     <fieldset class="form-list">
         <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
-            <li>
-                <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
-            </li>
             <li>
                 <label class="required"><?php echo $this->__('Name');?> <em>*</em></label>
                 <div class="field">  
@@ -103,7 +102,10 @@ DATE_INPUT_YYYY;
                     //]]&gt;
                     </script>
                  </div>
-            </li>   
+            </li> 
+            <li>
+                <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
+            </li>  
         </ul>
     </fieldset>
 <?php else: ?>
