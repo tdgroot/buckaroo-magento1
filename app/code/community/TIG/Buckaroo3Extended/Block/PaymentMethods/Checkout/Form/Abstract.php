@@ -16,7 +16,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     {
         $code = $this->getMethod()->getCode();
 		
-        $feeAllowed = Mage::getStoreConfig('buckaroo/'. $this->_method . '/active_fee', Mage::app()->getStore()->getId());
+        $feeAllowed = Mage::getStoreConfig('buckaroo/'. $code . '/active_fee', Mage::app()->getStore()->getId());
 		if (!$feeAllowed) {
 			return '';
 		}
@@ -97,9 +97,11 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     {
         $gender = (int) $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
         if (!$gender) {
-            $gender = (int) $this->getAddress()->getCustomerGender();
+        	$customerId = $this->getAddress()->getCustomerId();
+			$customer = Mage::getModel('customer/customer')->load($customerId);
+            $gender = (int) $customer->getGender();
         }
-
+		
         return $gender;
     }
     
