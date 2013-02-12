@@ -131,7 +131,7 @@
 "Label that will be shown next to the payment fee.","Dit label wordt getoond naast het toeslag bedrag."
 "This label will be shown in all order overviews where this payment fee is used.","Dit label zal getoond worden overal waar de toeslag getoond wordt."
 " (Incl. Tax)"," (Incl. BTW)"
-" (Excl. Tax)"," (Incl. BTW)"
+" (Excl. Tax)"," (Excl. BTW)"
 "Yes","Ja"
 "No","Nee"
 "-- Please Select --","-- Selecteer S.v.p. --"

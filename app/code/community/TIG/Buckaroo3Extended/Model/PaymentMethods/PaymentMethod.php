@@ -47,7 +47,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         if (!Mage::helper('buckaroo3extended')->isOneStepCheckout()) {
             return parent::getTitle();
         }
-        
+         
+        $feeAllowed = Mage::getStoreConfig('buckaroo/'. $this->_code . '/active_fee', Mage::app()->getStore()->getId());
+		if (!$feeAllowed) {
+			return parent::getTitle();
+		}
+		
         $block = Mage::app()
                      ->getLayout()
                      ->createBlock('buckaroo3extended/paymentMethods_ideal_checkout_form')

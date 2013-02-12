@@ -9,18 +9,33 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total extends Mage
     public function collect(Mage_Sales_Model_Order_Creditmemo $creditmemo)
     {
         $order = $creditmemo->getOrder();
-
-        //retreive all base fee-related values from order
-        $baseBuckarooFee             = $order->getBaseBuckarooFeeInvoiced();
-        $baseBuckarooFeeRefunded     = $order->getBaseBuckarooFeeRefunded();
-        $baseBuckarooFeeTax          = $order->getBaseBuckarooFeeTaxInvoiced();
-        $baseBuckarooFeeTaxRefunded  = $order->getBaseBuckarooFeeTaxRefunded();
-        
-        //retreive all fee-related values from order
-        $buckarooFee                 = $order->getBuckarooFeeInvoiced();
-        $buckarooFeeRefunded         = $order->getBuckarooFeeRefunded();
-        $buckarooFeeTax              = $order->getBuckarooFeeTaxInvoiced();
-        $buckarooFeeTaxRefunded      = $order->getBuckarooFeeTaxRefunded();
+		$invoice = $creditmemo->getInvoice();
+		
+		if ($invoice) {
+	        //retreive all base fee-related values from order
+	        $baseBuckarooFee             = $invoice->getBaseBuckarooFee();
+	        $baseBuckarooFeeRefunded     = $order->getBaseBuckarooFeeRefunded();
+	        $baseBuckarooFeeTax          = $invoice->getBaseBuckarooFeeTax();
+	        $baseBuckarooFeeTaxRefunded  = $order->getBaseBuckarooFeeTaxRefunded();
+	        
+	        //retreive all fee-related values from order
+	        $buckarooFee                 = $invoice->getBuckarooFee();
+	        $buckarooFeeRefunded         = $order->getBuckarooFeeRefunded();
+	        $buckarooFeeTax              = $invoice->getBuckarooFeeTax();
+	        $buckarooFeeTaxRefunded      = $order->getBuckarooFeeTaxRefunded();
+		} else {
+	        //retreive all base fee-related values from order
+	        $baseBuckarooFee             = $order->getBaseBuckarooFee();
+	        $baseBuckarooFeeRefunded     = $order->getBaseBuckarooFeeRefunded();
+	        $baseBuckarooFeeTax          = $order->getBaseBuckarooFeeTax();
+	        $baseBuckarooFeeTaxRefunded  = $order->getBaseBuckarooFeeTaxRefunded();
+	        
+	        //retreive all fee-related values from order
+	        $buckarooFee                 = $order->getBuckarooFee();
+	        $buckarooFeeRefunded         = $order->getBuckarooFeeRefunded();
+	        $buckarooFeeTax              = $order->getBuckarooFeeTax();
+	        $buckarooFeeTaxRefunded      = $order->getBuckarooFeeTaxRefunded();
+		}
         
         //get current creditmemo totals
         $baseRefundTotal             = $creditmemo->getBaseGrandTotal();
@@ -52,8 +67,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total extends Mage
         $creditmemo->setBaseBuckarooFee($baseBuckarooFeeToRefund);
         $creditmemo->setBuckarooFee($buckarooFeeToRefund);
         
-        $creditmemo->setBaseBuckarooFeeTax($baseBuckarooFeeTax);
-        $creditmemo->setBuckarooFeeTax($buckarooFeeTax);
+        $creditmemo->setBaseBuckarooFeeTax($baseBuckarooFeeTaxToRefund);
+        $creditmemo->setBuckarooFeeTax($buckarooFeeTaxToRefund);
         
         return $this;
     }

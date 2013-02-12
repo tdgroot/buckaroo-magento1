@@ -24,7 +24,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Paymentfee extends Mag
             $parent->addTotalBefore($buckarooFee, 'shipping');
         } elseif ($display === 2) {
             $buckarooFee->setValue($this->_order->getBuckarooFee() + $this->_order->getBuckarooFeeTax());
-            $buckarooFee->setBaseValue($this->_order->getBuckarooBaseFee() + $this->_order->getBaseBuckarooFeeTax());
+            $buckarooFee->setBaseValue($this->_order->getBaseBuckarooFee() + $this->_order->getBaseBuckarooFeeTax());
             
             $parent->addTotalBefore($buckarooFee, 'shipping');
         } else {
@@ -36,7 +36,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Paymentfee extends Mag
             $buckarooFeeInclTax = new Varien_Object();
             $buckarooFeeInclTax->setLabel($feeInclLabel);
             $buckarooFeeInclTax->setValue($this->_order->getBuckarooFee() + $this->_order->getBuckarooFeeTax());
-            $buckarooFeeInclTax->setBaseValue($this->_order->getBuckarooBaseFee() + $this->_order->getBaseBuckarooFeeTax());
+            $buckarooFeeInclTax->setBaseValue($this->_order->getBaseBuckarooFee() + $this->_order->getBaseBuckarooFeeTax());
             $buckarooFeeInclTax->setCode('buckaroo_fee_incl_tax');
             
             $parent->addTotalBefore($buckarooFee, 'shipping');

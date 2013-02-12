@@ -28,7 +28,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Invoice_Totals_Paymentfee ext
             $parent->addTotalBefore($buckarooFee, 'shipping');
         } elseif ($display === 2) {
             $buckarooFee->setValue($this->_invoice->getBuckarooFee() + $this->_invoice->getBuckarooFeeTax());
-            $buckarooFee->setBaseValue($this->_invoice->getBuckarooBaseFee() + $this->_invoice->getBaseBuckarooFeeTax());
+            $buckarooFee->setBaseValue($this->_invoice->getBaseBuckarooFee() + $this->_invoice->getBaseBuckarooFeeTax());
             
             $parent->addTotalBefore($buckarooFee, 'shipping');
         } else {
@@ -40,7 +40,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Invoice_Totals_Paymentfee ext
             $buckarooFeeInclTax = new Varien_Object();
             $buckarooFeeInclTax->setLabel($feeInclLabel);
             $buckarooFeeInclTax->setValue($this->_invoice->getBuckarooFee() + $this->_invoice->getBuckarooFeeTax());
-            $buckarooFeeInclTax->setBaseValue($this->_invoice->getBuckarooBaseFee() + $this->_invoice->getBaseBuckarooFeeTax());
+            $buckarooFeeInclTax->setBaseValue($this->_invoice->getBaseBuckarooFee() + $this->_invoice->getBaseBuckarooFeeTax());
             $buckarooFeeInclTax->setCode('buckaroo_fee_incl_tax');
             
             $parent->addTotalBefore($buckarooFee, 'shipping');
