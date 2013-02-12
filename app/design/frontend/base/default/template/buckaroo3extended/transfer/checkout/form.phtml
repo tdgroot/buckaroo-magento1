@@ -31,13 +31,12 @@
 	                    <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
 	                    <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
 	                </select>
-                    <span class="disabled" id="<?php echo $_code;?>_BPE_Customername"><?php echo $name; ?></span>
                 </div>
             </li>
             <li>
-                <label class="required"><?php echo $this->__('Name');?>: <em>*</em></label>
+                <label class="required"><?php echo $this->__('Name');?>:</label>
                 <div class="input-box">
-                    <input class="input-text required-entry" type="text" title="<?php echo $this->__('Name');?>" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $name ?>" id="<?php echo $_code ?>_BPE_Customermail"/>
+                    <span class="disabled" id="<?php echo $_code;?>_BPE_Customername"><?php echo $name; ?></span>
                 </div>
             </li>
             <li>
