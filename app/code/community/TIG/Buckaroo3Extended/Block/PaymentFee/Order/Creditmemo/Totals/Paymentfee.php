@@ -28,7 +28,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Creditmemo_Totals_Paymentfee 
             
             $feeTax = $this->_creditmemo->getInvoice()->getBuckarooFeeTax() - $this->_creditmemo->getOrder()->getBuckarooFeeTaxRefunded();
             $baseFeeTax = $this->_creditmemo->getInvoice()->getBaseBuckarooFeeTax() - $this->_creditmemo->getOrder()->getBaseBuckarooFeeTaxRefunded();
-        
+        	
             $buckarooFee = new Varien_Object();
             $buckarooFee->setLabel($this->_feeLabel);
             $buckarooFee->setValue($fee);

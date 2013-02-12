@@ -15,7 +15,12 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     public function getMethodLabelAfterHtml($useSpan = true)
     {
         $code = $this->getMethod()->getCode();
-        
+		
+        $feeAllowed = Mage::getStoreConfig('buckaroo/'. $this->_method . '/active_fee', Mage::app()->getStore()->getId());
+		if (!$feeAllowed) {
+			return '';
+		}
+		
         $fee = Mage::getStoreConfig('buckaroo/' . $code . '/payment_fee', mage::app()->getStore()->getId());
         
         if (!$fee) {

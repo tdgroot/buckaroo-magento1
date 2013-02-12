@@ -36,9 +36,6 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         $baseBuckarooFeeTaxToInvoice = $baseBuckarooFeeTax - $baseBuckarooFeeTaxInvoiced;
         $buckarooFeeTaxToInvoice     = $buckarooFeeTax - $buckarooFeeTaxInvoiced;
         
-        $baseBuckarooFeeTaxToInvoice -= $baseBuckarooFeeTaxInvoiced;
-        $buckarooFeeTaxToInvoice     -= $buckarooFeeTaxInvoiced;
-        
         $baseInvoiceTotal           += $baseBuckarooFeeToInvoice;
         $invoiceTotal               += $buckarooFeeToInvoice;
         
@@ -64,6 +61,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         $invoice->setBaseBuckarooFeeTax($baseBuckarooFeeTaxToInvoice);
         $invoice->setBuckarooFeeTax($buckarooFeeTaxToInvoice);
 		
+		// $invoice->setSubtotalInclTax($invoice->getSubtotalInclTax() - $buckarooFeeTaxToInvoice);
+		// $invoice->setBaseSubtotalInclTax($invoice->getBaseSubtotalInclTax() - $baseBuckarooFeeTaxToInvoice);
         return $this;
     }
 }

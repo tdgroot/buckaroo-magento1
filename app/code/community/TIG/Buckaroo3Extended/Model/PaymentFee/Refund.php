@@ -75,6 +75,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
         ) {
             $baseBuckarooFeeToRefund = $this->_order->getBaseBuckarooFee();
         }
+		
         $buckarooFeeToRefund                      = (float) $baseBuckarooFeeToRefund * $orderConvertRate;
         
         $baseBuckarooFeeTaxToRefund               = (float) $this->_calculateBuckarooFeeTaxToRefund($baseBuckarooFeeToRefund, true);
@@ -107,7 +108,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
             || $baseBuckarooFeeTaxAvailableForRefund                                       < $baseBuckarooFeeTaxToRefund
         ) {
        		$error = Mage::helper('buckaroo3extended')->__(
-                	    'You cannot refund a larger amount than is available. Maximum Payment Fee available for refund: %f',
+                	    'You cannot refund a larger amount than is available. Maximum Payment Fee available for refund: %s',
                 	    number_format($baseBuckarooFeeAvailableForRefund, 2)
                		 );
             Mage::throwException($error);
