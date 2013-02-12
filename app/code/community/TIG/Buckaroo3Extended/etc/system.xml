@@ -211,6 +211,7 @@
                         	<comment>Fee for using this payment method.</comment>
                         	<tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                         	<frontend_type>text</frontend_type>
+                            <backend_model>buckaroo3extended/adminhtml_system_config_backend_buckaroo_fee</backend_model>
                             <sort_order>53</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>

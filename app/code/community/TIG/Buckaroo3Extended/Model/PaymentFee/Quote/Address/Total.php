@@ -86,7 +86,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
                 array(
                     'code'  => 'buckarooFee',
                     'title' => $label,
-                    'value' => $address->getBaseBuckarooFee(),
+                    'value' => $address->getBuckarooFee(),
                 )
             );
         }
@@ -124,7 +124,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
             
             //calculate the fee. If the fee has already been added, remove it to prevent it from being taken into account in the calculation
             if ($quote->getBaseBuckarooFee()) {
-                $fee = ($quote->getBaseGrandTotal() - $quote->getBaseBuckarooFee()) * ($feePercentage / 100);
+            	$baseGrandTotal = $quote->getBaseGrandTotal() - $quote->getBaseBuckarooFee() - $quote->getBaseBuckarooFeeTax();
+                $fee = $baseGrandTotal * ($feePercentage / 100);
             } elseif(!$quote->getBaseGrandTotal()) {
                 $grandTotal = Mage::registry('buckaroo3extended_quote_basegrandtotal');
                 $fee = $grandTotal * ($feePercentage / 100);

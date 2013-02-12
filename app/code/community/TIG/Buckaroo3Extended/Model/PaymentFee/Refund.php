@@ -59,10 +59,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
     
     public function buckarooFeeRefund()
     {
-        $quoteConvertRate                        = $this->_order->getBaseToQuoteRate();
+        $orderConvertRate                        = $this->_order->getBaseToOrderRate();
         
-        if (empty($quoteConvertRate)) {
-            $quoteConvertRate = 1;
+        if (empty($orderConvertRate)) {
+            $orderConvertRate = 1;
         }
         
         //get amounts that are to be refunded
@@ -75,8 +75,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
         ) {
             $baseBuckarooFeeToRefund = $this->_order->getBaseBuckarooFee();
         }
-        
-        $buckarooFeeToRefund                      = (float) $baseBuckarooFeeToRefund * $quoteConvertRate;
+        $buckarooFeeToRefund                      = (float) $baseBuckarooFeeToRefund * $orderConvertRate;
         
         $baseBuckarooFeeTaxToRefund               = (float) $this->_calculateBuckarooFeeTaxToRefund($baseBuckarooFeeToRefund, true);
         $buckarooFeeTaxToRefund                   = (float) $this->_calculateBuckarooFeeTaxToRefund($buckarooFeeToRefund);
