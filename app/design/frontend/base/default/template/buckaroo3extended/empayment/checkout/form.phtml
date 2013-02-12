@@ -21,7 +21,7 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
         <li>
             <label class="required"><?php echo $this->__('Account holder') ?>: <em>*</em></label>
             <div class="input-box">
-            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountholder" value="<?php echo $_session->getData($_code . '_BPE_Accountholder'); ?>" />
+            	<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Accountholder" value="<?php echo $_session->getData($_code . '_BPE_Accountholder'); ?>" id="<?php echo $_code;?>_BPE_Accountholder"/>
             </div>
             <div class="input-box">
                 <label class="required"><?php echo $this->__('Account number') ?>: <em>*</em></label>
