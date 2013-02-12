@@ -7,7 +7,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Empayment_Checkout_Form extends
         parent::_construct();
     }
     
-    public function getAccountOwner()
+    public function getAccountHolder()
     {
     	$accountHolder = $this->getSession()->getData($this->getMethodCode() . '_BPE_Accountholder');
 		
