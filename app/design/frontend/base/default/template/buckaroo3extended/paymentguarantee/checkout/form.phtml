@@ -6,8 +6,8 @@
         <li>
             <label class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label>
             <div class="input-box">  
-                <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" title="<?php echo $this->__('Salutation');?>">
-                    <option><?php echo $this->__('Please select'); ?></option>
+                <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" title="<?php echo $this->__('Salutation');?>" id="<?php echo $_code;?>_BPE_Customergender">
+                    <option value=''><?php echo $this->__('Select'); ?></option>
                     <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
                     <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
                 </select>

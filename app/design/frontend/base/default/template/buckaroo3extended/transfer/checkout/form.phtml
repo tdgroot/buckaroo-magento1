@@ -26,17 +26,18 @@
             <li>
                 <label class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label>
                 <div class="input-box">  
-                    <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" title="<?php echo $this->__('Salutation');?>">
-                    <option><?php echo $this->__('Please select'); ?></option>
-                        <option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
-                        <option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
-                    </select>
+                    <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" id="<?php echo $_code;?>_BPE_Customergender" title="<?php echo $this->__('Salutation');?>">
+	                    <option value=''><?php echo $this->__('Select'); ?></option>
+	                    <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
+	                    <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
+	                </select>
+                    <span class="disabled" id="<?php echo $_code;?>_BPE_Customername"><?php echo $name; ?></span>
                 </div>
             </li>
             <li>
                 <label class="required"><?php echo $this->__('Name');?>: <em>*</em></label>
                 <div class="input-box">
-                    <input class="input-text required-entry" type="text" title="<?php echo $this->__('Name');?>" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $name ?>" />
+                    <input class="input-text required-entry" type="text" title="<?php echo $this->__('Name');?>" name="<?php echo $_code;?>_BPE_Customername" value="<?php echo $name ?>" id="<?php echo $_code ?>_BPE_Customermail"/>
                 </div>
             </li>
             <li>
