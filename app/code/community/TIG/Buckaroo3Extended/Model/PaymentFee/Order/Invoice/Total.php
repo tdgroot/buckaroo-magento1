@@ -54,15 +54,18 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
 	        $invoice->setBaseTaxAmount($baseTaxAmountTotal + $baseBuckarooFeeTaxToInvoice);
 	        $invoice->setTaxAmount($taxAmountTotal + $baseBuckarooFeeTaxToInvoice);
         }
+		
+		//@TODO figure out why this is needed
+		if ($invoice->getBaseGrandTotal() == $order->getBaseGrandTotal()) {
+			$invoice->setSubtotalInclTax($invoice->getSubtotalInclTax() - $buckarooFeeTaxToInvoice - $buckarooFeeInvoiced);
+			$invoice->setBaseSubtotalInclTax($invoice->getBaseSubtotalInclTax() - $baseBuckarooFeeTaxToInvoice - $baseBuckarooFeeInvoiced);
+		}
         
         $invoice->setBaseBuckarooFee($baseBuckarooFeeToInvoice);
         $invoice->setBuckarooFee($buckarooFeeToInvoice);
         
         $invoice->setBaseBuckarooFeeTax($baseBuckarooFeeTaxToInvoice);
         $invoice->setBuckarooFeeTax($buckarooFeeTaxToInvoice);
-		
-		// $invoice->setSubtotalInclTax($invoice->getSubtotalInclTax() - $buckarooFeeTaxToInvoice);
-		// $invoice->setBaseSubtotalInclTax($invoice->getBaseSubtotalInclTax() - $baseBuckarooFeeTaxToInvoice);
         return $this;
     }
 }

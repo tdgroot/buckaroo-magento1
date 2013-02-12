@@ -148,6 +148,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Visa_Observer extends TIG_Bucka
         $order->setBuckarooSecureEnrolled($enrolled)
               ->setBuckarooSecureAuthenticated($authenticated)
               ->save();
+			  
+		if ($order->getTransactionKey()) {
+			$this->_updateSecureStatus($enrolled, $authenticated, $order);
+		}
         
         return $this;
     }
@@ -160,30 +164,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Visa_Observer extends TIG_Bucka
         
         $order = $observer->getOrder();
         $enrolled = $order->getBuckarooSecureEnrolled();
-        $authenticated = $order->getBuckarooSecureEnrolled();
+        $authenticated = $order->getBuckarooSecureAuthenticated();
+		
+		if (is_null($enrolled) || is_null($authenticated)) {
+			return $this;
+		}
         
-        $shouldHold= Mage::getStoreConfig('buckaroo/buckaroo3extended_visa/unsecure_hold', $order->getStoreId());
-        
-        if ($shouldHold && $order->canHold()) {
-            $order->hold()->save();
-        }
-        
-        $status = $this->_getSecureStatus($enrolled, $authenticated, $order);
-        
-        $enrolledString = $enrolled ? 'yes' : 'no';
-        $authenticatedString = $authenticated ? 'yes' : 'no';
-        if ($status) {
-            $order->setStatus($status)
-                  ->addStatusHistoryComment(
-                      Mage::helper('buckaroo3extended')->__("3D Secure enrolled: %s<br/>3D Secure authenticated: %s", $enrolledString, $authenticatedString),
-                      $status
-                  );
-        } else {
-            $order->addStatusHistoryComment(
-                      Mage::helper('buckaroo3extended')->__("3D Secure enrolled: %s<br/>3D Secure authenticated: %s", $enrolledString, $authenticatedString)
-                  );
-        }
-        
-        $order->save();
+		$this->_updateSecureStatus($enrolled, $authenticated, $order);
+		
+		return $this;
     }
 }

@@ -462,4 +462,36 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 
         return $status;
     }
+
+	protected function _updateSecureStatus($enrolled, $authenticated, $order)
+	{
+        $shouldHold = Mage::getStoreConfig('buckaroo/' . $this->_code . '/unsecure_hold', $order->getStoreId());
+        
+        if (
+        	(!$enrolled || !$authenticated)
+        	&& $shouldHold 
+        	&& $order->canHold()) 
+        {
+            $order->hold()->save();
+        }
+        
+        $status = $this->_getSecureStatus($enrolled, $authenticated, $order);
+        
+        $enrolledString = $enrolled ? 'yes' : 'no';
+        $authenticatedString = $authenticated ? 'yes' : 'no';
+		
+        if ($status) {
+            $order->setStatus($status)
+                  ->addStatusHistoryComment(
+                      Mage::helper('buckaroo3extended')->__("3D Secure enrolled: %s<br/>3D Secure authenticated: %s", $enrolledString, $authenticatedString),
+                      $status
+                  );
+        } else {
+            $order->addStatusHistoryComment(
+                      Mage::helper('buckaroo3extended')->__("3D Secure enrolled: %s<br/>3D Secure authenticated: %s", $enrolledString, $authenticatedString)
+                  );
+        }
+        
+        $order->save();
+	}
 }
