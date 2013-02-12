@@ -100,27 +100,25 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
         }
         
         //check if the amount that is to be invoiced exceeds the available amount
-//        if (
-//            $buckarooFeeAvailableForRefund           < $buckarooFeeToRefund
-//            || $baseBuckarooFeeAvailableForRefund    < $baseBuckarooFeeToRefund
-//            || $buckarooFeeTaxAvailableForRefund     < $buckarooFeeTaxToRefund
-//            || $baseBuckarooFeeTaxAvailableForRefund < $baseBuckarooFeeTaxToRefund
-//           )
-//        {
-//            Mage::getSingleton('adminhtml/session')->addError(
-//                Mage::helper('buckaroo3extended')->__(
-//                	'You cannot refund a larger amount than is available. Maximum Payment Fee available for refund: '
-//                ) . $buckarooFeeAvailableForRefund
-//           );
-//            Mage::throwException();
-//        }        
+        if (
+            $buckarooFeeAvailableForRefund - $buckarooFeeTaxAvailableForRefund             < $buckarooFeeToRefund
+            || $baseBuckarooFeeAvailableForRefund - $baseBuckarooFeeTaxAvailableForRefund  < $baseBuckarooFeeToRefund
+            || $buckarooFeeTaxAvailableForRefund                                           < $buckarooFeeTaxToRefund
+            || $baseBuckarooFeeTaxAvailableForRefund                                       < $baseBuckarooFeeTaxToRefund
+        ) {
+       		$error = Mage::helper('buckaroo3extended')->__(
+                	    'You cannot refund a larger amount than is available. Maximum Payment Fee available for refund: %f',
+                	    number_format($baseBuckarooFeeAvailableForRefund, 2)
+               		 );
+            Mage::throwException($error);
+        }
         
         $this->_order->setBuckarooFeeRefunded($this->_order->getBuckarooFeeRefunded() + $buckarooFeeToRefund);
         $this->_order->setBaseBuckarooFeeRefunded($this->_order->getBaseBuckarooFeeRefunded() + $baseBuckarooFeeToRefund);
         
         $this->_order->setBuckarooFeeTaxRefunded($this->_order->getBuckarooFeeTaxRefunded() + $buckarooFeeTaxToRefund);
         $this->_order->setBaseBuckarooFeeTaxRefunded($this->_order->getBaseBuckarooFeeTaxRefunded() + $baseBuckarooFeeTaxToRefund);
-        
+		
         $this->_creditmemo->setGrandTotal($this->_creditmemo->getGrandTotal() - ($this->_creditmemo->getBuckarooFee() + $this->_creditmemo->getBuckarooFeeTax()) + ($buckarooFeeToRefund + $buckarooFeeTaxToRefund));
         $this->_creditmemo->setBaseGrandTotal($this->_creditmemo->getBaseGrandTotal() - ($this->_creditmemo->getBaseBuckarooFee() + $this->_creditmemo->getBaseBuckarooFeeTax()) + ($baseBuckarooFeeToRefund + $baseBuckarooFeeTaxToRefund));
         
@@ -132,7 +130,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
         
         $this->_creditmemo->setTaxAmount($this->_creditmemo->getTaxAmount() + $buckarooFeeTaxToRefund);
         $this->_creditmemo->setBaseTaxAmount($this->_creditmemo->getBaseTaxAmount() + $baseBuckarooFeeTaxToRefund);
-        
+		
         return $this->_creditmemo;
     }
     

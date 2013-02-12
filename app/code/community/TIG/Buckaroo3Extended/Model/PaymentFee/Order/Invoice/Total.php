@@ -52,8 +52,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         //underlying cause currently unknown
         if ($invoice->getBaseGrandTotal() < $order->getBaseGrandTotal() && $baseBuckarooFeeToInvoice) {
         	$invoice->setBaseGrandTotal($baseInvoiceTotal + $baseBuckarooFeeTaxToInvoice);
-        	$invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice);
-        
+        	$invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice * 2); //@TODO figure out why this needs to be doubled
+        	
 	        $invoice->setBaseTaxAmount($baseTaxAmountTotal + $baseBuckarooFeeTaxToInvoice);
 	        $invoice->setTaxAmount($taxAmountTotal + $baseBuckarooFeeTaxToInvoice);
         }
@@ -63,7 +63,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         
         $invoice->setBaseBuckarooFeeTax($baseBuckarooFeeTaxToInvoice);
         $invoice->setBuckarooFeeTax($buckarooFeeTaxToInvoice);
-        
+		
         return $this;
     }
 }

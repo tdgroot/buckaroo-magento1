@@ -32,6 +32,12 @@
         </reference>
     </adminhtml_sales_order_invoice_updateqty>
     
+    <adminhtml_sales_order_invoice_print>
+    	<reference name="invoice_totals">
+            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_invoice_totals_paymentfee" before="tax"/>
+        </reference>
+    </adminhtml_sales_order_invoice_print>
+    
     <adminhtml_sales_order_creditmemo_view>
         <reference name="creditmemo_totals">
             <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_creditmemo_totals_paymentfee" before="tax"/>
@@ -59,6 +65,12 @@
        		</action>
         </reference>
     </adminhtml_sales_order_creditmemo_updateqty>
+    
+    <adminhtml_sales_order_creditmemo_print>
+        <reference name="creditmemo_totals">
+            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_creditmemo_totals_paymentfee" before="tax"/>
+        </reference>
+    </adminhtml_sales_order_creditmemo_print>
     
     <adminhtml_sales_order_create_index>
     	<reference name="totals">
