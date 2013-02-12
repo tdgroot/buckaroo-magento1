@@ -9,7 +9,12 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Directdebit_Checkout_Form exten
     
     public function getAccountOwner()
     {
-        return $this->getSession()->getData('payment[account_owner]');
+    	$accountHolder = $this->getSession()->getData('payment[account_owner]');
+		
+		if (!$accountHolder) {
+			$accountHolder = $this->getName();
+		}
+        return $accountHolder;
     }
     
     public function getAccountNumber()
