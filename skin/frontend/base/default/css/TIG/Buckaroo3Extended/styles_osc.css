@@ -1,20 +1,14 @@
-#onestepcheckout-form .payment-methods label { float:none; }
-#onestepcheckout-form .payment-methods input.input-text { width:218px !important; }
-#onestepcheckout-form .payment-methods .dob-month input.input-text,
-#onestepcheckout-form .payment-methods .dob-day input.input-text { width:46px !important; }
-#onestepcheckout-form .payment-methods .dob-year input.input-text { width:98px !important; }
-#onestepcheckout-form .payment-methods .field-set input.f-name,
-#onestepcheckout-form .payment-methods .field-set input.l-name { width:132px !important; }
+#onestepcheckout-form .payment-methods select { width:auto !important; }
+#onestepcheckout-form .payment-methods input.input-text { width:220px !important; }
 
-#onestepcheckout-form .payment-methods .payment-method select { width:80px !important; }
-#onestepcheckout-form .payment-methods .payment-method #radiogroup-container label { display:block; float:none; margin-bottom:2px; }
-#onestepcheckout-form .payment-methods .payment-method #radiogroup-container label img { height:15px; width:auto; margin-top:1px; }
-#onestepcheckout-form .payment-methods .payment-method .buckaroo3extended_input { width:210px; }
-#onestepcheckout-form .payment-methods .payment-method .field { float:none; width:230px !important; }
-#onestepcheckout-form .payment-methods .payment-method .disabled { margin-left:3px; }
-#onestepcheckout-form .payment-methods .payment-method .field-set input.input-text { width:168px; margin-left:3px; }
-#onestepcheckout-form .payment-methods .payment-method .field-set input.l-name { margin:8px 0 0 86px !important; }
-#onestepcheckout-form .payment-methods .payment-method .dob-year { width:0; }
-#onestepcheckout-form .payment-methods .payment-method span.disabled { display:inline-block; vertical-align:top; margin-left:5px; width:110px; }
+#onestepcheckout-form .payment-methods .dob-month input.input-text { width:46px !important; }
+#onestepcheckout-form .payment-methods .dob-day input.input-text { width:46px !important; }
+#onestepcheckout-form .payment-methods .dob-year { width:0; }
+#onestepcheckout-form .payment-methods .dob-year input.input-text { width:100px !important; }
+
+#onestepcheckout-form #radiogroup-container label { display:block; float:none; margin-bottom:2px; }
+#onestepcheckout-form #radiogroup-container label img { height:15px; width:auto; margin-top:1px; }
+
+#onestepcheckout-form .payment-methods .disabled { display:block; background:#f2f2f2; border:1px solid #b6b6b6; color:#999; padding:2px; width:220px; height:15px; line-height:16px; overflow:hidden; white-space:nowrap; }
 
 #onestepcheckout-form .payment-methods fieldset.form-list ul li:first-child { padding-top:5px; }
