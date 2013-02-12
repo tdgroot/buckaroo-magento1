@@ -15,6 +15,6 @@
 #onestepcheckout-form .payment-methods .payment-method .field-set input.input-text { width:168px; margin-left:3px; }
 #onestepcheckout-form .payment-methods .payment-method .field-set input.l-name { margin:8px 0 0 86px !important; }
 #onestepcheckout-form .payment-methods .payment-method .dob-year { width:0; }
-#onestepcheckout-form .payment-methods .payment-method span.disabled { display:inline-block; vertical-align:top; margin-left:5px; width:122px; }
+#onestepcheckout-form .payment-methods .payment-method span.disabled { display:inline-block; vertical-align:top; margin-left:5px; width:110px; }
 
 #onestepcheckout-form .payment-methods fieldset.form-list ul li:first-child { padding-top:5px; }
