@@ -108,17 +108,16 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
             return false;
         }
         
+        $feeAllowed = Mage::getStoreConfig('buckaroo/'. $this->_method . '/active_fee', Mage::app()->getStore()->getId());
+        
+        if (!$feeAllowed && $this->_method != 'buckaroo3extended_paymentguarantee') {
+            return 0;
+        }
         return true;
     }
     
     private function _getBaseFee()
-    {
-    	$feeAllowed = Mage::getStoreConfig('buckaroo/'. $this->_method . '/active_fee', Mage::app()->getStore()->getId());
-		
-		if (!$feeAllowed) {
-			return 0;
-		}
-		
+    {		
         $fee = Mage::getStoreConfig('buckaroo/' . $this->_method . '/payment_fee', Mage::app()->getStore()->getId());
         $fee = str_replace(',', '.', $fee);
         
