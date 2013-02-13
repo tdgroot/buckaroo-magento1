@@ -17,7 +17,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         $code = $this->getMethod()->getCode();
 		
         $feeAllowed = Mage::getStoreConfig('buckaroo/'. $code . '/active_fee', Mage::app()->getStore()->getId());
-		if (!$feeAllowed) {
+		if (!$feeAllowed && $code != 'buckaroo3extended_paymentguarantee') {
 			return '';
 		}
 		
@@ -107,21 +107,24 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     
     public function getDob()
     {
+        $dob = array(
+            false,
+            false,
+            false,
+        );
         if ($this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]')) {
-            $dob = date('d,m,Y', strtotime($this->getQuote()->getCustomerDob()));
-            $dob = explode(',', $dob);
-        } elseif ($this->getAddress()->getCustomerDob()) {
             $dob = array(
                 $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]'),
                 $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[month]'),
                 $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[year]'),
             );
         } else {
-            $dob = array(
-                false,
-                false,
-                false,
-            );
+            $customerId = $this->getAddress()->getCustomerId();
+            $customer = Mage::getModel('customer/customer')->load($customerId);
+            $customerDob = (int) $customer->getDob();
+            
+            $dob = date('d,m,Y', strtotime($customerDob));
+            $dob = explode(',', $dob);
         }
         
         return $dob;

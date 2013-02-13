@@ -49,7 +49,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         }
          
         $feeAllowed = Mage::getStoreConfig('buckaroo/'. $this->_code . '/active_fee', Mage::app()->getStore()->getId());
-		if (!$feeAllowed) {
+		if (!$feeAllowed && $this->_code != 'buckaroo3extended_paymentguarantee') {
 			return parent::getTitle();
 		}
 		

@@ -1,17 +1,9 @@
 <?php $_session = Mage::getSingleton('checkout/session'); ?>
 <?php $_code=$this->getMethodCode() ?>
-<?php
-$billing_info=Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress();
-$firstname=$billing_info->getFirstname();
-$lastname=$billing_info->getLastname();
-$email=$billing_info->getEmail();
-
-$gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
-$gender = $gender ? $gender : (int) $_session->getData($_code . '_BPE_Customergender');
-?>
-<?php $firstname = $_session->getData($_code . '_BPE_Customerfirstname') ? $_session->getData($_code . '_BPE_Customerfirstname') : $firstname; ?>
-<?php $lastname = $_session->getData($_code . '_BPE_Customerlastname') ? $_session->getData($_code . '_BPE_Customerlastname') : $lastname; ?>
-<?php $email = $_session->getData($_code . '_BPE_Customermail') ? $_session->getData($_code . '_BPE_Customermail') : $email; ?>
+<?php $gender = $this->getGender(); ?>
+<?php $firstname = $this->getFirstname(); ?>
+<?php $lastname = $this->getLastname(); ?>
+<?php $email = $this->getEmail(); ?>
 <?php $_session = Mage::getSingleton('checkout/session'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 

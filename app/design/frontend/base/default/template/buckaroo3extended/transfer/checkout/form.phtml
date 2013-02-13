@@ -6,19 +6,8 @@
     $email = $this->getEmail();
     
     $gender = $this->getGender();
-    
-    if(strtotime(Mage::getSingleton('checkout/session')->getQuote()->getCustomerDob()))
-    {
-        list($DD, $MM, $YYYY)=explode(',', date('d,m,Y', strtotime(Mage::getSingleton('checkout/session')->getQuote()->getCustomerDob())));
-    }
-    else
-    {
-        list($DD, $MM, $YYYY)=array(false, false, false);
-    }
-    
-    $DD=($DD!==false)?$DD:$_session->getData($_code . '_customerbirthdate[day]');
-    $MM=($MM!==false)?$MM:$_session->getData($_code . '_customerbirthdate[month]');
-    $YYYY=($YYYY!==false)?$YYYY:$_session->getData($_code . '_customerbirthdate[year]');
+    $dob = $this->getDob();
+    list($DD, $MM, $YYYY) = $dob;
     ?>
     <div id="payment-errors" class="validation-advice" style="display:none;"></div>
     <fieldset class="form-list">
