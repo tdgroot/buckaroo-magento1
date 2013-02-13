@@ -3870,10 +3870,7 @@
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                             <depends>
-                            	<area>frontend</area>
-                            </depends>                           
+                            <show_in_store>1</show_in_store>                         
                         </title>                                            
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
@@ -3882,10 +3879,7 @@
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                             <depends>
-                            	<area>frontend</area>
-                            </depends>                           
+                            <show_in_store>1</show_in_store>                      
                         </sort_order>                                              					
 						<allowed_methods translate="label comment">
 							<label>Allowed payment methods</label>
@@ -4172,9 +4166,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <depends>
-                            	<area>frontend</area>
-                            </depends>
                         </title>                                               
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
@@ -4184,9 +4175,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <depends>
-                            	<area>frontend</area>
-                            </depends>
                         </sort_order>
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use credit management</label>

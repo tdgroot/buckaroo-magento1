@@ -416,13 +416,9 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     protected function _getSecureStatus($enrolled, $authenticated, $order)
     {
         $status = null;
-        $useStatus = Mage::getStoreConfig('buckaroo/' . $this->_code . '/active_status', $order->getStoreId());
+        $useSuccessStatus = Mage::getStoreConfig('buckaroo/' . $this->_code . '/active_status', $order->getStoreId());
         
-        if (!$useStatus) {
-            return $status;
-        }
-        
-        if ($enrolled && $authenticated) {
+        if ($enrolled && $authenticated && $useSuccessStatus) {
             switch($order->getState()) {
                 // case Mage_Sales_Model_Order::STATE_NEW:        $status = Mage::getStoreConfig(
                                                                    // 'buckaroo/' . $this->_code . '/secure_status_new',
@@ -435,7 +431,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                                                                ;
                                                                break;
             }
-        } else {
+        } elseif (!$enrolled || !$authenticated) {
             switch($order->getState()) {
                 // case Mage_Sales_Model_Order::STATE_NEW:        $status = Mage::getStoreConfig(
                                                                    // 'buckaroo/' . $this->_code . '/secure_status_new',

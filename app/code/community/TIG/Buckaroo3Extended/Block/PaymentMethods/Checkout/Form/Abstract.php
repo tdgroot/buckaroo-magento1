@@ -33,14 +33,15 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
             $fee = Mage::helper('core')->currency($fee, true, false);
         }
         
-        $feeText = '';
+        $feeText      = '';
+        
         if ($useSpan) {
             $feeText .= '<span class="buckaroo_fee '
                       . $code
                       . '">';
         }
         
-        $feeText .= Mage::helper('buckaroo3extended')->__('%s fee', $fee);
+        $feeText     .= Mage::helper('buckaroo3extended')->__('%s fee', $fee);
                  
         if ($useSpan) {
             $feeText .= '</span>';
