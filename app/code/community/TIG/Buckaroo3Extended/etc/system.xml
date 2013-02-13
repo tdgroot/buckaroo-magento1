@@ -237,7 +237,7 @@
                         </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -458,7 +458,7 @@
                         </show_advanced>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>110</sort_order>
@@ -656,7 +656,7 @@
                         </payment_fee_label>
 						<active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -802,12 +802,23 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sort_order>
+                          <unsecure_status_processing translate="label comment tooltip">
+                            <label>No SecureCode order status</label>
+                            <comment>Leave empty to use default 'success' status.</comment>
+                            <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </unsecure_status_processing>                       
                         <unsecure_hold translate="label comment tooltip">
                             <label>Set no SecureCode orders onhold</label>
                             <comment>Hold orders which have no MasterCard SecureCode.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>41</sort_order>
+                            <sort_order>42</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>                         
@@ -865,7 +876,7 @@
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -875,9 +886,9 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_status>                                               
-                        <order_status_success translate="label comment tooltip">
-                            <label>Method specific success status</label>
+                        </active_status>
+                        <secure_status_processing translate="label comment tooltip">
+                            <label>Method specific SecureCode success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
@@ -886,12 +897,12 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <validate>buckaroo3extended_mastercard_advanced</validate>
-	                        <depends>
-	                        	<show_advanced>1</show_advanced>
-	                        	<active_status>1</active_status>
-	                        </depends>                                
-                        </order_status_success>   
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            	<active_status>1</active_status>
+                            </depends>
+                        </secure_status_processing>
+                                             
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -908,36 +919,6 @@
 	                        	<active_status>1</active_status>
 	                        </depends>                            
                         </order_status_failed>
-                        <secure_status_processing translate="label comment tooltip">
-                            <label>Status for 3D secure orders</label>
-                            <comment>Leave empty to use default 'success' status.</comment>
-                            <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>63</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                            	<show_advanced>1</show_advanced>
-                            	<active_status>1</active_status>
-                            </depends>
-                        </secure_status_processing>
-                        <unsecure_status_processing translate="label comment tooltip">
-                            <label>Status for not 3D secure orders</label>
-                            <comment>Leave empty to use default 'success' status.</comment>
-                            <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>64</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                            	<show_advanced>1</show_advanced>
-                            	<active_status>1</active_status>
-                            </depends>
-                        </unsecure_status_processing>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
                             <comment>Select payment method specific currencies.</comment>
@@ -1093,7 +1074,7 @@
                         </payment_fee_label>                       
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -1254,6 +1235,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sort_order>
+                         <unsecure_status_processing translate="label comment tooltip">
+                            <label>No 3D Secure order status</label>
+                            <comment>Leave empty to use default 'success' status.</comment>
+                            <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>42</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </unsecure_status_processing>                          
                          <unsecure_hold translate="label comment tooltip">
                             <label>Set no 3D Secure orders onhold</label>
                             <comment>Hold orders which are not 3D Secure.</comment>
@@ -1318,7 +1310,7 @@
                         </payment_fee_label> 
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
@@ -1329,8 +1321,8 @@
                             	<show_advanced>1</show_advanced>
                             </depends> 
                         </active_status>                                                 
-                        <order_status_success translate="label comment tooltip">
-                            <label>Method specific success status</label>
+                         <secure_status_processing translate="label comment tooltip">
+                            <label>Method specific 3D Secure success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
@@ -1339,12 +1331,12 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <validate>buckaroo3extended_visa_advanced</validate>
-                        	<depends>
-                        		<show_advanced>1</show_advanced>
-                        		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_success>
+                            <depends>
+                            	<show_advanced>1</show_advanced>
+                            	<active_status>1</active_status>
+                            </depends>
+                        </secure_status_processing>
+
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -1361,36 +1353,7 @@
                         		 <active_status>1</active_status>
                         	</depends>                            
                         </order_status_failed>
-                        <secure_status_processing translate="label comment tooltip">
-                            <label>Status for 3D secure orders</label>
-                            <comment>Leave empty to use default 'success' status.</comment>
-                            <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>63</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                            	<show_advanced>1</show_advanced>
-                            	<active_status>1</active_status>
-                            </depends>
-                        </secure_status_processing>
-                        <unsecure_status_processing translate="label comment tooltip">
-                            <label>Status for not 3D secure orders</label>
-                            <comment>Leave empty to use default 'success' status.</comment>
-                            <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>64</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                            	<show_advanced>1</show_advanced>
-                            	<active_status>1</active_status>
-                            </depends>
-                        </unsecure_status_processing>
+
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
                             <comment>Select payment method specific currencies.</comment>
@@ -1546,7 +1509,7 @@
                         </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -1760,7 +1723,7 @@
                         </payment_fee_label> 
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -1974,7 +1937,7 @@
                         </payment_fee_label> 
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -2232,7 +2195,7 @@
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
@@ -2494,7 +2457,7 @@
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
@@ -2708,7 +2671,7 @@
                         </payment_fee_label> 
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -2932,7 +2895,7 @@
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
@@ -3130,7 +3093,7 @@
                         </payment_fee_label> 
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -3328,7 +3291,7 @@
                         </payment_fee_label> 
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -3526,7 +3489,7 @@
                         </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -3747,7 +3710,7 @@
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
@@ -3889,7 +3852,17 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>                        
+                        </mode> 
+                        <area translate="label comment">
+                        	<label>Use for Backend and/or Frontend</label>
+                        	<comment>Select where the paymentmethod will be available</comment>
+                        	<frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_paymentMethodArea</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </area>                                                
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -3898,7 +3871,10 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                                              
+                             <depends>
+                            	<area>frontend</area>
+                            </depends>                           
+                        </title>                                            
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -3907,6 +3883,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                             <depends>
+                            	<area>frontend</area>
+                            </depends>                           
                         </sort_order>                                              					
 						<allowed_methods translate="label comment">
 							<label>Allowed payment methods</label>
@@ -4032,7 +4011,7 @@
                         </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>80</sort_order>
@@ -4091,19 +4070,6 @@
                         		<active_status>1</active_status>
                         	</depends>
                         </order_status_failed>
-                        <area translate="label comment">
-                        	<label>Paymentmethod area</label>
-                        	<comment>Select where the paymentmethod will be available</comment>
-                        	<frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_paymentMethodArea</source_model>
-                            <sort_order>86</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                        		<show_advanced>1</show_advanced>
-                        	</depends>
-                        </area>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
                             <comment>Select payment method specific currencies.</comment>
@@ -4187,7 +4153,17 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>                   
+                        </mode>
+                        <area translate="label comment">
+                        	<label>Use for Backend and/or Frontend</label>
+                        	<comment>Select where the paymentmethod will be available</comment>
+                        	<frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_paymentMethodArea</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </area>                  
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -4196,6 +4172,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<area>frontend</area>
+                            </depends>
                         </title>                                               
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
@@ -4205,6 +4184,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                            	<area>frontend</area>
+                            </depends>
                         </sort_order>
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use credit management</label>
@@ -4307,7 +4289,7 @@
                         </payment_fee_label>                        
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
-                            <comment>Enable or disable specific status fee.</comment>
+                            <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>70</sort_order>
@@ -4366,19 +4348,6 @@
                         		<active_status>1</active_status>
                         	</depends>
                         </order_status_failed>
-                        <area translate="label comment">
-                        	<label>Paymentmethod area</label>
-                        	<comment>Select where the paymentmethod will be available</comment>
-                        	<frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_paymentMethodArea</source_model>
-                            <sort_order>76</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                        		<show_advanced>1</show_advanced>
-                        	</depends>
-                        </area>
 	                   <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
                             <comment>Select payment method specific currencies.</comment>
