@@ -1,0 +1,27 @@
+<?php $_code=$this->getMethodCode() ?>
+<div id="payment-errors" class="validation-advice" style="display:none;"></div>
+
+<fieldset class="form-list">
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
+        <li>
+            <label class="required"><?php echo $this->__('Name') ?>: <em>*</em></label>
+            <div class="field field-set">
+           		<select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select">
+           			<option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
+           			<option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
+           		</select>
+       			<input class="input-text required-entry f-name" type="input" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php echo $this->getFirstname(); ?>" />
+       			<input class="input-text required-entry l-name" type="input" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php echo $this->getLastname(); ?>" />
+           	</div>
+        </li>
+        <li>
+            <label class="required"><?php echo $this->__('E-mail') ?>: <em>*</em></label>
+            <div class="input-box">
+            	<input class="input-text required-entry validate-email" type="input" name="<?php echo $_code;?>_BPE_Customermail" value="<?php echo $this->getEmail(); ?>" />
+            </div>
+        </li>
+        <li>
+            <?php echo $this->__('You will receive an email with further payment instructions when you place your order.') ?>
+        </li>
+    </ul>
+</fieldset>

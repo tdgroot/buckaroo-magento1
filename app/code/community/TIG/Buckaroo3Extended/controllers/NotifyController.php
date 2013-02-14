@@ -207,7 +207,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     {
         $this->_debugEmail .= "Recieved PUSH to update creditmemo. Unfortunately the module does not support creditmemo updates at this time. The PUSH is ignored.";
         
-        $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId());
+        $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId());
         if (empty($debugEmailConfig))
         {
             return;
@@ -216,7 +216,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $mail = $this->_debugEmail;
         
         mail(
-            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
+            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId()), 
             'Buckaroo 3 Extended Debug Email', 
             $mail
         );
@@ -245,7 +245,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         if (isset($this->_postArray['ADD_refund_initiated_in_magento'])) {
             $this->_debugEmail .= "The order is already being refunded. \n";
              mail(
-                Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', Mage::app()->getStore()->getStoreId()), 
+                Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId()), 
                 'Buckaroo 3 Extended Debug Email', 
                 $this->_debugEmail
             );

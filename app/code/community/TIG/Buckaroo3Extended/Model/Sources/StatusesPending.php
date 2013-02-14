@@ -3,7 +3,7 @@ class TIG_Buckaroo3Extended_Model_Sources_StatusesPending extends Varien_Object
 {
     static public function toOptionArray()
     {
-        $state=Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', Mage::app()->getStore()->getStoreId());
+        $state='new';
         $statuses=Mage::getSingleton('sales/order_config')->getStateStatuses($state);
          
         $options=array();

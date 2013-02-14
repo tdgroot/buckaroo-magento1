@@ -1,41 +1,41 @@
 <?php $_code=$this->getMethodCode() ?>
-<?php $_session = Mage::getSingleton('checkout/session'); ?>
-<?php
-$billing_info=Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress();
-$firstname=$billing_info->getFirstname();
-$lastname=$billing_info->getLastname();
-$email=$billing_info->getEmail();
-
-$gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
-$gender = $gender ? $gender : (int) $_session->getData($_code . '_BPE_Customergender');
-?>
-
-<?php $firstname = $firstname ? $firstname : $_session->getData($_code . '_BPE_Customerfirstname'); ?>
-<?php $lastname = $lastname ? $lastname : $_session->getData($_code . '_BPE_Customerlastname'); ?>
-<?php $email = $email ? $email : $_session->getData($_code . '_BPE_Customermail'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
-            <?php echo $this->__('You will receive an email with further payment instructions when you place your order.') ?>
-        </li>
-        <li>
-            <label><?php echo $this->__('Name') ?>:</label><br/>
-            <div class="field">
-           		<select name="<?php echo $_code;?>_BPE_Customergender" style="width:80px;" class = "validate-select">
-           			<option value="1" <?php echo ($gender===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
-           			<option value="2" <?php echo ($gender===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
-           		</select>
-       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php echo $firstname; ?>" style="width: 85px;" />
-       			<input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php echo $lastname; ?>" style="width: 84px;" />
-           	</div>
-        </li>
-        <li>
-            <label><?php echo $this->__('E-mail') ?>:</label>
-            <div class="input-box">
-            	<input class="input-text required-entry validate-email" type="input" name="<?php echo $_code;?>_BPE_Customermail" value="<?php echo $email; ?>" />
+            <label class="required"><?php echo $this->__('Salutation') ?>: <em>*</em></label>
+            <div class="input-box">  
+                <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" id="<?php echo $_code;?>_BPE_Customergender" title="<?php echo $this->__('Salutation') ?>">
+                    <option value=''><?php echo $this->__('Select'); ?></option>
+                    <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
+                    <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
+                </select>
             </div>
+       	</li>
+       	
+       	<li>
+       	    <label class="required"><?php echo $this->__('First name') ?>: <em>*</em></label>
+       	    <div class="input-box">
+       			<input class="input-text required-entry" type="input" title="<?php echo $this->__('First name') ?>" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php echo $this->getFirstname(); ?>" id="<?php echo $_code;?>_BPE_Customerfirstname"/>
+       		</div>
+       	</li>
+       	
+       	<li>
+       	    <label class="required"><?php echo $this->__('Last name') ?>: <em>*</em></label>
+       	    <div class="input-box">
+       			<input class="input-text required-entry" type="input" title="<?php echo $this->__('Last name') ?>" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php echo $this->getLastname(); ?>" id="<?php echo $_code;?>_BPE_Customerlastname"/>
+       		</div>
+        </li>
+        
+        <li>
+            <label class="required"><?php echo $this->__('E-mail address') ?>: <em>*</em></label>
+            <div class="input-box">
+            	<input class="input-text required-entry validate-email" type="input" title="<?php echo $this->__('E-mail address') ?>" name="<?php echo $_code;?>_BPE_Customermail" value="<?php echo $this->getEmail(); ?>" id="<?php echo $_code;?>_BPE_Customermail"/>
+            </div>
+        </li>
+        <li>
+            <?php echo $this->__('You will receive an email with further payment instructions when you place your order.') ?>
         </li>
     </ul>
 </fieldset>

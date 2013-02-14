@@ -125,4 +125,53 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Visa_Observer extends TIG_Bucka
 
         return $this;
     }
+    
+    public function buckaroo3extended_return_custom_processing(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+        
+        $response = $observer->getPostArray();
+        $order = $observer->getOrder();
+        
+        $enrolled = false;
+        $authenticated = false;
+        if (isset($response['brq_SERVICE_visa_Enrolled']) && isset($response['brq_SERVICE_visa_Authentication'])) {
+            $enrolled = $response['brq_SERVICE_visa_Enrolled'];
+            $enrolled = ($enrolled == 'Y') ? true : false;
+            
+            $authenticated = $response['brq_SERVICE_visa_Authentication'];
+            $authenticated = ($authenticated == 'Y') ? true : false;
+        }
+        
+        $order->setBuckarooSecureEnrolled($enrolled)
+              ->setBuckarooSecureAuthenticated($authenticated)
+              ->save();
+			  
+		if ($order->getTransactionKey()) {
+			$this->_updateSecureStatus($enrolled, $authenticated, $order);
+		}
+        
+        return $this;
+    }
+    
+    public function buckaroo3extended_push_custom_processing_after(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+        
+        $order = $observer->getOrder();
+        $enrolled = $order->getBuckarooSecureEnrolled();
+        $authenticated = $order->getBuckarooSecureAuthenticated();
+		
+		if (is_null($enrolled) || is_null($authenticated)) {
+			return $this;
+		}
+        
+		$this->_updateSecureStatus($enrolled, $authenticated, $order);
+		
+		return $this;
+    }
 }

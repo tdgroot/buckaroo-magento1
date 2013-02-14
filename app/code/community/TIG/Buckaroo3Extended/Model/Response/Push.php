@@ -111,6 +111,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $this->_processIncorrectPayment($newStates);
 			                                       break;
 		}
+        
+        Mage::dispatchEvent('buckaroo3extended_push_custom_processing_after', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
 		
 		if (isset($updatedFailed) && $updatedFailed) {
 			$this->_debugEmail .= "Succesfully updated 'failed' state and status \n";
@@ -230,38 +232,42 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 */
 	protected function _getNewStates($code)
 	{
+	    $order = $this->getorder();
+        $storeId = $order->getStoreId();
+        
+        $useStatus = Mage::getStoreConfig('buckaroo/' . $this->_method . '/active_status', $storeId);
+        
 	    //get the possible new states for the order
-		$stateSuccess                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', Mage::app()->getStore()->getStoreId());
-		$stateFailure                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', Mage::app()->getStore()->getStoreId());
-		$statePendingpayment         = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', Mage::app()->getStore()->getStoreId());
+		$stateSuccess                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', $storeId);
+		$stateFailure                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', $storeId);
+		$statePendingpayment         = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', $storeId);
 		
 		//get the possible new status for the order based on the payment method's individual config options
-		//good chance these are not set
-		$customSuccessStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_success', Mage::app()->getStore()->getStoreId());
-		$customFailureStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_failed', Mage::app()->getStore()->getStoreId());
-		$customPendingPaymentStatus  = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_pendingpayment', Mage::app()->getStore()->getStoreId());
+		//these are optional
+		$customSuccessStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_success', $storeId);
+		$customFailureStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_failed', $storeId);
+		$customPendingPaymentStatus  = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_pendingpayment', $storeId);
 		
 		//get the possible default new status for the order based on the general config options
 		//these should always be set
-		$defaultSuccessStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', Mage::app()->getStore()->getStoreId());
-		$defaultFailureStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', Mage::app()->getStore()->getStoreId());
-		$defaultPendingPaymentStatus = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', Mage::app()->getStore()->getStoreId());
-		
+		$defaultSuccessStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', $storeId);
+		$defaultFailureStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', $storeId);
+		$defaultPendingPaymentStatus = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', $storeId);
+        
 		//determine whether to use the default or custom status
-		if ($customSuccessStatus && !empty($customSuccessStatus)) 
-		{
+		if ($useStatus && $customSuccessStatus && !empty($customSuccessStatus)) {
 			$statusSuccess = $customSuccessStatus;
 		} else {
 			$statusSuccess = $defaultSuccessStatus;
 		}
 		
-		if ($customFailureStatus && !empty($customFailureStatus)) {
+		if ($useStatus && $customFailureStatus && !empty($customFailureStatus)) {
 			$statusFailure = $customFailureStatus;
 		} else {
 			$statusFailure = $defaultFailureStatus;
 		}
 		
-		if ($customPendingPaymentStatus && !empty($customPendingPaymentStatus)) {
+		if ($useStatus && $customPendingPaymentStatus && !empty($customPendingPaymentStatus)) {
 			$statusPendingpayment = $customPendingPaymentStatus;
 		} else {
 			$statusPendingpayment = $defaultPendingPaymentStatus;
@@ -349,32 +355,30 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * @return boolean
 	 */
 	protected function _processFailed($newStates, $description = false)
-	{
-		$description .= " (#{$this->_postArray['brq_statuscode']})";
-		
-	    //sets the transaction key if its defined ('brq_transactions')
-		//will retrieve it from the response array, if response actually is an array
-		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
-			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
-		}
-		
-		if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', Mage::app()->getStore()->getStoreId())) {
-	    	$this->_order->cancel()
-	    				 ->save();
-	    	if ($description) {
-	    		$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
-	    				     ->save();
-	    	}
-    		$this->_order->setStatus($newStates[1])
-    					 ->save();
-	    } else {	    	
-	    	$this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
-	    	             ->save();
-	    	$this->_order->setStatus($newStates[1])
-	    				 ->save();
-	    }
-	    return true;
-	}
+    {
+        $description .= " (#{$this->_postArray['brq_statuscode']})";
+        
+        //sets the transaction key if its defined ('brq_transactions')
+        //will retrieve it from the response array, if response actually is an array
+        if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
+            $this->_order->setTransactionKey($this->_postArray['brq_transactions']);
+        }
+        
+        if (
+          Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
+          && $this->_order->canCancel()
+        ) {
+            $this->_order->cancel()
+                         ->save();
+        }        
+         
+        $this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
+                     ->save();
+        $this->_order->setStatus($newStates[1])
+                     ->save();
+                     
+        return true;
+    }
 	
 	/**
 	 * Processes an order for which an incorrect amount has been paid (can only happen with Transfer)
@@ -387,9 +391,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		$amount = round($this->_order->getBaseGrandTotal()*100, 0);
 		$currency = $this->_order->getBaseCurrencyCode();
 		
+        $setState = $newStates[0];
+        $setStatus = $newStates[1];
 		if ($amount > $this->_postArray['brq_amount']) {
-	    	$setState = $newStates[0];
-            $setStatus = $newStates[1];
             $description = Mage::helper('buckaroo3extended')->__('Not enough paid: ') 
                			 . round(($this->_postArray['brq_amount'] / 100), 2)
                			 . ' '
@@ -398,9 +402,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
               			 . round($this->_order->getGrandTotal(), 2)
                			 . ' '
                			 . $currency;
-	    } elseif ($amount < $this->_postArray['bpe_amount']) {
-	    	$setState = $newStates[0];
-            $setStatus = $newStates[1];
+	    } elseif ($amount < $this->_postArray['brq_amount']) {
             $description = Mage::helper('buckaroo3extended')->__('Too much paid: ') 
                			 . round(($this->_postArray['brq_amount'] / 100), 2)
                			 . ' '
@@ -474,14 +476,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 */
 	protected function _autoInvoice()
 	{		
-		if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', Mage::app()->getStore()->getStoreId()))
+		if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', $this->_order->getStoreId()))
 	    {
 	    	return false;
 	    }
 	    
 	    $this->_saveInvoice();
 	                            
-	    if(Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', Mage::app()->getStore()->getStoreId()))
+	    if(Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', $this->_order->getStoreId()))
 	    {
 		    foreach($this->_order->getInvoiceCollection() as $invoice)
 		    {
@@ -550,7 +552,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             $value = urldecode($value);
 	        $signatureString .= $key . '=' . $value;
 	    }
-	    $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', Mage::app()->getStore()->getStoreId());
+	    $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId());
 	    
 	    $this->_debugEmail .= "\nSignaturestring: {$signatureString}\n";
 	    
@@ -570,14 +572,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $signature2 = md5(
 			$this->_postArray['oldPost']["bpe_trx"]
 			. $this->_postArray['oldPost']["bpe_timestamp"]
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId())
+			. Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId())
 			. $this->_postArray['oldPost']["bpe_invoice"]
 			. $this->_postArray['oldPost']["bpe_reference"]
 			. $this->_postArray['oldPost']["bpe_currency"]
 			. $this->_postArray['oldPost']["bpe_amount"]
 			. $this->_postArray['oldPost']["bpe_result"]
 			. $this->_postArray['oldPost']["bpe_mode"]
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', Mage::app()->getStore()->getStoreId())
+			. Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId())
 		);
 		
 		return $signature2;

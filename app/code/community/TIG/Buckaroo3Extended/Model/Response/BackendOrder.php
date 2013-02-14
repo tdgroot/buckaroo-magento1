@@ -24,7 +24,7 @@ class TIG_Buckaroo3Extended_Model_Response_BackendOrder extends TIG_Buckaroo3Ext
             Mage::helper('buckaroo3extended')->__('Your payment was unsuccesful. Please try again or choose another payment method.')
         );
 
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', Mage::app()->getStore()->getStoreId())) {
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())) {
             $this->_order->cancel()->save();
         }
 

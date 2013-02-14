@@ -51,12 +51,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
 
         $vars = $request->getVars();
 
-        $this->_addCustomerVariables($vars, 'creditmanagement');
         $this->_addTransfer($vars);
         
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
+            $this->_addCustomerVariables($vars, 'creditmanagement');
         }
         
         $request->setVars($vars);
