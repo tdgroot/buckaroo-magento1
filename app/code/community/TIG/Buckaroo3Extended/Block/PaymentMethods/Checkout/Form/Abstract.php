@@ -113,7 +113,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
             false,
             false,
         );
-        if ($this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]')) {
+        if (!is_null($this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]'))) {
             $dob = array(
                 $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]'),
                 $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[month]'),
@@ -122,9 +122,12 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         } else {
             $customerId = $this->getAddress()->getCustomerId();
             $customer = Mage::getModel('customer/customer')->load($customerId);
-            $customerDob = (int) $customer->getDob();
+            $customerDob = $customer->getDob();
+            if (!$customerDob) {
+                return $dob;
+            }
             
-            $dob = date('d,m,Y', strtotime($customerDob));
+            $dob = date('d,m,Y', Varien_Date::toTimestamp($customerDob));
             $dob = explode(',', $dob);
         }
         

@@ -21,6 +21,10 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends Mage_Core_Mode
 	    		) {
 	    			Mage::throwException('please enter a name for this certificate');
 	    		}
+                
+                if (strpos($_FILES['groups']['name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value'], '.pem') === false) {
+                    Mage::throwException('invalid certificate file uploaded');
+                }
     		
 		    	$model = Mage::getModel('buckaroo3extended/certificate');
 		    	$collection = $model->getCollection()->load();
