@@ -1107,7 +1107,6 @@
                 <thumbprint></thumbprint>
                 <mode>1</mode>
                 <payment_description>Magento Buckaroo</payment_description>
-                <culture_type>billing</culture_type>
 			</buckaroo3extended>
 			
 			<buckaroo3extended_advanced>
