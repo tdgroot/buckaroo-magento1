@@ -192,7 +192,6 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		if ($processedPhoneNumber['mobile']) {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
 		        'MobilePhoneNumber' => $processedPhoneNumber['clean'],
-                'PhoneNumber'       => $processedPhoneNumber['clean'],
 		    ));
 		} else {
 		    $vars['customVars'][$serviceName] = array_merge($vars['customVars'][$serviceName], array(
