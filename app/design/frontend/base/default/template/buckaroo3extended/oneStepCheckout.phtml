@@ -1,3 +1,7 @@
+<?php Mage::log($_SERVER['HTTP_USER_AGENT'], null, 'TIG_IE_DEBUG.log', true); ?>
+<?php if(preg_match('/(?i)msie [5-8]/', $_SERVER['HTTP_USER_AGENT'])): ?>      
+    <?php return; ?>                                                           
+<?php endif; ?>                                                                
 <script type="text/javascript">
     oldFirstname = '';
     oldLastname = '';
