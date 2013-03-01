@@ -6,9 +6,12 @@ class TIG_Buckaroo3Extended_Model_Adminhtml_System_Config_Backend_Buckaroo_Fee e
     {
     	$groups = $this->getGroups();
     	foreach($groups as &$group) {
-    		if (array_key_exists('payment_fee', $group['fields'])) {
+    	    $fields = $group['fields'];
+    		if (array_key_exists('payment_fee', $fields)) {
     			$fee = $group['fields']['payment_fee']['value'];
-    			$group['fields']['payment_fee']['value'] = $this->_validateFee($fee);
+                if ($fee) {
+                    $group['fields']['payment_fee']['value'] = $this->_validateFee($fee);
+                }
     		}
     	}
 		
