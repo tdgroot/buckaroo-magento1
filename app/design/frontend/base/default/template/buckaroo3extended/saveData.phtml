@@ -1,3 +1,7 @@
+<?php if(preg_match('/(?i)msie [5-8]/', $_SERVER['HTTP_USER_AGENT']) && Mage::helper('buckaroo3extended')->isOneStepCheckout()): ?>
+    <?php return; ?>
+<?php endif; ?>
+
 <script type="text/javascript">
     jQuery('.buckaroo3extended_input').find('input,select').live('change', function() {
             sendData(jQuery(this));
