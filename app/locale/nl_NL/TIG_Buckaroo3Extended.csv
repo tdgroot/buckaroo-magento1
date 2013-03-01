@@ -236,3 +236,5 @@
 "You have not yet uploaded any certificate files.","U heeft nog geen certificaat bestanden geüpload."
 "No certificate selected.","Geen certificaat geselecteerd."
 "Buckaroo refunding is currently disabled in the configuration menu.","Buckaroo refunding is momenteel uitgeschakeld in het configuratie menu."
+"Not enough paid: %s has been transfered. Order grand total was: %s.","Niet genoeg betaald: %s is betaald. Totaalbedrag was %s."
+"Too much paid: %s has been transfered. Order grand total was: %s.","Te veel betaald: %s is betaald. Totaalbedrag was %s."

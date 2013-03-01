@@ -67,7 +67,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		
 		$this->_debugEmail .= "can the order be processed? " . $canProcess . "\ncan the order be updated? " . $canUpdate . "\n";
 		
-		if (!$canProcess) {
+		if (!$canProcess && false) {
 			return false;
 		} elseif ($canProcess && !$canUpdate) {
 			//if the order cant be updated, try to add a notification to the status history instead
@@ -389,28 +389,28 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	{
 		//determine whether too much or not enough has been paid and determine the status history copmment accordingly
 		$amount = round($this->_order->getBaseGrandTotal()*100, 0);
-		$currency = $this->_order->getBaseCurrencyCode();
 		
         $setState = $newStates[0];
         $setStatus = $newStates[1];
+        
+        if ($this->_postArray['brq_currency'] == $this->_order->getBaseCurrencyCode()) {
+            $storeId = $this->getOrder()->getStoreId();
+        } else {
+            $storeId = 0;
+        }
+        
 		if ($amount > $this->_postArray['brq_amount']) {
-            $description = Mage::helper('buckaroo3extended')->__('Not enough paid: ') 
-               			 . round(($this->_postArray['brq_amount'] / 100), 2)
-               			 . ' '
-               			 . $currency
-               			 . Mage::helper('buckaroo3extended')->__(' has been transfered. Order grand total was: ') 
-              			 . round($this->_order->getGrandTotal(), 2)
-               			 . ' '
-               			 . $currency;
+            $description = Mage::helper('buckaroo3extended')->__(
+                               'Not enough paid: %s has been transfered. Order grand total was: %s.',
+                               Mage_Core_Helper_Data::currencyByStore(($this->_postArray['brq_amount']), $storeId, true, false),
+                               Mage_Core_Helper_Data::currencyByStore($this->_order->getGrandTotal(), $storeId, true, false)
+                           );
 	    } elseif ($amount < $this->_postArray['brq_amount']) {
-            $description = Mage::helper('buckaroo3extended')->__('Too much paid: ') 
-               			 . round(($this->_postArray['brq_amount'] / 100), 2)
-               			 . ' '
-               			 . $currency
-               			 . Mage::helper('buckaroo3extended')->__(' has been transfered. Order grand total was: ') 
-               			 . round($this->_order->getGrandTotal(), 2)
-               			 . ' '
-               			 . $currency;
+            $description = Mage::helper('buckaroo3extended')->__(
+                               'Too much paid: %s has been transfered. Order grand total was: %s.',
+                               Mage_Core_Helper_Data::currencyByStore(($this->_postArray['brq_amount']), $storeId, true, false),
+                               Mage_Core_Helper_Data::currencyByStore($this->_order->getGrandTotal(), $storeId, true, false)
+                           );
 	    } else {
 	    	//the correct amount was actually paid, so return false
 	    	return false;
