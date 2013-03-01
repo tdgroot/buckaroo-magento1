@@ -229,3 +229,7 @@
 "Enable or disable advanced options.","Schakel de geavanceerde opties in of uit."
 "Method specific SecureCode success status","Methode specifieke SecureCode 'success' status"
 "Method specific 3D Secure success status","Methode specifieke 3D secure 'success' status"
+"Your payment was unsuccesful. Please try again or choose another payment method.","Uw betaling was niet succesvol. Probeer het s.v.p. opnieuw of kies een andere betaalmethode."
+"Service version used","Gebruikte versie betaalservice"
+"Select which version of the payment service to use.","Selecteer welke versie van de betaalservice gebruikt moet worden."
+"Version 1 is the old version of IDEAL. Version 2 is the new SEPA version. Please contact Buckaroo for more information.","Versie 1 is de oude versie. Versie 2 is de nieuwe SEPA versie. Neem s.v.p. contact op met Buckaroo voor verdere informatie."

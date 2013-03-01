@@ -13,11 +13,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         $request = $observer->getRequest();
 
         $vars = $request->getVars();
+        $serviceVersion = $this->_getServiceVersion();
         
         $array = array(
             $this->_method     => array(
                 'action'	=> 'Pay',
-                'version'   => 1,
+                'version'   => $serviceVersion,
             ),
         );
         
@@ -104,31 +105,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         $issuer = $additionalFields['Issuer'];
 
-        $issuerCode = '';
-        switch ($issuer) {
-            case 'ABNAMRO':     $issuerCode = '0031';
-                                break;
-            case 'ASNBANK':     $issuerCode = '0761';
-                                break;
-            case 'FRIESLAND':   $issuerCode = '0091';
-                                break;
-            case 'INGBANK':     $issuerCode = '0721';
-                                break;
-            case 'RABOBANK':    $issuerCode = '0021';
-                                break;
-            case 'SNSBANK':     $issuerCode = '0751';
-                                break;
-            case 'SNSREGIO':    $issuerCode = '0771';
-                                break;
-            case 'TRIODOS':     $issuerCode = '0511';
-                                break;
-            case 'LANSCHOT':    $issuerCode = '0161';
-                                break;
-            case 'KNAB':        $issuerCode = '9998';
-                                break;
-        }
-
-        return $issuerCode;
+        return $issuer;
     }
     
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
