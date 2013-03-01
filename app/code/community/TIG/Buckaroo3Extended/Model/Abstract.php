@@ -480,15 +480,19 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	 */
 	protected function _checkCorrectAmount()
 	{
-	    $amountPaid = round($this->_postArray['brq_amount'] * 100, 0);
+	    $amountPaid = $this->_postArray['brq_amount'];
 	    
 	    if ($this->_postArray['brq_currency'] == $this->_order->getStoreCurrencyCode()) {
-	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
+	        $this->_debugEmail .= "Currency used is same as order currency \n";
+	        $amountOrdered = $this->_order->getBaseGrandTotal();
 	    } else {
-	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
+            $this->_debugEmail .= "Currency used is different from order currency \n";
+	        $amountOrdered = $this->_order->getBaseGrandTotal();
 	    }
 	    
-	    if ($amountPaid != $amountOrdered) {
+        $this->_debugEmail .= "Amount paid: {$amountPaid}. Amount ordered: {$amountOrdered} \n";
+        
+	    if (($amountPaid - $amountOrdered) > 0.01 || ($amountPaid - $amountOrdered) < -0.01) {
 	        return array(
                'message' => 'Incorrect amount transfered',
                'status'  => self::BUCKAROO_INCORRECT_PAYMENT,

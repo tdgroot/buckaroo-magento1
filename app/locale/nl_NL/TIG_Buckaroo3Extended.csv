@@ -236,3 +236,7 @@
 "You have not yet uploaded any certificate files.","U heeft nog geen certificaat bestanden geüpload."
 "No certificate selected.","Geen certificaat geselecteerd."
 "Buckaroo refunding is currently disabled in the configuration menu.","Buckaroo refunding is momenteel uitgeschakeld in het configuratie menu."
+"Not enough paid: %s has been transfered. Order grand total was: %s.","Niet genoeg betaald: %s is betaald. Totaalbedrag was %s."
+"Too much paid: %s has been transfered. Order grand total was: %s.","Te veel betaald: %s is betaald. Totaalbedrag was %s."
+"Fee value is improperly formatted. Fee must be a positive number or a percentage with a single decimal seperator.","De toeslag waarde is incorrect. De toeslag moet een positief getal of percentage zijn met een punt als decimaal schijdingsteken."
+"%s fee","%s toeslag"
