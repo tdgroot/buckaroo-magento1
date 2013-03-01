@@ -501,4 +501,15 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         
         return $version;
     }
+    
+    protected function _getRefundServiceVersion($order)
+    {
+        $versionUsed = $order->getBuckarooServiceVersionUsed();
+        
+        if (!is_null($versionUsed)) {
+            return $versionUsed;
+        }
+        
+        return $this->_getServiceVersion();
+    }
 }

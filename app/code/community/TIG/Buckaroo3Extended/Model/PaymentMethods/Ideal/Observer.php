@@ -22,6 +22,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
             ),
         );
         
+        $order = $request->getOrder();
+        $order->setBuckarooServiceVersionUsed($serviceVersion)
+              ->save();
+        
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
         	$array['creditmanagement'] = array(
         			'action'	=> 'Invoice',
@@ -132,10 +136,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         $refundRequest = $observer->getRequest();
         
         $vars = $refundRequest->getVars();
-
+        $serviceVersion = $this->_getRefundServiceVersion($refundRequest->getOrder());
+        
         $array = array(
             'action'	=> 'Refund',
-            'version'   => 1,
+            'version'   => $serviceVersion,
         );
         
         if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
