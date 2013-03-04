@@ -7,13 +7,3 @@ jQuery('#buckaroo3extended_directdebit_account_owner, #buckaroo3extended_directd
         sendData(jQuery(this));
     }
 );
-function sendData(element)
-{
-     jQuery.post(
-         '<?php echo $this->getUrl('buckaroo3extended/checkout/saveData');?>',
-         {
-             name: element.attr('name'),
-             value: element.val()
-         }
-     );
-}
