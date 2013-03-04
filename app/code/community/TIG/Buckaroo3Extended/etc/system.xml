@@ -56,7 +56,7 @@
                     	</support>
                     </fields>
 		    	</buckaroo3extended_support>	
-				<buckaroo3extended translate="label" module="paygate">
+				<buckaroo3extended translate="label">
                     <label>General Configuration</label>
                     <sort_order>2000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -138,7 +138,7 @@
                     </fields>
                 </buckaroo3extended>                                          
                
-               <buckaroo3extended_ideal translate="label" module="paygate">
+               <buckaroo3extended_ideal translate="label">
                     <label>iDEAL</label>
                     <sort_order>4000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -350,7 +350,7 @@
                         </limit_by_ip>		
                     </fields>
                 </buckaroo3extended_ideal>                         
-                <buckaroo3extended_paymentguarantee translate="label" module="paygate">
+                <buckaroo3extended_paymentguarantee translate="label">
                     <label>Achteraf betalen</label>
                     <sort_order>5000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -570,7 +570,7 @@
                         </limit_by_ip>				
                     </fields>
                 </buckaroo3extended_paymentguarantee>
-               <buckaroo3extended_amex translate="label" module="paygate">
+               <buckaroo3extended_amex translate="label">
                     <label>American Express</label>
                     <sort_order>6000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -768,7 +768,7 @@
                         </limit_by_ip>                    
                     </fields>
                 </buckaroo3extended_amex>                
-                <buckaroo3extended_mastercard translate="label" module="paygate">
+                <buckaroo3extended_mastercard translate="label">
                     <label>MasterCard</label>
                     <sort_order>7000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1199,7 +1199,7 @@
                         </limit_by_ip>
                     </fields>
                 </buckaroo3extended_maestro>                               
-     			<buckaroo3extended_visa translate="label" module="paygate">
+     			<buckaroo3extended_visa translate="label">
                     <label>Visa</label>
                     <sort_order>8000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1845,7 +1845,7 @@
                         </limit_by_ip>  		
                     </fields>
                 </buckaroo3extended_vpay>
-               <buckaroo3extended_paypal translate="label" module="paygate">
+               <buckaroo3extended_paypal translate="label">
                     <label>PayPal</label>
                     <sort_order>9000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2042,7 +2042,7 @@
                         </limit_by_ip>
                     </fields>
                 </buckaroo3extended_paypal>
-                <buckaroo3extended_transfer translate="label" module="paygate">
+                <buckaroo3extended_transfer translate="label">
                     <label>Overboeking</label>
                     <sort_order>10000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2315,7 +2315,7 @@
                         </limit_by_ip>  
                     </fields>
                 </buckaroo3extended_transfer>
-               <buckaroo3extended_directdebit translate="label" module="paygate">
+               <buckaroo3extended_directdebit translate="label">
                     <label>Eenmalige machtiging</label>
                     <sort_order>11000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2789,7 +2789,7 @@
                         </limit_by_ip>		                
                     </fields>
                 </buckaroo3extended_empayment>                                                   
-                <buckaroo3extended_paysafecard translate="label" module="paygate">
+                <buckaroo3extended_paysafecard translate="label">
                     <label>paysafecard</label>
                     <sort_order>13000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2996,7 +2996,7 @@
                         </limit_by_ip>		                
                     </fields>
                 </buckaroo3extended_paysafecard>
-				<buckaroo3extended_bancontactmrcash translate="label" module="paygate">
+				<buckaroo3extended_bancontactmrcash translate="label">
                     <label>Bancontact / Mister Cash</label>
                     <sort_order>14000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3193,7 +3193,7 @@
                         </limit_by_ip>		                
                     </fields>
                 </buckaroo3extended_bancontactmrcash>
-                <buckaroo3extended_sofortueberweisung translate="label" module="paygate">
+                <buckaroo3extended_sofortueberweisung translate="label">
                     <label>sofortbanking</label>
                     <sort_order>15000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3390,7 +3390,7 @@
                         </limit_by_ip>			               
                     </fields>
                 </buckaroo3extended_sofortueberweisung>                                                     
-                 <buckaroo3extended_giropay translate="label" module="paygate">
+                 <buckaroo3extended_giropay translate="label">
                     <label>giropay</label>
                     <sort_order>16000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3587,7 +3587,7 @@
                         </limit_by_ip>			               		                
                     </fields>
                 </buckaroo3extended_giropay>                                                        
-                <buckaroo3extended_giftcards translate="label" module="paygate">
+                <buckaroo3extended_giftcards translate="label">
                     <label>Cadeaukaarten</label>
                     <sort_order>17000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3823,7 +3823,7 @@
                        </limit_by_ip>		                	
                     </fields>
                 </buckaroo3extended_giftcards> 
-                <buckaroo3extended_payperemail translate="label" module="paygate">
+                <buckaroo3extended_payperemail translate="label">
                     <label>PayperEmail</label>
                     <sort_order>18000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4117,7 +4117,7 @@
                        </limit_by_ip>		                	
                     </fields>
                 </buckaroo3extended_payperemail>                            
-                <buckaroo3extended_onlinegiro translate="label" module="paygate">
+                <buckaroo3extended_onlinegiro translate="label">
                     <label>online giro</label>
                     <sort_order>19000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4388,7 +4388,7 @@
                        </limit_by_ip>
                     </fields>
                 </buckaroo3extended_onlinegiro>
-                <buckaroo3extended_refund translate="label" module="paygate">
+                <buckaroo3extended_refund translate="label">
                     <label>Refunding</label>
                     <sort_order>20000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4424,7 +4424,7 @@
 						</allow_push>
                 	</fields>
                 </buckaroo3extended_refund>
-                <buckaroo3extended_certificate translate="label" module="paygate">
+                <buckaroo3extended_certificate translate="label">
                     <label>Certificate Management</label>
                     <sort_order>21000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4451,7 +4451,7 @@
 		                </certificate_upload>
                     </fields>
                 </buckaroo3extended_certificate>                                                                                
-				<buckaroo3extended_advanced translate="label" module="paygate">
+				<buckaroo3extended_advanced translate="label">
                     <label>Advanced Configuration</label>
                     <sort_order>22000</sort_order>
                     <show_in_default>1</show_in_default>
