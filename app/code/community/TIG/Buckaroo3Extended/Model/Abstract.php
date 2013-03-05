@@ -386,23 +386,10 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	protected function _getLocale()
 	{
         $country = $this->_order->getBillingAddress()->getCountry();
-	    $cultureSetting = Mage::getStoreConfig('buckaroo/buckaroo3extended/culture_type', Mage::app()->getStore()->getId());
         
-        if ($cultureSetting == 'billing') {
-            switch ($country)
-            {
-                case 'BE': 
-                case 'NL': $locale = 'nl-' . $country; 
-                           $lang = 'NL';
-                           break;
-                default:   $locale = 'en-US';
-                           $lang = 'EN';
-            }
-        } elseif ($cultureSetting == 'store') {
-            $locale = Mage::app()->getLocale()->getLocaleCode();
-            $locale = str_replace('_', '-', $locale);
-            $lang = strtoupper(substr($locale, 0, 2));
-        }
+        $locale = Mage::app()->getLocale()->getLocaleCode();
+        $locale = str_replace('_', '-', $locale);
+        $lang = strtoupper(substr($locale, 0, 2));
 		
 		return array($country, $locale, $lang);
 	}
@@ -493,15 +480,19 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	 */
 	protected function _checkCorrectAmount()
 	{
-	    $amountPaid = round($this->_postArray['brq_amount'] * 100, 0);
+	    $amountPaid = $this->_postArray['brq_amount'];
 	    
 	    if ($this->_postArray['brq_currency'] == $this->_order->getStoreCurrencyCode()) {
-	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
+	        $this->_debugEmail .= "Currency used is same as order currency \n";
+	        $amountOrdered = $this->_order->getBaseGrandTotal();
 	    } else {
-	        $amountOrdered = round($this->_order->getBaseGrandTotal() * 100, 0);
+            $this->_debugEmail .= "Currency used is different from order currency \n";
+	        $amountOrdered = $this->_order->getBaseGrandTotal();
 	    }
 	    
-	    if ($amountPaid != $amountOrdered) {
+        $this->_debugEmail .= "Amount paid: {$amountPaid}. Amount ordered: {$amountOrdered} \n";
+        
+	    if (($amountPaid - $amountOrdered) > 0.01 || ($amountPaid - $amountOrdered) < -0.01) {
 	        return array(
                'message' => 'Incorrect amount transfered',
                'status'  => self::BUCKAROO_INCORRECT_PAYMENT,

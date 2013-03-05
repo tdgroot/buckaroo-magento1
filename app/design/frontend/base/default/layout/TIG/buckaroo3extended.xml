@@ -29,10 +29,7 @@
 <layout version="0.1.0">
 	<checkout_onepage_index>
 		<reference name="head">
-			<action method="addItem">
-				<type>skin_js</type>
-        		<name>js/TIG/Buckaroo3Extended/jquery-1.4.4.min.js</name>
-			</action>
+			<block type="core/template" name="buckaroo_jquery" template="buckaroo3extended/jquery.phtml"/>
 			<action method="addItem">
 				<type>skin_css</type>
 				<name>css/TIG/Buckaroo3Extended/styles_opc.css</name>
@@ -45,10 +42,7 @@
 	
 	<onestepcheckout_index_index>
 		<reference name="head">
-			<action method="addItem">
-				<type>skin_js</type>
-        		<name>js/TIG/Buckaroo3Extended/jquery-1.4.4.min.js</name>
-			</action>
+			<block type="core/template" name="buckaroo_jquery" template="buckaroo3extended/jquery.phtml"/>
 			<action method="addItem">
 				<type>skin_css</type>
 				<name>css/TIG/Buckaroo3Extended/styles_osc.css</name>
