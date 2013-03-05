@@ -192,6 +192,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <!-- Uncomment to manually set the version to be used. Default will always be 2 -->
                         <!-- <service_version translate="label comment tooltip">
                             <label>Service version used</label>
                             <comment>Select which version of the payment service to use.</comment>
