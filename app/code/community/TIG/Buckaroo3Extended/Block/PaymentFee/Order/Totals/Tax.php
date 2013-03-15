@@ -8,6 +8,10 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Tax extends Mage_Admin
      */
     public function getFullTaxInfo()
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return parent::getFullTaxInfo();
+        }
+        
         /** @var $source Mage_Sales_Model_Order */
         $source = $this->getOrder();
 

@@ -88,4 +88,9 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
             return (bool) Mage::getConfig()->getModuleConfig("Enterprise_Enterprise")->version;
         }
     }
+    
+    public function getIsKlarnaEnabled()
+    {
+        return Mage::helper('core')->isModuleEnabled('Klarna_KlarnaPaymentModule');
+    }
 }

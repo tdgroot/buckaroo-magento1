@@ -95,6 +95,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
     
     private function _isAllowed()
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return false;
+        }
+        
         $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') 
                 === FALSE ? 'http://' : 'https://';
         

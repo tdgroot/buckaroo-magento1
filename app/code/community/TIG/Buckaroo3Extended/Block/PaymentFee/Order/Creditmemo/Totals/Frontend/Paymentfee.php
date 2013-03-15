@@ -3,6 +3,10 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Creditmemo_Totals_Frontend_Pa
 {
     public function initTotals()
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $parent = $this->getParentBlock();
         $display = (int) Mage::getStoreConfig('tax/sales_display/subtotal', Mage::app()->getStore()->getId());
         $this->_creditmemo  = $parent->getCreditmemo();

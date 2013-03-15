@@ -3,6 +3,10 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Creditmemo_Totals_Paymentfee 
 {
     public function initTotals()
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $this->_creditmemo  = $this->getParentBlock()->getCreditmemo();
         
         $paymentmethodCode = $this->_creditmemo->getOrder()->getPayment()->getMethod();

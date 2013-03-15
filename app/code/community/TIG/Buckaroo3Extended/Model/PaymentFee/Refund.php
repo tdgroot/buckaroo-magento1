@@ -59,6 +59,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Refund extends Mage_Core_Model_Abst
     
     public function buckarooFeeRefund()
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this->_creditmemo;
+        }
+        
         $orderConvertRate                        = $this->_order->getBaseToOrderRate();
         
         if (empty($orderConvertRate)) {
