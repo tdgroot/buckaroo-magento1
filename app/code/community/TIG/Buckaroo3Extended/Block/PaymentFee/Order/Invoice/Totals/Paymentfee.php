@@ -3,6 +3,10 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Order_Invoice_Totals_Paymentfee ext
 {
     public function initTotals()
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $parent = $this->getParentBlock();
         $display = (int) Mage::getStoreConfig('tax/sales_display/subtotal', Mage::app()->getStore()->getId());
         $this->_invoice  = $parent->getInvoice();

@@ -8,6 +8,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
      */
     public function collect(Mage_Sales_Model_Order_Invoice $invoice)
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $order = $invoice->getOrder();
         
         //retrieve all base fee-related values from order

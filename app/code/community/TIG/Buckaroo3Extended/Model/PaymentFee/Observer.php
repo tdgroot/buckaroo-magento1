@@ -8,6 +8,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
      */
     public function sales_quote_collect_totals_after(Varien_Event_Observer $observer) 
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $quote = $observer->getEvent()->getQuote();
         
         $quote->setBuckarooFee(0);
@@ -41,6 +45,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
      */
     public function sales_order_payment_place_end(Varien_Event_Observer $observer) 
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $payment = $observer->getPayment();
 
         $order = $payment->getOrder();
@@ -79,6 +87,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
      */
     public function buckaroofee_order_creditmemo_refund_before(Varien_Event_Observer $observer)
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $creditmemo = $observer->getCreditmemo();
         
         $buckarooFee = Mage::getModel('buckaroo3extended/paymentFee_refund', $creditmemo);
@@ -92,6 +104,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Observer extends Mage_Core_Model_Ab
      */
     public function sales_order_invoice_register(Varien_Event_Observer $observer)
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $invoice = $observer->getInvoice();
         $order = $invoice->getOrder();
         
