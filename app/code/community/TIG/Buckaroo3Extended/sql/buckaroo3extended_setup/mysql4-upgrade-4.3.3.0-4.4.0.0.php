@@ -11,19 +11,9 @@ $conn->changeColumn(
     'varchar(255) NOT NULL'
     );
     
-$conn->addColumn($installer->getTable('sales/order'), 'buckaroo_secure_enrolled', array(
-        'TYPE'      => Varien_Db_Ddl_Table::TYPE_SMALLINT,
-        'DEFAULT'   => NULL,
-        'NULLABLE'  => true,
-        'COMMENT'   => 'Buckaroo 3DSecure Enrolled',
-    ));
+$conn->addColumn($installer->getTable('sales/order'), 'buckaroo_secure_enrolled', 'smallint(5) null');
     
-$conn->addColumn($installer->getTable('sales/order'), 'buckaroo_secure_authenticated', array(
-        'TYPE'      => Varien_Db_Ddl_Table::TYPE_SMALLINT,
-        'DEFAULT'   => NULL,
-        'NULLABLE'  => true,
-        'COMMENT'   => 'Buckaroo 3DSecure Authenticated',
-    ));
+$conn->addColumn($installer->getTable('sales/order'), 'buckaroo_secure_authenticated', 'smallint(5) null');
 
 /**
  * Add PaymentFee columns to sales/order

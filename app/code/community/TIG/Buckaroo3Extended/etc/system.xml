@@ -39,7 +39,13 @@
 		    <show_in_website>1</show_in_website>
 		    <show_in_store>1</show_in_store>
 		    <groups>
-		    	
+                <klarna_check>
+                    <frontend_model>buckaroo3extended/adminhtml_system_config_klarnaCheck</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </klarna_check>
 		    	<buckaroo3extended_support>
 		    		<label>Version &amp; Support</label>
                     <sort_order>1000</sort_order>
@@ -219,6 +225,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </active_fee>   
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
@@ -234,6 +241,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -248,6 +256,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -405,6 +414,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -415,6 +425,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>                                                                                
 						<max_amount translate="label comment tooltip">
                             <label>Max order amount (in EURO)</label>
@@ -637,7 +648,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                       
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                        
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -651,6 +663,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -665,6 +678,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
 						<active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -856,7 +870,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>  
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>   
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -870,6 +885,7 @@
                             	<active_fee>1</active_fee>
                             	<show_advanced>1</show_advanced>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -884,6 +900,7 @@
                             	<active_fee>1</active_fee>
                             	<show_advanced>1</show_advanced>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -1053,7 +1070,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                        
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                         
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1067,6 +1085,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -1081,6 +1100,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>                       
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -1287,7 +1307,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                         
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                          
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1301,6 +1322,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         
                         <payment_fee_label translate="label comment tooltip">
@@ -1316,6 +1338,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label> 
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -1486,7 +1509,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                         
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                          
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1500,6 +1524,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -1514,6 +1539,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -1699,7 +1725,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                         
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                          
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1713,6 +1740,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -1727,6 +1755,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label> 
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -1912,7 +1941,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                          
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                           
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1926,6 +1956,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -1940,6 +1971,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label> 
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -2169,7 +2201,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>  
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>   
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -2183,6 +2216,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -2197,6 +2231,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -2430,7 +2465,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                        
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                         
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -2444,6 +2480,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -2458,6 +2495,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -2643,7 +2681,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                        
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                         
                        <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -2657,6 +2696,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -2671,6 +2711,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label> 
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -2866,7 +2907,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                         
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                          
                       <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -2880,6 +2922,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -2894,6 +2937,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -3063,7 +3107,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                          
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                           
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -3077,6 +3122,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -3091,6 +3137,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label> 
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -3260,6 +3307,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </active_fee>                          
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
@@ -3274,6 +3322,7 @@
                             	<show_advanced>1</show_advanced>
                             	 <active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -3288,6 +3337,7 @@
                             	<show_advanced>1</show_advanced>
                             	 <active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label> 
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -3457,7 +3507,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                         
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                          
                          <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -3471,6 +3522,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -3485,6 +3537,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -3677,7 +3730,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                        
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                         
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -3691,6 +3745,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -3705,6 +3760,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -3971,7 +4027,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>                                                 
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>                                                  
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -3985,6 +4042,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -3999,6 +4057,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
@@ -4242,7 +4301,8 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends> 
-                        </active_fee>  
+                            <validate>buckaroo_fee</validate>
+                        </active_fee>   
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -4256,6 +4316,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
@@ -4270,6 +4331,7 @@
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
                             </depends> 
+                            <validate>buckaroo_fee</validate>
                         </payment_fee_label>                        
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>

@@ -7,9 +7,10 @@ $email=$billing_info->getEmail();
 $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
 ?>
 <?php $_session = Mage::getSingleton('checkout/session'); ?>
+
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
-<fieldset class="form-list">
+<fieldset class="form-list buckaroo-method">
     <?php $_code=$this->getMethodCode() ?>
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>

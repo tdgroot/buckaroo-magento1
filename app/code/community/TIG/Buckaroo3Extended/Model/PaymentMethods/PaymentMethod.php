@@ -44,6 +44,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
     
     public function getTitle()
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return parent::getTitle();
+        }
+        
         if (!Mage::helper('buckaroo3extended')->isOneStepCheckout()) {
             return parent::getTitle();
         }
@@ -170,6 +174,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
             return false;
         }
 
-        return parent::isAvailable($quote);
+        return TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote);
     }
 }

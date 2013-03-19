@@ -8,6 +8,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
      */
     public function collect(Mage_Sales_Model_Order_Invoice $invoice)
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $order = $invoice->getOrder();
         
         //retrieve all base fee-related values from order
@@ -48,24 +52,30 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         //fix for issue where invoice totals is sometimes missing paymentfee tax
         //underlying cause currently unknown
         if ($invoice->getBaseGrandTotal() < $order->getBaseGrandTotal() && $baseBuckarooFeeToInvoice) {
-        	$invoice->setBaseGrandTotal($baseInvoiceTotal + $baseBuckarooFeeTaxToInvoice);
-        	$invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice * 2); //@TODO figure out why this needs to be doubled
-        	
-	        $invoice->setBaseTaxAmount($baseTaxAmountTotal + $baseBuckarooFeeTaxToInvoice);
-	        $invoice->setTaxAmount($taxAmountTotal + $baseBuckarooFeeTaxToInvoice);
+            $invoice->setBaseGrandTotal($baseInvoiceTotal + $baseBuckarooFeeTaxToInvoice);
+            
+            if (version_compare(Mage::getVersion(), '1.7.0.2', '==')) {
+                $invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice * 2);
+            } else {
+                $invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice);
+            }
+            
+            $invoice->setBaseTaxAmount($baseTaxAmountTotal + $baseBuckarooFeeTaxToInvoice);
+            $invoice->setTaxAmount($taxAmountTotal + $baseBuckarooFeeTaxToInvoice);
         }
-		
-		//@TODO figure out why this is needed
-		if ($invoice->getBaseGrandTotal() == $order->getBaseGrandTotal()) {
-			$invoice->setSubtotalInclTax($invoice->getSubtotalInclTax() - $buckarooFeeTaxToInvoice - $buckarooFeeInvoiced);
-			$invoice->setBaseSubtotalInclTax($invoice->getBaseSubtotalInclTax() - $baseBuckarooFeeTaxToInvoice - $baseBuckarooFeeInvoiced);
-		}
+        
+        //@TODO figure out why this is needed
+        if ($invoice->getBaseGrandTotal() == $order->getBaseGrandTotal()) {
+            $invoice->setSubtotalInclTax($invoice->getSubtotalInclTax() - $buckarooFeeTaxToInvoice - $buckarooFeeInvoiced);
+            $invoice->setBaseSubtotalInclTax($invoice->getBaseSubtotalInclTax() - $baseBuckarooFeeTaxToInvoice - $baseBuckarooFeeInvoiced);
+        }
         
         $invoice->setBaseBuckarooFee($baseBuckarooFeeToInvoice);
         $invoice->setBuckarooFee($buckarooFeeToInvoice);
         
         $invoice->setBaseBuckarooFeeTax($baseBuckarooFeeTaxToInvoice);
         $invoice->setBuckarooFeeTax($buckarooFeeTaxToInvoice);
+        
         return $this;
     }
 }

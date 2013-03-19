@@ -8,6 +8,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total extends Mage
      */
     public function collect(Mage_Sales_Model_Order_Creditmemo $creditmemo)
     {
+        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+            return $this;
+        }
+        
         $order = $creditmemo->getOrder();
 		$invoice = $creditmemo->getInvoice();
 		
