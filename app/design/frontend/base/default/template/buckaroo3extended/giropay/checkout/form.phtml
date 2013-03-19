@@ -25,16 +25,18 @@
  */
 ?>
 <?php $_session = Mage::getSingleton('checkout/session'); ?>
-<div id="payment-errors" class="validation-advice" style="display:none;"></div>
-
-<fieldset class="form-list">
-    <?php $_code=$this->getMethodCode() ?>
-    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
-        <li>
-            <label class="required"><?php echo $this->__('Bankleitzahl'); ?>: <em>*</em></label>
-            <div class="input-box">
-                <input type="text" class="input-text required-entry" title="<?php echo $this->__('Bankleitzahl'); ?>" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="<?php echo $_session->getData($_code . '_BPE_Bankleitzahl'); ?>" />
-            </div>
-        </li>
-    </ul>
-</fieldset>
+<div class="buckaroo-method">
+    <div id="payment-errors" class="validation-advice" style="display:none;"></div>
+    
+    <fieldset class="form-list">
+        <?php $_code=$this->getMethodCode() ?>
+        <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
+            <li>
+                <label class="required"><?php echo $this->__('Bankleitzahl'); ?>: <em>*</em></label>
+                <div class="input-box">
+                    <input type="text" class="input-text required-entry" title="<?php echo $this->__('Bankleitzahl'); ?>" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="<?php echo $_session->getData($_code . '_BPE_Bankleitzahl'); ?>" />
+                </div>
+            </li>
+        </ul>
+    </fieldset>
+</div>
