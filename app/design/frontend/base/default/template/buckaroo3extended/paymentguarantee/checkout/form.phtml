@@ -1,27 +1,27 @@
 <?php $_code=$this->getMethodCode() ?>
-
-<div id="payment-errors" class="validation-advice" style="display:none;"></div>
-<fieldset class="form-list">
-    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
-        <li>
-            <label class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label>
-            <div class="input-box">  
-                <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" title="<?php echo $this->__('Salutation');?>" id="<?php echo $_code;?>_BPE_Customergender">
-                    <option value=''><?php echo $this->__('Select'); ?></option>
-                    <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
-                    <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
-                </select>
-            </div>
-        </li>
-        <li>
-            <label><?php echo $this->__('Billing name');?>:</label>
-            <div class="input-box">
-                <span class="disabled" id="<?php echo $_code;?>_BPE_Customername" title="<?php echo $this->__('Name');?>"><?php echo $this->getName(); ?></span>
-            </div>
-        </li>
-        <li>
-            <label class="required" for="payment:month"><?php echo $this->__('Date of birth') ?>: <em>*</em></label>
-            <div class="input-box customer-dob customer-billing-dob">
+<div class="buckaroo-method">
+    <div id="payment-errors" class="validation-advice" style="display:none;"></div>
+    <fieldset class="form-list">
+        <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
+            <li>
+                <label class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label>
+                <div class="input-box">  
+                    <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" title="<?php echo $this->__('Salutation');?>" id="<?php echo $_code;?>_BPE_Customergender">
+                        <option value=''><?php echo $this->__('Select'); ?></option>
+                        <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
+                        <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <label><?php echo $this->__('Billing name');?>:</label>
+                <div class="input-box">
+                    <span class="disabled" id="<?php echo $_code;?>_BPE_Customername" title="<?php echo $this->__('Name');?>"><?php echo $this->getName(); ?></span>
+                </div>
+            </li>
+            <li>
+                <label class="required" for="payment:month"><?php echo $this->__('Date of birth') ?>: <em>*</em></label>
+                <div class="input-box customer-dob customer-billing-dob">
 <?php $dob = $this->getDob(); ?>
 <?php 
 $dateInputDD = <<< DATE_INPUT_DD
@@ -59,26 +59,27 @@ $dateFormat = preg_replace('/[^\%\w]/', '\\1', Mage::app()->getLocale()->getDate
 
 echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputYYYY);
 ?>
-                <div style="display:none;" class="dob-full">
-                    <input type="hidden" name="<?php echo $_code;?>_payment[dob]" id="payment:dob">
+                    <div style="display:none;" class="dob-full">
+                        <input type="hidden" name="<?php echo $_code;?>_payment[dob]" id="payment:dob">
+                    </div>
+                    <div style="display: none;" class="validation-advice"></div>
                 </div>
-                <div style="display: none;" class="validation-advice"></div>
-            </div>
-            <script type="text/javascript">
-                //&lt;![CDATA[
-                var customer_dob = new Varien.DOB('.customer-billing-dob', true, '%d-%m-%y');
-                //]]&gt;
-            </script>
-        </li>
-        <li>
-            <label class="required"><?php echo $this->__('Bank account number') ?>: <em>*</em></label>
-            <div class="input-box">
-                <input class="input-text required-entry" type="text" title="<?php echo $this->__('Bank account number') ?>" name="<?php echo $_code;?>_bpe_customer_account_number" value="<?php echo $this->getBankAccount(); ?>" />
-            </div>
-        </li>
-        
-        <li>
-            <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.')?>
-        </li>   
-    </ul>
-</fieldset>
+                <script type="text/javascript">
+                    //&lt;![CDATA[
+                    var customer_dob = new Varien.DOB('.customer-billing-dob', true, '%d-%m-%y');
+                    //]]&gt;
+                </script>
+            </li>
+            <li>
+                <label class="required"><?php echo $this->__('Bank account number') ?>: <em>*</em></label>
+                <div class="input-box">
+                    <input class="input-text required-entry" type="text" title="<?php echo $this->__('Bank account number') ?>" name="<?php echo $_code;?>_bpe_customer_account_number" value="<?php echo $this->getBankAccount(); ?>" />
+                </div>
+            </li>
+            
+            <li>
+                <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.')?>
+            </li>   
+        </ul>
+    </fieldset>
+</div>
