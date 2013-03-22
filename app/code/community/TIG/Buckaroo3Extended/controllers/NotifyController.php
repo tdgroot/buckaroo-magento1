@@ -73,7 +73,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_restructurePostArray();
             $orderId = $this->_postArray['brq_invoicenumber'];
         } else {
-            return;
+            return false;
         }
 
         $this->_debugEmail .= 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
@@ -84,6 +84,10 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         }
         
         $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        
+        if (!$this->_order) {
+            return false;
+        }
 
         $this->_paymentCode = $this->_order->getPayment()->getMethod();
 
