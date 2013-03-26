@@ -268,7 +268,13 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 	 */
 	protected function _processPhoneNumberCM()
 	{
-		$number = $this->_billingInfo['telephone'];
+	    $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+	    if (isset($additionalFields['BPE_PhoneNumber'])) {
+	        $number = $additionalFields['BPE_PhoneNumber'];
+	    } else {
+            $number = $this->_billingInfo['telephone'];
+	    }
+        
 		
 		//the final output must like this: 0031123456789 for mobile: 0031612345678
         //so 13 characters max else number is not valid
