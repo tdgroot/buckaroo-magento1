@@ -81,19 +81,26 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
             && $currentUrl                 != Mage::helper('checkout/cart')->getCartUrl()
         ) {
             $label = Mage::helper('buckaroo3extended')->getFeeLabel($this->_method);
-                    
+            $displaySetting = (int) Mage::getStoreConfig('tax/cart_display/subtotal', Mage::app()->getStore()->getId());  
+            $isOneStepCheckout = Mage::helper('buckaroo3extended')->isOneStepCheckout();
+            
+            $buckarooFee = $address->getBuckarooFee();
+            if ($displaySetting === 2 && $isOneStepCheckout) {
+                $buckarooFee += $address->getBuckarooFeeTax();
+            }
+             
             $address->addTotal(
                 array(
                     'code'  => 'buckarooFee',
                     'title' => $label,
-                    'value' => $address->getBuckarooFee(),
+                    'value' => $buckarooFee,
                 )
             );
         }
         return $this;
     }
     
-    private function _isAllowed()
+    protected function _isAllowed()
     {
         if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
             return false;
@@ -120,7 +127,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
         return true;
     }
     
-    private function _getBaseFee()
+    protected function _getBaseFee()
     {		
         $fee = Mage::getStoreConfig('buckaroo/' . $this->_method . '/payment_fee', Mage::app()->getStore()->getId());
         $fee = str_replace(',', '.', $fee);
@@ -146,7 +153,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
     	return (float) $fee;
     }
     
-    private function _getFee()
+    protected function _getFee()
     {
         $baseFee = $this->_getBaseFee();
         
@@ -177,7 +184,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total extends Mage_Sa
         return $rate;
     }
     
-    private function _calulateTaxForFee($fee, $isBase = false)
+    protected function _calulateTaxForFee($fee, $isBase = false)
     {
         $tax = $fee / ($this->_getRate() + 100) * $this->_getRate();
         
