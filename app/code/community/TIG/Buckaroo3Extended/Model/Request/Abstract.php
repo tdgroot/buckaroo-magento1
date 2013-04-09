@@ -36,7 +36,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
     public function sendRequest()
     {
-    	if (empty($this->_order)) {
+        if (empty($this->_order)) {
     		$this->_debugEmail .= "No order was set! :( \n";
     		Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
     	}
