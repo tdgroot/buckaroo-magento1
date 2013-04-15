@@ -37,11 +37,12 @@
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
 -->
-document.observe("dom:loaded", function(){
-	$('paymentguarantee_terms_and_conditions_link').observe('click', function(Event) {
-		$('paymentguarantee_terms_and_conditions').setStyle({
+document.observe('click', function(event, element) {
+	if (element = event.findElement('#paymentguarantee_terms_and_conditions_link')) {
+	  	$('paymentguarantee_terms_and_conditions').setStyle({
 			display: 'block'
 		});
-	});
+		event.stop();
+	}
 });
 
