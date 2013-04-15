@@ -45,4 +45,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
                   
         return parent::isAvailable($quote);
     }
+    
+    public function validate()
+    {
+        $postData = Mage::app()->getRequest()->getPost();
+        if (
+            !array_key_exists('buckaroo3extended_paymentguarantee_bpe_terms_and_conditions', $postData)
+            || $postData['buckaroo3extended_paymentguarantee_bpe_terms_and_conditions'] != 'checked'
+        ) {
+            Mage::throwException(
+                Mage::helper('buckaroo3extended')->__('Please accept the terms and conditions.')
+            );
+        }
+        
+        $this->getInfoInstance()->setAdditionalInformation('checked_terms_and_conditions', true);
+        
+        return parent::validate();
+    }
 }
