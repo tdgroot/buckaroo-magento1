@@ -1,4 +1,4 @@
-<?php 
+<!--
 /**
  *                  ___________       __            __   
  *                  \__    ___/____ _/  |_ _____   |  |  
@@ -36,7 +36,12 @@
  * @copyright   Copyright (c) 2013 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-?>
-<div id="paymentguarantee_terms_and_conditions">
-    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('buckaroo_intrum_terms_and_conditions')->toHtml();?>
-</div>
+-->
+document.observe("dom:loaded", function(){
+	$('paymentguarantee_terms_and_conditions_link').observe('click', function(Event) {
+		$('paymentguarantee_terms_and_conditions').setStyle({
+			display: 'block'
+		});
+	});
+});
+
