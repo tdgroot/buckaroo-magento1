@@ -100,6 +100,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_debugEmail .= "An Exception occurred: " . $e->getMessage() . "\n";
             $this->_debugEmail .= "\nException trace: " . $e->getTraceAsString() . "\n";
             
+            Mage::register('buckaroo_push-error', true);
             Mage::logException($e);
             //this will allow the script to continue unhindered
             $processedPush = false;

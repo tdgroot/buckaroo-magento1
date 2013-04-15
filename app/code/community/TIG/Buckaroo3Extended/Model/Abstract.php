@@ -199,7 +199,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 		    $this->setDebugEmail('');
 		}
 		
-		if (!Mage::helper('buckaroo3extended')->isAdmin()) {
+        if (!Mage::helper('buckaroo3extended')->isAdmin() && !Mage::registry('buckaroo_push-error')) {
 			$this->_checkExpired();
 		}
             
