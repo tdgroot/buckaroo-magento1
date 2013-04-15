@@ -8,6 +8,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
     protected $_postArray = '';
     protected $_debugEmail = '';
     protected $_method = '';
+    protected $_storeId = '';
         
 	public function setCurrentOrder($order)
     {
@@ -48,12 +49,23 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
     {
     	return $this->_debugEmail;
     }
+        
+    public function setStoreId($storeId)
+    {
+        $this->_storeId = $storeId;
+    }
+    
+    public function getStoreId()
+    {
+        return $this->_storeId;
+    }
     
     public function __construct($data = array())
     {
     	$this->setCurrentOrder($data['order']);
     	$this->setPostArray($data['postArray']);
     	$this->setDebugEmail($data['debugEmail']);
+        $this->setStoreId($this->getOrder()->getStoreId());
     	
     	foreach ($data['order']->getCreditmemosCollection() as $creditmemo)
     	{
@@ -185,7 +197,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
 		}
 		
-		if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', Mage::app()->getStore()->getStoreId())) {
+		if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->getStoreId())) {
 	    	$this->_order->cancel()
 	    				 ->save();
 	    	if ($description) {
@@ -322,7 +334,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
             $value = urldecode($value);
 	        $signatureString .= $key . '=' . $value;
 	    }
-	    $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', Mage::app()->getStore()->getStoreId());
+	    $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->getStoreId());
 	    
 	    $this->_debugEmail .= "\nSignaturestring: {$signatureString}\n";
 	    
@@ -339,14 +351,14 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
         $signature2 = md5(
 			$this->_postArray['oldPost']["bpe_trx"]
 			. $this->_postArray['oldPost']["bpe_timestamp"]
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId())
+			. Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->getStoreId())
 			. $this->_postArray['oldPost']["bpe_invoice"]
 			. $this->_postArray['oldPost']["bpe_reference"]
 			. $this->_postArray['oldPost']["bpe_currency"]
 			. $this->_postArray['oldPost']["bpe_amount"]
 			. $this->_postArray['oldPost']["bpe_result"]
 			. $this->_postArray['oldPost']["bpe_mode"]
-			. Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', Mage::app()->getStore()->getStoreId())
+			. Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->getStoreId())
 		);
 		
 		return $signature2;
