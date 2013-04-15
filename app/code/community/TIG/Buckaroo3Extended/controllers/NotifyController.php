@@ -132,7 +132,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $debugEmail .= 'POST variables recieved: ' . var_export($_POST, true) . "\n\n";
 
         $module = Mage::getModel(
-            'TIG_Buckaroo3Extended_Model_Response_Return',
+            'buckaroo3extended/response_return',
             array(
                 'order'      => $this->_order,
                 'postArray'  => $_POST,
@@ -166,7 +166,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $this->_debugEmail .= "Transaction key matches the order. \n";
             
         $module = Mage::getModel(
-            'TIG_Buckaroo3Extended_Model_Response_Push',
+            'buckaroo3extended/response_push',
             array(
                 'order'      => $this->_order,
                 'postArray'  => $this->_postArray,
@@ -190,7 +190,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $this->_debugEmail .= "Transaction key saved: {$this->_postArray['brq_transactions']}";
         
         $module = Mage::getModel(
-            'TIG_Buckaroo3Extended_Model_Response_Push',
+            'buckaroo3extended/response_push',
             array(
                 'order'      => $this->_order,
                 'postArray'  => $this->_postArray,
