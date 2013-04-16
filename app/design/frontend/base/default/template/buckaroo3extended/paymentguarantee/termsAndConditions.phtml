@@ -38,5 +38,12 @@
  */
 ?>
 <div id="paymentguarantee_terms_and_conditions">
-    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('buckaroo_intrum_terms_and_conditions')->toHtml();?>
+    <div class="tac-content std">
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('buckaroo_intrum_terms_and_conditions')->toHtml();?>
+        <a class="button tac-close" id="paymentguarantee_terms_and_conditions_close">
+            <span>
+                <span><?php echo $this->__('Close'); ?></span>
+            </span>
+        </a>
+    </div>
 </div>

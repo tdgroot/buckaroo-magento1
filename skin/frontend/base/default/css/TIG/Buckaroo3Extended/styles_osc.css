@@ -1,3 +1,4 @@
+/* Form */
 #onestepcheckout-form .buckaroo-method select { width:auto !important; }
 #onestepcheckout-form .buckaroo-method input.input-text { width:220px !important; }
 
@@ -13,4 +14,20 @@
 
 #onestepcheckout-form .buckaroo-method ul li:first-child { padding-top:5px; }
 
+/* Payment Guarantee Terms & Conditions */
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-checkbox { float:left; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-checkbox.validation-failed { margin-bottom:36px; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept #advice-required-entry-buckaroo3extended_paymentguarantee_bpe_terms_and_conditions { position:absolute; margin-top:34px; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept label { float:left; width:200px; margin:-2px 0 0 5px; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept label em { margin:18px 8px 0 0; }
+
 #onestepcheckout-form #paymentguarantee_terms_and_conditions { display:none; }
+#onestepcheckout-form #paymentguarantee_terms_and_conditions { position:fixed; width:100%; height:100%; top:0; left:0; background:rgba(255, 255, 255, .75); z-index:100; }
+
+#onestepcheckout-form #paymentguarantee_terms_and_conditions .tac-content { position:fixed; background:#fff; width:310px; height:auto; left:50%; top:30px; margin-left:-155px; padding:8px 8px 12px; border: 1px solid #b6b6b6; z-index:200; }
+
+#onestepcheckout-form #paymentguarantee_terms_and_conditions .tac-close { float:right; }
+
+#onestepcheckout-form #paymentguarantee_terms_and_conditions a.button { text-decoration:none !important; cursor:pointer !important; }
+#onestepcheckout-form #paymentguarantee_terms_and_conditions a.button span { display:block; height:19px; border:1px solid #de5400; background:#f18200; padding:0 8px; font:bold 12px/19px Arial, Helvetica, sans-serif; text-align:center; white-space:nowrap; color:#fff; }
+#onestepcheckout-form #paymentguarantee_terms_and_conditions a.button span span { border:0; padding:0; }
