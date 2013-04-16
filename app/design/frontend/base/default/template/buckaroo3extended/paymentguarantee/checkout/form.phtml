@@ -75,7 +75,7 @@ echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputY
                 <input class="input-text required-entry" type="text" title="<?php echo $this->__('Bank account number') ?>" name="<?php echo $_code;?>_bpe_customer_account_number" value="<?php echo $this->getBankAccount(); ?>" />
             </div>
         </li>
-        <li>
+        <li class="tac-accept">
             <div class="input-box">
                 <input class="input-checkbox required-entry" type="checkbox" title="<?php echo $this->__('Terms and Conditions') ?>" name="<?php echo $_code;?>_bpe_terms_and_conditions" value="checked" />
             </div>
