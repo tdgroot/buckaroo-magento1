@@ -420,9 +420,11 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    
 	    //hold the order
 		$this->_order->hold()
-		             ->save();
-	    $this->_order->setState($setState, $setStatus, Mage::helper('buckaroo3extended')->__($description))
-	    			 ->save();
+                     ->save()
+                     ->setStatus($setStatus)
+                     ->save()
+		             ->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $setStatus)
+                     ->save();
 	    
 	    return true;
 	}
