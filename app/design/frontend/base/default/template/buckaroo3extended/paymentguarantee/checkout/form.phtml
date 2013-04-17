@@ -77,9 +77,9 @@ echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputY
         </li>
         <li class="tac-accept">
             <div class="input-box">
-                <input class="input-checkbox required-entry" type="checkbox" title="<?php echo $this->__('Terms and Conditions') ?>" name="<?php echo $_code;?>_bpe_terms_and_conditions" value="checked" />
+                <input class="input-checkbox required-entry" type="checkbox" title="<?php echo $this->__('Terms and Conditions') ?>" name="<?php echo $_code;?>_bpe_terms_and_conditions" value="checked" id="<?php echo $_code;?>_BPE_terms_and_conditions" />
             </div>
-            <label class="required"><?php echo $this->__('Yes, I accept the %sterms and condition%s for the use of Payment Guarantee.', '<a href="#" id="paymentguarantee_terms_and_conditions_link">', '</a>') ?> <em>*</em></label>
+            <label for="<?php echo $_code;?>_BPE_terms_and_conditions" class="required"><?php echo $this->__('Yes, I accept the %sterms and condition%s for the use of Payment Guarantee.', '<a href="#" id="paymentguarantee_terms_and_conditions_link">', '</a>') ?> <em>*</em></label>
         </li>
         
         <li>
