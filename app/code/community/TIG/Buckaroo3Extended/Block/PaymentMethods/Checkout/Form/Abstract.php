@@ -131,7 +131,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
                 return $dob;
             }
             
-            $dob = date('d,m,Y', Varien_Date::toTimestamp($customerDob));
+            $dob = Mage::getModel('core/date')->date('d,m,Y', $customerDob);
             $dob = explode(',', $dob);
         }
         
