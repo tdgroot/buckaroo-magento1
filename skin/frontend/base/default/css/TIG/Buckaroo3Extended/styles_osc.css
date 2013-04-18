@@ -17,7 +17,7 @@
 /* Payment Guarantee Terms & Conditions */
 #onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-checkbox { float:left; }
 #onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-checkbox.validation-failed { margin-bottom:36px; }
-#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee #advice-required-entry-buckaroo3extended_paymentguarantee_BPE_terms_and_conditions { position:absolute !important; margin-top:34px !important; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept #advice-required-entry-buckaroo3extended_paymentguarantee_BPE_terms_and_conditions { position:absolute; margin-top:34px; }
 #onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept label { float:left; width:200px; margin:-2px 0 0 5px; }
 #onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept label em { margin:18px 8px 0 0; }
 
