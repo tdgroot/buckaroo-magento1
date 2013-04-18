@@ -12,7 +12,7 @@
 #checkout-step-payment #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-checkbox { float:left; }
 #checkout-step-payment #payment_form_buckaroo3extended_paymentguarantee .tac-accept label { float:left; margin:-2px 0 0 5px; }
 #checkout-step-payment #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-checkbox.validation-failed { margin-bottom:18px; }
-#checkout-step-payment #payment_form_buckaroo3extended_paymentguarantee #advice-required-entry-buckaroo3extended_paymentguarantee_bpe_terms_and_conditions { position:absolute !important; margin-top:17px !important; }
+#checkout-step-payment #payment_form_buckaroo3extended_paymentguarantee .tac-accept #advice-required-entry-buckaroo3extended_paymentguarantee_BPE_terms_and_conditions { position:absolute; margin-top:17px; }
 
 #checkout-step-payment #paymentguarantee_terms_and_conditions { display:none; }
 #checkout-step-payment #paymentguarantee_terms_and_conditions { position:fixed; width:100%; height:100%; top:0; left:0; background:rgba(0, 0, 0, .35); z-index:100; }
