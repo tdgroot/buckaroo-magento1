@@ -47,6 +47,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         $this->_addCustomerVariables($vars, $this->_method);
         $this->_addCreditManagement($vars, $this->_method);
         $this->_addPaymentGuaranteeVariables($vars);
+        
+        $additionalInformation = $this->_order->getPayment()->getMethodInstance()->getInfoInstance()->getAdditionalInformation();
+        if (
+            array_key_exists('checked_terms_and_conditions', $additionalInformation) 
+            && $additionalInformation['checked_terms_and_conditions'] === true
+        ) {
+            $message = Mage::helper('buckaroo3extended')->__('Customer accepted terms and conditions.');
+        } else {
+            $message = Mage::helper('buckaroo3extended')->__('Customer did NOT accept the terms and conditions.');
+        }
+        $this->_order->addStatusHistoryComment($message)->save();
 
         $request->setVars($vars);
 

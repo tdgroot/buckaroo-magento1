@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<TIG_Buckaroo3Extended>
-			<version>4.4.2.0</version>
+			<version>4.5.0.0</version>
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<frontend>
@@ -108,6 +108,7 @@
             </buckaroo3extended>
             <buckaroo3extended_resource>
                 <class>TIG_Buckaroo3Extended_Model_Resource</class>
+                <deprecatedNode>buckaroo3extended_mysql4</deprecatedNode>
                 <entities>
                     <certificate>
                         <table>buckaroo_certificates</table>
@@ -129,7 +130,7 @@
             <buckaroo3extended_setup>
                 <setup>
                     <module>TIG_Buckaroo3Extended</module>
-                    <class>TIG_Buckaroo3Extended_Model_Mysql4_Setup</class>
+                    <class>TIG_Buckaroo3Extended_Model_Resource_Setup</class>
                 </setup>
                 <connection>
                     <use>core_setup</use>
@@ -1062,6 +1063,10 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo2012onlinegiro>
+            <buckaroo2012callcenter>
+                <active>0</active>
+                <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
+            </buckaroo2012callcenter>
             <buckaroo>
             	<active>0</active>
             	<model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>

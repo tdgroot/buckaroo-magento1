@@ -34,6 +34,10 @@
 				<type>skin_css</type>
 				<name>css/TIG/Buckaroo3Extended/styles_opc.css</name>
 			</action>
+			<action method="addItem">
+				<type>skin_js</type>
+				<name>js/TIG/Buckaroo3Extended/paymentGuaranteeTermsAndConditions.js</name>
+			</action>
 		</reference>
 		<reference name="before_body_end">
 			<block type="core/template" name="buckaroo_save_sata_js" template="buckaroo3extended/saveData.phtml"/>
@@ -46,6 +50,10 @@
 			<action method="addItem">
 				<type>skin_css</type>
 				<name>css/TIG/Buckaroo3Extended/styles_osc.css</name>
+			</action>
+			<action method="addItem">
+				<type>skin_js</type>
+				<name>js/TIG/Buckaroo3Extended/paymentGuaranteeTermsAndConditions.js</name>
 			</action>
 		</reference>
 		<reference name="before_body_end">

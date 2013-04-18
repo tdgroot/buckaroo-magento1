@@ -394,22 +394,24 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $setStatus = $newStates[1];
         
         if ($this->_postArray['brq_currency'] == $this->_order->getBaseCurrencyCode()) {
-            $storeId = $this->getOrder()->getStoreId();
+            $currencyCode = $this->_order->getBaseCurrencyCode();
+            $orderAmount = $this->_order->getBaseGrandTotal();
         } else {
-            $storeId = 0;
+            $currencyCode = $this->_order->getOrderCurrencyCode();
+            $orderAmount = $this->_order->getGrandTotal();
         }
         
 		if ($amount > $this->_postArray['brq_amount']) {
             $description = Mage::helper('buckaroo3extended')->__(
                                'Not enough paid: %s has been transfered. Order grand total was: %s.',
-                               Mage_Core_Helper_Data::currencyByStore(($this->_postArray['brq_amount']), $storeId, true, false),
-                               Mage_Core_Helper_Data::currencyByStore($this->_order->getGrandTotal(), $storeId, true, false)
+                               Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']),
+                               Mage::app()->getLocale()->currency($currencyCode)->toCurrency($orderAmount)
                            );
 	    } elseif ($amount < $this->_postArray['brq_amount']) {
             $description = Mage::helper('buckaroo3extended')->__(
                                'Too much paid: %s has been transfered. Order grand total was: %s.',
-                               Mage_Core_Helper_Data::currencyByStore(($this->_postArray['brq_amount']), $storeId, true, false),
-                               Mage_Core_Helper_Data::currencyByStore($this->_order->getGrandTotal(), $storeId, true, false)
+                               Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']),
+                               Mage::app()->getLocale()->currency($currencyCode)->toCurrency($orderAmount)
                            );
 	    } else {
 	    	//the correct amount was actually paid, so return false
@@ -418,9 +420,11 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    
 	    //hold the order
 		$this->_order->hold()
-		             ->save();
-	    $this->_order->setState($setState, $setStatus, Mage::helper('buckaroo3extended')->__($description))
-	    			 ->save();
+                     ->save()
+                     ->setStatus($setStatus)
+                     ->save()
+		             ->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $setStatus)
+                     ->save();
 	    
 	    return true;
 	}

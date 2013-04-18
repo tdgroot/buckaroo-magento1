@@ -57,6 +57,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
             $this->_addCustomerVariables($vars, 'creditmanagement');
+            
+            if (!isset($vars['customVars']['creditmanagement']['PhoneNumber'])) {
+                $vars['customVars']['creditmanagement']['PhoneNumber'] = $vars['customVars']['creditmanagement']['MobilePhoneNumber'];
+            }
         }
         
         $request->setVars($vars);

@@ -73,7 +73,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_restructurePostArray();
             $orderId = $this->_postArray['brq_invoicenumber'];
         } else {
-            return;
+            return false;
         }
 
         $this->_debugEmail .= 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
@@ -84,6 +84,10 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         }
         
         $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        
+        if (!$this->_order) {
+            return false;
+        }
 
         $this->_paymentCode = $this->_order->getPayment()->getMethod();
 
@@ -96,6 +100,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_debugEmail .= "An Exception occurred: " . $e->getMessage() . "\n";
             $this->_debugEmail .= "\nException trace: " . $e->getTraceAsString() . "\n";
             
+            Mage::register('buckaroo_push-error', true);
             Mage::logException($e);
             //this will allow the script to continue unhindered
             $processedPush = false;
@@ -128,7 +133,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $debugEmail .= 'POST variables recieved: ' . var_export($_POST, true) . "\n\n";
 
         $module = Mage::getModel(
-            'TIG_Buckaroo3Extended_Model_Response_Return',
+            'buckaroo3extended/response_return',
             array(
                 'order'      => $this->_order,
                 'postArray'  => $_POST,
@@ -162,7 +167,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $this->_debugEmail .= "Transaction key matches the order. \n";
             
         $module = Mage::getModel(
-            'TIG_Buckaroo3Extended_Model_Response_Push',
+            'buckaroo3extended/response_push',
             array(
                 'order'      => $this->_order,
                 'postArray'  => $this->_postArray,
@@ -186,7 +191,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $this->_debugEmail .= "Transaction key saved: {$this->_postArray['brq_transactions']}";
         
         $module = Mage::getModel(
-            'TIG_Buckaroo3Extended_Model_Response_Push',
+            'buckaroo3extended/response_push',
             array(
                 'order'      => $this->_order,
                 'postArray'  => $this->_postArray,

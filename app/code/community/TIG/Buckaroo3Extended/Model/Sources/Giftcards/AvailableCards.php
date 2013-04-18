@@ -23,6 +23,8 @@ class TIG_Buckaroo3Extended_Model_Sources_Giftcards_Availablecards
     		 array('value' => 'wonenzo', 'label' => Mage::helper('buckaroo3extended')->__('Wonen En Zo')),
     		 array('value' => 'yourgift', 'label' => Mage::helper('buckaroo3extended')->__('YourGift Card')),
     		 array('value' => 'fashioncheque', 'label' => Mage::helper('buckaroo3extended')->__('fashioncheque')),
+             array('value' => 'sieradenhorlogescadeaukaart', 'label' => Mage::helper('buckaroo3extended')->__('sieradenhorlogescadeaukaart')),
+             array('value' => 'jewellerygiftcard', 'label' => Mage::helper('buckaroo3extended')->__('JewelleryGiftcard')),
     	);
     	return $array;
     }
