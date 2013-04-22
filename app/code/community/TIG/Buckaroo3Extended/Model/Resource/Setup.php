@@ -1,7 +1,9 @@
 <?php
 class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resource_Setup
 {
-    protected $_termsAndConditions = <<<TERMS_AND_CONDITIONS
+    public function getTermsAndConditions()
+    {
+        $termsAndConditions = <<<TERMS_AND_CONDITIONS
 <p><strong>Toelichting</strong></p>
 <p>Bij "achteraf betalen", kunt u eerst uw bestelling ontvangen en dan de factuur betalen.
 Indien u kiest voor de betaalmethode "achteraf betalen", gaat u akkoord met de daarbij behorende
@@ -14,7 +16,18 @@ factuur dient binnen 14 (veertien) dagen na factuurdatum betaald te worden.</p>
 Voor deze algemene voorwaarden klikt u <a href="">hier</a>.</p>
 TERMS_AND_CONDITIONS;
 
-    protected $_informationRequirement = <<<INFORMATION_REQUIREMENT
+        return $termsAndConditions;
+    }
+    
+    public function setTermsAndConditions($termsAndConditions)
+    {
+        $this->_termsAndConditions = $termsAndConditions;
+        return $this;
+    }
+
+    public function getInformationRequirement()
+    {
+        $informationRequirement = <<<INFORMATION_REQUIREMENT
 <p>Voorwaarden gebruik "achteraf betalen":<br/>
 1. De producten en/of diensten van <naam Merchant invullen> zijn afgenomen met een factuur-
 en afleveradres (geen postbus) in Nederland;<br/>
@@ -91,20 +104,7 @@ incassokosten) betaalt, kan dit gevolgen hebben voor eventuele goedkeuring door 
 Justitia van iedere volgende aanvraag van u voor de betaaloptie "achteraf betalen".</p>
 INFORMATION_REQUIREMENT;
 
-    public function getTermsAndConditions()
-    {
-        return $this->_termsAndConditions;
-    }
-    
-    public function setTermsAndConditions($termsAndConditions)
-    {
-        $this->_termsAndConditions = $termsAndConditions;
-        return $this;
-    }
-
-    public function getInformationRequirement()
-    {
-        return $this->_informationRequirement;
+        return $informationRequirement;
     }
     
     public function setInformationRequirement($informationRequirement)
