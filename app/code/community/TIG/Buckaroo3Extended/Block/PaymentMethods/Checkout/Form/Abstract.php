@@ -168,6 +168,13 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
             $phoneNumber = $this->getAddress()->getTelephone();
         }
         
+        if (!$phoneNumber || $phoneNumber == '-') {
+            $billingAddress = $this->getCustomer()->getDefaultBillingAddress();
+            if ($billingAddress) {
+                $phoneNumber = $billingAddress->getTelephone();
+            }
+        }
+        
         if ($phoneNumber == '-') {
             return null;
         }
