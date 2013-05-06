@@ -1,0 +1,35 @@
+===== 4.5.0.2 =====
+
+=== Fixes ===
+- Installatieprobleem bij PHP versie 5.2.17 opgelost
+- Design probleem in Enterprise installaties opgelost
+
+
+
+
+===== 4.5.0.1 ====
+
+=== Fixes ===
+- BetaalGarant betalingsvoorwaarden zijn in onestepcheckout nu goed uitgelijnd als het checkboxje niet aangevinkt is.
+
+
+
+
+===== 4.5.0.0 ====
+
+=== Major Highlights ===
+- 2 nieuwe giftcards toegevoegd: jewellerycard en sieradenenhorlogescadeaukaart
+- klanten moeten nu voor achteraf betalen eerst de algemene voorwaarden accepteren. Deze voorwaarden staan in een static block en worden getoond d.m.v. een popup in de checkout pagina
+
+=== Fixes ===
+- klikken op labels in de frontend en backend selecteert nu het bijbehorende veld
+- probleem in magenta 1.5 door het gebruik van Varien_Date is opgelost
+- wanneer er met een vreemde valuta een incorrect bedrag is betaald wordt nu correct bij de bestelling het betaalde bedrag en het verwachtte bedrag getoond in de betaalde valuta
+- de invulvelden van PPE en OG in de backend zijn opnieuw gestyled. Er worden niet langer onterecht validatiefouten getoond
+- er ontstaat niet langer een HTTP 302 melding wanneer er een push binnenkomt die volgens de module niet gekoppeld kan worden aan een bestelling
+- automatisch legen van de winkelwagen na een succesvolle betaling werkt weer
+- refunds maken nu correct gebruik van de store ID van de bestelling ipv de store ID van de backend
+- backwards compatibiliteit met de 2012 module verbeterd door toevoeging van buckaroo2012callcenter betaalmethode
+- de shopping cart blijft nu ook gevuld voor gasten na een onsuccesvolle betaling
+- javascript op de checkout pagina maakt nu gebruik van https indien beschikbaar
+
