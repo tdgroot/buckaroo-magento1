@@ -67,7 +67,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		
 		$this->_debugEmail .= "can the order be processed? " . $canProcess . "\ncan the order be updated? " . $canUpdate . "\n";
 		
-		if (!$canProcess && false) {
+		if (!$canProcess) {
 			return false;
 		} elseif ($canProcess && !$canUpdate) {
 			//if the order cant be updated, try to add a notification to the status history instead
