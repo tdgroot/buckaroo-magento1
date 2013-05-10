@@ -21,14 +21,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
             array(
             	'BPE_Customergender'    => $_POST[$this->_code.'_BPE_Customergender'],
                 'BPE_AccountNumber'     => $_POST[$this->_code.'_bpe_customer_account_number'],
+                'BPE_PhoneNumber'     => $_POST[$this->_code.'_bpe_customer_phone_number'],
         		'BPE_customerbirthdate' => date(
         			'Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
         		    . '-' . $_POST[$this->_code.'_customerbirthdate']['month']
         		    . '-' . $_POST[$this->_code.'_customerbirthdate']['day'])
         		)
         	)
-        );  	
-        		
+        );
+        
     	return parent::getOrderPlaceRedirectUrl();
     }
     

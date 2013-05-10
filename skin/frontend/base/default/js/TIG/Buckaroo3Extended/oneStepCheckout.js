@@ -5,6 +5,7 @@ oldGender = '';
 oldDay = '';
 oldMonth = '';
 oldYear = '';
+oldPhone = '';
 originalAddress = jQuery('#billing-address-select option:selected').val();
 changedAddress = false;
 jQuery("#billing\\:firstname").change(
@@ -121,6 +122,22 @@ jQuery("#billing\\:email").change(
         }
         
         oldEmail = email;
+    }
+);
+jQuery("#billing\\:telephone").change(
+    function() {
+        phone = jQuery(this).val();
+        
+        if (
+            !jQuery('#buckaroo3extended_paymentguarantee_BPE_Customerphone').val() 
+            || jQuery('#buckaroo3extended_paymentguarantee_BPE_Customerphone').val() == oldPhone
+            || changedAddress
+        ) {
+            jQuery('#buckaroo3extended_paymentguarantee_BPE_Customerphone').val(phone);
+            sendData(jQuery('#buckaroo3extended_paymentguarantee_BPE_Customerphone'));
+        }
+        
+        oldPhone = phone;
     }
 );
 jQuery("#billing\\:gender").change(
