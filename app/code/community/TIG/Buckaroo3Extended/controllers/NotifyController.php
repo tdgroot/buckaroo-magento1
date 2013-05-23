@@ -52,7 +52,8 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
      */
     public function preDispatch()
     {
-        if (empty($_POST)) {
+        $postData = $this->getRequest()->getPost();
+        if (empty($postData)) {
             echo 'Only Buckaroo can call this page properly.';
             exit;
         }
@@ -65,11 +66,13 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
      */
     public function pushAction()
     {
+        Mage::log($_POST, null, 'TIG_DEBUG.log', true);
+        $postData = $this->getRequest()->getPost();
         $this->_debugEmail = '';
-        if (isset($_POST['brq_invoicenumber'])) {
-            $this->_postArray = $_POST;
+        if (isset($postData['brq_invoicenumber'])) {
+            $this->_postArray = $postData;
             $orderId = $this->_postArray['brq_invoicenumber'];
-        } else if (isset($_POST['bpe_invoice'])) {
+        } else if (isset($postData['bpe_invoice'])) {
             $this->_restructurePostArray();
             $orderId = $this->_postArray['brq_invoicenumber'];
         } else {
@@ -79,7 +82,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $this->_debugEmail .= 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
         $this->_debugEmail .= 'Order ID: ' . $orderId . "\n";
 
-        if (isset($_POST['brq_test']) && $_POST['brq_test'] == 'true') {
+        if (isset($postData['brq_test']) && $postData['brq_test'] == 'true') {
             $this->_debugEmail .= "\n/////////// TEST /////////\n";
         }
         
@@ -119,8 +122,9 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
     public function returnAction()
     {
-        if (isset($_POST['brq_invoicenumber'])) {
-            $orderId = $_POST['brq_invoicenumber'];
+        $postData = $this->getRequest()->getPost();
+        if (isset($postData['brq_invoicenumber'])) {
+            $orderId = $postData['brq_invoicenumber'];
         } else {
             return;
         }
@@ -130,13 +134,13 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $this->_paymentCode = $this->_order->getPayment()->getMethod();
 
         $debugEmail = 'Payment code: ' . $this->_paymentCode . "\n\n";
-        $debugEmail .= 'POST variables recieved: ' . var_export($_POST, true) . "\n\n";
+        $debugEmail .= 'POST variables recieved: ' . var_export($postData, true) . "\n\n";
 
         $module = Mage::getModel(
             'buckaroo3extended/response_return',
             array(
                 'order'      => $this->_order,
-                'postArray'  => $_POST,
+                'postArray'  => $postData,
                 'debugEmail' => $this->_debugEmail,
                 'method'     => $this->_paymentCode,
             )

@@ -408,7 +408,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	{
         $country = $this->_order->getBillingAddress()->getCountry();
         
-        $locale = Mage::app()->getLocale()->getLocaleCode();
+        $locale = Mage::getStoreConfig('general/locale/code', $this->getStoreId());
         $locale = str_replace('_', '-', $locale);
         $lang = strtoupper(substr($locale, 0, 2));
 		
