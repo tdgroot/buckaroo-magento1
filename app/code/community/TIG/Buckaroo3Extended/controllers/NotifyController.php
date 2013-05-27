@@ -66,7 +66,6 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
      */
     public function pushAction()
     {
-        Mage::log($_POST, null, 'TIG_DEBUG.log', true);
         $postData = $this->getRequest()->getPost();
         $this->_debugEmail = '';
         if (isset($postData['brq_invoicenumber'])) {
