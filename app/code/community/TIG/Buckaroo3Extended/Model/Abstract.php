@@ -506,8 +506,9 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         $this->_debugEmail .= 'Currency used is ' 
                             . $this->_postArray['brq_currency'] 
                             . '. Order currency is ' 
-                            . $this->_order->getStoreCurrencyCode() 
+                            . $this->_order->getOrderCurrencyCode() 
                             . ".\n";
+                            
 	    if ($this->_postArray['brq_currency'] == $this->_order->getOrderCurrencyCode()) {
 	        $this->_debugEmail .= "Currency used is same as order currency \n";
 	        $amountOrdered = $this->_order->getGrandTotal();
