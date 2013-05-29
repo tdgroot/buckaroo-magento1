@@ -360,7 +360,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         $checkMobileArray = array("3106","316","06","00316","003106");
         foreach($checkMobileArray as $key => $value) {
             
-            if( strpos( substr( $number, 0, 6 ), $value ) !== false) {
+            if(strpos(substr($number, 0, strlen($value)), $value) !== false) {
                 
                 return true;
             }
