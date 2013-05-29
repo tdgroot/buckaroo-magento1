@@ -1,3 +1,19 @@
+===== 4.6.0 =====
+
+=== Minor Changes ===
+- De Achteraf Betalen betaalmethode heeft nu een telefoonnummer veld, indien er geen telefoonnummer ingevuld hoeft te worden bij het adres. Dit veld is verborgen indien er een valide telefoonnummer bekend is bij de klantaccount of het gekozen adres.
+
+=== Fixes ===
+- Probleem waarbij telefoonnummers soms incorrect geïdentificeerd werden als een mobiel nummer is opgelost.
+- Het is niet langer mogelijk voor bestellingen om een status die bij processing state hoort te krijgen nadat de bestelling voltooid is.
+- De controle op het betaalde bedrag gaat nu correct om met vreemde valuta.
+- Indien men probeert te betalen met cadeaukaarten, maar er geen cadeaukaart geactiveerd is in de module configuratie resulteert dit niet langer in een exception.
+- Bestellingen die vanuit de backend geplaatst worden, maken nu gebruik van de correcte locale code.
+- De BTW op de betaaltoeslag wordt in Magento 1.7.0.2 niet langer dubbel berekend op de factuur.
+
+
+
+
 ===== 4.5.0.2 =====
 
 === Fixes ===
