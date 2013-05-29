@@ -360,7 +360,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         $checkMobileArray = array("3106","316","06","00316","003106");
         foreach($checkMobileArray as $key => $value) {
             
-            if( strpos( substr( $number, 0, 6 ), $value ) !== false) {
+            if(strpos(substr($number, 0, strlen($value)), $value) !== false) {
                 
                 return true;
             }
@@ -417,7 +417,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         
         $allowedString = implode(',', $allowedArray);
         
-        Return $allowedString;
+        return $allowedString;
     }
     
     protected function _getSecureStatus($enrolled, $authenticated, $order)
@@ -427,11 +427,6 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         
         if ($enrolled && $authenticated && $useSuccessStatus) {
             switch($order->getState()) {
-                // case Mage_Sales_Model_Order::STATE_NEW:        $status = Mage::getStoreConfig(
-                                                                   // 'buckaroo/' . $this->_code . '/secure_status_new',
-                                                                    // $order->getStoreId())
-                                                               // ;
-                                                               // break;
                 case Mage_Sales_Model_Order::STATE_PROCESSING: $status = Mage::getStoreConfig(
                                                                    'buckaroo/' . $this->_code . '/secure_status_processing',
                                                                     $order->getStoreId())
@@ -440,26 +435,11 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
             }
         } elseif (!$enrolled || !$authenticated) {
             switch($order->getState()) {
-                // case Mage_Sales_Model_Order::STATE_NEW:        $status = Mage::getStoreConfig(
-                                                                   // 'buckaroo/' . $this->_code . '/secure_status_new',
-                                                                    // $order->getStoreId())
-                                                               // ;
-                                                               // break;
                 case Mage_Sales_Model_Order::STATE_PROCESSING: $status = Mage::getStoreConfig(
                                                                    'buckaroo/' . $this->_code . '/unsecure_status_processing',
                                                                     $order->getStoreId())
                                                                ;
                                                                break;
-                // case Mage_Sales_Model_Order::STATE_HOLDED:     $status = Mage::getStoreConfig(
-                                                                   // 'buckaroo/' . $this->_code . '/secure_status_holded',
-                                                                    // $order->getStoreId())
-                                                               // ;
-                                                               // break;
-                // case Mage_Sales_Model_Order::STATE_CANCELED:  $status = Mage::getStoreConfig(
-                                                                   // 'buckaroo/' . $this->_code . '/secure_status_canceled',
-                                                                    // $order->getStoreId())
-                                                               // ;
-                                                               // break;
             }
         }
 

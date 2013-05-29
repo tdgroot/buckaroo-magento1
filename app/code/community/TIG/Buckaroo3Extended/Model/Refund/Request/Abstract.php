@@ -77,6 +77,24 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 
     public function sendRefundRequest()
     {
+        try {
+            return $this->_sendRefundRequest();
+        } catch (Exception $e) {
+            Mage::helper('buckaroo3extended')->logException($e);
+            Mage::getModel(
+                'buckaroo3extended/refund_response_abstract', 
+                array(
+                    'response' => false, 
+                    'XML' => false
+                )
+            )->processResponse();
+        }
+        
+        return $this;
+    }
+    
+    protected function _sendRefundRequest()
+    {
         $this->_debugEmail .= 'Chosen payment method: ' . $this->_method . "\n";
 
         //if no method has been set (no payment method could identify the chosen method) process the order as if it had failed
@@ -103,7 +121,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 
         //clean the array for a soap request
         $this->setVars($this->_cleanArrayForSoap($this->getVars()));
-		
+        
         $this->_debugEmail .= "Variable array:" . var_export($this->_vars, true) . "\n\n";
         $this->_debugEmail .= "Building SOAP request... \n";
 

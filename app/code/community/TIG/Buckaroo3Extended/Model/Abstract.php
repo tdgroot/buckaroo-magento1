@@ -408,7 +408,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	{
         $country = $this->_order->getBillingAddress()->getCountry();
         
-        $locale = Mage::app()->getLocale()->getLocaleCode();
+        $locale = Mage::getStoreConfig('general/locale/code', $this->getStoreId());
         $locale = str_replace('_', '-', $locale);
         $lang = strtoupper(substr($locale, 0, 2));
 		
@@ -430,29 +430,29 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	{
 		$code = $this->_response->Status->Code->Code;
 		
-		if (isset($this->responseCodes[$code]))
+		if (!isset($this->responseCodes[$code]))
 		{
-		    $returnArray = $this->responseCodes[$code];
-		    
-		    if (is_object($this->_response)
-		        && isset($this->_response->Status->SubCode)) 
-		    {
-		        //the subcode is additional information sometimes returned by Buckaroo. Currently not used,
-		        //but it may be of use when debugging.
-    		    $returnArray['subCode'] = array(
-    		        'message' => $this->_response->Status->SubCode->_,
-    		        'code'    => $this->_response->Status->SubCode->Code,
-    		    );
-		    }
-		    $returnArray['code'] = $code;
-		    
-			return $returnArray;
-		} else {
-			return array(
-				'message' => 'Onbekende responsecode: ' . $code,
-				'status' => self::BUCKAROO_NEUTRAL
-			);
+            return array(
+                'message' => 'Onbekende responsecode: ' . $code,
+                'status' => self::BUCKAROO_NEUTRAL
+            );
 		}
+        
+        $returnArray = $this->responseCodes[$code];
+        if (is_object($this->_response)
+            && isset($this->_response->Status->SubCode)) 
+        {
+            //the subcode is additional information sometimes returned by Buckaroo. Currently not used,
+            //but it may be of use when debugging.
+            $returnArray['subCode'] = array(
+                'message' => $this->_response->Status->SubCode->_,
+                'code'    => $this->_response->Status->SubCode->Code,
+            );
+        }
+        
+        $returnArray['code'] = $code;
+        
+        return $returnArray;
 	}
 	
 	/**
@@ -506,8 +506,9 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         $this->_debugEmail .= 'Currency used is ' 
                             . $this->_postArray['brq_currency'] 
                             . '. Order currency is ' 
-                            . $this->_order->getStoreCurrencyCode() 
+                            . $this->_order->getOrderCurrencyCode() 
                             . ".\n";
+                            
 	    if ($this->_postArray['brq_currency'] == $this->_order->getOrderCurrencyCode()) {
 	        $this->_debugEmail .= "Currency used is same as order currency \n";
 	        $amountOrdered = $this->_order->getGrandTotal();
