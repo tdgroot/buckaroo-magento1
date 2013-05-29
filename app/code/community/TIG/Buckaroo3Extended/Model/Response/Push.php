@@ -337,10 +337,16 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			$this->_order->save();
 		}
 		
-		$this->_order->addStatusHistoryComment($description, $newStates[1])
-			         ->save();
-			         
-	    $this->_order->setStatus($newStates[1])->save();
+        if ($this->_order->isStateProtected($this->_order->getState())) {
+            $this->_order->addStatusHistoryComment($description)
+                         ->save();
+        } else {
+            $this->_order->addStatusHistoryComment($description, $newStates[1])
+                         ->save();
+                     
+            $this->_order->setStatus($newStates[1])->save();
+        }
+		
         
 		return true;
 	}
