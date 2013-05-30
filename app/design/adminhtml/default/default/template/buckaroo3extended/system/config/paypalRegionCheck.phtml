@@ -1,7 +1,6 @@
-<?php $test = $this->getIsRegionRequired();
-echo '<pre>';
-var_dump($test);
- ?>
+<?php if($this->getIsRegionRequired()): ?>
+<?php echo 'testing branches'; ?>
+<?php endif ?>
 
 <?php /* Stylesheet not available */ ?>
 <style>
