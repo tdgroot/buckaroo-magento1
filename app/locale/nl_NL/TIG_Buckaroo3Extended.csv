@@ -250,3 +250,4 @@
 "First Name","Voornaam"
 "Last Name","Achternaam"
 "Telephone","Telefoonnummer"
+"Enter the following URL under profile -> Websites -> Push settings -> Push URI Success & Failure: %s","Vul de volgende URL in onder Profile -> Websites -> Push settings -> Push URI Success & Failure: %s"
