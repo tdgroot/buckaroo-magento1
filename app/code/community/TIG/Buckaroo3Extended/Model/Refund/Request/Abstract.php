@@ -81,13 +81,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
             return $this->_sendRefundRequest();
         } catch (Exception $e) {
             Mage::helper('buckaroo3extended')->logException($e);
-            Mage::getModel(
-                'buckaroo3extended/refund_response_abstract', 
-                array(
-                    'response' => false, 
-                    'XML' => false
-                )
-            )->processResponse();
+            Mage::throwException($e->getMessage());
         }
         
         return $this;

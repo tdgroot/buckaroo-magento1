@@ -81,12 +81,14 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Abstract extends TIG_Buckaroo3
     {
         $this->_debugEmail .= 'The transaction request produced an error. \n';
         
-        $this->_updateRefundedOrderStatus(false);
+        if ($this->getOrder()) {
+            $this->_updateRefundedOrderStatus(false);
+        }
         
         $this->sendDebugEmail();
         
         if (isset($this->_response) && isset($this->_response->Status->Code->_)) {
-        	Mage::throwException(Mage::helper('buckaroo3extended')->__($this->_response->Status->Code->_));
+        	Mage::throwException(Mage::helper('buckaroo3extended')->__('Buckaroo returned the following error: %s', $this->_response->Status->Code->_));
         } else {
         	Mage::throwException('An unknown error occurred.');
         }
