@@ -618,10 +618,13 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     }
 	
 	protected function _updateRefundedOrderStatus($success = false)
-	{	    
+	{  
 	    $successString = $success ? 'success' : 'failed';
+        if (!is_object($this->_order)) {
+            return $this;
+        }
 	    $state = $this->_order->getState();
-	     
+	    
 	    if ($success) {
 	        $comment = 'Buckaroo refund request was successfully processed.';
 	    } else {
