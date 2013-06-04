@@ -188,6 +188,8 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $client->__SetLocation($location);
         
+        echo '<pre>';var_dump($TransactionRequest);exit;
+        
         try
         {
         	$response = $client->TransactionRequest($TransactionRequest);
@@ -254,7 +256,14 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         	}
         	
             $service          = new Service();
-            $service->Name    = $fieldName;
+            
+            if(is_null($fieldName)){
+                $service->Name = $fieldName;
+            } else {
+                $service->Name = $value['name'];
+            }
+            
+//            $service->Name    = $fieldName;
             $service->Action  = $value['action'];
             $service->Version = $value['version'];
             

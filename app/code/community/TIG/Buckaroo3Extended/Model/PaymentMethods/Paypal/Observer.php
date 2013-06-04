@@ -14,18 +14,18 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
         $vars = $request->getVars();
 
-        /**
-         *  Hendrik: Aanpassingen nieuwe bpe-release
-        */
         $array = array(
             $this->_method => array(
-                'action' => array(
-                    $one =>'Pay',
-                    $two => 'ExtraInfo'
-                    ),
-                    'version' => 1),
-                    );
-
+                'name' => 'paypal',
+                'action' => 'pay',
+                'version' => 1,
+            ),
+            'paypal_seller' => array(
+                'name' => 'paypal',
+                'action' => 'extraInfo',
+                'version' => 1,
+            )
+        );
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $array['creditmanagement'] = array(
@@ -54,6 +54,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         $request            = $observer->getRequest();
         $this->_billingInfo = $request->getBillingInfo();
         $this->_order       = $request->getOrder();
+        $address            = $this->_processAddressCM();
 
         $vars = $request->getVars();
 
@@ -62,7 +63,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
+        
+        $array = array(
+            'Name'              =>  $this->_billingInfo['lastname'],
+            'Street1'           =>  $address['street'],
+            'CityName'          =>  $this->_billingInfo['city'],
+            'StateOrProvince'   =>  $this->_billingInfo['state'],
+            'PostalCode'        =>  $this->_billingInfo['zip'],
+            'Country'           =>  $this->_billingInfo['countryCode'],
+            'AddressOverride'   =>  true 
+         );
 
+        if (array_key_exists('customVars', $vars) && array_key_exists('paypal_seller', $vars['customVars']) && is_array($vars['customVars']['paypal_seller'])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+    
         $request->setVars($vars);
 
         return $this;
@@ -132,4 +149,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
         return $this;
     }
+    
+    
 }
