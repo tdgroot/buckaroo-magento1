@@ -1,54 +1,60 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract 
-{    
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+{
     protected $_code = 'buckaroo3extended_paypal';
     protected $_method = 'paypal';
-    
+
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        
+
         $request = $observer->getRequest();
-        
+
         $vars = $request->getVars();
-        
+
+        /**
+         *  Hendrik: Aanpassingen nieuwe bpe-release
+        */
         $array = array(
-            $this->_method     => array(
-                'action'    => 'Pay',
-                'version'   => 1,
-            ),
-        );
-        
+            $this->_method => array(
+                'action' => array(
+                    $one =>'Pay',
+                    $two => 'ExtraInfo'
+                    ),
+                    'version' => 1),
+                    );
+
+
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $array['creditmanagement'] = array(
                     'action'    => 'Invoice',
                     'version'   => 1,
             );
         }
-        
+
         if (array_key_exists('services', $vars) && is_array($vars['services'])) {
             $vars['services'] = array_merge($vars['services'], $array);
         } else {
             $vars['services'] = $array;
         }
-        
+
         $request->setVars($vars);
-        
+
         return $this;
     }
-    
+
     public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        
+
         $request            = $observer->getRequest();
         $this->_billingInfo = $request->getBillingInfo();
         $this->_order       = $request->getOrder();
-        
+
         $vars = $request->getVars();
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
@@ -58,25 +64,25 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         }
 
         $request->setVars($vars);
-        
+
         return $this;
     }
-    
+
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        
+
         $request = $observer->getRequest();
-        
+
         $codeBits = explode('_', $this->_code);
         $code = end($codeBits);
         $request->setMethod($code);
-        
+
         return $this;
     }
-    
+
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -91,7 +97,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
         return $this;
     }
-    
+
     public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -99,14 +105,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         }
 
         $refundRequest = $observer->getRequest();
-        
+
         $vars = $refundRequest->getVars();
 
         $array = array(
             'action'    => 'Refund',
             'version'   => 1,
         );
-        
+
         if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
             $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
         } else {
@@ -117,7 +123,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
         return $this;
     }
-    
+
     public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -125,5 +131,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         }
 
         return $this;
+    }
+
+    public function buckaroo3extended_push_custom_processing_after(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
     }
 }

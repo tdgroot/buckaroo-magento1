@@ -93,4 +93,13 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::helper('core')->isModuleEnabled('Klarna_KlarnaPaymentModule');
     }
+    
+    
+    public function checkRegionRequired()
+    {
+        $land = 'NL'; 
+        $requiredCountries = Mage::helper('directory')->isRegionRequired($land);
+        
+        return $requiredCountries;
+    }
 }
