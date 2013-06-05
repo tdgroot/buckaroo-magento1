@@ -26,18 +26,4 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
 
     	return parent::getOrderPlaceRedirectUrl();
     }
-
-    public function isAvailable($quote = null)
-    {
-        //check if max amount for Transfer is set and if so, if the quote grandtotal exceeds that
-        $maxAmount = Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/max_amount', Mage::app()->getStore()->getStoreId());
-        if (!empty($maxAmount)
-            && !empty($quote)
-            && $quote->getGrandTotal() > $maxAmount)
-        {
-            return false;
-        }
-
-        return parent::isAvailable($quote);
-    }
 }

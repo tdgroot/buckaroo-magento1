@@ -28,18 +28,4 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_PaymentMethod extend
 
         return parent::assignData($data);
     }
-
-    public function isAvailable($quote = null)
-    {
-        //check if max amount for Onlinegiro is set and if so, if the quote grandtotal exceeds that
-        $maxAmount = Mage::getStoreConfig('buckaroo/buckaroo3extended_onlinegiro/max_amount', Mage::app()->getStore()->getStoreId());
-        if (!empty($maxAmount)
-            && !empty($quote)
-            && $quote->getGrandTotal() > $maxAmount)
-        {
-            return false;
-        }
-
-        return parent::isAvailable($quote);
-    }
 }
