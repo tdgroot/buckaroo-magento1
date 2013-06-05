@@ -149,7 +149,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
         return $this;
     }
-<<<<<<< HEAD
 
     public function buckaroo3extended_push_custom_processing_after(Varien_Event_Observer $observer)
     {
@@ -157,8 +156,4 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             return $this;
         }
     }
-=======
-    
-    
->>>>>>> temporary-branch
 }

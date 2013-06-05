@@ -188,7 +188,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         
         $client->__SetLocation($location);
         
-        echo '<pre>';var_dump($TransactionRequest);exit;
+        //echo '<pre>';var_dump($TransactionRequest);exit;
         
         try
         {
