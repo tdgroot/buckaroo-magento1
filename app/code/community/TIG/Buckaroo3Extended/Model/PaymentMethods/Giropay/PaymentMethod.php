@@ -20,18 +20,4 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_PaymentMethod extends T
 
         return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));
     }
-
-    public function isAvailable($quote = null)
-    {
-        //check if max amount for Giropay is set and if so, if the quote grandtotal exceeds that
-        $maxAmount = Mage::getStoreConfig('buckaroo/buckaroo3extended_giropay/max_amount', Mage::app()->getStore()->getStoreId());
-        if (!empty($maxAmount)
-            && !empty($quote)
-            && $quote->getGrandTotal() > $maxAmount)
-        {
-            return false;
-        }
-
-        return parent::isAvailable($quote);
-    }
 }

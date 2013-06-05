@@ -20,13 +20,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
                 'action' => 'pay',
                 'version' => 1,
             ),
-            'paypal_seller' => array(
-                'name' => 'paypal',
-                'action' => 'extraInfo',
-                'version' => 1,
-            )
         );
-
+        
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/sellers_protection', Mage::app()->getStore()->getStoreId())) {
+            $array['sellersprotection'] = array(
+                    'name' => 'paypal',
+                    'action' => 'extraInfo',
+                    'version' => 1,
+           );
+        }
+                        
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $array['creditmanagement'] = array(
                     'action'    => 'Invoice',
@@ -71,10 +74,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             'StateOrProvince'   =>  $this->_billingInfo['state'],
             'PostalCode'        =>  $this->_billingInfo['zip'],
             'Country'           =>  $this->_billingInfo['countryCode'],
-            'AddressOverride'   =>  true 
+            'AddressOverride'   =>  'TRUE' 
          );
 
-        if (array_key_exists('customVars', $vars) && array_key_exists('paypal_seller', $vars['customVars']) && is_array($vars['customVars']['paypal_seller'])) {
+        if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
         } else {
             $vars['customVars'][$this->_method] = $array;
@@ -155,5 +158,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+        
+        $comment = 'voeg dit toe aan betaling';
+        $order = $observer->getOrder();
+        $order->addStatusHistoryComment($comment)
+              ->save();
+              
+        Mage::log($order);
+        return $this;
     }
 }
