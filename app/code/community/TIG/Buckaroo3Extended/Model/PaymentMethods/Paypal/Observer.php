@@ -63,7 +63,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
-        
+
         $array = array(
             'Name'              =>  $this->_billingInfo['lastname'],
             'Street1'           =>  $address['street'],
@@ -71,7 +71,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             'StateOrProvince'   =>  $this->_billingInfo['state'],
             'PostalCode'        =>  $this->_billingInfo['zip'],
             'Country'           =>  $this->_billingInfo['countryCode'],
-            'AddressOverride'   =>  true 
+            'AddressOverride'   =>  true
          );
 
         if (array_key_exists('customVars', $vars) && array_key_exists('paypal_seller', $vars['customVars']) && is_array($vars['customVars']['paypal_seller'])) {
@@ -79,7 +79,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         } else {
             $vars['customVars'][$this->_method] = $array;
         }
-    
+
         $request->setVars($vars);
 
         return $this;
@@ -149,16 +149,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
         return $this;
     }
-<<<<<<< HEAD
 
     public function buckaroo3extended_push_custom_processing_after(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+
+        $order = $observer->getOrder();
     }
-=======
-    
-    
->>>>>>> temporary-branch
 }

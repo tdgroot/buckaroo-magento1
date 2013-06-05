@@ -15,9 +15,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Directdebit_PaymentMethod exten
 
     	if(isset($_POST['payment']))
     	{
+            $accountNumber = $_POST['payment']['account_number'];
     		$session->setData('additionalFields', array(
     				'accountOwner'  => $_POST['payment']['account_owner'],
-    				'accountNumber' => $_POST['payment']['account_number'],
+    				'accountNumber' => $this->_validateAccount();
     		    )
     		);
     	}
@@ -37,5 +38,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Directdebit_PaymentMethod exten
         }
 
         return parent::isAvailable($quote);
+    }
+
+    protected function _validateAccount($accountNumber)
+    {
+        $filteredAccount = str_replace('.', '', $accountNumber);
+
+        return $filteredAccount;
     }
 }
