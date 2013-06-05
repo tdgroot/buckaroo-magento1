@@ -187,11 +187,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
 
         $client->__SetLocation($location);
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> f38edcfd655641279c5c608ef95078fe8f6ff4f7
         try
         {
         	$response = $client->TransactionRequest($TransactionRequest);
@@ -259,7 +255,8 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
             $service = new Service();
 
-            if(is_null($fieldName)){
+            // First key from $vars is selected as 'pay action', the ones after are for custom 'action'
+            if($fieldName == $this->_method){
                 $service->Name = $fieldName;
             } else {
                 $service->Name = $value['name'];

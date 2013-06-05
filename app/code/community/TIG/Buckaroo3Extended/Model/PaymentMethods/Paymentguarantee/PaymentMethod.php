@@ -34,25 +34,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
 
     	return parent::getOrderPlaceRedirectUrl();
     }
-<<<<<<< HEAD
-    
-=======
 
-    public function isAvailable($quote = null)
-    {
-        //check if max amount for Betaalgarant is set and if so, if the quote grandtotal exceeds that
-    	$maxAmount = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/max_amount', Mage::app()->getStore()->getStoreId());
-    	if (!empty($maxAmount)
-    		&& !empty($quote)
-    		&& $quote->getGrandTotal() > $maxAmount)
-    	{
-    		return false;
-    	}
-
-        return parent::isAvailable($quote);
-    }
-
->>>>>>> f38edcfd655641279c5c608ef95078fe8f6ff4f7
     public function validate()
     {
         $postData = Mage::app()->getRequest()->getPost();

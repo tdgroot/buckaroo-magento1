@@ -21,7 +21,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
                 'version' => 1,
             ),
         );
-        
+
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/sellers_protection', Mage::app()->getStore()->getStoreId())) {
             $array['sellersprotection'] = array(
                     'name' => 'paypal',
@@ -29,7 +29,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
                     'version' => 1,
            );
         }
-                        
+
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $array['creditmanagement'] = array(
                     'action'    => 'Invoice',
@@ -74,11 +74,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             'StateOrProvince'   =>  $this->_billingInfo['state'],
             'PostalCode'        =>  $this->_billingInfo['zip'],
             'Country'           =>  $this->_billingInfo['countryCode'],
-<<<<<<< HEAD
-            'AddressOverride'   =>  'TRUE' 
-=======
-            'AddressOverride'   =>  true
->>>>>>> f38edcfd655641279c5c608ef95078fe8f6ff4f7
+            'AddressOverride'   =>  'TRUE'
          );
 
         if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
@@ -162,18 +158,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-<<<<<<< HEAD
-        
         $comment = 'voeg dit toe aan betaling';
         $order = $observer->getOrder();
         $order->addStatusHistoryComment($comment)
               ->save();
-              
+
         Mage::log($order);
         return $this;
-=======
 
-        $order = $observer->getOrder();
->>>>>>> f38edcfd655641279c5c608ef95078fe8f6ff4f7
     }
 }
