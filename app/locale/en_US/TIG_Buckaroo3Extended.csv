@@ -124,3 +124,7 @@
 "These options will be presented to the customer after Buckaroo has received the order. If left blank, the available options will be based on which Buckaroo payment options you have enabled.","These options will be presented to the customer after Buckaroo has received the order. If left blank, the available options will be based on which Buckaroo payment options you have enabled."
 "To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.","To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status."
 "Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.","Your contract with Buckaroo must allow for the selected currencies to be used with this payment method."
+"Merchant is protected by PayPals Seller Protection Policy for both Unauthorized Payment and Item Not Received","Merchant is protected by PayPals Seller Protection Policy for both Unauthorized Payment and Item Not Received"
+"Merchant is protected by Paypals Seller Protection Policy for Item Not Received","Merchant is protected by Paypals Seller Protection Policy for Item Not Received"
+"Merchant is protected by Paypals Seller Protection Policy for Unauthorized Payment","Merchant is protected by Paypals Seller Protection Policy for Unauthorized Payment"
+"Merchant is not protected under the Seller Protection Policy","Merchant is not protected under the Seller Protection Policy"

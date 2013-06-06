@@ -1,7 +1,11 @@
 <?php if($this->getIsRegionRequired()): ?>
-<?php echo 'testing branches'; ?>
-<?php endif ?>
-
+    <?php return $this; ?>
+<?php endif; ?>
+<div class="error-msg buckaroo">
+    <h4><?php echo Mage::helper('buckaroo3extended')->__(
+                        'You have enabled PayPal Seller Protection. Due to PayPal demand for the State-information of the customer, you have to 
+                         set the State-field as required. Otherwise PayPal would not work properly.') ?></h4>
+</div>
 <?php /* Stylesheet not available */ ?>
 <style>
     .error-msg.buckaroo { margin-bottom:25px; padding:8px 8px 8px 32px; }

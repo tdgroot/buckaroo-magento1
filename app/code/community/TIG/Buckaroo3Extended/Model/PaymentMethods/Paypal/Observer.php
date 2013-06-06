@@ -154,17 +154,76 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
     }
 
     public function buckaroo3extended_push_custom_processing_after(Varien_Event_Observer $observer)
-    {
+    {     
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-        $comment = 'voeg dit toe aan betaling';
+                
         $order = $observer->getOrder();
-        $order->addStatusHistoryComment($comment)
-              ->save();
+        $push = $observer->getPush()->getPostArray();
+        $eligibility = $push['brq_SERVICE_paypal_ProtectionEligibility'];
+        $eligibilityType = $push['brq_SERVICE_paypal_ProtectionEligibilityType'];
+        
+        if ($eligibility == 'Ineligible') {
+            $eligibilityType = 'Ineligible';
+        }
 
-        Mage::log($order);
+
+        $commentEligible = Mage::helper('buckaroo3extended')->__(
+            'Merchant is protected by PayPals Seller Protection Policy for both Unauthorized Payment and Item Not Received'
+        );
+        $commentItemNotReceivedEligible = Mage::helper('buckaroo3extended')->__(
+            'Merchant is protected by Paypals Seller Protection Policy for Item Not Received'
+        );
+        $commentUnauthorizedPaymentEligible = Mage::helper('buckaroo3extended')->__(
+            'Merchant is protected by Paypals Seller Protection Policy for Unauthorized Payment'
+        );
+        $commentIneligible = Mage::helper('buckaroo3extended')->__(
+            'Merchant is not protected under the Seller Protection Policy'
+        );
+        
+        switch ($eligibilityType) {
+
+            case 'Eligible':
+                $eligibilityStatus = Mage::getStoreConfig(
+                    'buckaroo/buckaroo3extended_paypal/sellers_protection_eligible', 
+                    Mage::app()->getStoreId()
+                );
+                $order->addStatusHistoryComment($commentEligible)
+                      ->save();
+                break;
+
+            case 'ItemNotReceivedEligible':
+                $eligibilityStatus = Mage::getStoreConfig(
+                    'buckaroo/buckaroo3extended_paypal/sellers_protection_itemnotreceived_eligible', 
+                    Mage::app()->getStoreId()
+                );
+                $order->addStatusHistoryComment($commentItemNotReceivedEligible)
+                      ->save();
+                break;
+
+            case 'UnauthorizedPaymentEligible':
+                $eligibilityStatus = Mage::getStoreConfig(
+                       'buckaroo/buckaroo3extended_paypal/sellers_protection_unauthorizedpayment_eligible', 
+                       Mage::app()->getStoreId()
+                );
+                $order->addStatusHistoryComment($commentUnauthorizedPaymentEligible)
+                      ->save();
+                break;
+
+            case 'Ineligible':
+                $eligibilityStatus = Mage::getStoreConfig(
+                        'buckaroo/buckaroo3extended_paypal/sellers_protection_ineligible',
+                        Mage::app()->getStoreId($commentIneligible)
+                );
+                $order->addStatusHistoryComment()
+                      ->save();
+                break;
+
+            default:
+                return $this;
+                break;
+        }
         return $this;
-
     }
 }
