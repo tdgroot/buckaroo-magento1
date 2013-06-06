@@ -2192,9 +2192,8 @@
                             </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
-                        <sellers_protection translate="label comment">
-                            <label>Sellers protection enabled</label>
-                            <comment>One can protect one self</comment>
+                        <sellers_protection translate="label">
+                            <label>Seller protection enabled</label>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>53</sort_order>
@@ -2205,9 +2204,9 @@
                                 <show_advanced>1</show_advanced>
                             </depends>
                         </sellers_protection>
-                        <sellers_protection_success_status translate="label comment">
-                            <label>Sellers protection success status</label>
-                            <comment>One can protect one self</comment>
+                        <sellers_protection_eligible translate="label comment">
+                            <label>Seller protection eligible</label>
+                            <comment>Seller protection for unauthorized payment and item not received</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
                             <sort_order>54</sort_order>
@@ -2217,12 +2216,12 @@
                             <depends>
                                 <sellers_protection>1</sellers_protection>
                             </depends>
-                        </sellers_protection_success_status>
-                        <sellers_protection_failure_status translate="label comment">
-                            <label>Sellers protection failed status</label>
-                            <comment>One can protect one self</comment>
+                        </sellers_protection_eligible>
+                        <sellers_protection_itemnotreceived_eligible translate="label comment">
+                            <label>Seller protection item not received</label>
+                            <comment>Seller protection for item not received</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_paypal_failureSellersProtection</source_model>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
                             <sort_order>55</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -2230,13 +2229,39 @@
                             <depends>
                                 <sellers_protection>1</sellers_protection>
                             </depends>
-                        </sellers_protection_failure_status>
+                        </sellers_protection_itemnotreceived_eligible>
+                        <sellers_protection_unauthorizedpayment_eligible translate="label comment">
+                            <label>Seller protection unauthorized payment</label>
+                            <comment>Seller protection for unauthorized payment</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sellers_protection>1</sellers_protection>
+                            </depends>
+                        </sellers_protection_unauthorizedpayment_eligible>
+                        <sellers_protection_ineligible translate="label comment">
+                            <label>Seller protection ineligible</label>
+                            <comment>Merchant is not protected by Seller Protection</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>57</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sellers_protection>1</sellers_protection>
+                            </depends>
+                        </sellers_protection_ineligible>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in EURO)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>56</sort_order>
+                            <sort_order>58</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -2249,7 +2274,7 @@
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>57</sort_order>
+                            <sort_order>59</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

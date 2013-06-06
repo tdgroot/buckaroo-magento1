@@ -149,20 +149,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
             return false;
         }
 
-        // check if max amount for the issued PaymentMethod is set and if so, if the quote grandtotal exceeds that
+        // check if max amount for the issued PaymentMethod is set and if the quote basegrandtotal exceeds that
         $maxAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/max_amount', Mage::app()->getStore()->getStoreId());
         if (!empty($maxAmount)
             && !empty($quote)
-            && $quote->getGrandTotal() > $maxAmount)
+            && $quote->getBaseGrandTotal() > $maxAmount)
         {
             return false;
         }
 
-        // check if min amount for the issued PaymentMethod is set and if so, if the quote grandtotal is less than that
+        // check if min amount for the issued PaymentMethod is set and if the quote basegrandtotal is less than that
         $minAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/min_amount', Mage::app()->getStore()->getStoreId());
         if (!empty($minAmount)
             && !empty($quote)
-            && $quote->getGrandTotal() < $minAmount)
+            && $quote->getBaseGrandTotal() < $minAmount)
         {
             return false;
         }
