@@ -104,6 +104,9 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 		    $requiredAction = false;
 		}
 
+        $parsedResponse = $this->_parseResponse();
+        $this->_addSubCodeComment($parsedResponse);
+
         if (!is_null($requiredAction) 
             && $requiredAction !== false 
             && $requiredAction == 'Redirect') 
@@ -112,7 +115,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             $this->_redirectUser();
         }
 
-        $parsedResponse = $this->_parseResponse();
         $this->_debugEmail .= "Parsed response: " . var_export($parsedResponse, true) . "\n";
 
         $this->_debugEmail .= "Dispatching custom order processing event... \n";
@@ -146,11 +148,36 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             default:                               $this->_neutral();
         }
     }
+    
+    protected function _addSubCodeComment($parsedResponse)
+    {
+        if (!$parsedResponse['subcode']) {
+            return $this;
+        }
+        
+        $subCode = $parsedResponse['subcode'];
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'Buckaroo has sent the following response: %s',
+                $subCode['message']
+            )
+        );
+        
+        $this->_order->save();
+        return $this;
+    }
 
     protected function _redirectUser()
     {
         $redirectUrl = $this->_response->RequiredAction->RedirectURL;
-
+        
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'Customer is being redirected to Buckaroo. Url: %s',
+                $redirectUrl
+            )
+        );
+        
         $this->_debugEmail .= "Redirecting user to…" . $redirectUrl . "\n";
 
         $this->sendDebugEmail();
@@ -162,6 +189,12 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _success()
     {
         $this->_debugEmail .= "The response indicates a successful request. \n";
+        
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'The payment request has been successfully recieved by Buckaroo.'
+            )
+        );
         
         if(!$this->_order->getEmailSent())
         {
@@ -188,6 +221,13 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _failed()
     {
         $this->_debugEmail .= 'The transaction was unsuccessful. \n';
+        
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'The payment request has been denied by Buckaroo.'
+            )
+        );
+        
         $this->restoreQuote();
 
         Mage::getSingleton('core/session')->addError(
@@ -211,6 +251,13 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _error()
     {
         $this->_debugEmail .= "The transaction generated an error. \n";
+        
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'A technical error has occurred.'
+            )
+        );
+        
         Mage::getSingleton('core/session')->addError(
             Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
         );
@@ -234,6 +281,12 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     {
         $this->_debugEmail .= "The response is neutral (not successful, not unsuccessful). \n";
 
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'The payment request has been recieved by Buckaroo.'
+            )
+        );
+        
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__(
 		    	'Your order has been placed succesfully. You will recieve an e-mail containing further payment instructions shortly.'
