@@ -1,4 +1,4 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
@@ -24,13 +24,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
         'PLN',
         'CHF',
 	);
-	
+
     protected $_code = 'buckaroo3extended_payperemail';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_payperemail_checkout_form';
-    
+
     protected $_canUseInternal = true;
-    
+
     public function assignData($data)
     {
     	if (!Mage::helper('buckaroo3extended')->isAdmin()) {
@@ -38,7 +38,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
     	} else {
     		$session = Mage::getSingleton('core/session');
     	}
-		
+
 		$session->setData('additionalFields', array(
 			'gender'    => $_POST['buckaroo3extended_payperemail_BPE_Customergender'],
 		    'firstname' => $_POST['buckaroo3extended_payperemail_BPE_Customerfirstname'],

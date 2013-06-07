@@ -1,4 +1,4 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Maestro_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
@@ -21,8 +21,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Maestro_PaymentMethod extends T
         'PLN',
         'CHF',
 	);
-	
-    protected $_code = 'buckaroo3extended_maestro';
 
+    protected $_code = 'buckaroo3extended_maestro';
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_maestro_checkout_form';
 }

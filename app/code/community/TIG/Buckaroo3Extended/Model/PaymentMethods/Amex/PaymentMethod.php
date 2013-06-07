@@ -1,4 +1,4 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
@@ -24,8 +24,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends TIG_
         'PLN',
         'CHF',
 	);
-	
-    protected $_code = 'buckaroo3extended_amex';
 
+    protected $_code = 'buckaroo3extended_amex';
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_amex_checkout_form';
 }

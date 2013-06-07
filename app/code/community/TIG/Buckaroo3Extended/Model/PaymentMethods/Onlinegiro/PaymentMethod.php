@@ -1,16 +1,16 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
 		'EUR',
 	);
-	
+
     protected $_code = 'buckaroo3extended_onlinegiro';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_onlinegiro_checkout_form';
-    
+
     protected $_canUseInternal = true;
-    
+
     public function assignData($data)
     {
         if (!Mage::helper('buckaroo3extended')->isAdmin()) {
@@ -25,7 +25,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_PaymentMethod extend
             'lastname'  => $_POST['buckaroo3extended_onlinegiro_BPE_Customerlastname'],
             'mail'      => $_POST['buckaroo3extended_onlinegiro_BPE_Customermail'],
         ));
-        
+
         return parent::assignData($data);
     }
 }

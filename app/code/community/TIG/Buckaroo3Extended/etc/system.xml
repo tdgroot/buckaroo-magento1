@@ -46,6 +46,15 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                 </klarna_check>
+
+                <sellers_protection_check>
+                    <frontend_model>buckaroo3extended/adminhtml_system_config_SellersProtectionCheck</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </sellers_protection_check>
+
 		    	<buckaroo3extended_support>
 		    		<label>Version &amp; Support</label>
                     <sort_order>1000</sort_order>
@@ -54,14 +63,14 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                     	<support>
-                            <sort_order>10</sort_order> 
+                            <sort_order>10</sort_order>
                     		<frontend_model>buckaroo3extended/adminhtml_system_config_supportTab</frontend_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                     	</support>
                     </fields>
-		    	</buckaroo3extended_support>	
+		    	</buckaroo3extended_support>
 				<buckaroo3extended translate="label">
                     <label>General Configuration</label>
                     <sort_order>2000</sort_order>
@@ -75,7 +84,7 @@
                             <tooltip>Selecting 'No' will overrule all individual settings.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>10</sort_order> 
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -90,7 +99,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode> 
+                        </mode>
                         <digital_signature translate="label comment tooltip">
                             <label>Secret key</label>
                             <comment>Enter your Buckaroo Secret Key.</comment>
@@ -121,7 +130,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </certificate_selection>   
+                        </certificate_selection>
                         <thumbprint translate="label comment tooltip">
                             <label>Certificate thumbprint</label>
                             <comment>The thumbprint and certificate should form a pair.</comment>
@@ -142,8 +151,8 @@
                             <show_in_store>1</show_in_store>
                         </payment_description>
                     </fields>
-                </buckaroo3extended>                                          
-               
+                </buckaroo3extended>
+
                <buckaroo3extended_ideal translate="label">
                     <label>iDEAL</label>
                     <sort_order>4000</sort_order>
@@ -211,8 +220,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </service_version>  --> 
+                            </depends>
+                        </service_version>  -->
                         <active_fee translate="label comment">
                             <label>Payment fee enabled</label>
                             <comment>Enable or disable payment fee.</comment>
@@ -224,9 +233,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>   
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -240,7 +249,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -255,9 +264,35 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -269,8 +304,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                 
+                            </depends>
+                        </active_status>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -301,7 +336,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_status>1</active_status>
-                            </depends>                            
+                            </depends>
                         </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
@@ -317,7 +352,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             </depends>
-                        </allowed_currencies>                         				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -350,16 +385,16 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends>                            
-                        </limit_by_ip>		
+                            </depends>
+                        </limit_by_ip>
                     </fields>
-                </buckaroo3extended_ideal>                         
+                </buckaroo3extended_ideal>
                 <buckaroo3extended_paymentguarantee translate="label">
                     <label>Achteraf betalen</label>
                     <sort_order>5000</sort_order>
@@ -395,7 +430,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -404,7 +439,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </sort_order>                                                                     
+                        </sort_order>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -426,7 +461,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label>                                                                                
+                        </payment_fee_label>
 						<max_amount translate="label comment tooltip">
                             <label>Max order amount (in EURO)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -446,8 +481,8 @@
 							<sort_order>70</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>							
-						</duedate>	
+							<show_in_store>1</show_in_store>
+						</duedate>
                         <sendmail translate="label comment tooltip">
 						 	<label>Send payment email</label>
 						 	<comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
@@ -459,7 +494,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_paymentguarantee_advanced</validate>
-						</sendmail>  						                      
+						</sendmail>
  						<allowed_methods translate="label comment">
 							<label>Allowed payment methods</label>
 							<comment>Select payment methods for settling paymentguarantee.</comment>
@@ -470,7 +505,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_paymentguarantee_advanced</validate>
-						</allowed_methods> 												
+						</allowed_methods>
                          <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -491,8 +526,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status> 
+                            </depends>
+                        </active_status>
                        <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -507,8 +542,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_success>                                             
+                        	</depends>
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -524,7 +559,33 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_failed>           
+                        </order_status_failed>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>113</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>114</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
                             <comment>Select payment method specific currencies.</comment>
@@ -539,7 +600,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                                              				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -550,8 +611,8 @@
 							<show_in_store>1</show_in_store>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>							
-						</allowspecific>	
+                        	</depends>
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -572,14 +633,14 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>160</sort_order> 
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>				
+                        </limit_by_ip>
                     </fields>
                 </buckaroo3extended_paymentguarantee>
                <buckaroo3extended_amex translate="label">
@@ -617,7 +678,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -647,9 +708,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                        
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -662,7 +723,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -677,9 +738,37 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                                <active_status>1</active_status>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                                <active_status>1</active_status>
+                            </depends>
+                        </min_amount>
 						<active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -691,8 +780,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                               
+                            </depends>
+                        </active_status>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -707,8 +796,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_success>                       
+                        	</depends>
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -723,7 +812,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
+                        	</depends>
                         </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
@@ -738,8 +827,8 @@
                             <validate>buckaroo3extended_amex_advanced</validate>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>                            
-                        </allowed_currencies>                                       				
+                        	</depends>
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -766,23 +855,23 @@
                         		<allowspecific>1</allowspecific>
                         	</depends>
 						</specificcountry>
-						
+
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
                         	<comment>Show method only to Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order> 
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                            	<depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>                    
+                        </limit_by_ip>
                     </fields>
-                </buckaroo3extended_amex>                
+                </buckaroo3extended_amex>
                 <buckaroo3extended_mastercard translate="label">
                     <label>MasterCard</label>
                     <sort_order>7000</sort_order>
@@ -818,7 +907,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                      
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -838,7 +927,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </unsecure_status_processing>                       
+                        </unsecure_status_processing>
                         <unsecure_hold translate="label comment tooltip">
                             <label>Set no SecureCode orders onhold</label>
                             <comment>Hold orders which have no MasterCard SecureCode.</comment>
@@ -847,8 +936,8 @@
                             <sort_order>42</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>                         
-                        </unsecure_hold>                        
+                            <show_in_store>1</show_in_store>
+                        </unsecure_hold>
                          <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -869,9 +958,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>   
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -884,7 +973,7 @@
                             <depends>
                             	<active_fee>1</active_fee>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -899,9 +988,35 @@
                             <depends>
                             	<active_fee>1</active_fee>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -913,7 +1028,7 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                         </active_status>
                         <secure_status_processing translate="label comment tooltip">
                             <label>Method specific SecureCode success status</label>
@@ -930,7 +1045,7 @@
                             	<active_status>1</active_status>
                             </depends>
                         </secure_status_processing>
-                                             
+
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -945,7 +1060,7 @@
 	                        <depends>
 	                        	<show_advanced>1</show_advanced>
 	                        	<active_status>1</active_status>
-	                        </depends>                            
+	                        </depends>
                         </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
@@ -960,8 +1075,8 @@
                             <validate>buckaroo3extended_mastercard_advanced</validate>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>                            
-                        </allowed_currencies>                                                				
+                        	</depends>
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -972,7 +1087,7 @@
 							<show_in_store>1</show_in_store>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>							
+                        	</depends>
 						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
@@ -994,14 +1109,14 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order> 
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>	                       
+                        </limit_by_ip>
                     </fields>
                 </buckaroo3extended_mastercard>
                 <buckaroo3extended_maestro translate="label">
@@ -1010,7 +1125,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>  
+                    <fields>
 		                <active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -1020,7 +1135,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>                     
+                        </active>
                         <mode translate="label comment">
                             <label>Payment modus</label>
                             <comment>! Test transactions are registered in Payment plaza !</comment>
@@ -1030,7 +1145,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>                       
+                        </mode>
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -1039,7 +1154,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                                             
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -1069,9 +1184,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                         
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1084,7 +1199,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -1099,9 +1214,35 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label>                       
+                        </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -1113,8 +1254,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                         
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -1129,8 +1270,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		 <active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_pendingpayment>                       
+                        	</depends>
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -1145,8 +1286,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		 <active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_success>                       
+                        	</depends>
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -1161,7 +1302,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		 <active_status>1</active_status>
-                        	</depends>                            
+                        	</depends>
                         </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
@@ -1176,8 +1317,8 @@
                             <validate>buckaroo3extended_maestro_advanced</validate>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>                            
-                        </allowed_currencies>                        				
+                        	</depends>
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -1188,7 +1329,7 @@
 							<show_in_store>1</show_in_store>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>							
+                        	</depends>
 						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
@@ -1202,7 +1343,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<allowspecific>1</allowspecific>
-                        	</depends>							
+                        	</depends>
 						</specificcountry>
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
@@ -1210,7 +1351,7 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1219,7 +1360,7 @@
                         	</depends>
                         </limit_by_ip>
                     </fields>
-                </buckaroo3extended_maestro>                               
+                </buckaroo3extended_maestro>
      			<buckaroo3extended_visa translate="label">
                     <label>Visa</label>
                     <sort_order>8000</sort_order>
@@ -1255,7 +1396,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -1275,7 +1416,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </unsecure_status_processing>                          
+                        </unsecure_status_processing>
                          <unsecure_hold translate="label comment tooltip">
                             <label>Set no 3D Secure orders onhold</label>
                             <comment>Hold orders which are not 3D Secure.</comment>
@@ -1284,8 +1425,8 @@
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>                         
-                        </unsecure_hold>                       
+                            <show_in_store>1</show_in_store>
+                        </unsecure_hold>
                          <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -1306,9 +1447,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                          
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1321,10 +1462,10 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
-                        
+
                         <payment_fee_label translate="label comment tooltip">
                         	<label>Payment fee frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -1337,9 +1478,35 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label> 
+                        </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>64</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -1351,8 +1518,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                 
+                            </depends>
+                        </active_status>
                          <secure_status_processing translate="label comment tooltip">
                             <label>Method specific 3D Secure success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -1383,7 +1550,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		 <active_status>1</active_status>
-                        	</depends>                            
+                        	</depends>
                         </order_status_failed>
 
                         <allowed_currencies translate="label comment tooltip">
@@ -1399,8 +1566,8 @@
                             <validate>buckaroo3extended_visa_advanced</validate>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>                            
-                        </allowed_currencies>                            				
+                        	</depends>
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -1410,9 +1577,9 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<depends>
-                        		<show_advanced>1</show_advanced>	
+                        		<show_advanced>1</show_advanced>
                         	</depends>
-						</allowspecific>	
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -1433,23 +1600,23 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order> 
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>	
+                        </limit_by_ip>
                     </fields>
-                </buckaroo3extended_visa>        
+                </buckaroo3extended_visa>
                  <buckaroo3extended_visaelectron translate="label">
                     <label>Visa Electron</label>
                     <sort_order>8250</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>       
+                    <fields>
 						<active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -1459,7 +1626,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>                      
+                        </active>
                         <mode translate="label comment">
                             <label>Payment modus</label>
                             <comment>! Test transactions are registered in Payment plaza !</comment>
@@ -1478,7 +1645,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                           
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -1487,7 +1654,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </sort_order> 
+                        </sort_order>
                          <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -1508,9 +1675,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                          
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1523,7 +1690,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -1538,9 +1705,35 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -1552,8 +1745,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                 
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -1584,7 +1777,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
+                        	</depends>
                         </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
@@ -1600,7 +1793,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
+                        	</depends>
                         </order_status_failed>
                          <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
@@ -1615,8 +1808,8 @@
                             <validate>buckaroo3extended_visaelectron_advanced</validate>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>                            
-                        </allowed_currencies>                                               				
+                        	</depends>
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -1649,23 +1842,23 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>   
-                        </limit_by_ip>  		                	
+                        	</depends>
+                        </limit_by_ip>
                     </fields>
-                </buckaroo3extended_visaelectron>                                
+                </buckaroo3extended_visaelectron>
                <buckaroo3extended_vpay translate="label">
                     <label>V PAY</label>
                     <sort_order>8500</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>  
+                    <fields>
 		            	<active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -1675,7 +1868,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>                 
+                        </active>
                         <mode translate="label comment">
                             <label>Payment modus</label>
                             <comment>! Test transactions are registered in Payment plaza !</comment>
@@ -1685,7 +1878,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>     
+                        </mode>
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -1694,7 +1887,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -1724,9 +1917,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                          
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1739,7 +1932,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -1754,9 +1947,35 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label> 
+                        </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -1768,8 +1987,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                               
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -1784,8 +2003,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_pendingpayment>   
+                        	</depends>
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -1816,7 +2035,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
+                        	</depends>
                         </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
@@ -1831,8 +2050,8 @@
                             <validate>buckaroo3extended_vpay_advanced</validate>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        </depends>                            
-                        </allowed_currencies>                                                				
+                        </depends>
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -1843,7 +2062,7 @@
 							<show_in_store>1</show_in_store>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>							
+                        	</depends>
 						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
@@ -1857,7 +2076,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		 <allowspecific>1</allowspecific>
-                        	</depends>							
+                        	</depends>
 						</specificcountry>
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
@@ -1865,14 +2084,14 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                            	<depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>  		
+                        </limit_by_ip>
                     </fields>
                 </buckaroo3extended_vpay>
                <buckaroo3extended_paypal translate="label">
@@ -1910,7 +2129,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -1940,9 +2159,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                           
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -1955,7 +2174,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -1970,10 +2189,100 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label> 
-                       <active_status translate="label comment">
+                        </payment_fee_label>
+                        <sellers_protection translate="label">
+                            <label>Seller protection enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </sellers_protection>
+                        <sellers_protection_eligible translate="label comment">
+                            <label>Seller protection eligible</label>
+                            <comment>Seller protection for unauthorized payment and item not received</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sellers_protection>1</sellers_protection>
+                            </depends>
+                        </sellers_protection_eligible>
+                        <sellers_protection_itemnotreceived_eligible translate="label comment">
+                            <label>Seller protection item not received</label>
+                            <comment>Seller protection for item not received</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sellers_protection>1</sellers_protection>
+                            </depends>
+                        </sellers_protection_itemnotreceived_eligible>
+                        <sellers_protection_unauthorizedpayment_eligible translate="label comment">
+                            <label>Seller protection unauthorized payment</label>
+                            <comment>Seller protection for unauthorized payment</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sellers_protection>1</sellers_protection>
+                            </depends>
+                        </sellers_protection_unauthorizedpayment_eligible>
+                        <sellers_protection_ineligible translate="label comment">
+                            <label>Seller protection ineligible</label>
+                            <comment>Merchant is not protected by Seller Protection</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
+                            <sort_order>57</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sellers_protection>1</sellers_protection>
+                            </depends>
+                        </sellers_protection_ineligible>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>58</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>59</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
+                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
@@ -1984,8 +2293,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                
+                            </depends>
+                        </active_status>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -2001,7 +2310,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_success>                        
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -2016,8 +2325,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_failed>                     
+                        	</depends>
+                        </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed Currencies</label>
                             <comment>Select payment method specific currencies.</comment>
@@ -2032,7 +2341,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                          				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -2065,7 +2374,7 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order> 
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -2101,7 +2410,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>       
+                        </mode>
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -2110,7 +2419,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                                            
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -2123,7 +2432,7 @@
                         <send_mail translate="label comment tooltip">
 						 	<label>Send payment instruction email</label>
 						 	<comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
-						 	<tooltip>Set to 'No' the customer is informed once online.</tooltip>	
+						 	<tooltip>Set to 'No' the customer is informed once online.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                         	<sort_order>45</sort_order>
@@ -2131,7 +2440,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 							<validate>buckaroo3extended_transfer_advanced</validate>
-                        </send_mail>	
+                        </send_mail>
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use credit management</label>
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
@@ -2142,7 +2451,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </use_creditmanagement>                      
+                        </use_creditmanagement>
                         <due_date_invoice translate="label comment">
                         	<label>Invoice delay (in days)</label>
                         	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
@@ -2154,7 +2463,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </due_date_invoice>                        	
+                        </due_date_invoice>
                         <due_date translate="label comment">
                         	<label>Due date (in days)</label>
                         	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
@@ -2166,7 +2475,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </due_date>                        
+                        </due_date>
                         <reminder_level translate="label comment">
                         	<label>Max reminder level</label>
                             <comment>Select the maximum reminder level buckaroo will use.</comment>
@@ -2180,6 +2489,32 @@
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
                         </reminder_level>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                          <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -2200,9 +2535,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>   
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -2215,7 +2550,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -2230,7 +2565,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                        <active_status translate="label comment">
@@ -2244,8 +2579,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                  
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -2261,7 +2596,7 @@
                         		<show_advanced>1</show_advanced>
                         	 	<active_status>1</active_status>
                         	</depends>
-                        </order_status_pendingpayment>                      
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -2277,7 +2612,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_success>                     
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -2308,7 +2643,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                                                 				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -2320,7 +2655,7 @@
 						    <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-						</allowspecific>						
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -2334,21 +2669,21 @@
                         		<show_advanced>1</show_advanced>
                         		<allowspecific>1</allowspecific>
                         	</depends>
-						</specificcountry>					
+						</specificcountry>
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
                         	<comment>Show method only to Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>130</sort_order> 
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>  
+                        </limit_by_ip>
                     </fields>
                 </buckaroo3extended_transfer>
                <buckaroo3extended_directdebit translate="label">
@@ -2357,7 +2692,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>   
+                    <fields>
 		            <active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -2367,7 +2702,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>                     
+                        </active>
                         <mode translate="label comment">
                             <label>Payment modus</label>
                             <comment>! Test transactions are registered in Payment plaza !</comment>
@@ -2377,7 +2712,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>  
+                        </mode>
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -2386,7 +2721,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                      
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -2418,7 +2753,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </due_date_invoice>          	
+                        </due_date_invoice>
                         <due_date translate="label comment">
                         	<label>Due date (in days)</label>
                         	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
@@ -2430,7 +2765,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </due_date>  
+                        </due_date>
                         <reminder_level translate="label comment">
                         	<label>Max reminder level</label>
                             <comment>Select the maximum reminder level buckaroo will use.</comment>
@@ -2443,8 +2778,8 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </reminder_level>                                               
-                         <show_advanced translate="label comment">
+                        </reminder_level>
+                        <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
@@ -2464,9 +2799,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                         
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -2479,7 +2814,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -2494,10 +2829,36 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
-                       <active_status translate="label comment">
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>64</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
+                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
@@ -2508,8 +2869,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                                         
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -2525,7 +2886,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_pendingpayment>     
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -2541,7 +2902,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_success>              
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -2572,7 +2933,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                                               				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -2584,7 +2945,7 @@
 							<depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-						</allowspecific>	
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -2598,30 +2959,30 @@
                         		<show_advanced>1</show_advanced>
                         		<allowspecific>1</allowspecific>
                         	</depends>
-						</specificcountry>						
+						</specificcountry>
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
                         	<comment>Show method only to Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>		                
+                        </limit_by_ip>
                     </fields>
-                </buckaroo3extended_directdebit>                                                   
+                </buckaroo3extended_directdebit>
                 <buckaroo3extended_empayment translate="label">
                     <label>èM! Payment</label>
                     <sort_order>12000</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>      
+                    <fields>
 		            <active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -2631,7 +2992,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>         
+                        </active>
                         <mode translate="label comment">
                             <label>Payment modus</label>
                             <comment>! Test transactions are registered in Payment plaza !</comment>
@@ -2641,7 +3002,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>   
+                        </mode>
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -2650,7 +3011,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                     
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -2659,7 +3020,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </sort_order>                       
+                        </sort_order>
                         <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -2680,9 +3041,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                         
+                        </active_fee>
                        <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -2695,7 +3056,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -2710,10 +3071,36 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label> 
-                       <active_status translate="label comment">
+                        </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
+                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
@@ -2724,8 +3111,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                                         
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -2740,8 +3127,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_pendingpayment>           
+                        	</depends>
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -2756,8 +3143,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_success>                 
+                        	</depends>
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -2773,7 +3160,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_failed>    
+                        </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
                             <comment>Select payment method specific currencies.</comment>
@@ -2788,7 +3175,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                                               				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -2800,7 +3187,7 @@
 							<depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-						</allowspecific>						
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -2814,30 +3201,30 @@
                         		<show_advanced>1</show_advanced>
                         		<allowspecific>1</allowspecific>
                         	</depends>
-						</specificcountry>					
+						</specificcountry>
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
                         	<comment>Show method only to Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>		                
+                        </limit_by_ip>
                     </fields>
-                </buckaroo3extended_empayment>                                                   
+                </buckaroo3extended_empayment>
                 <buckaroo3extended_paysafecard translate="label">
                     <label>paysafecard</label>
                     <sort_order>13000</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>        
+                    <fields>
 						<active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -2866,7 +3253,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -2879,7 +3266,7 @@
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in EURO)</label>
                             <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>                            
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2906,9 +3293,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                          
+                        </active_fee>
                       <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -2921,7 +3308,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -2936,10 +3323,36 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
-                       <active_status translate="label comment">
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>64</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
+                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
@@ -2950,8 +3363,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                                       
+                            </depends>
+                        </active_status>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -2966,8 +3379,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_success>        
+                        	</depends>
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -2982,8 +3395,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_failed>                     
+                        	</depends>
+                        </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
                             <comment>Select payment method specific currencies.</comment>
@@ -2997,8 +3410,8 @@
                             <validate>buckaroo3extended_paysafecard_advanced</validate>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>                            
-                        </allowed_currencies>                                 				
+                        	</depends>
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -3009,8 +3422,8 @@
 							<show_in_store>1</show_in_store>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>							
-						</allowspecific>			
+                        	</depends>
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -3023,22 +3436,22 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<allowspecific>1</allowspecific>
-                        	</depends>							
-						</specificcountry>			
+                        	</depends>
+						</specificcountry>
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
                         	<comment>Show method only to Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>		                
+                        </limit_by_ip>
                     </fields>
                 </buckaroo3extended_paysafecard>
 				<buckaroo3extended_bancontactmrcash translate="label">
@@ -3047,7 +3460,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>              
+                    <fields>
 					<active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -3076,7 +3489,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -3106,9 +3519,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                           
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -3121,7 +3534,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -3136,10 +3549,36 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label> 
-                       <active_status translate="label comment">
+                        </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
+                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
@@ -3150,8 +3589,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                
+                            </depends>
+                        </active_status>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -3166,8 +3605,8 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
-                        </order_status_success>                
+                        	</depends>
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -3198,7 +3637,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                                       				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -3210,7 +3649,7 @@
 							<depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-						</allowspecific>						
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -3231,14 +3670,14 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order> 
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>		                
+                        </limit_by_ip>
                     </fields>
                 </buckaroo3extended_bancontactmrcash>
                 <buckaroo3extended_sofortueberweisung translate="label">
@@ -3247,7 +3686,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>     
+                    <fields>
 						<active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -3276,7 +3715,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -3306,9 +3745,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                          
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -3321,7 +3760,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	 <active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -3336,9 +3775,35 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	 <active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label> 
+                        </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -3350,8 +3815,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                        
+                            </depends>
+                        </active_status>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -3367,7 +3832,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                        	 	</depends>
-                        </order_status_success>                   
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -3398,7 +3863,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                                            				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -3410,7 +3875,7 @@
 							<depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-						</allowspecific>			
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -3424,30 +3889,30 @@
                         		<show_advanced>1</show_advanced>
                         		<allowspecific>1</allowspecific>
                         	</depends>
-						</specificcountry>			
+						</specificcountry>
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
                         	<comment>Show method only to Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order> 
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>			               
+                        </limit_by_ip>
                     </fields>
-                </buckaroo3extended_sofortueberweisung>                                                     
+                </buckaroo3extended_sofortueberweisung>
                  <buckaroo3extended_giropay translate="label">
                     <label>giropay</label>
                     <sort_order>16000</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>           
+                    <fields>
 						<active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -3476,7 +3941,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                       
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -3485,7 +3950,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </sort_order>         
+                        </sort_order>
                           <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -3506,9 +3971,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                          
+                        </active_fee>
                          <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -3521,7 +3986,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -3536,9 +4001,35 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -3550,8 +4041,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                                                                      
+                            </depends>
+                        </active_status>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -3566,8 +4057,8 @@
                          	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                           
-                        </order_status_success>      
+                        	</depends>
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -3582,7 +4073,7 @@
                         	<depends>
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
-                        	</depends>                            
+                        	</depends>
                         </order_status_failed>
                         <allowed_currencies translate="label comment tooltip">
                         	<label>Allowed currencies</label>
@@ -3598,7 +4089,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                          	</depends>
-                        </allowed_currencies>                                                				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -3631,23 +4122,23 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order> 
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </limit_by_ip>			               		                
+                        </limit_by_ip>
                     </fields>
-                </buckaroo3extended_giropay>                                                        
+                </buckaroo3extended_giropay>
                 <buckaroo3extended_giftcards translate="label">
                     <label>Cadeaukaarten</label>
                     <sort_order>17000</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>                
+                    <fields>
 		            <active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -3657,7 +4148,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>            
+                        </active>
                         <mode translate="label comment">
                             <label>Payment modus</label>
                             <comment>! Test transactions are registered in Payment plaza !</comment>
@@ -3667,7 +4158,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode>                   
+                        </mode>
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -3676,7 +4167,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                                            
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -3685,7 +4176,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </sort_order>    
+                        </sort_order>
                         <cards_allowed translate="label comment tooltip">
 							<label>Allowed giftcards</label>
 							<comment>Select which giftcards are available to the customer</comment>
@@ -3708,7 +4199,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_giftcards_advanced</validate>
-						</send_mail> 
+						</send_mail>
                         <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -3729,9 +4220,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                         
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -3744,7 +4235,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -3759,10 +4250,36 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
-                       <active_status translate="label comment">
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>73</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>74</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
+                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
@@ -3773,8 +4290,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status> 						                      
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -3790,7 +4307,7 @@
                         		<show_advanced>1</show_advanced>
                         		 <active_status>1</active_status>
                         	</depends>
-                        </order_status_pendingpayment>   
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -3806,7 +4323,7 @@
                         		<show_advanced>1</show_advanced>
                         		 <active_status>1</active_status>
                         	</depends>
-                        </order_status_success>             
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -3836,8 +4353,8 @@
                             <validate>buckaroo3extended_giftcards_advanced</validate>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>                            
-                        </allowed_currencies>                                       				
+                        	</depends>
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -3848,7 +4365,7 @@
 							<show_in_store>1</show_in_store>
                         	<depends>
                         		<show_advanced>1</show_advanced>
-                        	</depends>							
+                        	</depends>
 						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
@@ -3863,30 +4380,30 @@
                         		<show_advanced>1</show_advanced>
                         		<allowspecific>1</allowspecific>
                         	</depends>
-						</specificcountry>		
+						</specificcountry>
 						<limit_by_ip translate="label comment tooltip">
                         	<label>Display only for selected IP's</label>
                         	<comment>Show method only to Magento set IP's.</comment>
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                       </limit_by_ip>		                	
+                       </limit_by_ip>
                     </fields>
-                </buckaroo3extended_giftcards> 
+                </buckaroo3extended_giftcards>
                 <buckaroo3extended_payperemail translate="label">
                     <label>PayperEmail</label>
                     <sort_order>18000</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields>	                
+                    <fields>
 		            <active translate="label comment">
                             <label>Enabled</label>
                             <comment>Enable or disable this payment method.</comment>
@@ -3896,7 +4413,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>                       
+                        </active>
                         <mode translate="label comment">
                             <label>Payment modus</label>
                             <comment>! Test transactions are registered in Payment plaza !</comment>
@@ -3906,7 +4423,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </mode> 
+                        </mode>
                         <area translate="label comment">
                         	<label>Use for Backend and/or Frontend</label>
                         	<comment>Select where the paymentmethod will be available</comment>
@@ -3916,7 +4433,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </area>                                                
+                        </area>
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -3924,8 +4441,8 @@
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>                         
-                        </title>                                            
+                            <show_in_store>1</show_in_store>
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -3933,8 +4450,8 @@
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>                      
-                        </sort_order>                                              					
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
 						<allowed_methods translate="label comment">
 							<label>Allowed payment methods</label>
 							<comment>Select payment methods for settling paymentguarantee.</comment>
@@ -3957,7 +4474,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo3extended_payperemail_advanced</validate>
-						</send_mail>							
+						</send_mail>
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use credit management</label>
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
@@ -3968,7 +4485,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </use_creditmanagement>                       
+                        </use_creditmanagement>
                         <due_date_invoice translate="label comment">
                         	<label>Invoice delay (in days)</label>
                         	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
@@ -3980,7 +4497,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </due_date_invoice>                       	
+                        </due_date_invoice>
                         <due_date translate="label comment">
                         	<label>Due date (in days)</label>
                         	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
@@ -3992,7 +4509,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </due_date>                      
+                        </due_date>
                         <reminder_level translate="label comment">
                         	<label>Max reminder level</label>
                             <comment>Select the maximum reminder level buckaroo will use.</comment>
@@ -4005,7 +4522,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </reminder_level>                       
+                        </reminder_level>
                          <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -4026,9 +4543,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>                                                  
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -4041,7 +4558,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -4056,9 +4573,35 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>73</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>74</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -4070,8 +4613,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                         							                        
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -4087,7 +4630,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_pendingpayment>           
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -4103,7 +4646,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_success>  
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -4134,7 +4677,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                           				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -4167,16 +4710,16 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>140</sort_order> 
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                       </limit_by_ip>		                	
+                       </limit_by_ip>
                     </fields>
-                </buckaroo3extended_payperemail>                            
+                </buckaroo3extended_payperemail>
                 <buckaroo3extended_onlinegiro translate="label">
                     <label>online giro</label>
                     <sort_order>19000</sort_order>
@@ -4193,7 +4736,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>                   
+                        </active>
                         <mode translate="label comment">
                             <label>Payment modus</label>
                             <comment>! Test transactions are registered in Payment plaza !</comment>
@@ -4213,7 +4756,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </area>                  
+                        </area>
                         <title translate="label comment">
                         	<label>Frontend label</label>
                         	<comment>Determines the frontend label shown.</comment>
@@ -4222,7 +4765,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>                                               
+                        </title>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
@@ -4242,7 +4785,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </use_creditmanagement>      
+                        </use_creditmanagement>
                         <due_date_invoice translate="label comment">
                         	<label>Invoice delay (in days)</label>
                         	<comment>Specify the amount of days before Buckaroo invoices the order and sends out the payment mail.</comment>
@@ -4254,7 +4797,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </due_date_invoice>        	
+                        </due_date_invoice>
                         <due_date translate="label comment">
                         	<label>Due date (in days)</label>
                         	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
@@ -4266,7 +4809,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </due_date>     
+                        </due_date>
                         <reminder_level translate="label comment">
                         	<label>Max reminder level</label>
                             <comment>Select the maximum reminder level buckaroo will use.</comment>
@@ -4279,7 +4822,7 @@
                             <depends>
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
-                        </reminder_level>                                               
+                        </reminder_level>
                          <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -4300,9 +4843,9 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </active_fee>   
+                        </active_fee>
                         <payment_fee translate="label comment tooltip">
                         	<label>Payment fee</label>
                         	<comment>Fee for using this payment method.</comment>
@@ -4315,7 +4858,7 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
                         </payment_fee>
                         <payment_fee_label translate="label comment tooltip">
@@ -4330,10 +4873,36 @@
                             <depends>
                             	<show_advanced>1</show_advanced>
                             	<active_fee>1</active_fee>
-                            </depends> 
+                            </depends>
                             <validate>buckaroo_fee</validate>
-                        </payment_fee_label>                        
-                       <active_status translate="label comment">
+                        </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Max order amount (in EURO)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>64</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
+                        <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
@@ -4344,8 +4913,8 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                             	<show_advanced>1</show_advanced>
-                            </depends> 
-                        </active_status>                          
+                            </depends>
+                        </active_status>
                         <order_status_pendingpayment translate="label comment tooltip">
                             <label>Method specific pending status</label>
                             <comment>Leave empty to use default 'pending' status.</comment>
@@ -4361,7 +4930,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_pendingpayment>    
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment tooltip">
                             <label>Method specific success status</label>
                             <comment>Leave empty to use default 'success' status.</comment>
@@ -4377,7 +4946,7 @@
                         		<show_advanced>1</show_advanced>
                         		<active_status>1</active_status>
                         	</depends>
-                        </order_status_success>    
+                        </order_status_success>
                         <order_status_failed translate="label comment tooltip">
                             <label>Method specific failed status</label>
                             <comment>Leave empty to use default 'failed' status.</comment>
@@ -4408,7 +4977,7 @@
                             <depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-                        </allowed_currencies>                      				
+                        </allowed_currencies>
                         <allowspecific translate="label">
 							<label>Payment from applicable countries</label>
 							<frontend_type>allowspecific</frontend_type>
@@ -4420,7 +4989,7 @@
 							<depends>
                         		<show_advanced>1</show_advanced>
                         	</depends>
-						</allowspecific>			
+						</allowspecific>
 						<specificcountry translate="label comment">
 							<label>Payment from Specific Country</label>
 							<comment>Only available when set to 'specific countries'.</comment>
@@ -4441,7 +5010,7 @@
                         	<tooltip>Magento developer client restrictions.</tooltip>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -4483,7 +5052,7 @@
                             <show_in_default>1</show_in_default>
                             <depends>
                             	<active>1</active>
-                            </depends>                            
+                            </depends>
 						</allow_push>
                 	</fields>
                 </buckaroo3extended_refund>
@@ -4513,7 +5082,7 @@
                             <show_in_store>0</show_in_store>
 		                </certificate_upload>
                     </fields>
-                </buckaroo3extended_certificate>                                                                                
+                </buckaroo3extended_certificate>
 				<buckaroo3extended_advanced translate="label">
                     <label>Advanced Configuration</label>
                     <sort_order>22000</sort_order>
@@ -4527,7 +5096,7 @@
 		                    <show_in_default>1</show_in_default>
 		                    <show_in_website>1</show_in_website>
 		                    <show_in_store>1</show_in_store>
-		                </hint>					
+		                </hint>
                         <buckaroofee_tax_class translate="label comment tooltip">
                             <label>Tax class for payment fee</label>
                             <comment>Select which tax class should be used for the Buckaroo Fee.</comment>
@@ -4538,7 +5107,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </buckaroofee_tax_class>                 	
+                        </buckaroofee_tax_class>
                     	<order_status translate="label comment">
                             <label>New status</label>
                             <comment>This status will be given to new orders.</comment>
@@ -4548,7 +5117,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </order_status>           
+                        </order_status>
                          <order_status_pendingpayment translate="label comment">
                             <label>Pending payment status</label>
                             <comment>This status will be given to orders pending payment.</comment>
@@ -4558,7 +5127,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </order_status_pendingpayment>      
+                        </order_status_pendingpayment>
                         <order_status_success translate="label comment">
                             <label>Payment success status</label>
                             <comment>This status will be given to orders paid.</comment>
@@ -4568,7 +5137,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </order_status_success>      
+                        </order_status_success>
                         <order_status_failed translate="label comment">
                             <label>Payment failed status</label>
                             <comment>This status will be given to unsuccessful orders.</comment>
@@ -4578,7 +5147,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </order_status_failed>              
+                        </order_status_failed>
                         <invoice_mail translate="label comment">
                             <label>Send transactional invoice email</label>
                             <comment>Send a mail after successful payment.</comment>
@@ -4588,7 +5157,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </invoice_mail>   
+                        </invoice_mail>
                         <auto_invoice translate="label comment">
                             <label>Create invoice after success</label>
                             <comment>If set to 'No' the order is not invoiced.</comment>
@@ -4607,7 +5176,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-						</success_redirect>			
+						</success_redirect>
 						<failure_redirect translate="label comment">
 							<label>Redirect url after 'Failure'</label>
 							<frontend_type>text</frontend_type>
@@ -4616,7 +5185,7 @@
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-						</failure_redirect>	                       
+						</failure_redirect>
                         <cancel_on_failed translate="label comment">
                             <label>'Canceled' state on failed payment</label>
                             <comment>Orders will stay open after failed payments.</comment>
@@ -4625,7 +5194,7 @@
                             <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>        
+                            <show_in_store>1</show_in_store>
                         </cancel_on_failed>
                          <debug_order_updates translate="label comment">
                         	<label>Display Buckaroo updates on finalized orders</label>
@@ -4645,27 +5214,27 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </debug_email>                   
+                        </debug_email>
                         <limit_by_ip translate="label comment">
                         	<label>Display only for selected IP's</label>
                         	<comment>Show module only for Magento set IP's.</comment>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>120</sort_order> 
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </limit_by_ip>	                        
+                        </limit_by_ip>
 						<manual_empty_cart translate="label comment">
                         	<label>Forced empty shopping cart</label>
                         	<comment>Overrule settings to always empty related cart after payment.</comment>
                         	<frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>130</sort_order> 
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-						</manual_empty_cart>                    
+						</manual_empty_cart>
                     </fields>
                 </buckaroo3extended_advanced>
 			</groups>
