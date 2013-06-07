@@ -67,6 +67,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             $this->_addAdditionalCreditManagementVariables($vars);
         }
 
+<<<<<<< HEAD
         // $array = array(
             // 'Name'              =>  $this->_billingInfo['lastname'],
             // 'Street1'           =>  $address['street'],
@@ -82,6 +83,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         // } else {
             // $vars['customVars'][$this->_method] = $array;
         // }
+=======
+        $array = array(
+            'Name'              =>  $this->_billingInfo['lastname'],
+            'Street1'           =>  $address['street'],
+            'CityName'          =>  $this->_billingInfo['city'],
+            'StateOrProvince'   =>  $this->_billingInfo['state'],
+            'PostalCode'        =>  $this->_billingInfo['zip'],
+            'Country'           =>  $this->_billingInfo['countryCode'],
+            'AddressOverride'   =>  'TRUE'
+         );
+
+        if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
+            $vars['customVars']['sellersprotection'] = array_merge($vars['customVars']['sellersprotection'], $array);
+        } else {
+            $vars['customVars']['sellersprotection'] = $array;
+        }
+>>>>>>> 86c1d9b5855bf309c4e39a296e93746c66218a00
 
         $request->setVars($vars);
 
