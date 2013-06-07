@@ -116,4 +116,24 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return $returnArray;
     }
+    
+    public function check()
+    {
+        $array = array(
+            'Name'              =>  $this->_billingInfo['lastname'],
+            'Street1'           =>  $address['street'],
+            'CityName'          =>  $this->_billingInfo['city'],
+            'StateOrProvince'   =>  'test value',//$this->_billingInfo['state'],
+            'PostalCode'        =>  $this->_billingInfo['zip'],
+            'Country'           =>  $this->_billingInfo['countryCode'],
+            'AddressOverride'   =>  'TRUE'
+         );
+
+        if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+        
+    }
 }
