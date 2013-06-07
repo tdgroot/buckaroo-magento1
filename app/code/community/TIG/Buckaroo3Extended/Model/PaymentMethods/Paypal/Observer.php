@@ -22,13 +22,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             ),
         );
 
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/sellers_protection', Mage::app()->getStore()->getStoreId())) {
-            $array['sellersprotection'] = array(
-                    'name' => 'paypal',
-                    'action' => 'extraInfo',
-                    'version' => 1,
-           );
-        }
+        // if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/sellers_protection', Mage::app()->getStore()->getStoreId())) {
+            // $array['sellersprotection'] = array(
+                    // 'name' => 'paypal',
+                    // 'action' => 'extraInfo',
+                    // 'version' => 1,
+           // );
+        // }
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $array['creditmanagement'] = array(
@@ -67,21 +67,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             $this->_addAdditionalCreditManagementVariables($vars);
         }
 
-        $array = array(
-            'Name'              =>  $this->_billingInfo['lastname'],
-            'Street1'           =>  $address['street'],
-            'CityName'          =>  $this->_billingInfo['city'],
-            'StateOrProvince'   =>  $this->_billingInfo['state'],
-            'PostalCode'        =>  $this->_billingInfo['zip'],
-            'Country'           =>  $this->_billingInfo['countryCode'],
-            'AddressOverride'   =>  'TRUE'
-         );
-
-        if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
-        } else {
-            $vars['customVars'][$this->_method] = $array;
-        }
+        // $array = array(
+            // 'Name'              =>  $this->_billingInfo['lastname'],
+            // 'Street1'           =>  $address['street'],
+            // 'CityName'          =>  $this->_billingInfo['city'],
+            // 'StateOrProvince'   =>  'test value',//$this->_billingInfo['state'],
+            // 'PostalCode'        =>  $this->_billingInfo['zip'],
+            // 'Country'           =>  $this->_billingInfo['countryCode'],
+            // 'AddressOverride'   =>  'TRUE'
+         // );
+// 
+        // if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
+            // $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        // } else {
+            // $vars['customVars'][$this->_method] = $array;
+        // }
 
         $request->setVars($vars);
 
@@ -161,13 +161,22 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
                 
         $order = $observer->getOrder();
         $push = $observer->getPush()->getPostArray();
-        $eligibility = $push['brq_SERVICE_paypal_ProtectionEligibility'];
-        $eligibilityType = $push['brq_SERVICE_paypal_ProtectionEligibilityType'];
+
+        if(is_null($push['brq_SERVICE_paypal_ProtectionEligibility'])){
+            $eligibility = $push['brq_service_paypal_ProtectionEligibility'];
+        } else {
+            $eligibility = $push['brq_SERVICE_paypal_ProtectionEligibility'];
+        }
+        
+        if(is_null($push['brq_SERVICE_paypal_ProtectionEligibilityType'])){
+            $eligibilityType = $push['brq_service_paypal_ProtectionEligibilityType'];
+        } else {
+            $eligibilityType = $push['brq_SERVICE_paypal_ProtectionEligibilityType'];
+        }
         
         if ($eligibility == 'Ineligible') {
-            $eligibilityType = 'Ineligible';
+            $eligibilityType = 'None';
         }
-
 
         $commentEligible = Mage::helper('buckaroo3extended')->__(
             'Merchant is protected by PayPals Seller Protection Policy for both Unauthorized Payment and Item Not Received'
@@ -181,6 +190,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         $commentIneligible = Mage::helper('buckaroo3extended')->__(
             'Merchant is not protected under the Seller Protection Policy'
         );
+        
         
         switch ($eligibilityType) {
 
@@ -207,21 +217,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
                        'buckaroo/buckaroo3extended_paypal/sellers_protection_unauthorizedpayment_eligible', 
                        Mage::app()->getStoreId()
                 );
-                $order->addStatusHistoryComment($commentUnauthorizedPaymentEligible)
+                $order->addStatusHistoryComment($commentUnauthorizedPaymentEligible, $eligibilityStatus)
                       ->save();
                 break;
 
-            case 'Ineligible':
+            case "None":
                 $eligibilityStatus = Mage::getStoreConfig(
                         'buckaroo/buckaroo3extended_paypal/sellers_protection_ineligible',
-                        Mage::app()->getStoreId($commentIneligible)
+                        $order->getStoreId()
                 );
-                $order->addStatusHistoryComment()
+                $order->addStatusHistoryComment($commentIneligible, $eligibilityStatus)
                       ->save();
-                break;
-
-            default:
-                return $this;
                 break;
         }
         return $this;

@@ -6,14 +6,14 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 		if(Mage::app()->getStore()->isAdmin()) {
 			return true;
 		}
-	
+
 		if(Mage::getDesign()->getArea() == 'adminhtml') {
 			return true;
 		}
-	
+
 		return false;
 	}
-	
+
 	public function log($message, $force = false)
 	{
 	    Mage::log($message, Zend_Log::DEBUG, 'TIG_B3E.log', $force);
@@ -28,17 +28,17 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 	        Mage::log($e->getTraceAsString(), Zend_Log::ERR, 'TIG_B3E_Exception.log', true);
 	    }
 	}
-    
+
     public function isOneStepCheckout()
     {
         $moduleName = Mage::app()->getRequest()->getModuleName();
-        
+
         if ($moduleName == 'onestepcheckout') {
             return true;
         }
         return false;
     }
-    
+
     public function getFeeLabel($paymentMethodCode = false)
     {
         if ($paymentMethodCode) {
@@ -52,22 +52,22 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         } else {
             $feeLabel = Mage::helper('buckaroo3extended')->__('Fee');
         }
-        
+
         return $feeLabel;
     }
-    
+
     public function resetBuckarooFeeInvoicedValues($order, $invoice)
     {
         $baseBuckarooFee    = $invoice->getBaseBuckarooFee();
         $paymentFee        = $invoice->getBuckarooFee();
         $baseBuckarooFeeTax = $invoice->getBaseBuckarooFeeTax();
         $paymentFeeTax     = $invoice->getBuckarooFeeTax();
-         
+
         $baseBuckarooFeeInvoiced    = $order->getBaseBuckarooFeeInvoiced();
         $paymentFeeInvoiced        = $order->getBuckarooFeeInvoiced();
         $baseBuckarooFeeTaxInvoiced = $order->getBaseBuckarooFeeTaxInvoiced();
         $paymentFeeTaxInvoiced     = $order->getBuckarooFeeTaxInvoiced();
-         
+
         if ($baseBuckarooFeeInvoiced && $baseBuckarooFee && $baseBuckarooFeeInvoiced >= $baseBuckarooFee) {
             $order->setBaseBuckarooFeeInvoiced($baseBuckarooFeeInvoiced - $baseBuckarooFee)
                   ->setBuckarooFeeInvoiced($paymentFeeInvoiced - $paymentFee)
@@ -76,7 +76,7 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
             $order->save();
         }
     }
-    
+
     public function isEnterprise()
     {
         if (method_exists('Mage', 'getEdition')) {
@@ -88,18 +88,32 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
             return (bool) Mage::getConfig()->getModuleConfig("Enterprise_Enterprise")->version;
         }
     }
-    
+
     public function getIsKlarnaEnabled()
     {
         return Mage::helper('core')->isModuleEnabled('Klarna_KlarnaPaymentModule');
     }
-    
-    
+
+
     public function checkRegionRequired()
     {
-        $land = 'NL'; 
-        $requiredCountries = Mage::helper('directory')->isRegionRequired($land);
-        
+        if (Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', Mage::app()->getStore()->getStoreId()) == 1) {
+            $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', Mage::app()->getStore()->getStoreId()));
+        }
+        $requiredCountries = Mage::helper('directory')->getCountriesWithStatesRequired();
+
         return $requiredCountries;
+    }
+    
+    public function checkSellersProtection()
+    {
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/sellers_protection', Mage::app()->getStore()->getStoreId())) {
+            $returnArray = $array['sellersprotection'] = array(
+                    'name' => 'paypal',
+                    'action' => 'extraInfo',
+                    'version' => 1,
+           );
+        }
+        return $returnArray;
     }
 }

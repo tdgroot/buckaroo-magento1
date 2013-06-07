@@ -104,7 +104,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 		    $requiredAction = false;
 		}
 
-        $parsedResponse = $this->_parseResponse();
+        $parsedResponse = $this->_parseResponse();         
         $this->_addSubCodeComment($parsedResponse);
 
         if (!is_null($requiredAction) 
@@ -151,11 +151,14 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     
     protected function _addSubCodeComment($parsedResponse)
     {
-        if (!$parsedResponse['subcode']) {
+        if (!$parsedResponse['subCode']) {
             return $this;
         }
         
-        $subCode = $parsedResponse['subcode'];
+        $subCode = $parsedResponse['subCode'];
+        
+
+        
         $this->_order->addStatusHistoryComment(
             Mage::helper('buckaroo3extended')->__(
                 'Buckaroo has sent the following response: %s',
@@ -177,6 +180,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
                 $redirectUrl
             )
         );
+        $this->_order->save();
         
         $this->_debugEmail .= "Redirecting user to…" . $redirectUrl . "\n";
 
@@ -195,6 +199,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
                 'The payment request has been successfully recieved by Buckaroo.'
             )
         );
+        $this->_order->save();
         
         if(!$this->_order->getEmailSent())
         {
@@ -227,6 +232,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
                 'The payment request has been denied by Buckaroo.'
             )
         );
+        $this->_order->save();
         
         $this->restoreQuote();
 
@@ -286,6 +292,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
                 'The payment request has been recieved by Buckaroo.'
             )
         );
+        $this->_order->save();
         
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__(
