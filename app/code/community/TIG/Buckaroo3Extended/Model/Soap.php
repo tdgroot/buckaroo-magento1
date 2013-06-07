@@ -122,10 +122,6 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->ClientIP->Type = 'IPv4';
         $TransactionRequest->ClientIP->_ = $_SERVER['REMOTE_ADDR'];
 
-        foreach ($TransactionRequest->Services->Service as $key => $service) {
-            $this->_addCustomFields($TransactionRequest, $key, $service->Name);
-        }
-
         $Software = new Software();
         $Software->PlatformName = $this->_vars['Software']['PlatformName'];
         $Software->PlatformVersion = $this->_vars['Software']['PlatformVersion'];
@@ -255,30 +251,31 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
             $service = new Service();
 
-            // First key from $vars is selected as 'pay action', the ones after are for custom 'action'
-            if($fieldName == $this->_method){
-                $service->Name = $fieldName;
+            if(isset($value['name'])){
+                $name = $value['name'];
             } else {
-                $service->Name = $value['name'];
+                $name = $fieldName;
             }
 
+            $service->Name    = $name;
             $service->Action  = $value['action'];
             $service->Version = $value['version'];
+            
+            $this->_addCustomFields($service, $key, $fieldName);
 
             $services[] = $service;
         }
-
         $TransactionRequest->Services->Service = $services;
     }
 
-    protected function _addCustomFields(&$TransactionRequest, $key, $name)
+    protected function _addCustomFields(&$service, $key, $name)
     {
         if (
             !isset($this->_vars['customVars'])
             || !isset($this->_vars['customVars'][$name])
             || empty($this->_vars['customVars'][$name])
         ) {
-            unset($TransactionRequest->Services->Service->RequestParameter);
+            unset($service->RequestParameter);
             return;
         }
 
@@ -307,10 +304,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
 
         if (empty($requestParameters)) {
-            unset($TransactionRequest->Services->Service->RequestParameter);
+            unset($service->RequestParameter);
             return;
         } else {
-            $TransactionRequest->Services->Service[$key]->RequestParameter = $requestParameters;
+            $service->RequestParameter = $requestParameters;
         }
     }
 
