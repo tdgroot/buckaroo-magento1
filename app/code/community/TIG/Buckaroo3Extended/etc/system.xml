@@ -282,8 +282,8 @@
                         </max_amount>
                         <min_amount translate="label comment tooltip">
                             <label>Min order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>56</sort_order>
                             <show_in_default>1</show_in_default>
@@ -462,16 +462,6 @@
                             <show_in_store>1</show_in_store>
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
-						<max_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-						</max_amount>
 						<duedate translate="label comment tooltip">
 							<label>Number of days between order and invoice</label>
 							<comment>Maximum days of delay 30.</comment>
@@ -575,8 +565,8 @@
                         </max_amount>
                         <min_amount translate="label comment tooltip">
                             <label>Min order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>114</sort_order>
                             <show_in_default>1</show_in_default>
@@ -752,13 +742,12 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                                 <show_advanced>1</show_advanced>
-                                <active_status>1</active_status>
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater then the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>55</sort_order>
                             <show_in_default>1</show_in_default>
@@ -766,7 +755,6 @@
                             <show_in_store>1</show_in_store>
                             <depends>
                                 <show_advanced>1</show_advanced>
-                                <active_status>1</active_status>
                             </depends>
                         </min_amount>
 						<active_status translate="label comment">
@@ -1005,9 +993,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1231,9 +1219,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1495,9 +1483,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>64</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1722,9 +1710,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1964,9 +1952,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2270,9 +2258,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>59</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2503,9 +2491,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>55</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2846,9 +2834,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>64</sort_order>
                             <show_in_default>1</show_in_default>
@@ -3088,9 +3076,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -3263,16 +3251,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sort_order>
-                        <max_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </max_amount>
                         <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
@@ -3340,9 +3318,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>64</sort_order>
                             <show_in_default>1</show_in_default>
@@ -3566,9 +3544,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -3792,9 +3770,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4018,9 +3996,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4267,9 +4245,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>74</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4590,9 +4568,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>74</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4890,9 +4868,9 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Max order amount (in EURO)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <label>Min order amount (in EURO)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>64</sort_order>
                             <show_in_default>1</show_in_default>

@@ -97,43 +97,30 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function checkRegionRequired()
     {
-        if (Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', Mage::app()->getStore()->getStoreId()) == 1) {
-            $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', Mage::app()->getStore()->getStoreId()));
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/allowspecific', Mage::app()->getStore()->getStoreId()) == 1) {
+            $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/specificcountry', Mage::app()->getStore()->getStoreId()));
         }
-        $requiredCountries = Mage::helper('directory')->getCountriesWithStatesRequired();
-
-        return $requiredCountries;
+        foreach ($allowedCountries as $country) {
+            if (Mage::helper('directory')->isregionRequired($country)) {
+                // return NULL if all regions regarding specific countries are required
+                break;
+            }
+            return false;
+        }
     }
-    
-    public function checkSellersProtection()
-    {
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/sellers_protection', Mage::app()->getStore()->getStoreId())) {
-            $returnArray = $array['sellersprotection'] = array(
-                    'name' => 'paypal',
-                    'action' => 'extraInfo',
-                    'version' => 1,
-           );
-        }
-        return $returnArray;
-    }
-    
-    public function check()
-    {
-        $array = array(
-            'Name'              =>  $this->_billingInfo['lastname'],
-            'Street1'           =>  $address['street'],
-            'CityName'          =>  $this->_billingInfo['city'],
-            'StateOrProvince'   =>  'test value',//$this->_billingInfo['state'],
-            'PostalCode'        =>  $this->_billingInfo['zip'],
-            'Country'           =>  $this->_billingInfo['countryCode'],
-            'AddressOverride'   =>  'TRUE'
-         );
 
-        if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
-        } else {
-            $vars['customVars'][$this->_method] = $array;
+    public function checkSellersProtection($order)
+    {
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/sellers_protection', Mage::app()->getStore()->getStoreId())) {
+            return false;
         }
-        
+
+        foreach ($order->getAllItems() as $item) {
+            if ($item->getIsVirtual()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
