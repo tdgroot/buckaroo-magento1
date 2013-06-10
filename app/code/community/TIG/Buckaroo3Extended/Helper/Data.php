@@ -94,12 +94,14 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::helper('core')->isModuleEnabled('Klarna_KlarnaPaymentModule');
     }
 
-
     public function checkRegionRequired()
     {
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/allowspecific', Mage::app()->getStore()->getStoreId()) == 1) {
             $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/specificcountry', Mage::app()->getStore()->getStoreId()));
+        } else {
+            $allowedCountries = Mage::getModel('directory/country')->getResourceCollection()->loadByStore()->toOptionArray(true);
         }
+
         foreach ($allowedCountries as $country) {
             if (Mage::helper('directory')->isregionRequired($country)) {
                 // return NULL if all regions regarding specific countries are required
