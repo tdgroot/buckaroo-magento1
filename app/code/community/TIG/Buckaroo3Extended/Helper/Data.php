@@ -79,14 +79,19 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function isEnterprise()
     {
+        //there are two easy ways of checking if the current Magento edition is enterprise:
+        //1. use the getEdition() method (added in 1.12)
+        //2. use isModuleEnabled() method
         if (method_exists('Mage', 'getEdition')) {
             $edition = Mage::getEdition();
-            if ($edition != 'Enterprise') {
-                return false;
+            if ($edition == 'Enterprise') {
+                return true;
             }
         } else {
-            return (bool) Mage::getConfig()->getModuleConfig("Enterprise_Enterprise")->version;
+            return (bool) Mage::helper('core')->isModuleEnabled('Enterprise_Enterprise');
         }
+        
+        return false;
     }
 
     public function getIsKlarnaEnabled()
@@ -96,19 +101,23 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function checkRegionRequired()
     {
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/allowspecific', Mage::app()->getStore()->getStoreId()) == 1) {
-            $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/specificcountry', Mage::app()->getStore()->getStoreId()));
+        $storeId = Mage::app()->getStore()->getStoreId();
+        $allowSpecific = Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/allowspecific', $storeId);
+        if ($allowSpecific) {
+            $allowedCountries = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/specificcountry', $storeId));
         } else {
-            $allowedCountries = Mage::getModel('directory/country')->getResourceCollection()->loadByStore()->toOptionArray(true);
+            $allowedCountries = Mage::getModel('directory/country')->getResourceCollection()
+                                                                   ->loadByStore()
+                                                                   ->toOptionArray(true);
         }
 
         foreach ($allowedCountries as $country) {
-            if (Mage::helper('directory')->isregionRequired($country)) {
-                // return NULL if all regions regarding specific countries are required
-                break;
+            if (!Mage::helper('directory')->isRegionRequired($country)) {
+                return false;
             }
-            return false;
         }
+        
+        return true;
     }
 
     public function checkSellersProtection($order)
