@@ -261,14 +261,14 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             $service->Action  = $value['action'];
             $service->Version = $value['version'];
             
-            $this->_addCustomFields($service, $key, $fieldName);
+            $this->_addCustomFields($service, $fieldName);
 
             $services[] = $service;
         }
         $TransactionRequest->Services->Service = $services;
     }
 
-    protected function _addCustomFields(&$service, $key, $name)
+    protected function _addCustomFields(&$service, $name)
     {
         if (
             !isset($this->_vars['customVars'])
