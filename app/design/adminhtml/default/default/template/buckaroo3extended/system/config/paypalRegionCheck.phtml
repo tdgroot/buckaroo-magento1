@@ -16,7 +16,7 @@ if ($edition == 'Community' && version_compare($version, '1.7.2') == -1): ?>
 <?php endif; ?>
 
 
-<?php if(is_null($this->getIsRegionRequired())): ?>
+<?php if($this->getIsRegionRequired()): ?>
     <?php return $this; ?>
 <?php endif; ?>
 <div class="error-msg buckaroo">
