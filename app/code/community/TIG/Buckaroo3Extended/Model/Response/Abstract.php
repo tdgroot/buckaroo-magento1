@@ -172,9 +172,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     {
         $redirectUrl = $this->_response->RequiredAction->RedirectURL;
 
-        $var = Mage::registry('paypal_virtual_product');
-        Mage::log($var);
-
         $this->_order->addStatusHistoryComment(
             Mage::helper('buckaroo3extended')->__(
                 'Customer is being redirected to Buckaroo. Url: %s',

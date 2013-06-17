@@ -9,16 +9,9 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_SellersProtectionCheck
     {
         //check if the module is set to enabled
         if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/active', Mage::app()->getStore())) {
-            
-            //var_dump(Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/active', Mage::app()->getStore()));
             return true;
         }
         return Mage::helper('buckaroo3extended')->checkRegionRequired();
-        
-        
-        
-        // error zichtbaar
-       // return true; 
     }
 
     public function render(Varien_Data_Form_Element_Abstract $element)
