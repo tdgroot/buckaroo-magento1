@@ -112,11 +112,11 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         foreach ($allowedCountries as $country) {
-            if (!Mage::helper('directory')->isRegionRequired($country)) {
+            if (!Mage::helper('directory')->isregionRequired($country)) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -125,12 +125,19 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/sellers_protection', Mage::app()->getStore()->getStoreId())) {
             return false;
         }
-
-        foreach ($order->getAllItems() as $item) {
-            if ($item->getIsVirtual()) {
-                return false;
-            }
+        
+        if ($order->getIsVirtual()) {
+            return false;
         }
+
+        /** There is a possibility that we have to loop all items, to check whether a virtual product is presence
+         in the cart before sending to PayPal **/
+         
+        // foreach ($order->getAllItems() as $item) {
+            // if ($item->getIsVirtual()) {
+                // return false;
+            // }
+        // }
 
         return true;
     }
