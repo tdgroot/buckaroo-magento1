@@ -268,7 +268,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -281,7 +281,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -551,7 +551,7 @@
                         	</depends>
                         </order_status_failed>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -564,7 +564,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -732,7 +732,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -745,7 +745,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater then the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -980,7 +980,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -993,7 +993,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -1206,7 +1206,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -1219,7 +1219,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -1470,7 +1470,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -1483,7 +1483,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -1697,7 +1697,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -1710,7 +1710,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -1939,7 +1939,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -1952,7 +1952,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -2249,7 +2249,7 @@
                             </depends>
                         </sellers_protection_ineligible>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -2262,7 +2262,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -2482,7 +2482,7 @@
                             </depends>
                         </reminder_level>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -2495,7 +2495,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -2825,7 +2825,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -2838,7 +2838,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3067,7 +3067,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3080,7 +3080,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3309,7 +3309,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3322,7 +3322,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3535,7 +3535,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3548,7 +3548,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3761,7 +3761,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3774,7 +3774,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -3987,7 +3987,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -4000,7 +4000,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -4236,7 +4236,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -4249,7 +4249,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -4559,7 +4559,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -4572,7 +4572,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -4859,7 +4859,7 @@
                             <validate>buckaroo_fee</validate>
                         </payment_fee_label>
                         <max_amount translate="label comment tooltip">
-                            <label>Max order amount</label>
+                            <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -4872,7 +4872,7 @@
                             </depends>
                         </max_amount>
                         <min_amount translate="label comment tooltip">
-                            <label>Min order amount</label>
+                            <label>Min order amount (in Base Currency)</label>
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>

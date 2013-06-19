@@ -23,7 +23,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         );
 
         $checkForSellerProtection = Mage::helper('buckaroo3extended')->checkSellersProtection($order);
-        $this->_setCommentHistoryForVirtual($order);
+        
+        $this->_addCommentHistoryForVirtual($order);
 
         if ($checkForSellerProtection){
             $array['sellersprotection'] = array(
@@ -63,13 +64,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
         $arrayCustom        = $this->_getSellerProtectionVars($this->_order, $shippingAddress);
         $vars               = $request->getVars();
-
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
-            $this->_addCustomerVariables($vars);
-            $this->_addCreditManagement($vars);
-            $this->_addAdditionalCreditManagementVariables($vars);
-        }
-
+        
         if ($arrayCustom) {
             if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
                 $vars['customVars']['sellersprotection'] = array_merge($vars['customVars']['sellersprotection'], $arrayCustom);
@@ -77,6 +72,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
                 $vars['customVars']['sellersprotection'] = $arrayCustom;
             }
         }
+
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+            $this->_addCustomerVariables($vars);
+            $this->_addCreditManagement($vars);
+            $this->_addAdditionalCreditManagementVariables($vars);
+        }
+
         $request->setVars($vars);
         return $this;
     }
@@ -198,7 +200,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             case 'Eligible':
                 $eligibilityStatus = Mage::getStoreConfig(
                     'buckaroo/buckaroo3extended_paypal/sellers_protection_eligible',
-                    Mage::app()->getRequest()->getParam('store')
+                    $order->getStoreId()
                 );
                 $order->addStatusHistoryComment($commentEligible, $eligibilityStatus)
                       ->save();
@@ -207,7 +209,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             case 'ItemNotReceivedEligible':
                 $eligibilityStatus = Mage::getStoreConfig(
                     'buckaroo/buckaroo3extended_paypal/sellers_protection_itemnotreceived_eligible',
-                    Mage::app()->getRequest()->getParam('store')
+                    $order->getStoreId()
                 );
                 $order->addStatusHistoryComment($commentItemNotReceivedEligible, $eligibilityStatus)
                       ->save();
@@ -216,7 +218,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             case 'UnauthorizedPaymentEligible':
                 $eligibilityStatus = Mage::getStoreConfig(
                     'buckaroo/buckaroo3extended_paypal/sellers_protection_unauthorizedpayment_eligible',
-                    Mage::app()->getRequest()->getParam('store')
+                    $order->getStoreId()
                 );
                 $order->addStatusHistoryComment($commentUnauthorizedPaymentEligible, $eligibilityStatus)
                       ->save();
@@ -225,7 +227,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             case 'None':
                 $eligibilityStatus = Mage::getStoreConfig(
                     'buckaroo/buckaroo3extended_paypal/sellers_protection_ineligible',
-                    Mage::app()->getRequest()->getParam('store')
+                    $order->getStoreId()
                 );
                 $order->addStatusHistoryComment($commentIneligible, $eligibilityStatus)
                       ->save();

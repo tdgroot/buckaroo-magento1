@@ -121,27 +121,17 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function checkSellersProtection($order)
     {
-        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/active', Mage::app()->getRequest()->getParam('store'))) {
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/active', $order->getStoreId())) {
             return false;
         }
 
-        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/sellers_protection', Mage::app()->getRequest()->getParam('store'))) {
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/sellers_protection', $order->getStoreId())) {
             return false;
         }
 
         if ($order->getIsVirtual()) {
             return false;
         }
-
-        /** There is a possibility that we have to loop all items, to check whether a virtual product is presence
-         in the cart before sending to PayPal **/
-
-        // foreach ($order->getAllItems() as $item) {
-            // if ($item->getIsVirtual()) {
-                // return false;
-            // }
-        // }
-
         return true;
     }
 }
