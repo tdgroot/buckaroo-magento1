@@ -18,6 +18,7 @@
 - Indien men probeert te betalen met cadeaukaarten, maar er geen cadeaukaart geactiveerd is in de module configuratie resulteert dit niet langer in een exception.
 - Bestellingen die vanuit de backend geplaatst worden, maken nu gebruik van de correcte locale code.
 - De BTW op de betaaltoeslag wordt in Magento 1.7.0.2 niet langer dubbel berekend op de factuur.
+- De Buckaroo toeslag wordt nu ook in alle Enterprise versies correct getoond op de checkout pagina.
 
 
 
