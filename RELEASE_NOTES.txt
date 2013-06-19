@@ -1,7 +1,15 @@
 ===== 4.6.0 =====
 
+=== Major Highlights ===
+- Verkopersbescherming voor PayPal-betaalmethode toegevoegd
+- Het is nu mogelijk om minimaal en maximaal bedrag voor elke betaalmethode aan te geven
+
+
 === Minor Changes ===
 - De Achteraf Betalen betaalmethode heeft nu een telefoonnummer veld, indien er geen telefoonnummer ingevuld hoeft te worden bij het adres. Dit veld is verborgen indien er een valide telefoonnummer bekend is bij de klantaccount of het gekozen adres.
+- De puntjes in de rekeningnummers worden, alvorens de verzending richting Buckaroo, uitgefilterd
+- Meer gedetailleerde weergave van status-raportage bij een betaling
+
 
 === Fixes ===
 - Probleem waarbij telefoonnummers soms incorrect geïdentificeerd werden als een mobiel nummer is opgelost.
