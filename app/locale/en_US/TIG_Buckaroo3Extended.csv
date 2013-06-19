@@ -128,7 +128,7 @@
 "Merchant is protected by Paypals Seller Protection Policy for Item Not Received","Merchant is protected by Paypals Seller Protection Policy for Item Not Received"
 "Merchant is protected by Paypals Seller Protection Policy for Unauthorized Payment","Merchant is protected by Paypals Seller Protection Policy for Unauthorized Payment"
 "Merchant is not protected under the Seller Protection Policy","Merchant is not protected under the Seller Protection Policy"
-"There is a virtual product included in the order, which is not supported by Seller Protection.","There is a virtual product included in the order, which is not supported by Seller Protection."
+"The order consists of virtual product(s), which is not supported by Seller Protection.","The order consists of virtual product(s), which is not supported by Seller Protection."
 "Min order amount (in Base Currency)","Min order amount (in Base Currency)"
 "Minimum order amount allowed.","Minimum order amount allowed."
 "The payment method show only for orders with an order amount greater than the minimum amount.","The payment method show only for orders with an order amount greater than the minimum amount."
