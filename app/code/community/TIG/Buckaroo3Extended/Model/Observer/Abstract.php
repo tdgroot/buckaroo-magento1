@@ -524,7 +524,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         if($order->getIsVirtual()) {
             $checkForSellerProtection = Mage::helper('buckaroo3extended')->checkSellersProtection($order);
             if (!$checkForSellerProtection) {
-                $commentVirtual = Mage::helper('buckaroo3extended')->__('There is a virtual product included in the order, which is not supported by Seller Protection.');
+                $commentVirtual = Mage::helper('buckaroo3extended')->__('The order consists of virtual product(s), which is not supported by Seller Protection.');
                 $order->addStatusHistoryComment($commentVirtual)
                       ->save();
             }   

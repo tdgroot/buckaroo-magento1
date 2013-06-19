@@ -265,6 +265,7 @@
 "Merchant is protected by Paypals Seller Protection Policy for Unauthorized Payment","Voor deze bestelling geldt een verkopersbescherming voor ongeauthoriseerde betaling"
 "Merchant is not protected under the Seller Protection Policy","Deze bestelling voldoet niet aan de voorwaarde voor verkopersbescherming"
 "There is a virtual product included in the order, which is not supported by Seller Protection.","Er is een virtueel product aanwezig in de order, waardoor er geen verkopersbescherming van toepassing kan zijn." 
+"The order consists of virtual product(s) , which is not supported by Seller Protection.","De bestelling bestaat enkel uit virtueel product(en), welke niet wordt ondersteund door Paypals verkopersbescherming."
 "Seller protection eligible","Verkopersbescherming volledig toegekend"
 "Seller protection enabled","Maak gebruik van verkopersbescherming" 
 "Seller protection for unauthorized payment and item not received","Verkopersbescherming wordt toegekend voor ongeauthorizeerde betaling en niet ontvangen goederen"
