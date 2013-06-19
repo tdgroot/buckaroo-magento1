@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<TIG_Buckaroo3Extended>
-			<version>4.5.0.2</version>
+			<version>4.6.0</version>
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<frontend>
@@ -1208,6 +1208,10 @@
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
+                <sellers_protection_eligible>Processing</sellers_protection_eligible>
+                <sellers_protection_itemnotreceived_eligible>Processing</sellers_protection_itemnotreceived_eligible>
+                <sellers_protection_unauthorizedpayment_eligible>Processing</sellers_protection_unauthorizedpayment_eligible>
+                <sellers_protection_ineligible>Processing</sellers_protection_ineligible>
          	</buckaroo3extended_paypal>
 
          	<buckaroo3extended_sofortueberweisung>

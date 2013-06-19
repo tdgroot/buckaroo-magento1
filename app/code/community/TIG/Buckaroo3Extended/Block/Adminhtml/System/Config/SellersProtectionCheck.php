@@ -7,10 +7,15 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_SellersProtectionCheck
 
     public function getIsRegionRequired()
     {
-        //check if the module is set to enabled
-        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/active', Mage::app()->getStore())) {
+        //check if the paymentmethod is set to enabled for a particular storeview
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/active', Mage::app()->getRequest()->getParam('store'))) {
             return true;
         }
+
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/sellers_protection', Mage::app()->getRequest()->getParam('store'))) {
+            return true;
+        }
+
         return Mage::helper('buckaroo3extended')->checkRegionRequired();
     }
 

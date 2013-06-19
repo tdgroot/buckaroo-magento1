@@ -90,7 +90,7 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         } else {
             return (bool) Mage::helper('core')->isModuleEnabled('Enterprise_Enterprise');
         }
-        
+
         return false;
     }
 
@@ -101,13 +101,13 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function checkRegionRequired()
     {
-        $storeId = Mage::app()->getStore()->getStoreId();
+        $storeId = Mage::app()->getRequest()->getParam('store');
         $allowSpecific = Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/allowspecific', $storeId);
         if ($allowSpecific) {
             $allowedCountries = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/specificcountry', $storeId));
         } else {
             $allowedCountries = Mage::getModel('directory/country')->getResourceCollection()
-                                                                   ->loadByStore()
+                                                                   ->loadByStore($storeId)
                                                                    ->toOptionArray(true);
         }
 
@@ -116,29 +116,22 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
                 return false;
             }
         }
-
         return true;
     }
 
     public function checkSellersProtection($order)
     {
-        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/sellers_protection', Mage::app()->getStore()->getStoreId())) {
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/active', $order->getStoreId())) {
             return false;
         }
-        
+
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/sellers_protection', $order->getStoreId())) {
+            return false;
+        }
+
         if ($order->getIsVirtual()) {
             return false;
         }
-
-        /** There is a possibility that we have to loop all items, to check whether a virtual product is presence
-         in the cart before sending to PayPal **/
-         
-        // foreach ($order->getAllItems() as $item) {
-            // if ($item->getIsVirtual()) {
-                // return false;
-            // }
-        // }
-
         return true;
     }
 }

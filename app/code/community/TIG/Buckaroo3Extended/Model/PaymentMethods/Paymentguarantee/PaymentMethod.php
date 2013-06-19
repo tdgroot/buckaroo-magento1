@@ -22,7 +22,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
         	'additionalFields',
             array(
             	'BPE_Customergender'    => $_POST[$this->_code.'_BPE_Customergender'],
-                'BPE_AccountNumber'     => $this->_validateAccount($accountNumber),
+                'BPE_AccountNumber'     => $this->filterAccount($accountNumber),
                 'BPE_PhoneNumber'     => $_POST[$this->_code.'_bpe_customer_phone_number'],
         		'BPE_customerbirthdate' => date(
         			'Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
@@ -50,12 +50,5 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
         $this->getInfoInstance()->setAdditionalInformation('checked_terms_and_conditions', true);
 
         return parent::validate();
-    }
-
-    protected function _validateAccount($accountNumber)
-    {
-        $filteredAccount = str_replace('.', '', $accountNumber);
-
-        return $filteredAccount;
     }
 }

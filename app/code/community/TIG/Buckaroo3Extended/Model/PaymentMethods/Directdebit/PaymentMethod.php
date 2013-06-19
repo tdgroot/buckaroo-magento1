@@ -18,18 +18,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Directdebit_PaymentMethod exten
             $accountNumber = $_POST['payment']['account_number'];
     		$session->setData('additionalFields', array(
     				'accountOwner'  => $_POST['payment']['account_owner'],
-    				'accountNumber' => $this->_validateAccount($accountNumber)
+    				'accountNumber' => $this->filterAccount($accountNumber)
     		    )
     		);
     	}
 
     	return parent::getOrderPlaceRedirectUrl();
-    }
-
-    protected function _validateAccount($accountNumber)
-    {
-        $filteredAccount = str_replace('.', '', $accountNumber);
-
-        return $filteredAccount;
     }
 }

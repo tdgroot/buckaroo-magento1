@@ -12,7 +12,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
         $request = $observer->getRequest();
         $order = $request->getOrder();
-
         $vars = $request->getVars();
 
         $array = array(
@@ -24,11 +23,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         );
 
         $checkForSellerProtection = Mage::helper('buckaroo3extended')->checkSellersProtection($order);
-        if (!$checkForSellerProtection) {
-            $commentVirtual = Mage::helper('buckaroo3extended')->__('There is a virtual product included in the order, which is not supported by Seller Protection.');
-            $order->addStatusHistoryComment($commentVirtual)
-                  ->save();
-        }
+        
+        $this->_addCommentHistoryForVirtual($order);
 
         if ($checkForSellerProtection){
             $array['sellersprotection'] = array(
@@ -66,7 +62,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         $this->_order       = $request->getOrder();
         $shippingAddress    = $this->_order->getShippingAddress();
 
-        $vars = $request->getVars();
+        $arrayCustom        = $this->_getSellerProtectionVars($this->_order, $shippingAddress);
+        $vars               = $request->getVars();
+        
+        if ($arrayCustom) {
+            if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
+                $vars['customVars']['sellersprotection'] = array_merge($vars['customVars']['sellersprotection'], $arrayCustom);
+            } else {
+                $vars['customVars']['sellersprotection'] = $arrayCustom;
+            }
+        }
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $this->_addCustomerVariables($vars);
@@ -74,29 +79,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             $this->_addAdditionalCreditManagementVariables($vars);
         }
 
-        $checkForSellerProtection = Mage::helper('buckaroo3extended')->checkSellersProtection($this->_order);
-
-        if ($checkForSellerProtection){
-
-            $array = array(
-                'Name'              =>  $shippingAddress['lastname'],
-                'Street1'           =>  $shippingAddress['street'],
-                'CityName'          =>  $shippingAddress['city'],
-                'StateOrProvince'   =>  $shippingAddress['region'],
-                'PostalCode'        =>  $shippingAddress['postcode'],
-                'Country'           =>  $shippingAddress['country_id'],
-                'AddressOverride'   =>  'TRUE'
-             );
-
-            if (array_key_exists('customVars', $vars) && array_key_exists('sellersprotection', $vars['customVars']) && is_array($vars['customVars']['sellersprotection'])) {
-                $vars['customVars']['sellersprotection'] = array_merge($vars['customVars']['sellersprotection'], $array);
-            } else {
-                $vars['customVars']['sellersprotection'] = $array;
-            }
-        }
-
         $request->setVars($vars);
-
         return $this;
     }
 
@@ -161,7 +144,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
-
         return $this;
     }
 
@@ -218,7 +200,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             case 'Eligible':
                 $eligibilityStatus = Mage::getStoreConfig(
                     'buckaroo/buckaroo3extended_paypal/sellers_protection_eligible',
-                    Mage::app()->getStoreId()
+                    $order->getStoreId()
                 );
                 $order->addStatusHistoryComment($commentEligible, $eligibilityStatus)
                       ->save();
@@ -227,7 +209,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
             case 'ItemNotReceivedEligible':
                 $eligibilityStatus = Mage::getStoreConfig(
                     'buckaroo/buckaroo3extended_paypal/sellers_protection_itemnotreceived_eligible',
-                    Mage::app()->getStoreId()
+                    $order->getStoreId()
                 );
                 $order->addStatusHistoryComment($commentItemNotReceivedEligible, $eligibilityStatus)
                       ->save();
@@ -235,8 +217,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
             case 'UnauthorizedPaymentEligible':
                 $eligibilityStatus = Mage::getStoreConfig(
-                       'buckaroo/buckaroo3extended_paypal/sellers_protection_unauthorizedpayment_eligible',
-                       Mage::app()->getStoreId()
+                    'buckaroo/buckaroo3extended_paypal/sellers_protection_unauthorizedpayment_eligible',
+                    $order->getStoreId()
                 );
                 $order->addStatusHistoryComment($commentUnauthorizedPaymentEligible, $eligibilityStatus)
                       ->save();
@@ -244,8 +226,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
 
             case 'None':
                 $eligibilityStatus = Mage::getStoreConfig(
-                        'buckaroo/buckaroo3extended_paypal/sellers_protection_ineligible',
-                        $order->getStoreId()
+                    'buckaroo/buckaroo3extended_paypal/sellers_protection_ineligible',
+                    $order->getStoreId()
                 );
                 $order->addStatusHistoryComment($commentIneligible, $eligibilityStatus)
                       ->save();
