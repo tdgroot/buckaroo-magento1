@@ -193,4 +193,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
 
         return TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote);
     }
+
+    public function filterAccount($accountNumber)
+    {
+        $filteredAccount = str_replace('.', '', $accountNumber);
+
+        return $filteredAccount;
+    }
+
 }

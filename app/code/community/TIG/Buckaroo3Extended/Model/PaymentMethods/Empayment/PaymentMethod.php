@@ -20,19 +20,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_PaymentMethod extends
             array(
             	'DOM' => array(
                     'accountHolder' => $_POST['buckaroo3extended_empayment_BPE_Accountholder'],
-                    'accountNumber' => $this->_validateAccount($accountNumber),
+                    'accountNumber' => $this->filterAccount($accountNumber),
                     'bankId'        => $_POST['buckaroo3extended_empayment_BPE_Bankid'],
                 ),
         	)
         );
 
     	return parent::getOrderPlaceRedirectUrl();
-    }
-
-    protected function _validateAccount($accountNumber)
-    {
-        $filteredAccount = str_replace('.', '', $accountNumber);
-
-        return $filteredAccount;
     }
 }
