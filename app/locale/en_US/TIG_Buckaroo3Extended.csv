@@ -133,7 +133,7 @@
 "Minimum order amount allowed.","Minimum order amount allowed."
 "The payment method show only for orders with an order amount greater than the minimum amount.","The payment method show only for orders with an order amount greater than the minimum amount."
 "Seller protection eligible","Seller protection eligible"
-"Seller protection enabled","Seller protection enabled" 
+"Seller protection enabled","Seller protection enabled"
 "Seller protection for unauthorized payment and item not received","Seller protection for unauthorized payment and item not received"
 "Seller protection item not received","Seller protection item not received"
 "Seller protection for item not received",""Seller protection for item not received"
@@ -143,3 +143,4 @@
 "Merchant is not protected by Seller Protection","Merchant is not protected by Seller Protection"
 "You have enabled PayPal Seller Protection. This feature requires Region with regard to the shipping address of the customer. Please select the specific countries to which PayPal is applicable for, and make the Regions required accordingly.","You have enabled PayPal Seller Protection. This feature requires Region with regard to the shipping address of the customer. Please select the specific countries to which PayPal is applicable for, and make the Regions required accordingly."
 "You have enabled PayPal Seller Protection. This feature requires Region with regard to the shipping address of the customer. Please select the specific countries to which PayPal is applicable for, and make the Regions required accordingly.","You have enabled PayPal Seller Protection. This feature requires Region with regard to the shipping address of the customer. Please select the specific countries to which PayPal is applicable for, and make the Regions required accordingly."
+"WARNING: Paypal Seller Protection requires additional configuration. Please read the documentation before proceding.","WARNING: Paypal Seller Protection requires additional configuration. Please read the documentation before proceding."
