@@ -80,39 +80,41 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         }
         $this->_debugEmail .= "Verified as authentic! \n\n";
 
-        if (!$this->_order->getTransactionKey() 
-		    && is_object($this->_response) 
+        if (!$this->_order->getTransactionKey()
+		    && is_object($this->_response)
 		    && isset($this->_response->Key))
 		{
 			$this->_order->setTransactionKey($this->_response->Key);
 			$this->_order->save();
             $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->Key . "\n";
 		}
-		
+
 		//sets the currency used by Buckaroo
-		if (!$this->_order->getCurrencyCodeUsedForTransaction() 
-		    && is_object($this->_response) 
-		    && isset($this->_response->Currency)) 
+		if (!$this->_order->getCurrencyCodeUsedForTransaction()
+		    && is_object($this->_response)
+		    && isset($this->_response->Currency))
 		{
 		    $this->_order->setCurrencyCodeUsedForTransaction($this->_response->Currency);
 		    $this->_order->save();
 		}
-        
+
 		if (is_object($this->_response) && isset($this->_response->RequiredAction)) {
 		    $requiredAction = $this->_response->RequiredAction->Type;
 		} else {
 		    $requiredAction = false;
 		}
 
-        if (!is_null($requiredAction) 
-            && $requiredAction !== false 
-            && $requiredAction == 'Redirect') 
+        $parsedResponse = $this->_parseResponse();
+        $this->_addSubCodeComment($parsedResponse);
+
+        if (!is_null($requiredAction)
+            && $requiredAction !== false
+            && $requiredAction == 'Redirect')
         {
             $this->_debugEmail .= "Redirecting customer... \n";
             $this->_redirectUser();
         }
 
-        $parsedResponse = $this->_parseResponse();
         $this->_debugEmail .= "Parsed response: " . var_export($parsedResponse, true) . "\n";
 
         $this->_debugEmail .= "Dispatching custom order processing event... \n";
@@ -147,9 +149,36 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         }
     }
 
+    protected function _addSubCodeComment($parsedResponse)
+    {
+        if (!$parsedResponse['subCode']) {
+            return $this;
+        }
+
+        $subCode = $parsedResponse['subCode'];
+
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'Buckaroo has sent the following response: %s',
+                $subCode['message']
+            )
+        );
+
+        $this->_order->save();
+        return $this;
+    }
+
     protected function _redirectUser()
     {
         $redirectUrl = $this->_response->RequiredAction->RedirectURL;
+
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'Customer is being redirected to Buckaroo. Url: %s',
+                $redirectUrl
+            )
+        );
+        $this->_order->save();
 
         $this->_debugEmail .= "Redirecting user to…" . $redirectUrl . "\n";
 
@@ -162,21 +191,28 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _success()
     {
         $this->_debugEmail .= "The response indicates a successful request. \n";
-        
+
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'The payment request has been successfully recieved by Buckaroo.'
+            )
+        );
+        $this->_order->save();
+
         if(!$this->_order->getEmailSent())
         {
         	$this->sendNewOrderEmail();
         }
-        
+
         $this->emptyCart();
-        
+
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__('Your order has been placed succesfully.')
 		);
 
 		$returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/success_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
-        
+
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
@@ -188,6 +224,14 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _failed()
     {
         $this->_debugEmail .= 'The transaction was unsuccessful. \n';
+
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'The payment request has been denied by Buckaroo.'
+            )
+        );
+        $this->_order->save();
+
         $this->restoreQuote();
 
         Mage::getSingleton('core/session')->addError(
@@ -197,10 +241,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())) {
             $this->_order->cancel()->save();
         }
-        
+
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
-        
+
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
@@ -211,6 +255,13 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _error()
     {
         $this->_debugEmail .= "The transaction generated an error. \n";
+
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'A technical error has occurred.'
+            )
+        );
+
         Mage::getSingleton('core/session')->addError(
             Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
         );
@@ -234,12 +285,19 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     {
         $this->_debugEmail .= "The response is neutral (not successful, not unsuccessful). \n";
 
+        $this->_order->addStatusHistoryComment(
+            Mage::helper('buckaroo3extended')->__(
+                'The payment request has been recieved by Buckaroo.'
+            )
+        );
+        $this->_order->save();
+
 		Mage::getSingleton('core/session')->addSuccess(
 		    Mage::helper('buckaroo3extended')->__(
 		    	'Your order has been placed succesfully. You will recieve an e-mail containing further payment instructions shortly.'
 		    )
 		);
-        
+
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/success_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
 
@@ -266,10 +324,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         Mage::getSingleton('core/session')->addNotice(
             Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not recieve an e-mail regarding your order within 30 minutes, please contact the shop owner.')
         );
-        
+
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->_order->getStoreId());
         $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
-        
+
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
@@ -380,13 +438,13 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     {
         $currentStore = Mage::app()->getStore()->getId();
         $orderStore = $this->_order->getStoreId();
-        
+
         Mage::app()->setCurrentStore($orderStore);
-        
+
         $this->_order->sendNewOrderEmail();
-        
+
         Mage::app()->setCurrentStore($currentStore);
-        
+
         return $this;
     }
 }

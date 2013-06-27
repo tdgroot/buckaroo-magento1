@@ -18,6 +18,12 @@
                 <span class="disabled" id="<?php echo $_code;?>_BPE_Customername" title="<?php echo $this->__('Name');?>"><?php echo $this->getName(); ?></span>
             </div>
         </li>
+        <li <?php if ($this->getAddress()->getTelephone() && $this->getAddress()->getTelephone() != '-'): ?>style="display:none;"<?php endif; ?>>
+            <label class="required" for="<?php echo $_code;?>_BPE_Customerphone"><?php echo $this->__('Telephone') ?>: <em>*</em></label>
+            <div class="input-box">
+                <input class="input-text required-entry" type="text" title="<?php echo $this->__('Telephone') ?>" name="<?php echo $_code;?>_bpe_customer_phone_number" value="<?php echo $this->getPhoneNumber(); ?>"  id="<?php echo $_code;?>_BPE_Customerphone"/>
+            </div>
+        </li>
         <li>
             <label class="required" for="payment:day"><?php echo $this->__('Date of birth') ?>: <em>*</em></label>
             <div class="input-box customer-dob customer-billing-dob">

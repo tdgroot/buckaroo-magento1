@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<TIG_Buckaroo3Extended>
-			<version>4.5.0.2</version>
+			<version>4.6.0</version>
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<frontend>
@@ -119,7 +119,7 @@
         <helpers>
             <buckaroo3extended>
                 <class>TIG_Buckaroo3Extended_Helper</class>
-			</buckaroo3extended>  
+			</buckaroo3extended>
         </helpers>
         <helpers>
         	<TIG_Buckaroo3Extended>
@@ -846,6 +846,13 @@
             			<method>buckaroo3extended_push_custom_processing_after</method>
             		</buckaroo3extended_paymentmethod_observer_visa>
             	</observers>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_paypal>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_paypal_observer</class>
+                        <method>buckaroo3extended_push_custom_processing_after</method>
+                    </buckaroo3extended_paymentmethod_observer_paypal>
+                </observers>
            	</buckaroo3extended_push_custom_processing_after>
             <buckaroo3extended_response_custom_processing>
             	<observers>
@@ -1113,7 +1120,7 @@
                 <mode>1</mode>
                 <payment_description>Magento Buckaroo</payment_description>
 			</buckaroo3extended>
-			
+
 			<buckaroo3extended_advanced>
 				<order_status>pending</order_status>
                 <order_status_success>processing</order_status_success>
@@ -1131,7 +1138,7 @@
 				<cancel_on_failed>1</cancel_on_failed>
 				<payment_fee_label>Fee</payment_fee_label>
 			</buckaroo3extended_advanced>
-			
+
          	<buckaroo3extended_ideal>
          		<active>0</active>
          		<mode>0</mode>
@@ -1146,7 +1153,7 @@
 				<payment_fee_label>Fee</payment_fee_label>
 				<service_version>2</service_version>
          	</buckaroo3extended_ideal>
-         	
+
          	<buckaroo3extended_visa>
          		<active>0</active>
          		<mode>0</mode>
@@ -1160,7 +1167,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_visa>
-         	
+
          	<buckaroo3extended_mastercard>
          		<active>0</active>
          		<mode>0</mode>
@@ -1174,7 +1181,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_mastercard>
-         	
+
          	<buckaroo3extended_amex>
          		<active>0</active>
          		<mode>0</mode>
@@ -1188,7 +1195,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_amex>
-         	
+
          	<buckaroo3extended_paypal>
          		<active>0</active>
          		<mode>0</mode>
@@ -1201,8 +1208,12 @@
          		<limit_by_ip>0</limit_by_ip>
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
+                <sellers_protection_eligible>Processing</sellers_protection_eligible>
+                <sellers_protection_itemnotreceived_eligible>Processing</sellers_protection_itemnotreceived_eligible>
+                <sellers_protection_unauthorizedpayment_eligible>Processing</sellers_protection_unauthorizedpayment_eligible>
+                <sellers_protection_ineligible>Processing</sellers_protection_ineligible>
          	</buckaroo3extended_paypal>
-         	
+
          	<buckaroo3extended_sofortueberweisung>
          		<active>0</active>
          		<mode>0</mode>
@@ -1216,7 +1227,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_sofortueberweisung>
-         	
+
          	<buckaroo3extended_giropay>
          		<active>0</active>
          		<mode>0</mode>
@@ -1230,7 +1241,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_giropay>
-         	
+
          	<buckaroo3extended_paysafecard>
          		<active>0</active>
          		<mode>0</mode>
@@ -1244,7 +1255,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_paysafecard>
-         	
+
          	<buckaroo3extended_transfer>
          		<active>0</active>
          		<mode>0</mode>
@@ -1262,7 +1273,7 @@
          		<use_creditmanagement>0</use_creditmanagement>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_transfer>
-         	
+
          	<buckaroo3extended_directdebit>
          		<active>0</active>
          		<mode>0</mode>
@@ -1276,7 +1287,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_directdebit>
-         	
+
          	<buckaroo3extended_paymentguarantee>
          		<active>0</active>
          		<mode>0</mode>
@@ -1292,7 +1303,7 @@
          		<duedate>0</duedate>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_paymentguarantee>
-         	
+
          	<buckaroo3extended_payperemail>
          		<active>0</active>
          		<mode>0</mode>
@@ -1309,7 +1320,7 @@
          		<area>backend</area>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_payperemail>
-         	
+
          	<buckaroo3extended_onlinegiro>
          		<active>0</active>
          		<mode>0</mode>
@@ -1324,7 +1335,7 @@
          		<area>backend</area>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_onlinegiro>
-         	
+
          	<buckaroo3extended_giftcards>
          		<active>0</active>
          		<mode>0</mode>
@@ -1338,7 +1349,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_giftcards>
-         	
+
          	<buckaroo3extended_empayment>
          		<active>0</active>
          		<mode>0</mode>
@@ -1352,7 +1363,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_empayment>
-         	
+
          	<buckaroo3extended_maestro>
          		<active>0</active>
          		<mode>0</mode>
@@ -1366,7 +1377,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_maestro>
-         	
+
          	<buckaroo3extended_visaelectron>
          		<active>0</active>
          		<mode>0</mode>
@@ -1380,7 +1391,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_visaelectron>
-         	
+
          	<buckaroo3extended_vpay>
          		<active>0</active>
          		<mode>0</mode>
@@ -1394,7 +1405,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_vpay>
-			
+
          	<buckaroo3extended_bancontactmrcash>
          		<active>0</active>
          		<mode>0</mode>
@@ -1408,7 +1419,7 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_bancontactmrcash>
-         	
+
          	<buckaroo3extended_refund>
          		<active>0</active>
          		<allow_push>1</allow_push>
@@ -1420,7 +1431,7 @@
          		<order_status_complete_failed></order_status_complete_failed>
          	</buckaroo3extended_refund>
          </buckaroo>
-         
+
          <sales>
          	<totals_sort>
          		<buckarooFee>25</buckarooFee>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Mastercard_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
@@ -24,8 +24,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Mastercard_PaymentMethod extend
         'PLN',
         'CHF',
 	);
-	
-    protected $_code = 'buckaroo3extended_mastercard';
 
+    protected $_code = 'buckaroo3extended_mastercard';
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_mastercard_checkout_form';
 }

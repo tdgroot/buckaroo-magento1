@@ -159,4 +159,26 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         
         return $account;
     }
+    
+    public function getPhoneNumber()
+    {
+        $phoneNumber = $this->getSession()->getData($this->getMethodCode() . '_bpe_customer_phone_number');
+        
+        if (!$phoneNumber) {
+            $phoneNumber = $this->getAddress()->getTelephone();
+        }
+        
+        if (!$phoneNumber || $phoneNumber == '-') {
+            $billingAddress = $this->getCustomer()->getDefaultBillingAddress();
+            if ($billingAddress) {
+                $phoneNumber = $billingAddress->getTelephone();
+            }
+        }
+        
+        if ($phoneNumber == '-') {
+            return null;
+        }
+        
+        return $phoneNumber;
+    }
 }

@@ -3,56 +3,56 @@
 final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model_Abstract
 {
     const WSDL_URL = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
-    
+
     private $_vars;
     private $_method;
-    
+
     protected $_debugEmail;
-    
+
     public function setVars($vars = array())
     {
         $this->_vars = $vars;
     }
-    
+
     public function getVars()
     {
         return $this->_vars;
     }
-    
+
     public function __construct($data = array())
     {
         define(
-        	   'LIB_DIR', 
-               Mage::getBaseDir() 
-               . DS 
-               . 'app' 
-               . DS 
-               . 'code' 
-               . DS 
-               . 'community' 
-               . DS 
-               . 'TIG' 
-               . DS 
-               . 'Buckaroo3Extended' 
-               . DS 
-               . 'lib' 
+        	   'LIB_DIR',
+               Mage::getBaseDir()
+               . DS
+               . 'app'
+               . DS
+               . 'code'
+               . DS
+               . 'community'
+               . DS
+               . 'TIG'
+               . DS
+               . 'Buckaroo3Extended'
+               . DS
+               . 'lib'
                . DS
         );
-        
+
         $this->setVars($data['vars']);
         $this->setMethod($data['method']);
     }
-    
+
     public function getMethod()
     {
         return $this->_method;
     }
-    
+
     public function setMethod($method = '')
     {
         $this->_method = $method;
     }
-    
+
     public function transactionRequest()
     {
         try
@@ -88,9 +88,9 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                 }
             }
         }
-        
+
         $client->thumbprint = $this->_vars['thumbprint'];
-        
+
         $TransactionRequest = new Body();
         $TransactionRequest->Currency = $this->_vars['currency'];
         $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
@@ -100,83 +100,79 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->Description = $this->_vars['description'];
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
-        
+
         if (isset($this->_vars['customVars']['servicesSelectableByClient']) && isset($this->_vars['customVars']['continueOnImcomplete'])) {
         	$TransactionRequest->ServicesSelectableByClient = $this->_vars['customVars']['servicesSelectableByClient'];
         	$TransactionRequest->ContinueOnIncomplete       = $this->_vars['customVars']['continueOnImcomplete'];
         }
-        
+
         if (array_key_exists('OriginalTransactionKey', $this->_vars)) {
             $TransactionRequest->OriginalTransactionKey = $this->_vars['OriginalTransactionKey'];
         }
-        
+
         if (isset($this->_vars['customParameters'])) {
         	$TransactionRequest = $this->_addCustomParameters($TransactionRequest);
         }
-        
+
         $TransactionRequest->Services = new Services();
-        
+
         $this->_addServices($TransactionRequest);
-        
+
         $TransactionRequest->ClientIP = new IPAddress();
         $TransactionRequest->ClientIP->Type = 'IPv4';
         $TransactionRequest->ClientIP->_ = $_SERVER['REMOTE_ADDR'];
-        
-        foreach ($TransactionRequest->Services->Service as $key => $service) {
-            $this->_addCustomFields($TransactionRequest, $key, $service->Name);
-        }
-        
+
         $Software = new Software();
         $Software->PlatformName = $this->_vars['Software']['PlatformName'];
         $Software->PlatformVersion = $this->_vars['Software']['PlatformVersion'];
         $Software->ModuleSupplier = $this->_vars['Software']['ModuleSupplier'];
         $Software->ModuleName = $this->_vars['Software']['ModuleName'];
         $Software->ModuleVersion = $this->_vars['Software']['ModuleVersion'];
-        
+
         $Header = new Header();
         $Header->MessageControlBlock = new MessageControlBlock();
         $Header->MessageControlBlock->Id = '_control';
-        $Header->MessageControlBlock->WebsiteKey = $this->_vars['merchantKey']; 
+        $Header->MessageControlBlock->WebsiteKey = $this->_vars['merchantKey'];
         $Header->MessageControlBlock->Culture = $this->_vars['locale'];
         $Header->MessageControlBlock->TimeStamp = time();
         $Header->MessageControlBlock->Channel = 'Web';
         $Header->MessageControlBlock->Software = $Software;
         $Header->Security = new SecurityType();
         $Header->Security->Signature = new SignatureType();
-        
+
         $Header->Security->Signature->SignedInfo = new SignedInfoType();
         $Header->Security->Signature->SignedInfo->CanonicalizationMethod = new CanonicalizationMethodType();
         $Header->Security->Signature->SignedInfo->CanonicalizationMethod->Algorithm = 'http://www.w3.org/2001/10/xml-exc-c14n#';
         $Header->Security->Signature->SignedInfo->SignatureMethod = new SignatureMethodType();
         $Header->Security->Signature->SignedInfo->SignatureMethod->Algorithm = 'http://www.w3.org/2000/09/xmldsig#rsa-sha1';
-        
+
         $Reference = new ReferenceType();
         $Reference->URI = '#_body';
         $Transform = new TransformType();
-        $Transform->Algorithm = 'http://www.w3.org/2001/10/xml-exc-c14n#'; 
+        $Transform->Algorithm = 'http://www.w3.org/2001/10/xml-exc-c14n#';
         $Reference->Transforms=array($Transform);
-        
+
         $Reference->DigestMethod = new DigestMethodType();
-        $Reference->DigestMethod->Algorithm = 'http://www.w3.org/2000/09/xmldsig#sha1'; 
+        $Reference->DigestMethod->Algorithm = 'http://www.w3.org/2000/09/xmldsig#sha1';
         $Reference->DigestValue = '';
-        
+
         $Transform2 = new TransformType();
-        $Transform2->Algorithm = 'http://www.w3.org/2001/10/xml-exc-c14n#'; 
+        $Transform2->Algorithm = 'http://www.w3.org/2001/10/xml-exc-c14n#';
         $ReferenceControl = new ReferenceType();
         $ReferenceControl->URI = '#_control';
         $ReferenceControl->DigestMethod = new DigestMethodType();
-        $ReferenceControl->DigestMethod->Algorithm = 'http://www.w3.org/2000/09/xmldsig#sha1'; 
+        $ReferenceControl->DigestMethod->Algorithm = 'http://www.w3.org/2000/09/xmldsig#sha1';
         $ReferenceControl->DigestValue = '';
         $ReferenceControl->Transforms=array($Transform2);
-        
+
         $Header->Security->Signature->SignedInfo->Reference = array($Reference,$ReferenceControl);
-        $Header->Security->Signature->SignatureValue = ''; 
-        
+        $Header->Security->Signature->SignatureValue = '';
+
         $soapHeaders = array();
-        $soapHeaders[] = new SOAPHeader('https://checkout.buckaroo.nl/PaymentEngine/', 'MessageControlBlock', $Header->MessageControlBlock); 
-        $soapHeaders[] = new SOAPHeader('http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd', 'Security', $Header->Security); 
+        $soapHeaders[] = new SOAPHeader('https://checkout.buckaroo.nl/PaymentEngine/', 'MessageControlBlock', $Header->MessageControlBlock);
+        $soapHeaders[] = new SOAPHeader('http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd', 'Security', $Header->Security);
         $client->__setSoapHeaders($soapHeaders);
-        
+
         //if the module is set to testmode, use the test gateway. Otherwise, use the default gateway
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended/mode', Mage::app()->getStore()->getStoreId())
             || Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/mode', Mage::app()->getStore()->getStoreId())
@@ -185,9 +181,9 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         } else {
             $location = 'https://checkout.buckaroo.nl/soap/';
         }
-        
+
         $client->__SetLocation($location);
-        
+
         try
         {
         	$response = $client->TransactionRequest($TransactionRequest);
@@ -198,27 +194,27 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             $this->logException($e->getMessage());
             return $this->_error($client);
         }
-        
+
         if (is_null($response)) {
             $response = false;
         }
-        
+
         $responseXML = $client->__getLastResponse();
         $requestXML = $client->__getLastRequest();
-        
+
         $responseDomDOC = new DOMDocument();
         $responseDomDOC->loadXML($responseXML);
 		$responseDomDOC->preserveWhiteSpace = FALSE;
 		$responseDomDOC->formatOutput = TRUE;
-		
+
 		$requestDomDOC = new DOMDocument();
         $requestDomDOC->loadXML($requestXML);
 		$requestDomDOC->preserveWhiteSpace = FALSE;
 		$requestDomDOC->formatOutput = TRUE;
-        
+
         return array($response, $responseDomDOC, $requestDomDOC);
     }
-    
+
     protected function _error($client = false)
     {
         $response = false;
@@ -228,23 +224,23 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         if ($client) {
             $responseXML = $client->__getLastResponse();
             $requestXML = $client->__getLastRequest();
-        
+
             if (!empty($responseXML)) {
 	            $responseDomDOC->loadXML($responseXML);
 	    		$responseDomDOC->preserveWhiteSpace = FALSE;
 	    		$responseDomDOC->formatOutput = TRUE;
             }
-    		
+
             if (!empty($requestXML)) {
 	            $requestDomDOC->loadXML($requestXML);
 	    		$requestDomDOC->preserveWhiteSpace = FALSE;
 	    		$requestDomDOC->formatOutput = TRUE;
             }
         }
-        
+
         return array($response, $responseDomDOC, $requestDomDOC);
     }
-    
+
     protected function _addServices(&$TransactionRequest)
     {
         $services = array();
@@ -252,29 +248,37 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         	if (empty($value)) {
         		continue;
         	}
-        	
-            $service          = new Service();
-            $service->Name    = $fieldName;
+
+            $service = new Service();
+
+            if(isset($value['name'])){
+                $name = $value['name'];
+            } else {
+                $name = $fieldName;
+            }
+
+            $service->Name    = $name;
             $service->Action  = $value['action'];
             $service->Version = $value['version'];
             
+            $this->_addCustomFields($service, $fieldName);
+
             $services[] = $service;
         }
-        
         $TransactionRequest->Services->Service = $services;
     }
-    
-    protected function _addCustomFields(&$TransactionRequest, $key, $name) 
+
+    protected function _addCustomFields(&$service, $name)
     {
         if (
-            !isset($this->_vars['customVars']) 
+            !isset($this->_vars['customVars'])
             || !isset($this->_vars['customVars'][$name])
             || empty($this->_vars['customVars'][$name])
         ) {
-            unset($TransactionRequest->Services->Service->RequestParameter);
+            unset($service->RequestParameter);
             return;
         }
-        
+
         $requestParameters = array();
         foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
             if (
@@ -295,19 +299,19 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             } else {
                 $requestParameter->_ = $value;
             }
-            
+
             $requestParameters[] = $requestParameter;
         }
-        
+
         if (empty($requestParameters)) {
-            unset($TransactionRequest->Services->Service->RequestParameter);
+            unset($service->RequestParameter);
             return;
         } else {
-            $TransactionRequest->Services->Service[$key]->RequestParameter = $requestParameters;
+            $service->RequestParameter = $requestParameters;
         }
     }
-    
-    protected function _addCustomParameters(&$TransactionRequest) 
+
+    protected function _addCustomParameters(&$TransactionRequest)
     {
         $requestParameters = array();
         foreach($this->_vars['customParameters'] as $fieldName => $value) {
@@ -329,17 +333,17 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             } else {
                 $requestParameter->_ = $value;
             }
-            
+
             $requestParameters[] = $requestParameter;
         }
-        
+
         if (empty($requestParameters)) {
             unset($TransactionRequest->AdditionalParameters);
             return;
         } else {
             $TransactionRequest->AdditionalParameters = $requestParameters;
         }
-        
+
         return $TransactionRequest;
     }
 }
@@ -352,43 +356,43 @@ class SoapClientWSSEC extends SoapClient
 	 * @var DOMDocument
 	 */
 	private $document;
-	
+
 	/**
 	 * Path to the privateKey file
-	 * @var string 
+	 * @var string
 	 */
 	public $privateKey = '';
-	
+
 	/**
 	 * Password for the privatekey
-	 * @var string 
+	 * @var string
 	 */
 	public $privateKeyPassword = '';
-	
+
 	/**
 	 * Thumbprint from Payment Plaza
-	 * @var type 
-	 */	
+	 * @var type
+	 */
 	public $thumbprint = '';
-	
+
     public function __doRequest ($request , $location , $action , $version , $one_way = 0 )
 	{
 		// Add code to inspect/dissect/debug/adjust the XML given in $request here
 		$domDOC = new DOMDocument();
 		$domDOC->preserveWhiteSpace = FALSE;
 		$domDOC->formatOutput = TRUE;
-		$domDOC->loadXML($request);	
-		
-		//Sign the document					
+		$domDOC->loadXML($request);
+
+		//Sign the document
 		$domDOC = $this->SignDomDocument($domDOC);
-		
+
 		// Uncomment the following line, if you actually want to do the request
 		return parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
 	}
-	
+
 	//Get nodeset based on xpath and ID
 	private function getReference($ID, $xPath)
-	{	
+	{
 		$query = '//*[@Id="'.$ID.'"]';
 		$nodeset = $xPath->query($query);
 		return $nodeset->item(0);
@@ -405,87 +409,87 @@ class SoapClientWSSEC extends SoapClient
 	{
 		return base64_encode(pack('H*',sha1($input)));
 	}
-	
+
 	private function signDomDocument($domDocument)
 	{
 	    //create xPath
     	$xPath = new DOMXPath($domDocument);
-    		
+
     	//register namespaces to use in xpath query's
     	$xPath->registerNamespace('wsse','http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
     	$xPath->registerNamespace('sig','http://www.w3.org/2000/09/xmldsig#');
     	$xPath->registerNamespace('soap','http://schemas.xmlsoap.org/soap/envelope/');
-    	
+
     	//Set id on soap body to easily extract the body later.
     	$bodyNodeList = $xPath->query('/soap:Envelope/soap:Body');
     	$bodyNode = $bodyNodeList->item(0);
     	$bodyNode->setAttribute('Id','_body');
-    	
+
     	//Get the digest values
     	$controlHash = $this->CalculateDigestValue($this->GetCanonical($this->GetReference('_control', $xPath)));
     	$bodyHash = $this->CalculateDigestValue($this->GetCanonical($this->GetReference('_body', $xPath)));
-    	
+
     	//Set the digest value for the control reference
     	$Control = '#_control';
     	$controlHashQuery = $query = '//*[@URI="'.$Control.'"]/sig:DigestValue';
     	$controlHashQueryNodeset = $xPath->query($controlHashQuery);
     	$controlHashNode = $controlHashQueryNodeset->item(0);
     	$controlHashNode->nodeValue = $controlHash;
-    	
+
     	//Set the digest value for the body reference
     	$Body = '#_body';
     	$bodyHashQuery = $query = '//*[@URI="'.$Body.'"]/sig:DigestValue';
     	$bodyHashQueryNodeset = $xPath->query($bodyHashQuery);
     	$bodyHashNode = $bodyHashQueryNodeset->item(0);
     	$bodyHashNode->nodeValue = $bodyHash;
-    	
+
     	//Get the SignedInfo nodeset
     	$SignedInfoQuery = '//wsse:Security/sig:Signature/sig:SignedInfo';
     	$SignedInfoQueryNodeSet = $xPath->query($SignedInfoQuery);
     	$SignedInfoNodeSet = $SignedInfoQueryNodeSet->item(0);
-    		
+
     	//Canonicalize nodeset
     	$signedINFO = $this->GetCanonical($SignedInfoNodeSet);
-    	
+
     	$certificateId = Mage::getStoreConfig('buckaroo/buckaroo3extended/certificate_selection', Mage::app()->getStore()->getId());
     	$certificate = Mage::getModel('buckaroo3extended/certificate')->load($certificateId)->getCertificate();
-        
+
     	$priv_key = substr($certificate, 0, 8192);
-    	
+
     	if ($priv_key === false) {
     	    throw new Exception('Unable to read certificate.');
     	}
-    	
-    	$pkeyid = openssl_get_privatekey($priv_key, '');	
+
+    	$pkeyid = openssl_get_privatekey($priv_key, '');
 	    if ($pkeyid === false) {
     	    throw new Exception('Unable to retrieve private key from certificate.');
     	}
-    	
+
     	//Sign signedinfo with privatekey
     	$signature2 = null;
     	$signatureCreate = openssl_sign($signedINFO, $signature2, $pkeyid);
-    	
+
     	//Add signature value to xml document
     	$sigValQuery = '//wsse:Security/sig:Signature/sig:SignatureValue';
     	$sigValQueryNodeset = $xPath->query($sigValQuery);
-    	$sigValNodeSet = $sigValQueryNodeset->item(0);	
+    	$sigValNodeSet = $sigValQueryNodeset->item(0);
     	$sigValNodeSet->nodeValue = base64_encode($signature2);
-    	
+
     	//Get signature node
     	$sigQuery = '//wsse:Security/sig:Signature';
     	$sigQueryNodeset = $xPath->query($sigQuery);
-    	$sigNodeSet = $sigQueryNodeset->item(0);	
-    	
+    	$sigNodeSet = $sigQueryNodeset->item(0);
+
     	//Create keyinfo element and Add public key to KeyIdentifier element
-    	$KeyTypeNode = $domDocument->createElementNS("http://www.w3.org/2000/09/xmldsig#","KeyInfo");	
+    	$KeyTypeNode = $domDocument->createElementNS("http://www.w3.org/2000/09/xmldsig#","KeyInfo");
     	$SecurityTokenReference = $domDocument->createElementNS('http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd','SecurityTokenReference');
     	$KeyIdentifier = $domDocument->createElement("KeyIdentifier");
     	$KeyIdentifier->nodeValue = $this->thumbprint;
     	$KeyIdentifier->setAttribute('ValueType','http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbPrintSHA1');
-    	$SecurityTokenReference->appendChild($KeyIdentifier);	
-    	$KeyTypeNode->appendChild($SecurityTokenReference);		
-    	$sigNodeSet->appendChild($KeyTypeNode);		
-    	
+    	$SecurityTokenReference->appendChild($KeyIdentifier);
+    	$KeyTypeNode->appendChild($SecurityTokenReference);
+    	$sigNodeSet->appendChild($KeyTypeNode);
+
     	return $domDocument;
 	}
 }
@@ -531,7 +535,7 @@ class TransformType
 
 class DigestMethodType
 {
-	public $Algorithm;	
+	public $Algorithm;
 }
 
 

@@ -1,0 +1,60 @@
+===== 4.6.0 =====
+
+=== Major Highlights ===
+- Verkopersbescherming voor PayPal-betaalmethode toegevoegd
+- Het is nu mogelijk om minimaal en maximaal bedrag voor elke betaalmethode aan te geven
+
+
+=== Minor Changes ===
+- De Achteraf Betalen betaalmethode heeft nu een telefoonnummer veld, indien er geen telefoonnummer ingevuld hoeft te worden bij het adres. Dit veld is verborgen indien er een valide telefoonnummer bekend is bij de klantaccount of het gekozen adres.
+- De puntjes in de rekeningnummers worden, alvorens de verzending richting Buckaroo, uitgefilterd
+- Meer gedetailleerde weergave van status-raportage bij een betaling
+
+
+=== Fixes ===
+- Probleem waarbij telefoonnummers soms incorrect geïdentificeerd werden als een mobiel nummer is opgelost.
+- Het is niet langer mogelijk voor bestellingen om een status die bij processing state hoort te krijgen nadat de bestelling voltooid is.
+- De controle op het betaalde bedrag gaat nu correct om met vreemde valuta.
+- Indien men probeert te betalen met cadeaukaarten, maar er geen cadeaukaart geactiveerd is in de module configuratie resulteert dit niet langer in een exception.
+- Bestellingen die vanuit de backend geplaatst worden, maken nu gebruik van de correcte locale code.
+- De BTW op de betaaltoeslag wordt in Magento 1.7.0.2 niet langer dubbel berekend op de factuur.
+- De Buckaroo toeslag wordt nu ook in alle Enterprise versies correct getoond op de checkout pagina.
+
+
+
+
+===== 4.5.0.2 =====
+
+=== Fixes ===
+- Installatieprobleem bij PHP versie 5.2.17 opgelost
+- Design probleem in Enterprise installaties opgelost
+
+
+
+
+===== 4.5.0.1 ====
+
+=== Fixes ===
+- BetaalGarant betalingsvoorwaarden zijn in onestepcheckout nu goed uitgelijnd als het checkboxje niet aangevinkt is.
+
+
+
+
+===== 4.5.0.0 ====
+
+=== Major Highlights ===
+- 2 nieuwe giftcards toegevoegd: jewellerycard en sieradenenhorlogescadeaukaart
+- klanten moeten nu voor achteraf betalen eerst de algemene voorwaarden accepteren. Deze voorwaarden staan in een static block en worden getoond d.m.v. een popup in de checkout pagina
+
+=== Fixes ===
+- klikken op labels in de frontend en backend selecteert nu het bijbehorende veld
+- probleem in magenta 1.5 door het gebruik van Varien_Date is opgelost
+- wanneer er met een vreemde valuta een incorrect bedrag is betaald wordt nu correct bij de bestelling het betaalde bedrag en het verwachtte bedrag getoond in de betaalde valuta
+- de invulvelden van PPE en OG in de backend zijn opnieuw gestyled. Er worden niet langer onterecht validatiefouten getoond
+- er ontstaat niet langer een HTTP 302 melding wanneer er een push binnenkomt die volgens de module niet gekoppeld kan worden aan een bestelling
+- automatisch legen van de winkelwagen na een succesvolle betaling werkt weer
+- refunds maken nu correct gebruik van de store ID van de bestelling ipv de store ID van de backend
+- backwards compatibiliteit met de 2012 module verbeterd door toevoeging van buckaroo2012callcenter betaalmethode
+- de shopping cart blijft nu ook gevuld voor gasten na een onsuccesvolle betaling
+- javascript op de checkout pagina maakt nu gebruik van https indien beschikbaar
+

@@ -53,12 +53,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total extends Mage_Sa
         //underlying cause currently unknown
         if ($invoice->getBaseGrandTotal() < $order->getBaseGrandTotal() && $baseBuckarooFeeToInvoice) {
             $invoice->setBaseGrandTotal($baseInvoiceTotal + $baseBuckarooFeeTaxToInvoice);
-            
-            if (version_compare(Mage::getVersion(), '1.7.0.2', '==')) {
-                $invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice * 2);
-            } else {
-                $invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice);
-            }
+            $invoice->setGrandTotal($invoiceTotal + $buckarooFeeTaxToInvoice);
             
             $invoice->setBaseTaxAmount($baseTaxAmountTotal + $baseBuckarooFeeTaxToInvoice);
             $invoice->setTaxAmount($taxAmountTotal + $baseBuckarooFeeTaxToInvoice);

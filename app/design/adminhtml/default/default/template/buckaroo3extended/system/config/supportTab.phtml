@@ -14,6 +14,7 @@
                                     <li><?php echo $_helper->__('Secret Key - Configuration &rarr; Secret key for Digitale signature &rarr; Secret Key.');?></li>
                                     <li><?php echo $_helper->__('Certificate - Configuration &rarr; Manage certificates (BPE 3.0).');?></li>
                                     <li><?php echo $_helper->__('Certificate Thumbprint - Configuration &rarr; Manage certificates (BPE 3.0).');?></li>
+                                    <li><?php echo $_helper->__('Enter the following URL under profile -> Websites -> Push settings -> Push URI Success & Failure: %s', Mage::getUrl('buckaroo3extended/notify/push'));?></li>
                                 </ol>
                             </li>
                             <li><strong><?php echo $_helper->__('Upload the Certificate to the Magento database under the Certificate Management tab.');?></strong>
@@ -63,7 +64,7 @@
                         <h3><?php echo $_helper->__('Magento &amp; 3rd party version compatibility');?></h3>
                         <ul>
                             <li><?php echo $_helper->__('Magento Community Edition version');?> 1.5, 1.6 &amp; 1.7</li>
-                            <li><?php echo $_helper->__('Magento Enterprise Edition version');?> 1.11 &amp; 1.12</li>
+                            <li><?php echo $_helper->__('Magento Enterprise Edition version');?> 1.11,1.12 &amp; 1.13</li>
                         </ul>
                         <ul>
                             <li><?php echo $_helper->__('OneStepCheckout version');?> 4.0.7</li>
@@ -111,7 +112,8 @@
                         <h3><?php echo $_helper->__('Documentation');?></h3>
                         <p><?php echo $_helper->__('A list of documents regarding the module.');?></p>
                         <ul>
-                            <li><a class="pdf" target="_blank" href="<?php echo $this->getSkinUrl('media/TIG/Buckaroo3Extended/manual.pdf')?>" title="<?php echo $_helper->__('Download a PDF format of the manual. Currently the manual is only available in Dutch.');?>"><?php echo $_helper->__('installation manual buckaroo bpe3 %s.pdf (NL)', 'v4.4.2.0');?></a></li>
+                            <li><a class="pdf" target="_blank" href="<?php echo $this->getSkinUrl('media/TIG/Buckaroo3Extended/manual.pdf')?>" title="<?php echo $_helper->__('Download a PDF format of the manual. Currently the manual is only available in Dutch.');?>"><?php echo $_helper->__('installation manual buckaroo bpe3 %s.pdf (NL)', 'v4.6.0');?></a></li>
+                            <li><a target="_blank" href="http://servicedesk.totalinternetgroup.nl/entries/23902302-Release-notes" title="<?php echo $_helper->__('View the complete changelog of the module. Currently the changelog is only available in Dutch.');?>"><?php echo $_helper->__('full changelog');?></a></li>
                         </ul>
                     </div>
                 </td>

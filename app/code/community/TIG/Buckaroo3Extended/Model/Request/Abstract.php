@@ -36,11 +36,28 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
     public function sendRequest()
     {
+        try {
+            $this->_sendRequest();
+        } catch (Exception $e) {
+            Mage::helper('buckaroo3extended')->logException($e);
+            Mage::getModel(
+                'buckaroo3extended/response_abstract', 
+                array(
+                    'response' => false, 
+                    'XML' => false, 
+                    'debugEmail' => $this->_debugEmail
+                )
+            )->processResponse();
+        }
+    }
+    
+    protected function _sendRequest()
+    {
         if (empty($this->_order)) {
-    		$this->_debugEmail .= "No order was set! :( \n";
-    		Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
-    	}
-    	
+            $this->_debugEmail .= "No order was set! :( \n";
+            Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
+        }
+        
         Mage::dispatchEvent('buckaroo3extended_request_setmethod', array('request' => $this, 'order' => $this->_order));
         
         $responseModelClass = Mage::helper('buckaroo3extended')->isAdmin() ? 'buckaroo3extended/response_backendOrder' : 'buckaroo3extended/response_abstract';
@@ -51,15 +68,15 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         if (empty($this->_method)) {
             $this->_debugEmail .= "No method was set! :( \n";
             $responseModel = Mage::getModel(
-            	$responseModelClass, 
-            	array(
-            		'response' => false, 
-            		'XML' => false, 
-            		'debugEmail' => $this->_debugEmail
-            	)
+                $responseModelClass, 
+                array(
+                    'response' => false, 
+                    'XML' => false, 
+                    'debugEmail' => $this->_debugEmail
+                )
             );
             if (!$responseModel->getOrder()) {
-            	$responseModel->setOrder($this->_order);
+                $responseModel->setOrder($this->_order);
             }
             
             $responseModel->processResponse();
