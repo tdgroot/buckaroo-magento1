@@ -89,6 +89,10 @@ class TIG_Buckaroo3Extended_Model_Sources_Giftcards_Availablecards
                 'value' => 'jewellerygiftcard', 
                 'label' => $helper->__('JewelleryGiftcard')
             ),
+            array(
+                'value' => 'ebon', 
+                'label' => $helper->__('e-bon')
+            ),
     	);
     	return $array;
     }
