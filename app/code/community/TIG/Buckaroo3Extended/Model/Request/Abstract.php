@@ -170,9 +170,9 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         $returnUrl = Mage::getUrl('buckaroo3extended/notify/return', array('_secure' => true));
 
-		$merchantKey = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId());
-		$description = Mage::getStoreConfig('buckaroo/buckaroo3extended/payment_description', Mage::app()->getStore()->getStoreId());
-		$thumbprint  = Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', Mage::app()->getStore()->getStoreId());
+		$merchantKey = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId());
+		$description = Mage::getStoreConfig('buckaroo/buckaroo3extended/payment_description', $this->_order->getStoreId());
+		$thumbprint  = Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', $this->_order->getStoreId());
 
 		$this->_vars['returnUrl']      = $returnUrl;
 		$this->_vars['merchantKey']    = $merchantKey;
