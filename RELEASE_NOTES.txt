@@ -1,3 +1,13 @@
+===== 4.6.1 =====
+
+=== Minor Changes ===
+- Een e-bon kadokaart is toegevoegd
+- Bij de overboeking is het nu mogelijk om, zonder gebruik van CM, verloopdatum te bepalen 
+
+=== Fixes ===
+- 'Refund' is nu mogelijk op store-niveau
+
+
 ===== 4.6.0 =====
 
 === Major Highlights ===
