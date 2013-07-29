@@ -2434,6 +2434,15 @@
 							<show_in_store>1</show_in_store>
 							<validate>buckaroo3extended_transfer_advanced</validate>
                         </send_mail>
+                        <due_date_transfer translate="label comment">
+                            <label>Due date (in days)</label>
+                            <comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </due_date_transfer>
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use credit management</label>
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
