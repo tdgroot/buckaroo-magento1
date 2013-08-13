@@ -151,7 +151,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _addSubCodeComment($parsedResponse)
     {
-        if (!$parsedResponse['subCode']) {
+        if (!isset($parsedResponse['subCode'])) {
             return $this;
         }
 
