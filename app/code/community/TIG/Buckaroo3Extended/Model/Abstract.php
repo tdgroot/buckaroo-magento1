@@ -1,19 +1,19 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abstract
-{    
+{
 	const BUCKAROO_SUCCESS           = 'BUCKAROO_SUCCESS';
     const BUCKAROO_FAILED            = 'BUCKAROO_FAILED';
     const BUCKAROO_ERROR             = 'BUCKAROO_ERROR';
     const BUCKAROO_NEUTRAL           = 'BUCKAROO_NEUTRAL';
     const BUCKAROO_PENDING_PAYMENT   = 'BUCKAROO_PENDING_PAYMENT';
     const BUCKAROO_INCORRECT_PAYMENT = 'BUCKAROO_INCORRECT_PAYMENT';
-    
+
 	protected $_order = '';
 	protected $_debugEmail;
 	protected $_billingInfo = '';
 	protected $_session = '';
     protected $_storeId = '';
-	
+
 	/**
 	 *  List of possible response codes sent by buckaroo.
 	 *  This is the list for the BPE 3.0 gateway.
@@ -64,7 +64,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 		               'status'  => self::BUCKAROO_FAILED,
 		           ),
 		);
-	
+
 	/**
 	 * Retrieves instance of the last used order
 	 */
@@ -73,143 +73,143 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	    if (!empty($this->_order)) {
 	        return;
 	    }
-	    
+
 	    $session = Mage::getSingleton('checkout/session');
 	    $orderId = $session->getLastRealOrderId();
 	    if (!empty($orderId)) {
             $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 	    }
-        
+
         return $this;
 	}
-	
+
 	public function setOrder($order) {
 	    $this->_order = $order;
-        
+
         return $this;
 	}
-	
+
 	public function getOrder()
 	{
 	    return $this->_order;
 	}
-	
+
 	public function setLastOrder($order)
 	{
 		$this->_order = $order;
-        
+
         return $this;
 	}
-	
+
 	public function getLastOrder()
 	{
 		return $this->_order;
 	}
-	
+
 	public function setDebugEmail($debugEmail)
 	{
 		$this->_debugEmail = $debugEmail;
-        
+
         return $this;
 	}
-	
+
 	public function getDebugEmail()
 	{
 		return $this->_debugEmail;
 	}
-	
+
 	public function setBillingInfo($billingInfo)
 	{
 		$this->_billingInfo = $billingInfo;
-        
+
         return $this;
 	}
-	
+
 	public function getBillingInfo()
 	{
 		return $this->_billingInfo;
-	}	
-	
+	}
+
 	public function setSession($session)
 	{
 		$this->_session = $session;
-        
+
         return $this;
 	}
-	
+
 	public function getSession()
 	{
 		return $this->_session;
 	}
-    
+
     public function setStoreId($storeId)
     {
         $this->_storeId = $storeId;
-        
+
         return $this;
     }
-	
+
     public function getStoreId()
     {
         return $this->_storeId;
     }
-    
+
 	public function __construct($debugEmail = false)
 	{
 	    if (strpos(dirname(__FILE__), DS .'Model') !== false) {
 	        $dir = str_replace(DS .'Model', DS .'certificate', dirname(__FILE__));
 	    } else {
 	        $dir = str_replace(
-	        	DS 
-	        	.'includes' 
-	        	. DS 
-	        	. 'src', 
-	        	DS 
-	        	. 'app' 
-	        	. DS 
-	        	. 'code' 
-	        	. DS 
-	        	. 'community' 
-	        	. DS 
-	        	. 'TIG' 
-	        	. DS 
-	        	. 'Buckaroo3Extended' 
-	        	. DS 
+	        	DS
+	        	.'includes'
+	        	. DS
+	        	. 'src',
+	        	DS
+	        	. 'app'
+	        	. DS
+	        	. 'code'
+	        	. DS
+	        	. 'community'
+	        	. DS
+	        	. 'TIG'
+	        	. DS
+	        	. 'Buckaroo3Extended'
+	        	. DS
 	        	. 'certificate',
 	        	dirname(__FILE__)
 	        );
 	    }
-	    
+
 	    if (!defined('CERTIFICATE_DIR')) {
 	        define('CERTIFICATE_DIR', $dir);
 	    }
-	    
+
 		$this->_loadLastOrder();
-		
+
 		if (!Mage::helper('buckaroo3extended')->isAdmin()) {
 			$this->setSession(Mage::getSingleton('checkout/session'));
 		} else {
 			$this->setSession(Mage::getSingleton('core/session'));
 		}
 		$this->_setOrderBillingInfo();
-		
+
 		if ($debugEmail) {
 		    $this->setDebugEmail($debugEmail);
 		} else {
 		    $this->setDebugEmail('');
 		}
-		
+
         if (!Mage::helper('buckaroo3extended')->isAdmin() && !Mage::registry('buckaroo_push-error')) {
 			$this->_checkExpired();
 		}
-            
+
         if ($this->getOrder()) {
             $this->setStoreId($this->getOrder()->getStoreId());
         } else {
             $this->setStoreId(Mage::app()->getStore()->getId());
         }
 	}
-	
+
 	/**
 	 * Checks if the order object is still there. Prevents errors when session has expired.
 	 */
@@ -220,14 +220,14 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	        header('location:' . $returnUrl);
 	    }
 	}
-	
+
     public function setOrderBillingInfo() {
         return $this->_setOrderBillingInfo();
     }
-    
+
 	/**
 	 * retrieve billing information from order
-	 * 
+	 *
 	 */
 	protected function _setOrderBillingInfo()
 	{
@@ -235,10 +235,10 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	        return false;
 	    }
 		$billingAddress = $this->_order->getBillingAddress();
-		
+
 		$firstname 		 = $billingAddress->getFirstname();
         $lastname  		 = $billingAddress->getLastname();
-        $city 	   		 = $billingAddress->getCity(); 
+        $city 	   		 = $billingAddress->getCity();
         $state 	   		 = $billingAddress->getState();
         $address 		 = $billingAddress->getStreetFull();
         $zip 			 = $billingAddress->getPostcode();
@@ -246,7 +246,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         $telephone 		 = $billingAddress->getTelephone();
         $fax 			 = $billingAddress->getFax();
         $countryCode 	 = $billingAddress->getCountry();
-                
+
         $billingInfo = array(
         	'firstname' 	=> $firstname,
 	        'lastname'		=> $lastname,
@@ -259,24 +259,24 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	        'fax' 			=> $fax,
 	        'countryCode' 	=> $countryCode
         );
-        
+
         $this->setBillingInfo($billingInfo);
-        
+
         return $this;
 	}
-	
+
 	/**
 	 * Restores a previously closed quote so that the cart stays filled after an unsuccessfull order
 	 */
     public function restoreQuote()
     {
     	$quoteId = $this->_order->getQuoteId();
-    	
+
         $quote = Mage::getModel('sales/quote')->load($quoteId)->setIsActive(true)->save();
-        
+
         Mage::getSingleton('checkout/session')->replaceQuote($quote);
     }
-    
+
     /**
 	 *  Empties the cart after a successfull order. To prevent the cart from staying filled when the user
 	 *  has a modified shop that doesn't automatically clear the cart when placing an order.
@@ -286,35 +286,35 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/manual_empty_cart', $this->getStoreId())) {
             return false;
         }
-        
+
         $cartHelper = Mage::helper('checkout/cart');
- 
+
         $items = $cartHelper->getCart()->getItems();
- 
+
         foreach ($items as $item) {
             $itemId = $item->getItemId();
             $cartHelper->getCart()->removeItem($itemId)->save();
         }
     }
-    
+
     /**
      * Determines the totalamount of the order and the currency to be used based on which currencies are available
      * and which currency the customer has selected.
-     * 
+     *
      * Will default to base currency if the selected currency is unavailable.
-     * 
+     *
      * @return array
      */
     protected function _determineAmountAndCurrency()
 	{
 	    $code = $this->_order->getPayment()->getMethod();
-	    
+
 	    // availability currency codes for this Payment Module
 	    switch($code)
 	    {
 	        case 'buckaroo3extended_ideal':
     		case 'buckaroogiftcard':
-    		case 'buckaroo2012giftcard':	
+    		case 'buckaroo2012giftcard':
 	        case 'buckarooideal':
     		case 'buckaroo':
     		case 'buckaroo2012ideal': 					 $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_ideal_paymentMethod');
@@ -374,18 +374,18 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     		default:                                     $paymentMethod = null;
     		                                             $currenciesAllowedConfig = 'EUR';
 	    }
-	    
+
 	    if (!is_null($paymentMethod)) {
     	    $currenciesAllowed = $paymentMethod->allowedCurrencies;
 	    } else {
 	        $currenciesAllowed = array('EUR');
 	    }
 	    $currenciesAllowedConfig = explode(',', $currenciesAllowedConfig);
-	    
+
 	    $currentCurrency = Mage::app()->getStore()->getCurrentCurrencyCode();
-	    
+
 	    // currency is not available for this module
-        if (in_array($currentCurrency, $currenciesAllowed) 
+        if (in_array($currentCurrency, $currenciesAllowed)
             && in_array($currentCurrency, $currenciesAllowedConfig))
         {
             $currency = $currentCurrency;
@@ -394,42 +394,42 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             $totalAmount = $this->_order->getBaseGrandTotal();
             $currency = $this->_order->getBaseCurrency()->getCode();
         }
-        
+
 	    return array($currency, $totalAmount);
 	}
-	
+
 	/**
 	 * get locale based on country
 	 * locale is formatted as language-LOCALE
-	 * 
+	 *
 	 * @return array
 	 */
 	protected function _getLocale()
 	{
         $country = $this->_order->getBillingAddress()->getCountry();
-        
-        $locale = Mage::getStoreConfig('general/locale/code', $this->getStoreId());
+
+        $locale = Mage::getStoreConfig('general/locale/code', $this->_order->getStoreId());
         $locale = str_replace('_', '-', $locale);
         $lang = strtoupper(substr($locale, 0, 2));
-		
+
 		return array($country, $locale, $lang);
 	}
-	
 
-	
+
+
     /**
      * Retrieves an array with information related to a recieved response code.
      * This method will only be called when it's child cant find it itself. This list
      * is a general list of known status codes. Its not as inclusive as the lists used\
      * by its children. However, this list also contains general error codes not
      * carried by its children.
-     * 
+     *
      * @return array $returnArray
      */
 	protected function _parseResponse()
 	{
 		$code = $this->_response->Status->Code->Code;
-		
+
 		if (!isset($this->responseCodes[$code]))
 		{
             return array(
@@ -437,10 +437,10 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
                 'status' => self::BUCKAROO_NEUTRAL
             );
 		}
-        
+
         $returnArray = $this->responseCodes[$code];
         if (is_object($this->_response)
-            && isset($this->_response->Status->SubCode)) 
+            && isset($this->_response->Status->SubCode))
         {
             //the subcode is additional information sometimes returned by Buckaroo. Currently not used,
             //but it may be of use when debugging.
@@ -449,37 +449,37 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
                 'code'    => $this->_response->Status->SubCode->Code,
             );
         }
-        
+
         $returnArray['code'] = $code;
-        
+
         return $returnArray;
 	}
-	
+
 	/**
      * Retrieves an array with information related to a recieved response code.
      * This method will only be called when it's child cant find it itself. This list
      * is a general list of known status codes. Its not as inclusive as the lists used\
      * by its children. However, this list also contains general error codes not
      * carried by its children.
-     * 
+     *
      * @return array $returnArray
      */
 	protected function _parsePostResponse($code)
 	{
 	    $isCorrect = $this->_checkCorrectAmount();
-	    
+
 	    if ($isCorrect !== true) {
 	        return $isCorrect;
 	    }
-	    
+
 		if (isset($this->responseCodes[$code]))
 		{
 		    $returnArray = $this->responseCodes[$code];
-		    
+
 		    if ($this->_response) {
     		    $returnArray['code'] = $code;
 		    }
-		    
+
 			return $returnArray;
 		} elseif (isset($this->oldResponseCodes[$code])) {
 		    return array(
@@ -495,20 +495,20 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 			);
 		}
 	}
-	
+
 	/**
 	 * Checks if the correct amount has been paid.
 	 */
 	protected function _checkCorrectAmount()
 	{
 	    $amountPaid = $this->_postArray['brq_amount'];
-	    
-        $this->_debugEmail .= 'Currency used is ' 
-                            . $this->_postArray['brq_currency'] 
-                            . '. Order currency is ' 
-                            . $this->_order->getOrderCurrencyCode() 
+
+        $this->_debugEmail .= 'Currency used is '
+                            . $this->_postArray['brq_currency']
+                            . '. Order currency is '
+                            . $this->_order->getOrderCurrencyCode()
                             . ".\n";
-                            
+
 	    if ($this->_postArray['brq_currency'] == $this->_order->getOrderCurrencyCode()) {
 	        $this->_debugEmail .= "Currency used is same as order currency \n";
 	        $amountOrdered = $this->_order->getGrandTotal();
@@ -516,9 +516,9 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             $this->_debugEmail .= "Currency used is different from order currency \n";
 	        $amountOrdered = $this->_order->getBaseGrandTotal();
 	    }
-	    
+
         $this->_debugEmail .= "Amount paid: {$amountPaid}. Amount ordered: {$amountOrdered} \n";
-        
+
 	    if (($amountPaid - $amountOrdered) > 0.01 || ($amountPaid - $amountOrdered) < -0.01) {
 	        return array(
                'message' => 'Incorrect amount transfered',
@@ -531,23 +531,23 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 
 	/**
 	 * cleans all elements in the array per instructions from Buckaroo PSP
-	 * 
+	 *
 	 * @param array $array
 	 * @return array $cleanArray
 	 */
     public function _cleanArrayForSoap($array)
     {
     	$cleanArray = array();
-    	
+
 		foreach ($array as $key => $value) {
         	$value = str_replace('\r', ' ', $value);
         	$value = str_replace('\n', ' ', $value);
         	$cleanArray[$key] = $value;
         }
-        
+
         return $cleanArray;
     }
-    
+
     /**
      * function which converts special characters to html numeric equivalents
      */
@@ -565,7 +565,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 		}
 		return $string;
 	}
-	
+
 	public function log($message, $force = false)
 	{
 	    Mage::helper('buckaroo3extended')->log($message, $force);
@@ -575,7 +575,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	{
 	    Mage::helper('buckaroo3extended')->logException($e);
 	}
-	
+
 	public function sendDebugEmail()
 	{
 	    $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId());
@@ -583,20 +583,20 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 	    {
 	        return;
 	    }
-	    
+
 	    $mail = $this->_debugEmail;
-	    
+
 	    $recipients = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId()));
-	    
+
 	    foreach($recipients as $recipient) {
     	    mail(
-    	        trim($recipient), 
-    	        'Buckaroo 3 Extended Debug Email', 
+    	        trim($recipient),
+    	        'Buckaroo 3 Extended Debug Email',
     	        $mail
     	    );
 	    }
 	}
-	
+
 	public function buckarooSort($array)
     {
         $arrayToSort = array();
@@ -605,39 +605,39 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             $arrayToSort[strtolower($key)] = $value;
             $origArray[strtolower($key)] = $key;
         }
-        
+
         ksort($arrayToSort);
-        
+
         $sortedArray = array();
         foreach($arrayToSort as $key => $value) {
             $key = $origArray[$key];
             $sortedArray[$key] = $value;
         }
-        
+
         return $sortedArray;
     }
-	
+
 	protected function _updateRefundedOrderStatus($success = false)
-	{  
+	{
 	    $successString = $success ? 'success' : 'failed';
         if (!is_object($this->_order)) {
             return $this;
         }
 	    $state = $this->_order->getState();
-	    
+
 	    if ($success) {
 	        $comment = 'Buckaroo refund request was successfully processed.';
 	    } else {
 	        $comment = 'Unfortunately the Buckaroo refund request could not be processed succesfully.';
 	    }
-	    
+
 	    if ($this->_order->getBaseGrandTotal() != $this->_order->getBaseTotalRefunded()) {
 	        $configField = "buckaroo/buckaroo3extended_refund/order_status_partial_{$state}_{$successString}";
 	        $status = Mage::getStoreConfig($configField);
 	    } else {
 	        $status = null;
 	    }
-	    
+
 	    if (!empty($status)) {
     	    $this->_order->setStatus($status)->save();
     	    $this->_order->addStatusHistoryComment($comment, $status)
@@ -647,7 +647,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     	         ->save();
 	    }
 	}
-	
+
     /**
      * Long list of response codes used by BPE 2.0 gateway. Added here for backwards compatibility. Added
      * to the bottem of the page so it doesn't take up as much space
@@ -766,19 +766,19 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     					"type"		=> "creditcard")),
     	175	 => array( '*'=>array(	"omschrijving" => "Deze Cash-Ticket transactie is niet geaccepteerd.",
     					"code"		=> self::BUCKAROO_FAILED,
-    					"type"		=> "creditcard")),				
+    					"type"		=> "creditcard")),
     	176  => array( '*'=>array(	"omschrijving" => "Deze Cash-Ticket transactie is nog niet volledig verwerkt.",
     					"code"		=> self::BUCKAROO_NEUTRAL,
-    					"type"		=> "creditcard")),				
+    					"type"		=> "creditcard")),
     	177  => array( '*'=>array(	"omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij Cash-Ticket worden achterhaald. De transactie is mogelijk nog niet afgerond.",
     					"code"		=> self::BUCKAROO_NEUTRAL,
-    					"type"		=> "creditcard")),				
+    					"type"		=> "creditcard")),
     	178  => array( '*'=>array(	"omschrijving" => "Er is een systeemfout opgetreden bij Cash-Ticket. Onze excuses voor het ongemak.",
     					"code"		=> self::BUCKAROO_FAILED,
     					"type"		=> "creditcard")),
     	179  => array( '*'=>array(	"omschrijving" => "Het Cash-Ticket transactie-id is ongeldig of niet beschikbaar.",
     					"code"		=> self::BUCKAROO_FAILED,
-    					"type"		=> "creditcard")), 
+    					"type"		=> "creditcard")),
     	201	 => array( '*'=>array(	"omschrijving" => "Er is timeout opgetreden bij het verwerken van de transactie.Gebruik de TransactionKey om de verwerkingsstatus nogmaals te controleren.",
     					"code"		=> self::BUCKAROO_NEUTRAL,
     					"type"		=> "creditcard")),
@@ -814,7 +814,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     					"type" => "garant")),
     	247  => array( '*'=>array(  "omschrijving" => "Btw buckaroo BetaalGarant succesvol verwerkt.",
     					"code" => self::BUCKAROO_SUCCESS,
-    					"type" => "garant")),				
+    					"type" => "garant")),
     	252	 => array( '*'=>array(	"omschrijving" => "Kredietwaardigheidcontrole resultaat negatief.",
     					"code"		=> self::BUCKAROO_FAILED,
     					"type"		=> "garant")),
@@ -829,7 +829,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     					"type"		=> "garant")),
     	262	 => array( '*'=>array(	"omschrijving" => "Verplichte velden voor kredietwaardigheidcontrole ontbreken of zijn onjuist",
     					"code"		=> self::BUCKAROO_FAILED,
-    					"type"		=> "garant")),																																				
+    					"type"		=> "garant")),
     	300	 => array( '*'=>array("omschrijving" => "Betaling voor deze overschrijving wordt nog verwacht.",
     							 "code" => self::BUCKAROO_NEUTRAL,
     							 "type" => "transfer"),
