@@ -1,4 +1,4 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_Sources_Giftcards_Availablecards
 {
     public function toOptionArray()
@@ -6,93 +6,97 @@ class TIG_Buckaroo3Extended_Model_Sources_Giftcards_Availablecards
         $helper = Mage::helper('buckaroo3extended');
     	$array = array(
             array(
-                'value' => 'babygiftcard', 
+                'value' => 'babygiftcard',
                 'label' => $helper->__('babygiftcard')
             ),
     		array(
-        		'value' => 'babyparkgiftcard', 
+        		'value' => 'babyparkgiftcard',
         		'label' => $helper->__('Babypark Giftcard')
             ),
     		array(
-        		'value' => 'beautywellness', 
+        		'value' => 'beautywellness',
         		'label' => $helper->__('Beauty Wellness')
             ),
     		array(
-        		'value' => 'boekenbon', 
+        		'value' => 'boekenbon',
         		'label' => $helper->__('Boekenbon')
             ),
     		array(
-        		'value' => 'boekenvoordeel', 
+        		'value' => 'boekenvoordeel',
         		'label' => $helper->__('Boekenvoordeel')
             ),
     		array(
-        		'value' => 'designshopsgiftcard', 
+        		'value' => 'designshopsgiftcard',
         		'label' => $helper->__('Designshops Giftcard')
             ),
     		array(
-        		'value' => 'fijncadeau', 
+        		'value' => 'fijncadeau',
         		'label' => $helper->__('Fijn Cadeau')
             ),
     		array(
-        		'value' => 'koffiecadeau', 
+        		'value' => 'koffiecadeau',
         		'label' => $helper->__('Koffie Cadeau')
             ),
     		array(
-        		'value' => 'kokenzo', 
+        		'value' => 'kokenzo',
         		'label' => $helper->__('Koken En Zo')
             ),
     		array(
-        		'value' => 'kookcadeau', 
+        		'value' => 'kookcadeau',
         		'label' => $helper->__('kook-cadeau')
             ),
     		array(
-        		'value' => 'nationaleentertainmentcard', 
+        		'value' => 'nationaleentertainmentcard',
         		'label' => $helper->__('Nationale EntertainmentCard')
             ),
     		array(
-        		'value' => 'naturesgift', 
+        		'value' => 'naturesgift',
         		'label' => $helper->__('Natures Gift')
             ),
     		array(
-        		'value' => 'podiumcadeaukaart', 
+        		'value' => 'podiumcadeaukaart',
         		'label' => $helper->__('PODIUM Cadeaukaart')
             ),
     		array(
-        		'value' => 'shoesaccessories', 
+        		'value' => 'shoesaccessories',
         		'label' => $helper->__('Shoes Accessories')
             ),
     		array(
-        		'value' => 'webshopgiftcard', 
+        		'value' => 'webshopgiftcard',
         		'label' => $helper->__('Webshop Giftcard')
             ),
     		array(
-        		'value' => 'wijncadeau', 
+        		'value' => 'wijncadeau',
         		'label' => $helper->__('Wijn Cadeau')
             ),
     		array(
-        		'value' => 'wonenzo', 
+        		'value' => 'wonenzo',
         		'label' => $helper->__('Wonen En Zo')
             ),
     		array(
-        		'value' => 'yourgift', 
+        		'value' => 'yourgift',
         		'label' => $helper->__('YourGift Card')
             ),
     		array(
-        		'value' => 'fashioncheque', 
+        		'value' => 'fashioncheque',
         		'label' => $helper->__('fashioncheque')
             ),
             array(
-                'value' => 'sieradenhorlogescadeaukaart', 
+                'value' => 'sieradenhorlogescadeaukaart',
                 'label' => $helper->__('sieradenhorlogescadeaukaart')
             ),
             array(
-                'value' => 'jewellerygiftcard', 
+                'value' => 'jewellerygiftcard',
                 'label' => $helper->__('JewelleryGiftcard')
             ),
             array(
-                'value' => 'ebon', 
+                'value' => 'ebon',
                 'label' => $helper->__('e-bon')
             ),
+            array(
+                'value' => 'voetbalshopcadeau',
+                'label' => $helper->__('Voetbalshop cadeaucard')
+            )
     	);
     	return $array;
     }
