@@ -150,19 +150,32 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     
     protected function _processPushAccordingToType()
     {
-        if ($this->_order->getTransactionKey() == $this->_postArray['brq_transactions'] || (isset($this->_postArray['brq_relatedtransaction_partialpayment']) && $this->_order->getTransactionKey() == $this->_postArray['brq_relatedtransaction_partialpayment'])) {
+        if (
+            $this->_order->getTransactionKey() == $this->_postArray['brq_transactions'] 
+            || (isset($this->_postArray['brq_relatedtransaction_partialpayment']) 
+            && $this->_order->getTransactionKey() == $this->_postArray['brq_relatedtransaction_partialpayment'])
+        ) {
             list($processedPush, $module) = $this->_updateOrderWithKey();
-        } elseif ($this->_pushIsCreditmemo($this->_postArray)) {
-            list($processedPush, $module) = $this->_updateCreditmemo();
-        } elseif (isset($this->_postArray['brq_amount_credit'])) {
-            list($processedPush, $module) = $this->_newRefund();
-        } elseif (!$this->_order->getTransactionKey()) {
-            list($processedPush, $module) = $this->_updateOrderWithoutKey();
-        } else {
-            Mage::throwException('unable to process PUSH');
+            return array($module, $processedPush);
         }
         
-        return array($module, $processedPush);
+        if ($this->_pushIsCreditmemo($this->_postArray)) {
+            list($processedPush, $module) = $this->_updateCreditmemo();
+            return array($module, $processedPush);
+        }
+        
+        if (isset($this->_postArray['brq_amount_credit'])) {
+            list($processedPush, $module) = $this->_newRefund();
+            return array($module, $processedPush);
+        }
+        
+        if (!$this->_order->getTransactionKey()) {
+            list($processedPush, $module) = $this->_updateOrderWithoutKey();
+            return array($module, $processedPush);
+        }
+            
+        Mage::throwException('unable to process PUSH');
+        return false;
     }
     
     protected function _updateOrderWithKey()

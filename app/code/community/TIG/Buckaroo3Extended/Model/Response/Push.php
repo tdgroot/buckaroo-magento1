@@ -337,14 +337,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			$this->_order->save();
 		}
 		
-        if ($this->_order->isStateProtected($this->_order->getState())) {
-            $this->_order->addStatusHistoryComment($description)
-                         ->save();
-        } else {
+        if ($this->_order->getState() == Mage_Sales_Model_Order::STATE_PROCESSING) {
             $this->_order->addStatusHistoryComment($description, $newStates[1])
                          ->save();
                      
             $this->_order->setStatus($newStates[1])->save();
+        } else {
+            $this->_order->addStatusHistoryComment($description)
+                         ->save();
         }
 		
         
@@ -362,6 +362,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 */
 	protected function _processFailed($newStates, $description = false)
     {
+        $description = Mage::helper('buckaroo3extended')->__($description);
         $description .= " (#{$this->_postArray['brq_statuscode']})";
         
         //sets the transaction key if its defined ('brq_transactions')
@@ -376,13 +377,18 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         ) {
             $this->_order->cancel()
                          ->save();
-        }        
-         
-        $this->_order->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $newStates[1])
-                     ->save();
-        $this->_order->setStatus($newStates[1])
-                     ->save();
+        }
                      
+        if ($this->_order->getState() == Mage_Sales_Model_Order::STATE_CANCELED) {
+            $this->_order->addStatusHistoryComment($description, $newStates[1])
+                         ->save();
+                     
+            $this->_order->setStatus($newStates[1])->save();
+        } else {
+            $this->_order->addStatusHistoryComment($description)
+                         ->save();
+        }
+        
         return true;
     }
 	
@@ -396,7 +402,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		//determine whether too much or not enough has been paid and determine the status history copmment accordingly
 		$amount = round($this->_order->getBaseGrandTotal()*100, 0);
 		
-        $setState = $newStates[0];
         $setStatus = $newStates[1];
         
         if ($this->_postArray['brq_currency'] == $this->_order->getBaseCurrencyCode()) {
@@ -454,8 +459,16 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
 		}
 		
-		$this->_order->setState($newStates[0], $newStates[1], $description)
-					 ->save();
+                     
+        if ($this->_order->getState() == Mage_Sales_Model_Order::STATE_NEW) {
+            $this->_order->addStatusHistoryComment($description, $newStates[1])
+                         ->save();
+                     
+            $this->_order->setStatus($newStates[1])->save();
+        } else {
+            $this->_order->addStatusHistoryComment($description)
+                         ->save();
+        }
 		                            
 		return true;
 	}
