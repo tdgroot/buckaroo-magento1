@@ -528,7 +528,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * @return boolean
 	 */
     protected function _saveInvoice()
-    {  
+    {
+        //test comment  
 	    if ($this->_order->canInvoice()) {
 	        $payment = $this->_order->getPayment();
 	        $payment->registerCaptureNotification($this->_order->getBaseGrandTotal());
