@@ -495,21 +495,25 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	}
 	
 	/**
-	 * Creates an invoice for the order if set to do so in config.
+	 * Creates an invoice for the order if the module is configured to do so. 
 	 */
 	protected function _autoInvoice()
-	{		
+	{
+		//check if the module is configured to create invoice on success		
 		if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', $this->_order->getStoreId()))
 	    {
 	    	return false;
 	    }
 	    
-	    $this->_saveInvoice();
-	                            
-	    if(Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', $this->_order->getStoreId()))
+        //returns true if invoice has been made, else false
+	    $invoiceSaved = $this->_saveInvoice();
+	              
+	    if($invoiceSaved && Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', $this->_order->getStoreId()))
 	    {
+		    //loop through every invoice
 		    foreach($this->_order->getInvoiceCollection() as $invoice)
 		    {
+			    //when there is no invoice send to the customer, send it!  
 			    if(!$invoice->getEmailSent())
 			    {
 				    $invoice->sendEmail()
