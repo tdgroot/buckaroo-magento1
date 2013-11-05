@@ -60,9 +60,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * 
 	 */
 	public function processPush()
-	{	
+	{
+	    $response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);	
 		//check if the push is valid and if the order can be updated
-		$canProcessPush = $this->_canProcessPush();
+		$canProcessPush = $this->_canProcessPush(false,$response);
 		list($canProcess, $canUpdate) = $canProcessPush;
 		
 		$this->_debugEmail .= "can the order be processed? " . $canProcess . "\ncan the order be updated? " . $canUpdate . "\n";
@@ -83,8 +84,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
                 return true;
             }
 		}
-		
-		$response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);
+
 		$newStates = $this->_getNewStates($response['status']);
 		
 		$this->_debugEmail .= "Response recieved: " . var_export($response, true) . "\n\n";
@@ -135,19 +135,22 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * This field is unique for every payment and every store.
      * Also calls method that checks if an order is able to be updated further.
      * Canceled, completed, holded etc. orders are not able to be updated
+     * 
+     * @param boolean $isReturn
+     * @param array $response
      */
-	protected function _canProcessPush($isReturn = false)
+	protected function _canProcessPush($isReturn = false, $response = array())
 	{
 	    $correctSignature = false;
-		$canUpdate = false;
-	    $signature = $this->_calculateSignature();
+		$canUpdate        = false;
+	    $signature        = $this->_calculateSignature();
 	    if ($signature === $this->_postArray['brq_signature']) {
 	        $correctSignature = true;
 	    }
 	    
 		//check if the order can recieve further status updates
 		if ($correctSignature === true) {
-			$canUpdate = $this->_canUpdate();
+			$canUpdate = $this->_canUpdate($response);
 		}
 		
 		$return = array(
@@ -161,36 +164,73 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 * Checks if the order can be updated by checking if its state and status is not
 	 * complete, closed, cancelled or holded and the order can be invoiced
 	 * 
-	 * @return boolean $return
+     * @param array $response
+     * 
+	 * @return boolean
 	 */
-	protected function _canUpdate()
+	protected function _canUpdate($response = array())
 	{
-		$return = false;
-		
+
 		// Get successful state and status
         $completedStateAndStatus  = array('complete', 'complete');
-        $cancelledStateAndStatus = array('canceled', 'canceled');
-        $holdedStateAndStatus = array('holded', 'holded');
-        $closedStateAndStatus = array ('closed','closed');
+        $cancelledStateAndStatus  = array('canceled', 'canceled');
+        $holdedStateAndStatus     = array('holded', 'holded');
+        $closedStateAndStatus     = array ('closed','closed');
         
-		$currentStateAndStatus = array($this->_order->getState(), $this->_order->getStatus());
+		$currentStateAndStatus    = array($this->_order->getState(), $this->_order->getStatus());
 		
 		//prevent completed orders from recieving further updates
-        if($completedStateAndStatus != $currentStateAndStatus 
+        if(    $completedStateAndStatus != $currentStateAndStatus 
         	&& $cancelledStateAndStatus != $currentStateAndStatus
-        	&& $holdedStateAndStatus != $currentStateAndStatus
-        	&& $closedStateAndStatus != $currentStateAndStatus
+        	&& $holdedStateAndStatus    != $currentStateAndStatus
+        	&& $closedStateAndStatus    != $currentStateAndStatus
         	&& $this->_order->canInvoice()
-        	)
-        {
-        	$return = true;
-        } else {
-        	$this->_debugEmail .= "order already has succes, complete, closed, or holded state or can't be invoiced \n\n";
+        ){
+        	return true;
         }
         
-        return $return;
+        //when payperemail is used and the order has the status other then success, and current pushed status is success; send email to shopowner
+        if( !empty($response) 
+            && $response['status']                      == self::BUCKAROO_SUCCESS
+            && $this->_order->getPayment()->getMethod() == 'buckaroo3extended_payperemail'
+            && (
+                $currentStateAndStatus    == $completedStateAndStatus
+                || $currentStateAndStatus == $cancelledStateAndStatus
+                || $currentStateAndStatus == $holdedStateAndStatus
+                || $currentStateAndStatus == $closedStateAndStatus
+               )
+        ){
+            $this->_sendDoubleTransactionEmail();
+        }
+        
+    	$this->_debugEmail .= "order already has succes, complete, closed, or holded state or can't be invoiced \n\n";
+        
+        
+        return false;
 	}
 	
+    /*
+     * Send the shop owner and subscribers to the debug-email an email with the message that there is a double transaction
+     * */
+     protected function _sendDoubleTransactionEmail(){
+        
+        $orderId            = $this->_order->getIncrementId();
+        $currentOrderStatus = $this->_order->getStatus(); 
+        
+        $recipients         = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId()));
+        $recipients[]       = Mage::getStoreConfig('trans_email/ident_general/email');
+        
+        $mail               = 'Voor order '. $orderId .' is de status "Success" binnen gekomen, terwijl de order op "'.$currentOrderStatus.'" staat.';
+        
+        foreach($recipients as $recipient) {
+            mail(
+                trim($recipient),
+                'Dubbele transactie voor dezelfde order',
+                $mail
+            );
+        }
+     }
+    
 	/**
 	 * Uses setState to add a comment to the order status history without changing the state nor status. Purpose of the comment
 	 * is to inform the user of an attempted status upsate after the order has already recieved complete, canceled, closed or holded states
