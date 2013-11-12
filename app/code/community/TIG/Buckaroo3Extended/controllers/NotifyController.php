@@ -196,6 +196,23 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return array($module, $processedPush);
         }
         
+        $this->_paymentCode = $this->_order->getPayment()->getMethod();
+        $merchantKey        = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId());
+
+        //fix for payperemail transactions with different transaction keys but belongs to the same order
+        if (
+            $this->_paymentCode == 'buckaroo3extended_payperemail'
+            && $this->_postArray['brq_transaction_method'] != 'payperemail'
+            && $this->_order->getIncrementId() == $this->_postArray['brq_invoicenumber']
+            && ( 
+                isset($this->_postArray['brq_websitekey']) 
+                && $merchantKey == $this->_postArray['brq_websitekey']
+               )
+        ){
+            list($processedPush, $module) = $this->_updateOrderWithKey();
+            return array($module, $processedPush);
+        }
+           
         if ($this->_pushIsCreditmemo($this->_postArray)) {
             list($processedPush, $module) = $this->_updateCreditmemo();
             return array($module, $processedPush);
