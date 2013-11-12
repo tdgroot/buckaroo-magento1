@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<TIG_Buckaroo3Extended>
-			<version>4.6.1</version>
+			<version>4.7.0</version>
 		</TIG_Buckaroo3Extended>
 	</modules>
 	<frontend>
@@ -113,6 +113,9 @@
                     <certificate>
                         <table>buckaroo_certificates</table>
                     </certificate>
+                    <giftcard>
+                        <table>tig_buckaroo_giftcard</table>
+                    </giftcard>
                 </entities>
             </buckaroo3extended_resource>
         </models>
