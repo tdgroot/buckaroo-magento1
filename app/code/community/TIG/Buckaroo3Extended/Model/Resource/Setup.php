@@ -1,6 +1,106 @@
 <?php
 class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resource_Setup
 {
+    protected $_giftcardArray = array(
+        array(
+            'value' => 'babygiftcard',
+            'label' => 'babygiftcard'
+        ),
+        array(
+            'value' => 'babyparkgiftcard',
+            'label' => 'Babypark Giftcard'
+        ),
+        array(
+            'value' => 'beautywellness',
+            'label' => 'Beauty Wellness'
+        ),
+        array(
+            'value' => 'boekenbon',
+            'label' => 'Boekenbon'
+        ),
+        array(
+            'value' => 'boekenvoordeel',
+            'label' => 'Boekenvoordeel'
+        ),
+        array(
+            'value' => 'designshopsgiftcard',
+            'label' => 'Designshops Giftcard'
+        ),
+        array(
+            'value' => 'fijncadeau',
+            'label' => 'Fijn Cadeau'
+        ),
+        array(
+            'value' => 'koffiecadeau',
+            'label' => 'Koffie Cadeau'
+        ),
+        array(
+            'value' => 'kokenzo',
+            'label' => 'Koken En Zo'
+        ),
+        array(
+            'value' => 'kookcadeau',
+            'label' => 'kook-cadeau'
+        ),
+        array(
+            'value' => 'nationaleentertainmentcard',
+            'label' => 'Nationale EntertainmentCard'
+        ),
+        array(
+            'value' => 'naturesgift',
+            'label' => 'Natures Gift'
+        ),
+        array(
+            'value' => 'podiumcadeaukaart',
+            'label' => 'PODIUM Cadeaukaart'
+        ),
+        array(
+            'value' => 'shoesaccessories',
+            'label' => 'Shoes Accessories'
+        ),
+        array(
+            'value' => 'webshopgiftcard',
+            'label' => 'Webshop Giftcard'
+        ),
+        array(
+            'value' => 'wijncadeau',
+            'label' => 'Wijn Cadeau'
+        ),
+        array(
+            'value' => 'wonenzo',
+            'label' => 'Wonen En Zo'
+        ),
+        array(
+            'value' => 'yourgift',
+            'label' => 'YourGift Card'
+        ),
+        array(
+            'value' => 'fashioncheque',
+            'label' => 'fashioncheque'
+        ),
+        array(
+            'value' => 'sieradenhorlogescadeaukaart',
+            'label' => 'sieradenhorlogescadeaukaart'
+        ),
+        array(
+            'value' => 'jewellerygiftcard',
+            'label' => 'JewelleryGiftcard'
+        ),
+        array(
+            'value' => 'ebon',
+            'label' => 'e-bon'
+        ),
+        array(
+            'value' => 'voetbalshopcadeau',
+            'label' => 'Voetbalshop cadeaucard'
+        )
+    );
+    
+    public function getGiftcardArray()
+    {
+        return $this->_giftcardArray;
+    }
+    
     public function getTermsAndConditions()
     {
         $termsAndConditions = <<<TERMS_AND_CONDITIONS
@@ -158,6 +258,25 @@ INFORMATION_REQUIREMENT;
         
         $informationRequirement->setData($parameters)->save();
         Mage::app()->setCurrentStore($currentStore);
+        return $this;
+    }
+    
+    public function installBaseGiftcards()
+    {
+        $giftcards = $this->getGiftcardArray();
+        foreach ($giftcards as $giftcard) {
+            $giftcardModel = Mage::getModel('buckaroo3extended/giftcard');
+            $giftcardModel->load($giftcard['value'], 'servicecode');
+            
+            if ($giftcardModel->getId()) {
+                continue;
+            }
+            
+            $giftcardModel->setServicecode($giftcard['value'])
+                          ->setLabel($giftcard['label'])
+                          ->save();
+        }
+        
         return $this;
     }
 }
