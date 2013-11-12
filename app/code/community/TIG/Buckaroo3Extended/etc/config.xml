@@ -292,6 +292,11 @@
             			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
             			<method>buckaroo3extended_refund_request_setmethod</method>
             		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_eps>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_eps_observer</class>
+                        <method>buckaroo3extended_refund_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_eps>
             		<buckaroo3extended_paymentmethod_observer_visa>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_visa_observer</class>
@@ -371,6 +376,11 @@
             			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
             			<method>buckaroo3extended_refund_request_addservices</method>
             		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_eps>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_eps_observer</class>
+                        <method>buckaroo3extended_refund_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_eps>
             		<buckaroo3extended_paymentmethod_observer_visa>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_visa_observer</class>
@@ -450,6 +460,11 @@
             			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
             			<method>buckaroo3extended_refund_request_addcustomvars</method>
             		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_eps>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_eps_observer</class>
+                        <method>buckaroo3extended_refund_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_eps>
             		<buckaroo3extended_paymentmethod_observer_visa>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_visa_observer</class>
@@ -538,6 +553,11 @@
             			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
             			<method>buckaroo3extended_request_addservices</method>
             		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_eps>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_eps_observer</class>
+                        <method>buckaroo3extended_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_eps>
             		<buckaroo3extended_paymentmethod_observer_visa>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_visa_observer</class>
@@ -622,6 +642,11 @@
             			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
             			<method>buckaroo3extended_request_addcustomvars</method>
             		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_eps>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_eps_observer</class>
+                        <method>buckaroo3extended_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_eps>
             		<buckaroo3extended_paymentmethod_observer_giropay>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_giropay_observer</class>
@@ -721,6 +746,11 @@
             			<class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
             			<method>buckaroo3extended_request_setmethod</method>
             		</buckaroo3extended_paymentmethod_observer_sofortueberweisung>
+            		<buckaroo3extended_paymentmethod_observer_eps>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_eps_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_eps>
             		<buckaroo3extended_paymentmethod_observer_giropay>
             			<type>Singleton</type>
             			<class>buckaroo3extended/paymentMethods_giropay_observer</class>
@@ -906,6 +936,13 @@
                 <sort_order>150</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_sofortueberweisung>
+            <buckaroo3extended_eps>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_eps_paymentMethod</model>
+                <title>EPS</title>
+                <sort_order>195</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_eps>
             <buckaroo3extended_paypal>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paypal_paymentMethod</model>
@@ -1230,6 +1267,20 @@
          		<allowed_currencies>EUR</allowed_currencies>
 				<payment_fee_label>Fee</payment_fee_label>
          	</buckaroo3extended_sofortueberweisung>
+         	
+         	<buckaroo3extended_eps>
+                <active>0</active>
+                <mode>0</mode>
+                <title>EPS</title>
+                <allowspecific>0</allowspecific>
+                <specificcountry></specificcountry>
+                <order_status_success></order_status_success>
+                <order_status_failed></order_status_failed>
+                <sort_order>195</sort_order>
+                <limit_by_ip>0</limit_by_ip>
+                <allowed_currencies>EUR</allowed_currencies>
+                <payment_fee_label>Fee</payment_fee_label>
+            </buckaroo3extended_eps>
 
          	<buckaroo3extended_giropay>
          		<active>0</active>
