@@ -70,7 +70,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_Observer extends TIG_B
 
     protected function _addTransfer(&$vars)
     {
-        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/due_date_transfer', Mage::app()->getStore()->getStoreId());
+        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/due_date', Mage::app()->getStore()->getStoreId());
         $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays), date("Y")));
 
         $array = array(

@@ -2434,7 +2434,7 @@
 							<show_in_store>1</show_in_store>
 							<validate>buckaroo3extended_transfer_advanced</validate>
                         </send_mail>
-                        <due_date_transfer translate="label comment">
+                        <due_date translate="label comment">
                             <label>Due date (in days)</label>
                             <comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
                             <frontend_type>text</frontend_type>
@@ -2442,7 +2442,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </due_date_transfer>
+                        </due_date>
                         <use_creditmanagement translate="label comment tooltip">
                             <label>Use credit management</label>
                             <comment>Buckaroo sends payment reminders to the customer.</comment>
@@ -2466,18 +2466,6 @@
                             	<use_creditmanagement>1</use_creditmanagement>
                             </depends>
                         </due_date_invoice>
-                        <due_date translate="label comment">
-                        	<label>Due date (in days)</label>
-                        	<comment>Specify the number of days the customer has to complete their payment before the first reminder e-mail will be sent by Buckaroo.</comment>
-                        	<frontend_type>text</frontend_type>
-                        	<sort_order>52</sort_order>
-                        	<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-                            <depends>
-                            	<use_creditmanagement>1</use_creditmanagement>
-                            </depends>
-                        </due_date>
                         <reminder_level translate="label comment">
                         	<label>Max reminder level</label>
                             <comment>Select the maximum reminder level buckaroo will use.</comment>
@@ -4171,7 +4159,7 @@
                         </sort_order>
                         <cards_allowed translate="label comment tooltip">
 							<label>Allowed giftcards</label>
-							<comment>Select which giftcards are available to the customer</comment>
+							<comment>Select which giftcards are available to the customer. You can add new cards in System > Buckaroo giftcards</comment>
 							<tooltip>These options will be presented to the customer after Buckaroo has received the order. If left blank, the available options will be based on which Buckaroo payment options you have enabled.</tooltip>
 							<frontend_type>multiselect</frontend_type>
 							<source_model>buckaroo3extended/sources_giftcards_availableCards</source_model>
