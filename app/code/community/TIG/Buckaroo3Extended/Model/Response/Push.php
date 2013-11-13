@@ -214,13 +214,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * */
      protected function _sendDoubleTransactionEmail(){
         
+        $helper             = Mage::helper('buckaroo3extended');
         $orderId            = $this->_order->getIncrementId();
         $currentOrderStatus = $this->_order->getStatus(); 
         
         $recipients         = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId()));
         $recipients[]       = Mage::getStoreConfig('trans_email/ident_general/email');
         
-        $mail               = 'Voor order '. $orderId .' is de status "Success" binnen gekomen, terwijl de order op "'.$currentOrderStatus.'" staat.';
+        $mail               = $helper->__('Status Success received for order %s while the order currently the status %s has.',$orderId,$currentOrderStatus);
         
         foreach($recipients as $recipient) {
             mail(
@@ -240,11 +241,13 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	 */
 	protected function _addNote($omschrijving)
 	{
-		$note = Mage::helper('buckaroo3extended')->__('Buckaroo attempted to update this order after it already had ') 
+		$helper = Mage::helper('buckaroo3extended');
+	    
+	    $note = $helper->__('Buckaroo attempted to update this order after it already had ') 
 			. '<b>' 
 			. strtoupper($this->_order->getState()) 
 			. '</b>' 
-			. Mage::helper('buckaroo3extended')->__(' state, by sending the following: ') 
+			. $helper->__(' state, by sending the following: ') 
 			. '<br/>--------------------------------------------------------------------------------------------------------------------------------<br/>' 
 			. $omschrijving
 			. ' (' 
