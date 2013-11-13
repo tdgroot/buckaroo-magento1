@@ -281,3 +281,7 @@
 "The payment method show only for orders with an order amount greater than the minimum amount.","De betaalmethode wordt alleen getoond bij orders met een totaal boven de minimale orderwaarde."
 "You have enabled PayPal Seller Protection. This feature requires Region with regard to the shipping address of the customer. Please select the specific countries to which PayPal is applicable for, and make the Regions required accordingly.","U maakt gebruik van PayPal verkopersbescherming. Om de betaling met PayPal mogelijk te maken, moet u ervoor zorgen dat uw klant de provincie-velden bij diens gegevens invult."
 "WARNING: Paypal Seller Protection requires additional configuration. Please read the documentation before proceding.","LET OP: Gebruik van PayPal verskopersbescherming vereist aanvullende instellingen in de configuratie van Magento. Raadpleeg hiervoor de  handleiding van de Buckaroo Module."
+"EPS","EPS"
+"Send order confirmation email","Verstuur order bevestigings email"
+"Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.","Activeer om een order bevestigings email te versturen wanneer de betaling succesvol is afgerond. Specifiek voor deze betaalmethode."
+"Status Success received for order %s while the order currently the status %s has.","Voor order %s is de status Success ontvangen terwijl de order de status %s heeft."
