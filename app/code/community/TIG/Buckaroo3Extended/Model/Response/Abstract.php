@@ -151,7 +151,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _addSubCodeComment($parsedResponse)
     {
-        if (!$parsedResponse['subCode']) {
+        if (!isset($parsedResponse['subCode'])) {
             return $this;
         }
 
@@ -198,8 +198,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             )
         );
         $this->_order->save();
+        
+        $payMethod = $this->_order->getPayment()->getMethod();
 
-        if(!$this->_order->getEmailSent())
+        $shouldSend = Mage::getStoreConfig('buckaroo/'.$payMethod.'/order_email', $this->_order->getStoreId());
+        if(!$this->_order->getEmailSent() && $shouldSend)
         {
         	$this->sendNewOrderEmail();
         }

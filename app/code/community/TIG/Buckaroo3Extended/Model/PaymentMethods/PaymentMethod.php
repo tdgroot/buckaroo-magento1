@@ -122,10 +122,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
     public function isAvailable($quote = null)
     {
         //check if the country specified in the billing address is allowed to use this payment method
-        if (Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', Mage::app()->getStore()->getStoreId()) == 1
+        if (Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', $quote->getStoreId()) == 1
             && $quote->getBillingAddress()->getCountry())
         {
-            $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', Mage::app()->getStore()->getStoreId()));
+            $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', $quote->getStoreId()));
             $country = $quote->getBillingAddress()->getCountry();
 
             if (!in_array($country,$allowedCountries)) {
@@ -135,7 +135,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
 
         $areaAllowed = null;
         if ($this->canUseInternal()) {
-            $areaAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/area', Mage::app()->getStore()->getStoreId());
+            $areaAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/area', $quote->getStoreId());
         }
 
         //check if the paymentmethod is available in the current shop area (frontend or backend)
@@ -150,7 +150,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         }
 
         // check if max amount for the issued PaymentMethod is set and if the quote basegrandtotal exceeds that
-        $maxAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/max_amount', Mage::app()->getStore()->getStoreId());
+        $maxAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/max_amount', $quote->getStoreId());
         if (!empty($maxAmount)
             && !empty($quote)
             && $quote->getBaseGrandTotal() > $maxAmount)
@@ -159,7 +159,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         }
 
         // check if min amount for the issued PaymentMethod is set and if the quote basegrandtotal is less than that
-        $minAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/min_amount', Mage::app()->getStore()->getStoreId());
+        $minAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/min_amount', $quote->getStoreId());
         if (!empty($minAmount)
             && !empty($quote)
             && $quote->getBaseGrandTotal() < $minAmount)
@@ -168,7 +168,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         }
 
         //check if the module is set to enabled
-        if (!Mage::getStoreConfig('buckaroo/' . $this->_code . '/active', Mage::app()->getStore()->getStoreId())) {
+        if (!Mage::getStoreConfig('buckaroo/' . $this->_code . '/active', $quote->getStoreId())) {
             return false;
         }
 
@@ -184,6 +184,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
 
         // get current currency code
         $currency = Mage::app()->getStore()->getBaseCurrencyCode();
+
 
         // currency is not available for this module
         if (!in_array($currency, $this->allowedCurrencies))

@@ -3,6 +3,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
 {
     protected $_code   = 'buckaroo3extended_empayment';
     protected $_method = 'empayment';
+    protected $_service = 'Empaymentcollecting';
 
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
@@ -15,7 +16,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
         $vars = $request->getVars();
         
         $array = array(
-            $this->_method     => array(
+            $this->_service => array(
                 'action'    => 'Pay',
                 'version'   => 1,
             ),
@@ -61,7 +62,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
         $this->_addPersonVars($vars);
         $this->_addBankAccountVars($vars);
         $this->_addBillingAddressVars($vars);
-
         $request->setVars($vars);
 
         return $this;
@@ -87,14 +87,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
         $storeId = Mage::app()->getStore()->getId();
         
         $array = array(
+            'processingtype'           => 'Deferred',
             'reference'                => $this->_order->getIncrementId(),
             'emailAddress'             => $this->_billingInfo['email'],
         );
         
-        if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        if (array_key_exists('customVars', $vars) && array_key_exists($this->_service, $vars['customVars']) && is_array($vars['customVars'][$this->_service])) {
+            $vars['customVars'][$this->_service] = array_merge($vars['customVars'][$this->_service], $array);
         } else {
-            $vars['customVars'][$this->_method] = $array;
+            $vars['customVars'][$this->_service] = $array;
         }
     }
 
@@ -129,10 +130,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
                                                   ),
         );
         
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        if (array_key_exists('customVars', $vars) && array_key_exists($this->_service, $vars['customVars']) && is_array($vars['customVars'][$this->_service])) {
+            $vars['customVars'][$this->_service] = array_merge($vars['customVars'][$this->_service], $array);
         } else {
-            $vars['customVars'][$this->_method] = $array;
+            $vars['customVars'][$this->_service] = $array;
         }
     }
 
@@ -157,10 +158,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
                             ),
         );
         
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        if (array_key_exists('customVars', $vars) && array_key_exists($this->_service, $vars['customVars']) && is_array($vars['customVars'][$this->_service])) {
+            $vars['customVars'][$this->_service] = array_merge($vars['customVars'][$this->_service], $array);
         } else {
-            $vars['customVars'][$this->_method] = $array;
+            $vars['customVars'][$this->_service] = $array;
         }
     }
 
@@ -199,10 +200,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
                             ),
         );
         
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        if (array_key_exists('customVars', $vars) && array_key_exists($this->_service, $vars['customVars']) && is_array($vars['customVars'][$this->_service])) {
+            $vars['customVars'][$this->_service] = array_merge($vars['customVars'][$this->_service], $array);
         } else {
-            $vars['customVars'][$this->_method] = $array;
+            $vars['customVars'][$this->_service] = $array;
         }
     }
     

@@ -1,6 +1,293 @@
 <?php
 class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resource_Setup
 {
+    /**
+     * callAfterApplyAllUpdates flag. Causes applyAFterUpdates() to be called.
+     *
+     * @var boolean
+     */
+    protected $_callAfterApplyAllUpdates = true;
+    
+    /**
+     * Module version as stored in the db at the time of the update
+     *
+     * @var string
+     */
+    protected $_dbVer;
+    
+    /**
+     * Module version as specified in the module's configuration at the time of the update
+     *
+     * @var string
+     */
+    protected $_configVer;
+    
+    protected $_giftcardArray = array(
+        array(
+            'value' => 'babygiftcard',
+            'label' => 'babygiftcard'
+        ),
+        array(
+            'value' => 'babyparkgiftcard',
+            'label' => 'Babypark Giftcard'
+        ),
+        array(
+            'value' => 'beautywellness',
+            'label' => 'Beauty Wellness'
+        ),
+        array(
+            'value' => 'boekenbon',
+            'label' => 'Boekenbon'
+        ),
+        array(
+            'value' => 'boekenvoordeel',
+            'label' => 'Boekenvoordeel'
+        ),
+        array(
+            'value' => 'designshopsgiftcard',
+            'label' => 'Designshops Giftcard'
+        ),
+        array(
+            'value' => 'fijncadeau',
+            'label' => 'Fijn Cadeau'
+        ),
+        array(
+            'value' => 'koffiecadeau',
+            'label' => 'Koffie Cadeau'
+        ),
+        array(
+            'value' => 'kokenzo',
+            'label' => 'Koken En Zo'
+        ),
+        array(
+            'value' => 'kookcadeau',
+            'label' => 'kook-cadeau'
+        ),
+        array(
+            'value' => 'nationaleentertainmentcard',
+            'label' => 'Nationale EntertainmentCard'
+        ),
+        array(
+            'value' => 'naturesgift',
+            'label' => 'Natures Gift'
+        ),
+        array(
+            'value' => 'podiumcadeaukaart',
+            'label' => 'PODIUM Cadeaukaart'
+        ),
+        array(
+            'value' => 'shoesaccessories',
+            'label' => 'Shoes Accessories'
+        ),
+        array(
+            'value' => 'webshopgiftcard',
+            'label' => 'Webshop Giftcard'
+        ),
+        array(
+            'value' => 'wijncadeau',
+            'label' => 'Wijn Cadeau'
+        ),
+        array(
+            'value' => 'wonenzo',
+            'label' => 'Wonen En Zo'
+        ),
+        array(
+            'value' => 'yourgift',
+            'label' => 'YourGift Card'
+        ),
+        array(
+            'value' => 'fashioncheque',
+            'label' => 'fashioncheque'
+        ),
+        array(
+            'value' => 'sieradenhorlogescadeaukaart',
+            'label' => 'sieradenhorlogescadeaukaart'
+        ),
+        array(
+            'value' => 'jewellerygiftcard',
+            'label' => 'JewelleryGiftcard'
+        ),
+        array(
+            'value' => 'ebon',
+            'label' => 'e-bon'
+        ),
+        array(
+            'value' => 'voetbalshopcadeau',
+            'label' => 'Voetbalshop cadeaucard'
+        )
+    );
+    
+    protected $_moduleBlackList = array(
+        'TIG_Afterpay'               => 'Afterpay',
+        'Fooman_Surcharge'           => 'Fooman Surcharge',
+        'Klarna_KlarnaPaymentModule' => 'Klarna',
+        'TIG_Buckaroo3Extended'      => 'Buckaroooo',
+    );
+    
+    protected $_moduleRewrites = array(
+        'block' => array(
+            'adminhtml/sales_order_totals_tax' => 'TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Tax'
+        ),
+        'model' => array(
+            'sales/order_creditmemo'           => 'TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemooo',
+            'sales/service_order'              => 'TIG_Buckaroo3Extended_Model_PaymentFee_Service_Order',
+        ),
+    );
+    
+    /**
+     * Set the stored DB version to the specified value
+     *
+     * @param string $dbVer
+     *
+     * @return TIG_Buckaroo3Extended_Model_Resource_Setup
+     */
+    public function setDbVer($dbVer)
+    {
+        $this->_dbVer = $dbVer;
+    
+        return $this;
+    }
+    
+    /**
+     * Set the stored config version to the specified value
+     *
+     * @param string $configVer
+     *
+     * @return TIG_Buckaroo3Extended_Model_Resource_Setup
+     */
+    public function setConfigVer($configVer)
+    {
+        $this->_configVer = $configVer;
+    
+        return $this;
+    }
+    
+    /**
+     * Get the stored DB version
+     *
+     * @return string
+     */
+    public function getDbVer()
+    {
+        return $this->_dbVer;
+    }
+    
+    /**
+     * get the stored config version
+     *
+     * @return string
+     */
+    public function getConfigVer()
+    {
+        return $this->_configVer;
+    }
+    
+    public function getModuleBlackList(){
+        return $this->_moduleBlackList;
+    }
+    
+    public function getModuleRewrites(){
+        return $this->_moduleRewrites;
+    }
+    
+    /**
+     * Store the applied update versions
+     *
+     * @return parent::applyUpdates()
+     */
+    public function applyUpdates()
+    {
+        $dbVer = $this->_getResource()->getDbVersion($this->_resourceName);
+        $configVer = (string)$this->_moduleConfig->version;
+    
+        $this->setDbVer($dbVer);
+        $this->setConfigVer($configVer);
+    
+        return parent::applyUpdates();
+    }
+    
+    /**
+     * Check if there are modules installed that can conflict with the buckaroo module
+     *
+     * @return TIG_Buckaroo3Extended_Model_Resource_Setup
+     *
+     */
+    public function afterApplyAllUpdates()
+    {
+        //check version of the module
+        $dbVer = $this->getDbVer();
+        $configVer = $this->getConfigVer();
+        //when the module is not updated but degraded, return before checking
+        if (version_compare($configVer, $dbVer) != self::VERSION_COMPARE_GREATER) {
+            return $this;
+        }
+        
+        //get the buckaroo helper
+        $helper = Mage::helper('buckaroo3extended');
+        $messageTitle       = '';
+        $messageDescription = '';
+        
+        //get the blacklist & check if they are installed
+        $conflictedModules = $this->_checkBlacklist();
+        if(!empty($conflictedModules)){
+            $messageDescription .= $helper->__("The module(s) that can conflict with the Buckaroo module are:<br/> %s",implode(', ',$conflictedModules));
+        }   
+        
+        //check if other modules are rewriting the same classes as the buckaroo module does
+        $rewriteClasses = $this->_checkModuleRewrites();
+        if(!empty($rewriteClasses)){
+            $messageDescription .= $helper->__("<br/>There are modules that rewrite classes the Buckaroo module uses:<br/> %s",implode("<br/>",$rewriteClasses));
+        }
+        
+        if(!empty($messageDescription)){
+            $messageTitle = $helper->__('There are modules installed that may conflict with the Buckaroo module.');
+            $inbox = Mage::getModel('adminnotification/inbox');
+            $inbox->addCritical( $messageTitle, $messageDescription, 'http://servicedesk.totalinternetgroup.nl/entries/29080018-Conflicterende-modules' , true )->save();
+        }
+
+        return $this;
+    }
+    
+    protected function _checkModuleRewrites(){
+        $rewrites = $this->getModuleRewrites();
+        $rewriteClasses = array();
+        if(!empty($rewrites)){
+            foreach($rewrites as $type => $rewrites){
+                //get method name to get the right classname
+                $getClassNameMethod = 'get'.ucfirst($type).'ClassName';
+                
+                foreach($rewrites as $rewrite => $buckarooRewrite){
+                    $rewriteClass   = Mage::getConfig()->$getClassNameMethod($rewrite);
+                    
+                    //if the rewrite is not a Buckaroo-rewrite then add it to the message
+                    if($rewriteClass != $buckarooRewrite){
+                        $rewriteClasses[] = $rewriteClass;
+                    }
+                }
+            }
+        }
+        return $rewriteClasses;
+    }
+    
+    protected function _checkBlacklist(){
+        $moduleBlacklist   = $this->getModuleBlackList();   
+        $conflictedModules = array();
+        if(!empty($moduleBlacklist)){
+            foreach($moduleBlacklist as $module => $name){
+               $isInstalled =  Mage::getConfig()->getModuleConfig($module)->version;
+               if($isInstalled){
+                   $conflictedModules[] = $name;
+               }
+            } 
+        }
+        return $conflictedModules;
+    }
+
+    public function getGiftcardArray()
+    {
+        return $this->_giftcardArray;
+    }
+    
     public function getTermsAndConditions()
     {
         $termsAndConditions = <<<TERMS_AND_CONDITIONS
@@ -158,6 +445,25 @@ INFORMATION_REQUIREMENT;
         
         $informationRequirement->setData($parameters)->save();
         Mage::app()->setCurrentStore($currentStore);
+        return $this;
+    }
+    
+    public function installBaseGiftcards()
+    {
+        $giftcards = $this->getGiftcardArray();
+        foreach ($giftcards as $giftcard) {
+            $giftcardModel = Mage::getModel('buckaroo3extended/giftcard');
+            $giftcardModel->load($giftcard['value'], 'servicecode');
+            
+            if ($giftcardModel->getId()) {
+                continue;
+            }
+            
+            $giftcardModel->setServicecode($giftcard['value'])
+                          ->setLabel($giftcard['label'])
+                          ->save();
+        }
+        
         return $this;
     }
 }
