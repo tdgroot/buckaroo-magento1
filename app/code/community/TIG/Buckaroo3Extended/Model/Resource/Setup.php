@@ -221,6 +221,10 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
             return $this;
         }
         
+        if (!method_exists('Mage_AdminNotification_Model_Inbox', 'addCritical')) {
+            return $this;
+        }
+        
         //get the buckaroo helper
         $helper = Mage::helper('buckaroo3extended');
         $messageTitle       = '';
