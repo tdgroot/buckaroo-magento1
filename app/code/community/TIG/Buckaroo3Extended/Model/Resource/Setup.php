@@ -121,7 +121,6 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
         'TIG_Afterpay'               => 'Afterpay',
         'Fooman_Surcharge'           => 'Fooman Surcharge',
         'Klarna_KlarnaPaymentModule' => 'Klarna',
-        'TIG_Buckaroo3Extended'      => 'Buckaroooo',
     );
     
     protected $_moduleRewrites = array(
@@ -129,7 +128,7 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
             'adminhtml/sales_order_totals_tax' => 'TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Tax'
         ),
         'model' => array(
-            'sales/order_creditmemo'           => 'TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemooo',
+            'sales/order_creditmemo'           => 'TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo',
             'sales/service_order'              => 'TIG_Buckaroo3Extended_Model_PaymentFee_Service_Order',
         ),
     );
@@ -219,6 +218,10 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
         $configVer = $this->getConfigVer();
         //when the module is not updated but degraded, return before checking
         if (version_compare($configVer, $dbVer) != self::VERSION_COMPARE_GREATER) {
+            return $this;
+        }
+        
+        if (!method_exists('Mage_AdminNotification_Model_Inbox', 'addCritical')) {
             return $this;
         }
         

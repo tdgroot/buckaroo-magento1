@@ -40,34 +40,12 @@ $installer = $this;
 
 $installer->startSetup();
 
-$buckarooGiftcardTable = $installer->getConnection()
-    ->newTable($installer->getTable('buckaroo3extended/giftcard'))
-    /**
-     * Entity ID
-     */
-    ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 5, array(
-        'identity'  => true,
-        'unsigned'  => true,
-        'nullable'  => false,
-        'primary'   => true,
-        ), 'Entity Id')
-    /**
-     * Giftcard servicecode as used by BPE 3
-     */
-    ->addColumn('servicecode', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
-        'nullable'  => false,
-        ), 'Servicecode')
-    /**
-     * Giftcard Label
-     */
-    ->addColumn('label', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
-        'nullable'  => false,
-        ), 'Label')
-    ->addIndex($installer->getIdxName('buckaroo3extended/giftcard', array('servicecode'), Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE), 
-        array('servicecode'), 
-        array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE))
-    ->setComment('TIG Buckaroo Giftcard');
-
-$installer->getConnection()->createTable($buckarooGiftcardTable);
+$installer->run("CREATE TABLE IF NOT EXISTS `{$installer->getTable('buckaroo3extended/giftcard')}` (
+  `entity_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Entity Id',
+  `servicecode` varchar(255) NOT NULL COMMENT 'Servicecode',
+  `label` varchar(255) NOT NULL COMMENT 'Label',
+  PRIMARY KEY (`entity_id`),
+  UNIQUE KEY `UNQ_TIG_BUCKAROO_GIFTCARD_SERVICECODE` (`servicecode`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='TIG Buckaroo Giftcard';");
 
 $installer->endSetup();
