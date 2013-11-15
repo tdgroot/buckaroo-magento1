@@ -295,22 +295,8 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             'Buckaroo 3 Extended Debug Email', 
             $mail
         );
-        exit;
         
-//      $this->_debugEmail .= "Transaction key matches a creditmemo. \n";
-//      
-//      $module = Mage::getModel(
-//          'TIG_Buckaroo3Extended_Model_Refund_Response_Push',
-//          array(
-//              'order'      => $this->_order,
-//              'postArray'  => $this->_postArray,
-//              'debugEmail' => $this->_debugEmail,
-//          )
-//      );
-//      
-//      $processedPush = /*$module->processPush()*/false; //TODO: create code to update creditmemo
-//      
-//      return array($processedPush, $module);
+        return $this;
     }
     
     protected function _newRefund()
