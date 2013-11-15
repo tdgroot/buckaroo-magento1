@@ -21,7 +21,6 @@ class TIG_Buckaroo3Extended_Model_Process extends Mage_Index_Model_Process
         if (is_file($file)) {
         	if($this->_lockIsExpired()){
         		unlink($file);//remove file 
-        		Mage::log('lock file deleted:'.$file, null, 'locked.log', true);
 				$this->_lockFile = fopen($file, 'x');//create new lock file
         	}else{
         		$this->_lockFile = fopen($file, 'w');
@@ -37,7 +36,7 @@ class TIG_Buckaroo3Extended_Model_Process extends Mage_Index_Model_Process
 	
 	/**
      * Lock process without blocking.
-     * This method allow protect multiple process runing and fast lock validation.
+     * This method allow protect multiple process running and fast lock validation.
      *
      * @return TIG_Buckaroo3Extended_Model_Process
      */
@@ -46,8 +45,7 @@ class TIG_Buckaroo3Extended_Model_Process extends Mage_Index_Model_Process
         $this->_isLocked = true;
 		
         flock($this->_getLockFile(), LOCK_EX | LOCK_NB);
-		
-		Mage::log('lock has ben set on:'.$this->getId(), null, 'locked.log', true);
+
         return $this;
     }
 	
@@ -77,6 +75,11 @@ class TIG_Buckaroo3Extended_Model_Process extends Mage_Index_Model_Process
 		$file = $this->_getLockFile();
 		
         flock($file, LOCK_UN);	
+        
+        //remove lockfile
+        $varDir   = Mage::getConfig()->getVarDir('locks');
+        $lockFile = $varDir . DS . 'buckaroo_process_' . $this->getId() . '.lock';
+        unlink($lockFile);
 		
         return $this;
     }
@@ -100,8 +103,10 @@ class TIG_Buckaroo3Extended_Model_Process extends Mage_Index_Model_Process
 		
 		//if the lock exists and exists for longer then 5minutes then remove lock & return false
 		if($this->_lockIsExpired()){
-        	unlink($file);//remove file 
-            Mage::log('lock file deleted:'.$file, null, 'locked.log', true);
+        	$varDir   = Mage::getConfig()->getVarDir('locks');
+            $lockFile = $varDir . DS . 'buckaroo_process_' . $this->getId() . '.lock';
+            unlink($lockFile);
+            
             $this->_getLockFile();//create new lock file
         	return false;
         }
@@ -132,16 +137,12 @@ class TIG_Buckaroo3Extended_Model_Process extends Mage_Index_Model_Process
 		$debug      = 'current contents: '.$contents . "\n"
 				    . 'contents in timestamp: '.$time . "\n"
 				    . '5 minutes ago in timestamp: '.$fiveMinAgo;
-				  
-		Mage::log($debug,null,'locked.log',true);
 		
 		if($time <= $fiveMinAgo){
 			$fp = fopen($file,'w');
 			flock($fp, LOCK_UN);
-			Mage::log('Lock is expired.',null,'locked.log',true);
 			return true;
 		}
-		Mage::log('Lock is not expired.',null,'locked.log',true);
 		return false;
 	}
 }

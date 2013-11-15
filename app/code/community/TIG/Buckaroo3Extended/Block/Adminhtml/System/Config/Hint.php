@@ -25,6 +25,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
     	'visaelectron',
     	'vpay',
         'bancontactmrcash',
+        'eps',
     );
     
     public $services = array(

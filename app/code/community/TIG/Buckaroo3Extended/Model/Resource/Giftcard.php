@@ -36,7 +36,7 @@
  * @copyright   Copyright (c) 2013 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_Resource_Giftcard extends Mage_Core_Model_Resource_Db_Abstract
+class TIG_Buckaroo3Extended_Model_Resource_Giftcard extends Mage_Core_Model_Mysql4_Abstract
 {
     public function _construct()
     {    
