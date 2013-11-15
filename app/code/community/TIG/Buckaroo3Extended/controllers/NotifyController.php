@@ -116,7 +116,6 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
             $module->setDebugEmail($this->_debugEmail);
             $module->sendDebugEmail();
-            Mage::log('Currently another push is being processed, the current push will not be processed.', null, 'locked.log',true);
             return false;
 	    }
 	    	
