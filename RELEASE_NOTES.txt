@@ -1,3 +1,36 @@
+===== 4.7.1 =====
+
+
+=== Fixes ===
+
+- Bug met éM! Payment servicecode gefixt
+
+
+===== 4.7.0 =====
+
+- Ondersteuning van Magento Community 1.8
+
+- Mogelijkheid om per betaalmethode de order bevestigings email te versturen
+
+- éM! Payment updates
+
+- Conflictdetectie bij installatie, diverse checks op mogelijk conflicterende modules bij installatie/upgrade (niet aanwezig voor Magento 1.5 en 1.6) (zie ook http://servicedesk.totalinternetgroup.nl/entries/29080018-Conflicterende-modules)
+
+- Mogelijkheid om Cadeaukaarten zelf toe te voegen (zie Systeem > Buckaroo Giftcards) (zie ook het betaalmethode instellingen artikel: http://servicedesk.totalinternetgroup.nl/entries/29475368-Buckaroo-3-0-Betaalmethode-instellingen)
+
+- Nieuwe betaalmethode EPS voor Oostenrijk
+
+- Lock op de verwerking van de push 
+
+ 
+
+=== Fixes ===
+
+- Order pending-bug gefixt voor PayperEmail
+
+- Dubbele transacties bij PayperEmail wordt de shop-owner via email op de hoogte gesteld
+ 
+
 ===== 4.6.1 =====
 
 === Minor Changes ===

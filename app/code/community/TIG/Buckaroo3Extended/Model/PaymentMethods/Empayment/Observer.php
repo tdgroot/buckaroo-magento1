@@ -60,10 +60,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
 
         $this->_addEmpaymentVars($vars);
         $this->_addPersonVars($vars);
-        $this->_addBankAccountVars($vars);
         $this->_addBillingAddressVars($vars);
         $request->setVars($vars);
-
         return $this;
     }
 
@@ -90,44 +88,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
             'processingtype'           => 'Deferred',
             'reference'                => $this->_order->getIncrementId(),
             'emailAddress'             => $this->_billingInfo['email'],
-        );
-        
-        if (array_key_exists('customVars', $vars) && array_key_exists($this->_service, $vars['customVars']) && is_array($vars['customVars'][$this->_service])) {
-            $vars['customVars'][$this->_service] = array_merge($vars['customVars'][$this->_service], $array);
-        } else {
-            $vars['customVars'][$this->_service] = $array;
-        }
-    }
-
-    protected function _addBankAccountVars(&$vars)
-    {
-        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
-        
-        $array = array(
-            'Type'                             => array(
-                                                      'value' => 'DOM',
-                                                      'group' => 'bankaccount',
-                                                  ),
-            'DomesticAccountHolderName'        => array(
-                                                      'value' => $additionalFields['DOM']['accountHolder'],
-                                                      'group' => 'bankaccount',
-                                                  ),
-            'DomesticCountry'                  => array(
-                                                      'value' => 528,
-                                                      'group' => 'bankaccount',
-                                                  ),
-            'DomesticBankIdentifier'           => array(
-                                                      'value' => $additionalFields['DOM']['bankId'],
-                                                      'group' => 'bankaccount',
-                                                  ),
-            'DomesticAccountNumber'            => array(
-                                                      'value' => $additionalFields['DOM']['accountNumber'],
-                                                      'group' => 'bankaccount',
-                                                  ),
-            'Collect'                          => array(
-                                                      'value' => 1,
-                                                      'group' => 'bankaccount',
-                                                  ),
         );
         
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_service, $vars['customVars']) && is_array($vars['customVars'][$this->_service])) {
@@ -198,6 +158,45 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Empayment_Observer extends TIG_
                                 'value' => $this->_billingInfo['zip'],
                                 'group' => 'address',
                             ),
+        );
+        
+        if (array_key_exists('customVars', $vars) && array_key_exists($this->_service, $vars['customVars']) && is_array($vars['customVars'][$this->_service])) {
+            $vars['customVars'][$this->_service] = array_merge($vars['customVars'][$this->_service], $array);
+        } else {
+            $vars['customVars'][$this->_service] = $array;
+        }
+    }
+    
+    /* deprecated function from v4.7.0*/
+    protected function _addBankAccountVars(&$vars)
+    {
+        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        
+        $array = array(
+            'Type'                             => array(
+                                                      'value' => 'DOM',
+                                                      'group' => 'bankaccount',
+                                                  ),
+            'DomesticAccountHolderName'        => array(
+                                                      'value' => $additionalFields['DOM']['accountHolder'],
+                                                      'group' => 'bankaccount',
+                                                  ),
+            'DomesticCountry'                  => array(
+                                                      'value' => 528,
+                                                      'group' => 'bankaccount',
+                                                  ),
+            'DomesticBankIdentifier'           => array(
+                                                      'value' => $additionalFields['DOM']['bankId'],
+                                                      'group' => 'bankaccount',
+                                                  ),
+            'DomesticAccountNumber'            => array(
+                                                      'value' => $additionalFields['DOM']['accountNumber'],
+                                                      'group' => 'bankaccount',
+                                                  ),
+            'Collect'                          => array(
+                                                      'value' => 1,
+                                                      'group' => 'bankaccount',
+                                                  ),
         );
         
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_service, $vars['customVars']) && is_array($vars['customVars'][$this->_service])) {

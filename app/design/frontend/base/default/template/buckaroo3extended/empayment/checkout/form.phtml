@@ -1,38 +1,6 @@
-<?php
-$billing_info=Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress();
-$firstname=$billing_info->getFirstname();
-$lastname=$billing_info->getLastname();
-$email=$billing_info->getEmail();
-
-$gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGender();
-?>
-<?php $_session = Mage::getSingleton('checkout/session'); ?>
-
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list buckaroo-method">
     <?php $_code=$this->getMethodCode() ?>
-    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
-        <li>
-            <label for="<?php echo $_code;?>_BPE_Accountholder" class="required"><?php echo $this->__('Account holder') ?>: <em>*</em></label>
-            <div class="input-box">
-            	<input class="input-text required-entry" type="input" title="<?php echo $this->__('Account holder') ?>" name="<?php echo $_code;?>_BPE_Accountholder" value="<?php echo $this->getAccountHolder(); ?>" id="<?php echo $_code;?>_BPE_Accountholder"/>
-            </div>
-        </li>
-        <li>
-            <label for="<?php echo $_code;?>_BPE_Accountnumber" class="required"><?php echo $this->__('Account number') ?>: <em>*</em></label>
-            <div class="input-box">
-            	<input class="input-text required-entry" type="input" title="<?php echo $this->__('Account number') ?>" name="<?php echo $_code;?>_BPE_Accountnumber" value="<?php echo $_session->getData($_code . '_BPE_Accountnumber'); ?>" id="<?php echo $_code;?>_BPE_Accountnumber" />
-            </div>
-        </li>
-        <li>
-            <label for="<?php echo $_code;?>_BPE_Bankid" class="required"><?php echo $this->__('Bank identification') ?>: <em>*</em></label>
-            <div class="input-box">
-            	<input class="input-text required-entry" type="input" title="<?php echo $this->__('Bank identification') ?>" name="<?php echo $_code;?>_BPE_Bankid" value="<?php echo $_session->getData($_code . '_BPE_Bankid'); ?>" id="<?php echo $_code;?>_BPE_Bankid" />
-            </div>
-        </li>
-        <li>
-            <?php echo $this->__('You will be redirected to the èM! Payment website to finalize your payment.') ?>
-        </li>
-    </ul>
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input"></ul>
 </fieldset>
