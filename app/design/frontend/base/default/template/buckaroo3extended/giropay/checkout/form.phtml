@@ -31,9 +31,9 @@
     <?php $_code=$this->getMethodCode() ?>
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
-            <label for="<?php echo $_code;?>_BPE_Bankleitzahl" class="required"><?php echo $this->__('Bankleitzahl'); ?>: <em>*</em></label>
+            <label for="<?php echo $_code;?>_BPE_Bic" class="required"><?php echo $this->__('BIC number'); ?>: </label>
             <div class="input-box">
-                <input type="text" class="input-text required-entry" title="<?php echo $this->__('Bankleitzahl'); ?>" name="<?php echo $_code;?>_BPE_Bankleitzahl" value="<?php echo $_session->getData($_code . '_BPE_Bankleitzahl'); ?>" id="<?php echo $_code;?>_BPE_Bankleitzahl" />
+                <input type="text" class="input-text required-entry" title="<?php echo $this->__('BIC number'); ?>" name="<?php echo $_code;?>_BPE_Bic" value="<?php echo $_session->getData($_code . '_BPE_Bic'); ?>" id="<?php echo $_code;?>_BPE_Bic" />
             </div>
         </li>
     </ul>

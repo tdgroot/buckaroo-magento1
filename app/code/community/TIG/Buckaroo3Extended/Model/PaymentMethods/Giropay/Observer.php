@@ -17,7 +17,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_Observer extends TIG_Bu
         $array = array(
             $this->_method     => array(
                 'action'    => 'Pay',
-                'version'   => 1,
+                'version'   => 2,
             ),
         );
         
@@ -56,10 +56,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_Observer extends TIG_Bu
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
-        
-        $bankleitzahl = $this->_getBankleitzahl();
+
+        $bic          = $this->_getBic();
         $array = array(
-            'bankleitzahl' => $bankleitzahl,
+            'bic'          => $bic,
         );
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
@@ -68,7 +68,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_Observer extends TIG_Bu
         }
         
         $request->setVars($vars);
-        
+
         return $this;
     }
     
@@ -86,13 +86,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_Observer extends TIG_Bu
         
         return $this;
     }
-    
-    protected function _getBankleitzahl()
+
+    protected function _getBic()
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
-        $bankleitzahl = $additionalFields['Bankleitzahl'];
+        $bic              = $additionalFields['bic'];
         
-        return $bankleitzahl;
+        return $bic;
     }
     
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)

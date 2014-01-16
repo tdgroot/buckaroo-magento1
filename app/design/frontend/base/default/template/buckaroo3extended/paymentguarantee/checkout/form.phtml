@@ -87,7 +87,12 @@ echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputY
             </div>
             <label for="<?php echo $_code;?>_BPE_terms_and_conditions" class="required"><?php echo $this->__('Yes, I accept the %sterms and condition%s for the use of Payment Guarantee.', '<a href="#" id="paymentguarantee_terms_and_conditions_link">', '</a>') ?> <em>*</em></label>
         </li>
-        
+        <li>
+            <?php 
+                $ibanConverterLink = '<a target="_blank" href="https://iban.buckaroo.nl/">'.Mage::helper('buckaroo3extended')->__('here').'</a>';
+                echo Mage::helper('buckaroo3extended')->__('Convert your account number to IBAN %s',$ibanConverterLink);
+            ?>
+        </li>
         <li>
             <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.')?>
         </li>   
