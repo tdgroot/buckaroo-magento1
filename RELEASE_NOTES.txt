@@ -1,3 +1,16 @@
+===== 4.8.0 =====
+
+- De betaalmethode DirectDebit (Eenmalige Machtiging) is vervangen door SepaDirectDebit. Het rekeningnummer moet nu met IBAN ingevuld worden.  
+- De BIC code is verplicht bij SepaDirectDebit
+- Giropay geupgraded naar V2, Bankleitzahl is vervangen door de BIC-code van de bank.
+- Bij BetaalGarant (Achteraf betalen) is de IBAN verplicht. 
+- Bij Giropay, SepaDirectDebit en BetaalGarant een link toegevoegd naar de Buckaroo IBAN-converter
+- Betaalverzoeken worden met Channel "Web" verstuurd, refunds worden met "CallCenter" verstuurd.
+
+===== 4.7.2 =====
+
+- éM! Payment bankaccount velden zijn niet meer verplicht en daarom verwijdert. 
+
 ===== 4.7.1 =====
 
 
