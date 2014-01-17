@@ -2,7 +2,7 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Directdebit_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract 
 {    
     protected $_code = 'buckaroo3extended_directdebit';
-    protected $_method = 'directdebit';
+    protected $_method = 'sepadirectdebit';
     
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
@@ -60,9 +60,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Directdebit_Observer extends TI
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         
         $array = array(
-            'customeraccountnumber' => $additionalFields['accountNumber'],
+            'customeriban'          => $additionalFields['accountNumber'],
             'customeraccountname'   => $additionalFields['accountOwner'],
             'CollectDate'           => '',
+            'CustomerBIC'           => $additionalFields['bankNumber'], 
         );
         
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {

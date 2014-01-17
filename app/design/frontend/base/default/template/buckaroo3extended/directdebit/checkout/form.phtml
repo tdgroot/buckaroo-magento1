@@ -16,6 +16,18 @@
             </div>
         </li>
         <li>
+            <label for="<?php echo $_code ?>_bank_number" class="required"><?php echo $this->__('BIC number') ?>:<em>*</em></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo Mage::helper('buckaroo3extended')->__('BIC number') ?>" class="input-text required-entry" id="<?php echo $_code ?>_bank_number" name="payment[bank_number]" value="<?php echo $this->getBankNumber(); ?>" />
+            </div>
+        </li>
+        <li>
+            <?php 
+                $ibanConverterLink = '<a target="_blank" href="https://iban.buckaroo.nl/">'.Mage::helper('buckaroo3extended')->__('here').'</a>';
+                echo Mage::helper('buckaroo3extended')->__('Convert your account number to IBAN %s',$ibanConverterLink);
+            ?>
+        </li>
+        <li>
 			<?php echo Mage::helper('buckaroo3extended')->__("Please enter these fields as they appear on your bank account.") ?>
 		</li>
 	</ul>

@@ -18,7 +18,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Directdebit_PaymentMethod exten
             $accountNumber = $_POST['payment']['account_number'];
     		$session->setData('additionalFields', array(
     				'accountOwner'  => $_POST['payment']['account_owner'],
-    				'accountNumber' => $this->filterAccount($accountNumber)
+    				'accountNumber' => $this->filterAccount($accountNumber),
+    				'bankNumber'    => $_POST['payment']['bank_number'],
     		    )
     		);
     	}

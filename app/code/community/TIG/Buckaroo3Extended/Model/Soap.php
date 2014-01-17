@@ -88,7 +88,14 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                 }
             }
         }
-
+        
+        /*when request is a refund; use 'CallCenter' else use channel 'Web' (case sensitive)*/
+        $requestChannel = 'Web';
+        if(round($this->_vars['amountDebit'], 2) == 0 
+           && round($this->_vars['amountCredit'], 2) > 0){
+            $requestChannel = 'CallCenter';
+        }
+        
         $client->thumbprint = $this->_vars['thumbprint'];
 
         $TransactionRequest = new Body();
@@ -135,7 +142,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $Header->MessageControlBlock->WebsiteKey = $this->_vars['merchantKey'];
         $Header->MessageControlBlock->Culture = $this->_vars['locale'];
         $Header->MessageControlBlock->TimeStamp = time();
-        $Header->MessageControlBlock->Channel = 'Web';
+        $Header->MessageControlBlock->Channel = $requestChannel;
         $Header->MessageControlBlock->Software = $Software;
         $Header->Security = new SecurityType();
         $Header->Security->Signature = new SignatureType();

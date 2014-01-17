@@ -198,7 +198,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             'CustomerGender'        => $gender,
             'CustomerBirthDate'     => $dob,
             'CustomerEmail'         => $this->_billingInfo['email'],
-            'CustomerAccountNumber' => $accountNumber,
+            'customeriban'          => $accountNumber,
             'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
             'SendMail'              => Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/sendmail', Mage::app()->getStore()->getId()) ? 'TRUE' : 'FALSE',
         );

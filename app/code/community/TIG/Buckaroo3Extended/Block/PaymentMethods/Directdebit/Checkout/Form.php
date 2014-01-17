@@ -21,4 +21,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Directdebit_Checkout_Form exten
     {
         return $this->getSession()->getData('payment[account_number]');
     }
+    
+    public function getBankNumber()
+    {
+        return $this->getSession()->getData('payment[bank_number]');
+    }
 }
