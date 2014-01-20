@@ -158,7 +158,7 @@
 " (Excl. Tax)"," (Excl. btw)"
 " (Incl. Tax)"," (Incl. btw)"
 "Salutation","Aanhef"
-"Bank account number","Rekeningnummer"
+"Bank account number","IBAN"
 "Date of birth","Geboortedatum"
 "Day","Dag"
 "DD","DD"
