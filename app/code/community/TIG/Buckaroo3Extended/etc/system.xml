@@ -2769,7 +2769,7 @@
                     </fields>
                 </buckaroo3extended_transfer>
                 <buckaroo3extended_directdebit translate="label">
-                    <label>Eenmalige machtiging</label>
+                    <label>SEPA machtiging</label>
                     <sort_order>11000</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>

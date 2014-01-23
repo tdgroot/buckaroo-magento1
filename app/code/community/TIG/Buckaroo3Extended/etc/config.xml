@@ -2,7 +2,7 @@
 <config>
     <modules>
         <TIG_Buckaroo3Extended>
-            <version>4.7.2</version>
+            <version>4.8.2</version>
         </TIG_Buckaroo3Extended>
     </modules>
     <frontend>
@@ -974,7 +974,7 @@
             <buckaroo3extended_directdebit>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_directdebit_paymentMethod</model>
-                <title>Eenmalige Machtiging</title>
+                <title>SEPA Machtiging</title>
                 <sort_order>110</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_directdebit>
@@ -1341,7 +1341,7 @@
             <buckaroo3extended_directdebit>
                 <active>0</active>
                 <mode>0</mode>
-                <title>Machtiging</title>
+                <title>SEPA Machtiging</title>
                 <allowspecific>0</allowspecific>
                 <specificcountry></specificcountry>
                 <order_status_success></order_status_success>
