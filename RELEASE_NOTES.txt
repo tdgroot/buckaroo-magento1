@@ -1,4 +1,8 @@
-===== 4.8.0 =====
+===== 4.8.2 =====
+
+- Het refund-push bestand is hersteld.
+
+===== 4.8.1 =====
 
 - Eenmalige Machtiging (directDebit) heet nu SEPA Machtiging (SepaDirectDebit)
 
