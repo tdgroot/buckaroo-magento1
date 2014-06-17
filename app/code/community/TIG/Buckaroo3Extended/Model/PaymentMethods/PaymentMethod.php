@@ -121,6 +121,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
 
     public function isAvailable($quote = null)
     {
+
+        if(is_null($quote) && Mage::helper('buckaroo3extended')->isAdmin()){
+            // Uncomment this code to get all active Buckaroo payment methods in the backend. (3th party extensions)
+            /*if(Mage::getStoreConfigFlag('buckaroo/' . $this->_code . '/active', Mage::app()->getStore()->getId())){
+                return true;
+            }*/
+
+            return false;
+        }
+
         //check if the country specified in the billing address is allowed to use this payment method
         if (Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', $quote->getStoreId()) == 1
             && $quote->getBillingAddress()->getCountry())
