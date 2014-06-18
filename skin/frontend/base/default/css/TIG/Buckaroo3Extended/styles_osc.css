@@ -16,17 +16,14 @@
 
 /* Payment Guarantee Terms & Conditions */
 #onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-box { width:auto !important; }
-#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-checkbox { float:left; }
-#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-checkbox.validation-failed { margin-bottom:36px; }
-#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept #advice-required-entry-buckaroo3extended_paymentguarantee_BPE_terms_and_conditions { position:absolute; margin-top:34px; }
-#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept label { float:left; width:220px; margin:-16px 0 0 17px; }
-#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept label em { margin:18px 8px 0 0; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .input-box input { float:left; margin:3px 4px 0 0; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept label { display:inline; float:none; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept label.required em { position:static; float:none; }
+#onestepcheckout-form #payment_form_buckaroo3extended_paymentguarantee .tac-accept .validation-advice { padding:3px 0 6px 17px; background-position:2px 3px; }
 
 #onestepcheckout-form #paymentguarantee_terms_and_conditions { display:none; }
 #onestepcheckout-form #paymentguarantee_terms_and_conditions { position:fixed; width:100%; height:100%; top:0; left:0; background:rgba(0, 0, 0, .35); z-index:100; }
-
 #onestepcheckout-form #paymentguarantee_terms_and_conditions .tac-content { position:fixed; background:#fff; width:310px; height:auto; left:50%; top:30px; margin-left:-155px; padding:8px 8px 12px; border: 1px solid #b6b6b6; z-index:200; }
-
 #onestepcheckout-form #paymentguarantee_terms_and_conditions .tac-close { float:right; }
 
 #onestepcheckout-form #paymentguarantee_terms_and_conditions a.button { text-decoration:none !important; cursor:pointer !important; background:none !important; }
