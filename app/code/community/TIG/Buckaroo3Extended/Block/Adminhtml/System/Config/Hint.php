@@ -11,6 +11,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'giropay',
         'ideal',
         'mastercard',
+        'cartebleue',
         'onlinegiro',
         'paypal',
         'paysafecard',
