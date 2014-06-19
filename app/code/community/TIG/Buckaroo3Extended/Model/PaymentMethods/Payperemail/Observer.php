@@ -3,7 +3,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
 {    
     protected $_code = 'buckaroo3extended_payperemail';
     protected $_method = 'payperemail';
-    
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -38,7 +42,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         
         return $this;
     }
-    
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -93,10 +101,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
     }
 
     /**
-     * While PayperEmail is the paymentmethod for this transaction, the transation is actually completed using another paymentmethod.
-     * This observer stores that paymentmethod in tyhe database. This is currently only used for online refunds.
-     * 
+     * While PayPerEmail is the paymentmethod for this transaction, the transation is actually completed using another paymentmethod.
+     * This observer stores that paymentmethod in the database. This is currently only used for online refunds.
+     *
      * @param Varien_Event_Observer $observer
+     * @return $this
      */
     public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
     {
@@ -131,7 +140,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         
         return $this;
     }
-    
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -146,7 +159,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         
         return $this;
     }
-    
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -161,7 +178,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
 
         return $this;
     }
-    
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -187,7 +208,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
 
         return $this;
     }
-    
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
