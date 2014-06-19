@@ -55,18 +55,20 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     	$this->setDebugEmail($data['debugEmail']);
     	$this->setMethod($data['method']);
     }
-	/**
-	 * Processes 'pushes' recieves from Buckaroo with the purpose of updating an order or payment.
-	 * 
-	 */
-	public function processPush()
+
+    /**
+     * Processes 'pushes' receives from Buckaroo with the purpose of updating an order or payment.
+     *
+     * @return bool
+     */
+    public function processPush()
 	{
 	    $response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);	
+
 		//check if the push is valid and if the order can be updated
-		$canProcessPush = $this->_canProcessPush(false,$response);
-		list($canProcess, $canUpdate) = $canProcessPush;
-		
-		$this->_debugEmail .= "can the order be processed? " . $canProcess . "\ncan the order be updated? " . $canUpdate . "\n";
+        list($canProcess, $canUpdate) = $this->_canProcessPush(false,$response);
+
+		$this->_debugEmail .= "Can the order be processed? " . $canProcess . "\n"."Can the order be updated? " . $canUpdate . "\n";
 		
 		if (!$canProcess) {
 			return false;
@@ -78,12 +80,12 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		}
 		
 		if (strcmp($this->_order->getPayment()->getMethodInstance()->getCode(), 'buckaroo3extended_giftcards') === 0) {
-            Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder()));  
-                  
+            Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder()));
+
             if ($this->getCustomResponseProcessing()) {
                 return true;
             }
-		}
+        }
 
 		$newStates = $this->_getNewStates($response['status']);
 		
@@ -96,7 +98,15 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         if ($this->getCustomResponseProcessing()) {
             return true;
         }
-        
+
+        //when the payment method is ppe & payment is canceled but transaction not; only log the message
+        if (strcmp($this->_order->getPayment()->getMethodInstance()->getCode(), 'buckaroo3extended_payperemail') === 0) {
+            if($response['status'] == self::BUCKAROO_ERROR || $response['status'] == self::BUCKAROO_FAILED){
+                $originalResponseStatus = $response['status'];
+                $response['status'] = self::BUCKAROO_NEUTRAL;
+            }
+        }
+
 		switch ($response['status'])
 		{
 		    case self::BUCKAROO_ERROR:
@@ -111,6 +121,13 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $this->_processIncorrectPayment($newStates);
 			                                       break;
 		}
+
+        //revert the original status in order complete the whole process like it should.
+        if (strcmp($this->_order->getPayment()->getMethodInstance()->getCode(), 'buckaroo3extended_payperemail') === 0) {
+            if($response['status'] == self::BUCKAROO_NEUTRAL){
+                $response['status'] = $originalResponseStatus;
+            }
+        }
         
         Mage::dispatchEvent('buckaroo3extended_push_custom_processing_after', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
 		
@@ -128,18 +145,19 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		
 		return true;
 	}
-	
-	
-	/**
-     * Checks if the post recieved is valid by checking its signature field.
+
+
+    /**
+     * Checks if the post received is valid by checking its signature field.
      * This field is unique for every payment and every store.
      * Also calls method that checks if an order is able to be updated further.
      * Canceled, completed, holded etc. orders are not able to be updated
-     * 
-     * @param boolean $isReturn
+     *
+     * @param bool $isReturn
      * @param array $response
+     * @return array
      */
-	protected function _canProcessPush($isReturn = false, $response = array())
+    protected function _canProcessPush($isReturn = false, $response = array())
 	{
 	    $correctSignature = false;
 		$canUpdate        = false;
@@ -208,21 +226,21 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         
         return false;
 	}
-	
-    /*
+
+    /**
      * Send the shop owner and subscribers to the debug-email an email with the message that there is a double transaction
-     * */
-     protected function _sendDoubleTransactionEmail(){
-        
+     */
+    protected function _sendDoubleTransactionEmail(){
+
         $helper             = Mage::helper('buckaroo3extended');
         $orderId            = $this->_order->getIncrementId();
-        $currentOrderStatus = $this->_order->getStatus(); 
-        
+        $currentOrderStatus = $this->_order->getStatus();
+
         $recipients         = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId()));
         $recipients[]       = Mage::getStoreConfig('trans_email/ident_general/email');
-        
+
         $mail               = $helper->__('Status Success received for order %s while the order currently the status %s has.',$orderId,$currentOrderStatus);
-        
+
         foreach($recipients as $recipient) {
             mail(
                 trim($recipient),
@@ -230,16 +248,16 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
                 $mail
             );
         }
-     }
+    }
     
 	/**
 	 * Uses setState to add a comment to the order status history without changing the state nor status. Purpose of the comment
 	 * is to inform the user of an attempted status upsate after the order has already recieved complete, canceled, closed or holded states
 	 * or the order can't be invoiced. Returns false if the config has disabled this feature.
 	 * 
-	 * @param string $omschrijving
+	 * @param string $description
 	 */
-	protected function _addNote($omschrijving)
+	protected function _addNote($description)
 	{
 		$helper = Mage::helper('buckaroo3extended');
 	    
@@ -249,17 +267,20 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			. '</b>' 
 			. $helper->__(' state, by sending the following: ') 
 			. '<br/>--------------------------------------------------------------------------------------------------------------------------------<br/>' 
-			. $omschrijving
+			. $description
 			. ' (' 
 			. $this->_postArray['brq_statuscode']
 			. ')';
 		$this->_order->addStatusHistoryComment($note)
 					 ->save();
 	}
-	
-	public function addNote($omschrijving)
+
+    /**
+     * @param $description
+     */
+    public function addNote($description)
 	{
-	    $this->_addNote($omschrijving);
+	    $this->_addNote($description);
 	}
     
 	/**
@@ -348,18 +369,16 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         
         return $newStates;
 	}
-	
-	/**
-	 * Process a succesful order. Sets its new state and status, sends an order confirmation email
-	 * and creates an invoice if set in config.
-	 * 
-	 * 
-	 * @param array $response | int $response
-	 * @param string $description
-	 * 
-	 * @return boolean
-	 */
-	protected function _processSuccess($newStates, $description = false)
+
+    /**
+     * Process a succesful order. Sets its new state and status, sends an order confirmation email
+     * and creates an invoice if set in config.
+     *
+     * @param $newStates
+     * @param bool $description
+     * @return bool
+     */
+    protected function _processSuccess($newStates, $description = false)
 	{	
 		//send new order email if it hasnt already been sent
 		if(!$this->_order->getEmailSent())
@@ -393,17 +412,16 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         
 		return true;
 	}
-	
-	/**
-	 * Process a failed order. Sets its new state and status and cencels the order
-	 * if set in config.
-	 * 
-	 * @param array $newStates
-	 * @param string $description
-	 * 
-	 * @return boolean
-	 */
-	protected function _processFailed($newStates, $description = false)
+
+    /**
+     * Process a failed order. Sets its new state and status and cancels the order
+     * if set in config.
+     *
+     * @param $newStates
+     * @param bool $description
+     * @return bool
+     */
+    protected function _processFailed($newStates, $description = false)
     {
         $description = Mage::helper('buckaroo3extended')->__($description);
         $description .= " (#{$this->_postArray['brq_statuscode']})";
@@ -413,7 +431,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
             $this->_order->setTransactionKey($this->_postArray['brq_transactions']);
         }
-        
+
         if (
           Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
           && $this->_order->canCancel()
@@ -434,13 +452,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         
         return true;
     }
-	
-	/**
-	 * Processes an order for which an incorrect amount has been paid (can only happen with Transfer)
-	 * 
-	 * @return boolean
-	 */
-	protected function _processIncorrectPayment($newStates)
+
+    /**
+     * Processes an order for which an incorrect amount has been paid (can only happen with Transfer)
+     *
+     * @param $newStates
+     * @return bool
+     */
+    protected function _processIncorrectPayment($newStates)
 	{
 		//determine whether too much or not enough has been paid and determine the status history copmment accordingly
 		$amount = round($this->_order->getBaseGrandTotal()*100, 0);
@@ -482,15 +501,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    
 	    return true;
 	}
-	
-	/**
-	 * processes an order awaiting payment. Sets its new state and status.
-	 * 
-	 * @param array $newStates
-	 * @param string $description
-	 * 
-	 * @return boolean
-	 */
+
+    /**
+     * processes an order awaiting payment. Sets its new state and status.
+     *
+     * @param $newStates
+     * @param bool $description
+     * @return bool
+     */
     protected function _processPendingPayment($newStates, $description = false)
 	{	
 		$description = Mage::helper('buckaroo3extended')->__($description);
@@ -515,32 +533,57 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		                            
 		return true;
 	}
-	
-	public function getNewStates($code)
+
+    /**
+     * @param $code
+     * @return array
+     */
+    public function getNewStates($code)
 	{
 	    return $this->_getNewStates($code);
 	}
-	
-	public function processPendingPayment($newStates, $description = false) {
+
+    /**
+     * @param $newStates
+     * @param bool $description
+     * @return bool
+     */
+    public function processPendingPayment($newStates, $description = false) {
 	    return $this->_processPendingPayment($newStates, $description);
 	}
-	
+
+    /**
+     * @param $newStates
+     * @param bool $description
+     * @return bool
+     */
     public function processSuccess($newStates, $description = false) {
 	    return $this->_processSuccess($newStates, $description);
 	}
-	
+
+    /**
+     * @param $newStates
+     * @param bool $description
+     * @return bool
+     */
     public function processFailed($newStates, $description = false) {
 	    return $this->_processFailed($newStates, $description);
 	}
-	
+
+    /**
+     * @param $newStates
+     * @return bool
+     */
     public function processIncorrectPayment($newStates) {
 	    return $this->_processIncorrectPayment($newStates);
 	}
-	
-	/**
-	 * Creates an invoice for the order if the module is configured to do so. 
-	 */
-	protected function _autoInvoice()
+
+    /**
+     * Creates an invoice for the order if the module is configured to do so.
+     *
+     * @return bool
+     */
+    protected function _autoInvoice()
 	{
 		//check if the module is configured to create invoice on success		
 		if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', $this->_order->getStoreId()))
@@ -566,14 +609,12 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		    }
 	    }                            
 	}
-	
-	/**
-	 * Saves an invoice and sets totalpaid for the order
-	 * 
-	 * @param float $paid
-	 * 
-	 * @return boolean
-	 */
+
+    /**
+     * Saves an invoice and sets total-paid for the order
+     *
+     * @return bool
+     */
     protected function _saveInvoice()
     {
 	    if ($this->_order->canInvoice() && !$this->_order->hasInvoices()) {
@@ -633,11 +674,13 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    
 	    return $signature;
 	}
-	
-	/**
-	 * Compatibility for BPE 2.0 pushes
-	 */
-	protected function _calculateOldSignature()
+
+    /**
+     * Compatibility for BPE 2.0 pushes
+     *
+     * @return string
+     */
+    protected function _calculateOldSignature()
 	{
         $signature2 = md5(
 			$this->_postArray['oldPost']["bpe_trx"]
