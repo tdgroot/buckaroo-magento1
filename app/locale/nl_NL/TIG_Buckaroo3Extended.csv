@@ -289,3 +289,5 @@
 "Convert your account number to IBAN %s","Converteer nu %s uw rekeningnummer naar IBAN."
 "Please enter these fields as they appear on your bank account.","Vul de velden in zoals in uw bank account staat aangegeven."
 "BIC number","BIC code"
+"Please enter a valid IBAN.","Vul een geldig IBAN in."
+"Mandate reference: %s","Mandaat referentie: %s"

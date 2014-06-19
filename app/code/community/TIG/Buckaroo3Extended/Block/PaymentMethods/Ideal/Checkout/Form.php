@@ -7,7 +7,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
         $this->setIssuers();
         parent::_construct();
     }
-    
+
     public function setIssuers()
     {
         $issuersArray = array(
@@ -19,10 +19,6 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
                 '0761' => array(
                     'name' => 'ASN Bank',
                     'logo' => 'icon_asn.gif',
-                ),
-                '0091' => array(
-                    'name' => 'Friesland Bank',
-                    'logo' => 'logo_friesland_s.gif',
                 ),
                 '0721' => array(
                     'name' => 'ING',
@@ -96,22 +92,22 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
                 ),
             ),
         );
-        
+
         $issuers = new Varien_Object($issuersArray);
         $this->issuers = $issuers;
-        
+
         return $this;
     }
-    
+
     public function getIssuerList()
     {
         $version = (int) Mage::getStoreConfig('buckaroo/buckaroo3extended_ideal/service_version', Mage::app()->getStore()->getId());
         $issuers = $this->getIssuers();
-        
+
         if ($version === 2) {
             return $issuers->getVersion2();
         }
-        
+
         return $issuers->getVersion1();
     }
 }

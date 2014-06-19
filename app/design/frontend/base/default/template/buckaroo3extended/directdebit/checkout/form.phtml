@@ -12,7 +12,7 @@
         <li>
             <label for="<?php echo $_code ?>_account_number" class="required"><?php echo $this->__('Bank account number') ?>:<em>*</em></label>
             <div class="input-box">
-                <input type="text" title="<?php echo $this->__('Bank account number') ?>" class="input-text required-entry" id="<?php echo $_code ?>_account_number" name="payment[account_number]" value="<?php echo $this->getAccountNumber(); ?>" />
+                <input type="text" title="<?php echo $this->__('Bank account number') ?>" class="input-text required-entry validate-buckaroo-iban" id="<?php echo $_code ?>_account_number" name="payment[account_number]" value="<?php echo $this->getAccountNumber(); ?>" />
             </div>
         </li>
         <li>
@@ -22,7 +22,7 @@
             </div>
         </li>
         <li>
-            <?php 
+            <?php
                 $ibanConverterLink = '<a target="_blank" href="https://iban.buckaroo.nl/">'.Mage::helper('buckaroo3extended')->__('here').'</a>';
                 echo Mage::helper('buckaroo3extended')->__('Convert your account number to IBAN %s',$ibanConverterLink);
             ?>

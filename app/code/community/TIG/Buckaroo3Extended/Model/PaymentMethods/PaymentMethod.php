@@ -212,4 +212,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         return $filteredAccount;
     }
 
+    public function saveAdditionalData($response)
+    {
+        // child modules will be able to save response info into the serialized additional_data array
+
+        return $this;
+    }
 }
