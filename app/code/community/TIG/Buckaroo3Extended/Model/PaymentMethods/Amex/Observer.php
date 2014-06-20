@@ -56,6 +56,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
+
+        if(Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/address_verification', Mage::app()->getStore()->getStoreId()))
+        {
+            $this->_addAavCredentials($vars);
+        }
         
         $request->setVars($vars);
         
@@ -125,5 +130,154 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
         }
 
         return $this;
+    }
+
+
+    /**
+     * If AddressVerification is enabled in the config, this method will add the required variables so American Express
+     * can validate the address
+     * @param $vars
+     * @return mixed
+     */
+    protected function _addAavCredentials(&$vars)
+    {
+        $billingAddress            = $this->_billingInfo;
+        $shippingAddress           = $this->_order->getShippingAddress();
+
+        $billingFirstname          = $billingAddress['firstname'];
+        $billingLastname           = $billingAddress['lastname'];
+        $billingStreetFull         = $this->_processAddress($billingAddress['address']);
+        $billingHousenumber        = $billingStreetFull['house_number'];
+        $billingHousenumberSuffix  = $billingStreetFull['number_addition'];
+        $billingStreet             = $billingStreetFull['street'];
+        $billingZipcode            = $billingAddress['zip'];
+        $billingCountry            = $billingAddress['countryCode'];
+        $billingPhonenumber        = $this->_processPhoneNumber($billingAddress['telephone']);
+
+
+        $shippingFirstname 		   = $shippingAddress->getFirstname();
+        $shippingLastname  		   = $shippingAddress->getLastname();
+        $shippingStreetFull        = $this->_processAddress($shippingAddress->getStreetFull());
+        $shippingHouseumber        = $shippingStreetFull['house_number'];
+        $shippingHousenumberSuffix = $shippingStreetFull['number_addition'];
+        $shippingStreet            = $shippingStreetFull['street'];
+        $shippingZipcode           = $shippingAddress->getPostcode();
+        $shippingPhonenumber       = $this->_processPhoneNumber($shippingAddress->getTelephone());
+        $shippingCountryCode 	   = $shippingAddress->getCountry();
+
+        $customerEmail 			   = $this->_order->getCustomerEmail();
+
+
+        $array = array(
+            'VerifyAddress'             => 'true',
+            'ShippingFirstName'         => $shippingFirstname,
+            'ShippingLastName'          => $shippingLastname,
+            'ShippingStreet'            => $shippingStreet,
+            'ShippingHouseNumber'       => $shippingHouseumber,
+            'ShippingHouseNumberSuffix' => $shippingHousenumberSuffix,
+            'ShippingPostalCode'        => $shippingZipcode,
+            'ShippingCountryCode'       => $shippingCountryCode,
+            'ShippingPhoneNumber'       => $shippingPhonenumber['clean'],
+            'BillingFirstName'          => $billingFirstname,
+            'BillingLastName'           => $billingLastname,
+            'BillingStreet'             => $billingStreet,
+            'BillingHouseNumber'        => $billingHousenumber,
+            'BillingHouseNumberSuffix'  => $billingHousenumberSuffix,
+            'BillingPostalCode'         => $billingZipcode,
+            'BillingPhoneNumber'        => $billingPhonenumber['clean'],
+            'CustomerEmail'             => $customerEmail,
+        );
+
+        if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+
+
+        return $vars;
+    }
+
+
+    protected function _processAddress($fullStreet)
+    {
+        //get address from billingInfo
+        $address = $fullStreet;
+
+        $ret = array();
+        $ret['house_number'] = '';
+        $ret['number_addition'] = '';
+        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $address, $matches)) {
+            if ('' == $matches[1]) {
+                // Number at beginning
+                $ret['house_number'] = trim($matches[2]);
+                $ret['street']		 = trim($matches[3]);
+            } else {
+                // Number at end
+                $ret['street']			= trim($matches[1]);
+                $ret['house_number']    = trim($matches[2]);
+                $ret['number_addition'] = trim($matches[3]);
+            }
+        } else {
+            // No number
+            $ret['street'] = $address;
+        }
+
+        return $ret;
+    }
+
+    protected function _processPhoneNumber($telephoneNumber)
+    {
+        $number = $telephoneNumber;
+
+        //the final output must like this: 0031123456789 for mobile: 0031612345678
+        //so 13 characters max else number is not valid
+        //but for some error correction we try to find if there is some faulty notation
+
+        $return = array("orginal" => $number, "clean" => false, "mobile" => false, "valid" => false);
+        //first strip out the non-numeric characters:
+        $match = preg_replace('/[^0-9]/Uis', '', $number);
+        if ($match) {
+            $number = $match;
+        }
+
+        if (strlen((string)$number) == 13) {
+            //if the length equal to 13 is, then we can check if its a mobile number or normal number
+            $return['mobile'] = $this->_isMobileNumber($number);
+            //now we can almost say that the number is valid
+            $return['valid'] = true;
+            $return['clean'] = $number;
+        } elseif (strlen((string) $number) > 13) {
+            //if the number is bigger then 13, it means that there are probably a zero to much
+            $return['mobile'] = $this->_isMobileNumber($number);
+            $return['clean'] = $this->_isValidNotation($number);
+            if(strlen((string)$return['clean']) == 13) {
+                $return['valid'] = true;
+            }
+
+        } elseif (strlen((string)$number) == 12 or strlen((string)$number) == 11) {
+            //if the number is equal to 11 or 12, it means that they used a + in their number instead of 00
+            $return['mobile'] = $this->_isMobileNumber($number);
+            $return['clean'] = $this->_isValidNotation($number);
+            if(strlen((string)$return['clean']) == 13) {
+                $return['valid'] = true;
+            }
+
+        } elseif (strlen((string)$number) == 10) {
+            //this means that the user has no trailing "0031" and therfore only
+            $return['mobile'] = $this->_isMobileNumber($number);
+            $return['clean'] = '0031'.substr($number,1);
+            if (strlen((string) $return['clean']) == 13) {
+                $return['valid'] = true;
+            }
+        } else {
+            //if the length equal to 13 is, then we can check if its a mobile number or normal number
+            $return['mobile'] = $this->_isMobileNumber($number);
+            //now we can almost say that the number is valid
+            $return['valid'] = true;
+            $return['clean'] = $number;
+        }
+
+        return $return;
     }
 }
