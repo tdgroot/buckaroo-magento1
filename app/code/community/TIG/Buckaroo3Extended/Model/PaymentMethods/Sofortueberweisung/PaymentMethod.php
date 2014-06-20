@@ -2,8 +2,9 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Sofortueberweisung_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
-		'EUR',
-	);
+        'EUR',
+        'PLN',
+    );
 
     protected $_code = 'buckaroo3extended_sofortueberweisung';
 

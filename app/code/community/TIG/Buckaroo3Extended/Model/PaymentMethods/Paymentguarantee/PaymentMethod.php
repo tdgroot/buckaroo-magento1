@@ -2,8 +2,8 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
-		'EUR',
-	);
+        'EUR',
+    );
 
     protected $_code = 'buckaroo3extended_paymentguarantee';
 
@@ -19,20 +19,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
         $accountNumber = $_POST[$this->_code.'_bpe_customer_account_number'];
 
         $session->setData(
-        	'additionalFields',
+            'additionalFields',
             array(
-            	'BPE_Customergender'    => $_POST[$this->_code.'_BPE_Customergender'],
+                'BPE_Customergender'    => $_POST[$this->_code.'_BPE_Customergender'],
                 'BPE_AccountNumber'     => $this->filterAccount($accountNumber),
                 'BPE_PhoneNumber'     => $_POST[$this->_code.'_bpe_customer_phone_number'],
-        		'BPE_customerbirthdate' => date(
-        			'Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
-        		    . '-' . $_POST[$this->_code.'_customerbirthdate']['month']
-        		    . '-' . $_POST[$this->_code.'_customerbirthdate']['day'])
-        		)
-        	)
+                'BPE_customerbirthdate' => date(
+                    'Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
+                    . '-' . $_POST[$this->_code.'_customerbirthdate']['month']
+                    . '-' . $_POST[$this->_code.'_customerbirthdate']['day'])
+                )
+            )
         );
 
-    	return parent::getOrderPlaceRedirectUrl();
+        return parent::getOrderPlaceRedirectUrl();
     }
 
     public function validate()

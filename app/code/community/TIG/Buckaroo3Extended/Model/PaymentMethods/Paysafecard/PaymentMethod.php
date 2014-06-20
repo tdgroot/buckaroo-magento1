@@ -2,12 +2,8 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Paysafecard_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
-		'EUR',
-		'USD',
-		'GBP',
-		'CAD',
-		'AUD',
-	);
+        'EUR',
+    );
 
     protected $_code = 'buckaroo3extended_paysafecard';
 
