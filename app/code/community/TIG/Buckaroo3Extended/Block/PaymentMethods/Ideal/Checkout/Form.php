@@ -58,10 +58,6 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
                     'name' => 'ASN Bank',
                     'logo' => 'icon_asn.gif',
                 ),
-                'FRBKNL2L' => array(
-                    'name' => 'Friesland Bank',
-                    'logo' => 'logo_friesland_s.gif',
-                ),
                 'INGBNL2A' => array(
                     'name' => 'ING',
                     'logo' => 'logo_ing_s.gif',

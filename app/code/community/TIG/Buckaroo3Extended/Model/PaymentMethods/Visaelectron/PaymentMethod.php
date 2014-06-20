@@ -2,25 +2,31 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Visaelectron_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
-		'EUR',
-		'GBP',
-		'USD',
-		'CAD',
-		'NOK',
-		'SEK',
-		'DKK',
         'ARS',
-        'BRL',
-        'HRK',
-        'LTL',
-        'TRY',
-        'TRL',
         'AUD',
-        'MXN',
-        'MXP',
-        'PLN',
+        'BRL',
+        'CAD',
         'CHF',
-	);
+        'CNY',
+        'CZK',
+        'DKK',
+        'EUR',
+        'GBP',
+        'HRK',
+        'ISK',
+        'JPY',
+        'LTL',
+        'LVL',
+        'MXN',
+        'NOK',
+        'NZD',
+        'PLN',
+        'RUB',
+        'SEK',
+        'TRY',
+        'USD',
+        'ZAR',
+    );
 
     protected $_code = 'buckaroo3extended_visaelectron';
 
