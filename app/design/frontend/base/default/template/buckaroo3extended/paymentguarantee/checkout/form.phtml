@@ -1,4 +1,15 @@
 <?php $_code=$this->getMethodCode() ?>
+<?php
+    $version =  Mage::getVersionInfo();
+    $style = '';
+    if( ($version['major'] == '1' && $version['minor'] == '9' && Mage::getEdition() == 'Community')
+        ||
+        ($version['major'] == '1' && $version['minor'] == '14' && Mage::getEdition() == 'Enterprise')
+    ){
+        //equal then 1.9 community && equal then 1.14  Enterprise
+        $style = ' stylefix';
+    }
+?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 <fieldset class="form-list buckaroo-method">
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
@@ -15,7 +26,7 @@
         <li>
             <label><?php echo $this->__('Billing name');?>:</label>
             <div class="input-box">
-                <span class="disabled" id="<?php echo $_code;?>_BPE_Customername" title="<?php echo $this->__('Name');?>"><?php echo $this->getName(); ?></span>
+                <span class="disabled<?php echo $style;?>" id="<?php echo $_code;?>_BPE_Customername" title="<?php echo $this->__('Name');?>"><?php echo $this->getName(); ?></span>
             </div>
         </li>
         <li <?php if ($this->getAddress()->getTelephone() && $this->getAddress()->getTelephone() != '-'): ?>style="display:none;"<?php endif; ?>>
