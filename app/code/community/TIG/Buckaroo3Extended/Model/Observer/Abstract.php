@@ -3,7 +3,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 {
     protected $_storeId;
     protected $_order;
-    protected $_bilingInfo;
+    protected $_billingInfo;
     protected $_method = '';
 
     public function getMethod()
@@ -47,6 +47,8 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
+     * Add credit management required fields to the request
+     *
      * @param $vars
      * @param string $serviceName
      * @return mixed
@@ -109,6 +111,8 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
+     * Add the customer variables to the request
+     *
      * @param $vars
      * @param string $serviceName
      * @return mixed
@@ -271,7 +275,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 	}
 
     /**
-     * processes the customer's phone number so as to fit the PaymentGuarantee SOAP request
+     * processes the customer's phone number so as to fit the betaalgarant SOAP request
      *
      * @return array
      */
@@ -404,7 +408,6 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 	}
 
     /**
-     *
      * Certain payment methods require a list of other payment methods that will be used to finalize the payment.
      * This method forms that list
      *
@@ -444,7 +447,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     /**
      * @param $enrolled
      * @param $authenticated
-     * @param $order
+     * @param $order Mage_Sales_Model_Order
      * @return mixed|null
      */
     protected function _getSecureStatus($enrolled, $authenticated, $order)
@@ -476,7 +479,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     /**
      * @param $enrolled
      * @param $authenticated
-     * @param $order
+     * @param $order Mage_Sales_Model_Order
      */
     protected function _updateSecureStatus($enrolled, $authenticated, $order)
 	{
@@ -524,7 +527,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
-     * @param $order
+     * @param $order Mage_Sales_Model_Order
      * @return int|mixed
      */
     protected function _getRefundServiceVersion($order)
@@ -564,7 +567,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
-     * @param $order
+     * @param $order Mage_Sales_Model_Order
      */
     protected function _addCommentHistoryForVirtual($order)
     {
