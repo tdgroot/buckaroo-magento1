@@ -533,6 +533,11 @@
                         <class>buckaroo3extended/paymentMethods_paymentguarantee_observer</class>
                         <method>buckaroo3extended_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
                     <buckaroo3extended_paymentmethod_observer_directdebit>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_directdebit_observer</class>
@@ -588,6 +593,11 @@
                         <class>buckaroo3extended/paymentMethods_paymentguarantee_observer</class>
                         <method>buckaroo3extended_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_payperemail_observer</class>
@@ -697,6 +707,11 @@
                         <class>buckaroo3extended/paymentMethods_paymentguarantee_observer</class>
                         <method>buckaroo3extended_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_payperemail_observer</class>
@@ -806,6 +821,11 @@
                         <class>buckaroo3extended/paymentMethods_paymentguarantee_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_payperemail_observer</class>
@@ -855,6 +875,13 @@
                         <class>buckaroo3extended/paymentMethods_paymentguarantee_observer</class>
                         <method>buckaroo3extended_push_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
+                </observers>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_push_custom_processing</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
                 </observers>
                 <observers>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
@@ -939,6 +966,13 @@
                         <method>buckaroo3extended_response_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
                 </observers>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_response_custom_processing</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
+                </observers>
             </buckaroo3extended_response_custom_processing>
         </events>
     </global>
@@ -952,13 +986,20 @@
                 <sort_order></sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_ideal>
-            <buckaroo3extended_visa>
+            <buckaroo3extended_paymentguarantee>
                 <active>1</active>
-                <model>buckaroo3extended/paymentMethods_visa_paymentMethod</model>
-                <title>Visa</title>
-                <sort_order>40</sort_order>
+                <model>buckaroo3extended/paymentMethods_paymentguarantee_paymentMethod</model>
+                <title>Achteraf Betalen</title>
+                <sort_order>20</sort_order>
                 <group>buckaroo3extended</group>
-            </buckaroo3extended_visa>
+            </buckaroo3extended_paymentguarantee>
+            <buckaroo3extended_afterpay>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_afterpay_paymentMethod</model>
+                <title>Afterpay</title>
+                <sort_order>25</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_afterpay>
             <buckaroo3extended_mastercard>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_mastercard_paymentMethod</model>
@@ -966,6 +1007,13 @@
                 <sort_order>30</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_mastercard>
+            <buckaroo3extended_visa>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_visa_paymentMethod</model>
+                <title>Visa</title>
+                <sort_order>35</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_visa>
             <buckaroo3extended_cartebleue>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_cartebleue_paymentMethod</model>
@@ -980,20 +1028,27 @@
                 <sort_order>50</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_amex>
-            <buckaroo3extended_sofortueberweisung>
+            <buckaroo3extended_visaelectron>
                 <active>1</active>
-                <model>buckaroo3extended/paymentMethods_sofortueberweisung_paymentMethod</model>
-                <title>Sofortbanking</title>
-                <sort_order>150</sort_order>
+                <model>buckaroo3extended/paymentMethods_visaelectron_paymentMethod</model>
+                <title>Visa Electron</title>
+                <sort_order>60</sort_order>
                 <group>buckaroo3extended</group>
-            </buckaroo3extended_sofortueberweisung>
-            <buckaroo3extended_eps>
+            </buckaroo3extended_visaelectron>
+            <buckaroo3extended_maestro>
                 <active>1</active>
-                <model>buckaroo3extended/paymentMethods_eps_paymentMethod</model>
-                <title>EPS</title>
-                <sort_order>195</sort_order>
+                <model>buckaroo3extended/paymentMethods_maestro_paymentMethod</model>
+                <title>eMaestro</title>
+                <sort_order>70</sort_order>
                 <group>buckaroo3extended</group>
-            </buckaroo3extended_eps>
+            </buckaroo3extended_maestro>
+            <buckaroo3extended_vpay>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_vpay_paymentMethod</model>
+                <title>V PAY</title>
+                <sort_order>80</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_vpay>
             <buckaroo3extended_paypal>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paypal_paymentMethod</model>
@@ -1001,20 +1056,6 @@
                 <sort_order>90</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_paypal>
-            <buckaroo3extended_giropay>
-                <active>1</active>
-                <model>buckaroo3extended/paymentMethods_giropay_paymentMethod</model>
-                <title>Giropay</title>
-                <sort_order>160</sort_order>
-                <group>buckaroo3extended</group>
-            </buckaroo3extended_giropay>
-            <buckaroo3extended_paysafecard>
-                <active>1</active>
-                <model>buckaroo3extended/paymentMethods_paysafecard_paymentMethod</model>
-                <title>Paysafecard</title>
-                <sort_order>130</sort_order>
-                <group>buckaroo3extended</group>
-            </buckaroo3extended_paysafecard>
             <buckaroo3extended_transfer>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_transfer_paymentMethod</model>
@@ -1029,13 +1070,48 @@
                 <sort_order>110</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_directdebit>
-            <buckaroo3extended_paymentguarantee>
+            <buckaroo3extended_empayment>
                 <active>1</active>
-                <model>buckaroo3extended/paymentMethods_paymentguarantee_paymentMethod</model>
-                <title>Achteraf Betalen</title>
-                <sort_order>20</sort_order>
+                <model>buckaroo3extended/paymentMethods_empayment_paymentMethod</model>
+                <title>éM! Payment</title>
+                <sort_order>120</sort_order>
                 <group>buckaroo3extended</group>
-            </buckaroo3extended_paymentguarantee>
+            </buckaroo3extended_empayment>
+            <buckaroo3extended_paysafecard>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_paysafecard_paymentMethod</model>
+                <title>Paysafecard</title>
+                <sort_order>130</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_paysafecard>
+            <buckaroo3extended_sofortueberweisung>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_sofortueberweisung_paymentMethod</model>
+                <title>Sofortbanking</title>
+                <sort_order>150</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_sofortueberweisung>
+            <buckaroo3extended_bancontactmrcash>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_bancontactmrcash_paymentMethod</model>
+                <title>Bancontact/ Mister Cash</title>
+                <sort_order>140</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_bancontactmrcash>
+            <buckaroo3extended_giropay>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_giropay_paymentMethod</model>
+                <title>Giropay</title>
+                <sort_order>160</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_giropay>
+            <buckaroo3extended_giftcards>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_giftcards_paymentMethod</model>
+                <title>Cadeaukaarten</title>
+                <sort_order>170</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_giftcards>
             <buckaroo3extended_payperemail>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_payperemail_paymentMethod</model>
@@ -1050,49 +1126,13 @@
                 <sort_order>190</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_onlinegiro>
-            <buckaroo3extended_giftcards>
+            <buckaroo3extended_eps>
                 <active>1</active>
-                <model>buckaroo3extended/paymentMethods_giftcards_paymentMethod</model>
-                <title>Cadeaukaarten</title>
-                <sort_order>170</sort_order>
+                <model>buckaroo3extended/paymentMethods_eps_paymentMethod</model>
+                <title>EPS</title>
+                <sort_order>195</sort_order>
                 <group>buckaroo3extended</group>
-            </buckaroo3extended_giftcards>
-            <buckaroo3extended_empayment>
-                <active>1</active>
-                <model>buckaroo3extended/paymentMethods_empayment_paymentMethod</model>
-                <title>éM! Payment</title>
-                <sort_order>120</sort_order>
-                <group>buckaroo3extended</group>
-            </buckaroo3extended_empayment>
-            <buckaroo3extended_maestro>
-                <active>1</active>
-                <model>buckaroo3extended/paymentMethods_maestro_paymentMethod</model>
-                <title>eMaestro</title>
-                <sort_order>70</sort_order>
-                <group>buckaroo3extended</group>
-            </buckaroo3extended_maestro>
-            <buckaroo3extended_visaelectron>
-                <active>1</active>
-                <model>buckaroo3extended/paymentMethods_visaelectron_paymentMethod</model>
-                <title>Visa Electron</title>
-                <sort_order>60</sort_order>
-                <group>buckaroo3extended</group>
-            </buckaroo3extended_visaelectron>
-            <buckaroo3extended_vpay>
-                <active>1</active>
-                <model>buckaroo3extended/paymentMethods_vpay_paymentMethod</model>
-                <title>V PAY</title>
-                <sort_order>80</sort_order>
-                <group>buckaroo3extended</group>
-            </buckaroo3extended_vpay>
-            <buckaroo3extended_bancontactmrcash>
-                <active>1</active>
-                <model>buckaroo3extended/paymentMethods_bancontactmrcash_paymentMethod</model>
-                <title>Bancontact/ Mister Cash</title>
-                <sort_order>140</sort_order>
-                <sort_order></sort_order>
-                <group>buckaroo3extended</group>
-            </buckaroo3extended_bancontactmrcash>
+            </buckaroo3extended_eps>
             <buckaroo2012ideal>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
@@ -1435,6 +1475,24 @@
                 <payment_fee_label>Fee</payment_fee_label>
                 <order_email>1</order_email>
             </buckaroo3extended_paymentguarantee>
+
+            <buckaroo3extended_afterpay>
+                <active>0</active>
+                <mode>0</mode>
+                <title>Afterpay</title>
+                <allowspecific>0</allowspecific>
+                <specificcountry></specificcountry>
+                <order_status_success></order_status_success>
+                <order_status_failed></order_status_failed>
+                <sort_order>25</sort_order>
+                <limit_by_ip>0</limit_by_ip>
+                <allowed_currencies>EUR</allowed_currencies>
+                <allowed_methods>all</allowed_methods>
+                <duedate>0</duedate>
+                <payment_fee_label>Fee</payment_fee_label>
+                <order_email>1</order_email>
+                <paymethod>afterpayacceptgiro</paymethod>
+            </buckaroo3extended_afterpay>
 
             <buckaroo3extended_payperemail>
                 <active>0</active>
