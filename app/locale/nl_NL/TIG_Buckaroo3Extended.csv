@@ -292,3 +292,4 @@
 "BIC number","BIC code"
 "Please enter a valid IBAN.","Vul een geldig IBAN in."
 "Mandate reference: %s","Mandaat referentie: %s"
+"The customer attempted to pay this order using %s, but cancelled the payment.","De klant heeft geprobeerd de bestelling te betalen met %s, maar heeft de transactie geannuleerd."
