@@ -927,6 +927,13 @@
                         <method>buckaroo3extended_return_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_giftcard_return>
                 </observers>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_payperemail_return>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_payperemail_observer</class>
+                        <method>buckaroo3extended_return_custom_processing</method>
+                    </buckaroo3extended_paymentmethod_observer_payperemail_return>
+                </observers>
             </buckaroo3extended_return_custom_processing>
             <buckaroo3extended_push_custom_processing_after>
                 <observers>
@@ -1379,7 +1386,7 @@
                 <payment_fee_label>Fee</payment_fee_label>
                 <order_email>1</order_email>
             </buckaroo3extended_sofortueberweisung>
-            
+
             <buckaroo3extended_eps>
                 <active>0</active>
                 <mode>0</mode>

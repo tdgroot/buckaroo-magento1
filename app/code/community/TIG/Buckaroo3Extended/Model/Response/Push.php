@@ -1,53 +1,57 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Model_Response_Abstract
 {
     const PAYMENTCODE = 'buckaroo3extended';
-	
+
+    /**
+     * @var Mage_Sales_Model_Order
+     */
     protected $_order = '';
+
     protected $_postArray = '';
     protected $_debugEmail = '';
     protected $_method = '';
-        
+
 	public function setCurrentOrder($order)
     {
     	$this->_order = $order;
     }
-    
+
     public function getCurrentOrder()
     {
     	return $this->_order;
     }
-    
+
     public function setPostArray($array)
     {
     	$this->_postArray = $array;
     }
-    
+
     public function getPostArray()
     {
     	return $this->_postArray;
     }
-    
+
     public function setMethod($method)
     {
     	$this->_method = $method;
     }
-    
+
     public function getMethod()
     {
     	return $this->_method;
     }
-    
+
     public function setDebugEmail($debugEmail)
     {
     	$this->_debugEmail = $debugEmail;
     }
-    
+
     public function getDebugEmail()
     {
     	return $this->_debugEmail;
     }
-    
+
     public function __construct($data = array())
     {
     	$this->setCurrentOrder($data['order']);
@@ -63,13 +67,13 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      */
     public function processPush()
 	{
-	    $response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);	
+	    $response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);
 
 		//check if the push is valid and if the order can be updated
         list($canProcess, $canUpdate) = $this->_canProcessPush(false,$response);
 
 		$this->_debugEmail .= "Can the order be processed? " . $canProcess . "\n"."Can the order be updated? " . $canUpdate . "\n";
-		
+
 		if (!$canProcess) {
 			return false;
 		} elseif ($canProcess && !$canUpdate) {
@@ -78,8 +82,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			$this->_addNote($response['message'], $this->_method);
 			return false;
 		}
-		
-		if (strcmp($this->_order->getPayment()->getMethodInstance()->getCode(), 'buckaroo3extended_giftcards') === 0) {
+
+        $paymentMethod = $this->_order->getPayment()->getMethod();
+
+		if ($paymentMethod == 'buckaroo3extended_giftcards') {
             Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder()));
 
             if ($this->getCustomResponseProcessing()) {
@@ -88,23 +94,15 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         }
 
 		$newStates = $this->_getNewStates($response['status']);
-		
+
 		$this->_debugEmail .= "Response recieved: " . var_export($response, true) . "\n\n";
 		$this->_debugEmail .= "Current state: " . $this->_order->getState() . "\nCurrent status: " . $this->_order->getStatus() . "\n";
 		$this->_debugEmail .= "New state: " . $newStates[0] . "\nNew status: " . $newStates[1] . "\n\n";
-        
-        Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
-              
+
+        Mage::dispatchEvent('buckaroo3extended_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));
+
         if ($this->getCustomResponseProcessing()) {
             return true;
-        }
-
-        //when the payment method is ppe & payment is canceled but transaction not; only log the message
-        if (strcmp($this->_order->getPayment()->getMethodInstance()->getCode(), 'buckaroo3extended_payperemail') === 0) {
-            if($response['status'] == self::BUCKAROO_ERROR || $response['status'] == self::BUCKAROO_FAILED){
-                $originalResponseStatus = $response['status'];
-                $response['status'] = self::BUCKAROO_NEUTRAL;
-            }
         }
 
 		switch ($response['status'])
@@ -123,14 +121,21 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		}
 
         //revert the original status in order complete the whole process like it should.
-        if (strcmp($this->_order->getPayment()->getMethodInstance()->getCode(), 'buckaroo3extended_payperemail') === 0) {
+        if (isset($originalResponseStatus)) {
             if($response['status'] == self::BUCKAROO_NEUTRAL){
                 $response['status'] = $originalResponseStatus;
             }
         }
-        
-        Mage::dispatchEvent('buckaroo3extended_push_custom_processing_after', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));  
-		
+
+        Mage::dispatchEvent(
+            'buckaroo3extended_push_custom_processing_after',
+            array(
+                'push' => $this,
+                'order' => $this->getCurrentOrder(),
+                'response' => $response
+            )
+        );
+
 		if (isset($updatedFailed) && $updatedFailed) {
 			$this->_debugEmail .= "Succesfully updated 'failed' state and status \n";
 		} elseif (isset($updatedSuccess) && $updatedSuccess) {
@@ -142,7 +147,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 		} else {
 			$this->_debugEmail .= "Order was not updated \n";
 		}
-		
+
 		return true;
 	}
 
@@ -165,12 +170,12 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    if ($signature === $this->_postArray['brq_signature']) {
 	        $correctSignature = true;
 	    }
-	    
+
 		//check if the order can recieve further status updates
 		if ($correctSignature === true) {
 			$canUpdate = $this->_canUpdate($response);
 		}
-		
+
 		$return = array(
 			(bool) $correctSignature,
 			(bool) $canUpdate,
@@ -181,9 +186,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	/**
 	 * Checks if the order can be updated by checking if its state and status is not
 	 * complete, closed, cancelled or holded and the order can be invoiced
-	 * 
+	 *
      * @param array $response
-     * 
+     *
 	 * @return boolean
 	 */
 	protected function _canUpdate($response = array())
@@ -194,11 +199,11 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $cancelledStateAndStatus  = array('canceled', 'canceled');
         $holdedStateAndStatus     = array('holded', 'holded');
         $closedStateAndStatus     = array ('closed','closed');
-        
+
 		$currentStateAndStatus    = array($this->_order->getState(), $this->_order->getStatus());
-		
+
 		//prevent completed orders from recieving further updates
-        if(    $completedStateAndStatus != $currentStateAndStatus 
+        if(    $completedStateAndStatus != $currentStateAndStatus
         	&& $cancelledStateAndStatus != $currentStateAndStatus
         	&& $holdedStateAndStatus    != $currentStateAndStatus
         	&& $closedStateAndStatus    != $currentStateAndStatus
@@ -206,9 +211,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         ){
         	return true;
         }
-        
+
         //when payperemail is used and the order has the status other then success, and current pushed status is success; send email to shopowner
-        if( !empty($response) 
+        if( !empty($response)
             && $response['status']                      == self::BUCKAROO_SUCCESS
             && $this->_order->getPayment()->getMethod() == 'buckaroo3extended_payperemail'
             && (
@@ -220,10 +225,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         ){
             $this->_sendDoubleTransactionEmail();
         }
-        
+
     	$this->_debugEmail .= "order already has succes, complete, closed, or holded state or can't be invoiced \n\n";
-        
-        
+
+
         return false;
 	}
 
@@ -249,26 +254,26 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             );
         }
     }
-    
+
 	/**
 	 * Uses setState to add a comment to the order status history without changing the state nor status. Purpose of the comment
 	 * is to inform the user of an attempted status upsate after the order has already recieved complete, canceled, closed or holded states
 	 * or the order can't be invoiced. Returns false if the config has disabled this feature.
-	 * 
+	 *
 	 * @param string $description
 	 */
 	protected function _addNote($description)
 	{
 		$helper = Mage::helper('buckaroo3extended');
-	    
-	    $note = $helper->__('Buckaroo attempted to update this order after it already had ') 
-			. '<b>' 
-			. strtoupper($this->_order->getState()) 
-			. '</b>' 
-			. $helper->__(' state, by sending the following: ') 
-			. '<br/>--------------------------------------------------------------------------------------------------------------------------------<br/>' 
+
+	    $note = $helper->__('Buckaroo attempted to update this order after it already had ')
+			. '<b>'
+			. strtoupper($this->_order->getState())
+			. '</b>'
+			. $helper->__(' state, by sending the following: ')
+			. '<br/>--------------------------------------------------------------------------------------------------------------------------------<br/>'
 			. $description
-			. ' (' 
+			. ' ('
 			. $this->_postArray['brq_statuscode']
 			. ')';
 		$this->_order->addStatusHistoryComment($note)
@@ -282,75 +287,75 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	{
 	    $this->_addNote($description);
 	}
-    
+
 	/**
 	 * Determines which state and status an order will recieve based on its response code
 	 * and the configuration. Will use configuration for the payment method used or, if
 	 * that's not set, use the default
-	 * 
+	 *
 	 * @param string $code
-	 * 
+	 *
 	 * @return array $newStates
-	 * 
+	 *
 	 * @note currently the states are only used by _processpendingPayment(). May be removed completely in the future
 	 */
 	protected function _getNewStates($code)
 	{
 	    $order = $this->getorder();
         $storeId = $order->getStoreId();
-        
+
         $useStatus = Mage::getStoreConfig('buckaroo/' . $this->_method . '/active_status', $storeId);
-        
+
 	    //get the possible new states for the order
 		$stateSuccess                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', $storeId);
 		$stateFailure                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', $storeId);
 		$statePendingpayment         = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', $storeId);
-		
+
 		//get the possible new status for the order based on the payment method's individual config options
 		//these are optional
 		$customSuccessStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_success', $storeId);
 		$customFailureStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_failed', $storeId);
 		$customPendingPaymentStatus  = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_pendingpayment', $storeId);
-		
+
 		//get the possible default new status for the order based on the general config options
 		//these should always be set
 		$defaultSuccessStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', $storeId);
 		$defaultFailureStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', $storeId);
 		$defaultPendingPaymentStatus = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', $storeId);
-        
+
 		//determine whether to use the default or custom status
 		if ($useStatus && $customSuccessStatus && !empty($customSuccessStatus)) {
 			$statusSuccess = $customSuccessStatus;
 		} else {
 			$statusSuccess = $defaultSuccessStatus;
 		}
-		
+
 		if ($useStatus && $customFailureStatus && !empty($customFailureStatus)) {
 			$statusFailure = $customFailureStatus;
 		} else {
 			$statusFailure = $defaultFailureStatus;
 		}
-		
+
 		if ($useStatus && $customPendingPaymentStatus && !empty($customPendingPaymentStatus)) {
 			$statusPendingpayment = $customPendingPaymentStatus;
 		} else {
 			$statusPendingpayment = $defaultPendingPaymentStatus;
 		}
-		
+
 		$stateIncorrectPayment  = 'holded';
 		$statusIncorrectPayment = 'buckaroo_incorrect_payment';
-		
+
 		//magento 1.4 compatibility
 		$version15 = '1.5.0.0';
         $version14 = '1.4.0.0';
-		if (version_compare(Mage::getVersion(), $version15, '<') 
+		if (version_compare(Mage::getVersion(), $version15, '<')
 		    && version_compare(Mage::getVersion(), $version14, '>')
 		    && $statusIncorrectPayment == 'buckaroo_incorrect_payment'
 		    )
 		{
 		    $statusIncorrectPayment = 'payment_review';
 		}
-		
+
 		switch($code)
         {
             case self::BUCKAROO_SUCCESS:           $newStates = array($stateSuccess, $statusSuccess);
@@ -359,14 +364,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             case self::BUCKAROO_FAILED:            $newStates = array($stateFailure, $statusFailure);
                                                    break;
             case self::BUCKAROO_NEUTRAL:           $newStates = array(null, null);
-                                                   break; 
+                                                   break;
             case self::BUCKAROO_PENDING_PAYMENT:   $newStates = array($statePendingpayment, $statusPendingpayment);
                                                    break;
             case self::BUCKAROO_INCORRECT_PAYMENT: $newStates = array($stateIncorrectPayment, $statusIncorrectPayment);
                                                    break;
-            default:					           $newStates = array(null, null);                                                                                
+            default:					           $newStates = array(null, null);
         }
-        
+
         return $newStates;
 	}
 
@@ -379,37 +384,37 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @return bool
      */
     protected function _processSuccess($newStates, $description = false)
-	{	
+	{
 		//send new order email if it hasnt already been sent
 		if(!$this->_order->getEmailSent())
         {
         	$this->sendNewOrderEmail();
         }
-        
+
         $this->_autoInvoice();
-	    
+
 		$description = Mage::helper('buckaroo3extended')->__($description);
-			
+
 		$description .= " (#{$this->_postArray['brq_statuscode']})";
-		
+
 		//sets the transaction key if its defined ($trx)
 		//will retrieve it from the response array, if response actually is an array
 		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
 			$this->_order->save();
 		}
-		
+
         if ($this->_order->getState() == Mage_Sales_Model_Order::STATE_PROCESSING) {
             $this->_order->addStatusHistoryComment($description, $newStates[1])
                          ->save();
-                     
+
             $this->_order->setStatus($newStates[1])->save();
         } else {
             $this->_order->addStatusHistoryComment($description)
                          ->save();
         }
-		
-        
+
+
 		return true;
 	}
 
@@ -425,7 +430,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     {
         $description = Mage::helper('buckaroo3extended')->__($description);
         $description .= " (#{$this->_postArray['brq_statuscode']})";
-        
+
         //sets the transaction key if its defined ('brq_transactions')
         //will retrieve it from the response array, if response actually is an array
         if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
@@ -439,17 +444,17 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             $this->_order->cancel()
                          ->save();
         }
-                     
+
         if ($this->_order->getState() == Mage_Sales_Model_Order::STATE_CANCELED) {
             $this->_order->addStatusHistoryComment($description, $newStates[1])
                          ->save();
-                     
+
             $this->_order->setStatus($newStates[1])->save();
         } else {
             $this->_order->addStatusHistoryComment($description)
                          ->save();
         }
-        
+
         return true;
     }
 
@@ -463,9 +468,9 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	{
 		//determine whether too much or not enough has been paid and determine the status history copmment accordingly
 		$amount = round($this->_order->getBaseGrandTotal()*100, 0);
-		
+
         $setStatus = $newStates[1];
-        
+
         if ($this->_postArray['brq_currency'] == $this->_order->getBaseCurrencyCode()) {
             $currencyCode = $this->_order->getBaseCurrencyCode();
             $orderAmount = $this->_order->getBaseGrandTotal();
@@ -473,7 +478,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             $currencyCode = $this->_order->getOrderCurrencyCode();
             $orderAmount = $this->_order->getGrandTotal();
         }
-        
+
 		if ($amount > $this->_postArray['brq_amount']) {
             $description = Mage::helper('buckaroo3extended')->__(
                                'Not enough paid: %s has been transfered. Order grand total was: %s.',
@@ -490,7 +495,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    	//the correct amount was actually paid, so return false
 	    	return false;
 	    }
-	    
+
 	    //hold the order
 		$this->_order->hold()
                      ->save()
@@ -498,7 +503,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
                      ->save()
 		             ->addStatusHistoryComment(Mage::helper('buckaroo3extended')->__($description), $setStatus)
                      ->save();
-	    
+
 	    return true;
 	}
 
@@ -510,27 +515,27 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @return bool
      */
     protected function _processPendingPayment($newStates, $description = false)
-	{	
+	{
 		$description = Mage::helper('buckaroo3extended')->__($description);
 		$description .= " (#{$this->_postArray['brq_statuscode']})";
-		
+
 	    //sets the transaction key if its defined ($trx)
 		//will retrieve it from the response array, if response actually is an array
 		if (!$this->_order->getTransactionKey() && array_key_exists('brq_transactions', $this->_postArray)) {
 			$this->_order->setTransactionKey($this->_postArray['brq_transactions']);
 		}
-		
-                     
+
+
         if ($this->_order->getState() == Mage_Sales_Model_Order::STATE_NEW) {
             $this->_order->addStatusHistoryComment($description, $newStates[1])
                          ->save();
-                     
+
             $this->_order->setStatus($newStates[1])->save();
         } else {
             $this->_order->addStatusHistoryComment($description)
                          ->save();
         }
-		                            
+
 		return true;
 	}
 
@@ -585,21 +590,21 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      */
     protected function _autoInvoice()
 	{
-		//check if the module is configured to create invoice on success		
+		//check if the module is configured to create invoice on success
 		if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', $this->_order->getStoreId()))
 	    {
 	    	return false;
 	    }
-	    
+
         //returns true if invoice has been made, else false
 	    $invoiceSaved = $this->_saveInvoice();
-	              
+
 	    if($invoiceSaved && Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', $this->_order->getStoreId()))
 	    {
 		    //loop through every invoice
 		    foreach($this->_order->getInvoiceCollection() as $invoice)
 		    {
-			    //when there is no invoice send to the customer, send it!  
+			    //when there is no invoice send to the customer, send it!
 			    if(!$invoice->getEmailSent())
 			    {
 				    $invoice->sendEmail()
@@ -607,7 +612,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 				    		->save();
 			    }
 		    }
-	    }                            
+	    }
 	}
 
     /**
@@ -620,10 +625,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    if ($this->_order->canInvoice() && !$this->_order->hasInvoices()) {
 	        $payment = $this->_order->getPayment();
 	        $payment->registerCaptureNotification($this->_order->getBaseGrandTotal());
-	        
+
 	        $this->_order->save();
 	        $this->_debugEmail .= 'Invoice created and saved. \n';
-	        
+
     	    //sets the invoice's transaction ID as the Buckaroo TRX. This is to allow the order to be refunded using Buckaroo later on.
             foreach($this->_order->getInvoiceCollection() as $invoice)
     	    {
@@ -635,13 +640,13 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     	    }
 	        return true;
 	    }
-	    
+
         return false;
     }
-    
+
 	/**
 	 * Determines the signature using array sorting and the SHA1 hash algorithm
-	 * 
+	 *
 	 * @return string $signature
 	 */
 	protected function _calculateSignature()
@@ -650,13 +655,13 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    {
 	        return $this->_calculateOldSignature();
 	    }
-	    
+
 	    $origArray = $this->_postArray;
 	    unset($origArray['brq_signature']);
-	    
+
 	    //sort the array
 	    $sortableArray = $this->buckarooSort($origArray);
-	    
+
 	    //turn into string and add the secret key to the end
 	    $signatureString = '';
 	    foreach($sortableArray as $key => $value) {
@@ -664,14 +669,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	        $signatureString .= $key . '=' . $value;
 	    }
 	    $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId());
-	    
+
 	    $this->_debugEmail .= "\nSignaturestring: {$signatureString}\n";
-	    
+
 	    //return the SHA1 encoded string for comparison
 	    $signature = SHA1($signatureString);
-	    
+
 	    $this->_debugEmail .= "\nSignature: {$signature}\n";
-	    
+
 	    return $signature;
 	}
 
@@ -694,7 +699,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 			. $this->_postArray['oldPost']["bpe_mode"]
 			. Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId())
 		);
-		
+
 		return $signature2;
 	}
 }
