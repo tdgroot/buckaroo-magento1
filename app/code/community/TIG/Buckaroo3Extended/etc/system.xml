@@ -705,22 +705,62 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </paymethod>
-                        <isb2b translate="label comment">
-                            <label>Activate B2B (Business to Business)</label>
-                            <comment>When enabled, some additional fields are required for the customer to fill in.</comment>
+                        <business translate="label comment">
+                            <label>Set Business</label>
+                            <comment>When B2B is selected, some additional fields are required for the customer to fill in.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
+                            <source_model>buckaroo3extended/sources_businessToBusiness</source_model>
                             <sort_order>47</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </isb2b>
+                        </business>
+                        <high translate="label comment tooltip">
+                            <label>High VAT tax classes</label>
+                            <comment>Select which tax classes count as 'high' VAT</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>buckaroo3extended/sources_taxClasses</source_model>
+                            <sort_order>48</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </high>
+                        <low translate="label comment tooltip">
+                            <label>Low VAT tax classes</label>
+                            <comment>Select which tax classes count as 'low' VAT</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>buckaroo3extended/sources_taxClasses</source_model>
+                            <sort_order>49</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </low>
+                        <zero translate="label comment tooltip">
+                            <label>Zero VAT tax classes</label>
+                            <comment>Select which tax classes count as 'zero' VAT</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>buckaroo3extended/sources_taxClasses</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </zero>
+                        <no translate="label comment tooltip">
+                            <label>No VAT tax classes</label>
+                            <comment>Select which tax classes count as 'no' VAT</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>buckaroo3extended/sources_taxClasses</source_model>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </no>
                         <payment_fee translate="label comment tooltip">
                             <label>Payment fee</label>
                             <comment>Fee for using this payment method.</comment>
                             <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>50</sort_order>
+                            <sort_order>52</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -731,7 +771,7 @@
                             <comment>Determines the frontend label shown.</comment>
                             <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
+                            <sort_order>53</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

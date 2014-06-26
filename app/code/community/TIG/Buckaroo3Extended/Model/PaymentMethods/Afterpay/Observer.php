@@ -19,11 +19,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         $vars = $request->getVars();
 
-
+        if($this->_method == false){
+            $this->_method = Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/paymethod', Mage::app()->getStore()->getStoreId());
+        }
 
         $array = array(
-            $serviceCode     => array(
-                'action'    => 'Pay',
+            $this->_method => array(
+                'action'   => 'Pay',
+                'version'  => '1',
             ),
         );
         
@@ -50,19 +53,25 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         $vars = $request->getVars();
 
-        $this->_addCustomerVariables($vars, $this->_method);
-        $this->_addCreditManagement($vars, $this->_method);
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+            $this->_addCustomerVariables($vars);
+            $this->_addCreditManagement($vars);
+            $this->_addAdditionalCreditManagementVariables($vars);
+        }
+
         $this->_addAfterpayVariables($vars, $this->_method);
 
-
-        
-
-
+        //echo '<pre>';
+        //var_dump($vars);die;
         $request->setVars($vars);
 
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -79,53 +88,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
     }
 
     /**
-     * Custom push processing for Paymentguarantee. Because paymentguarantee orders should have been invoiced as
-     * soon as Buckaroo said that the guarantor had approved the transaction only a note should be added to the
-     * order.
-     *
      * @param Varien_Event_Observer $observer
      * @return $this
-     */
-    public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
-    {
-        if($this->_isChosenMethod($observer) === false) {
-            return $this;
-        }
-
-        $push = $observer->getPush();
-        $response = $observer->getResponse();
-        $order = $observer->getOrder();
-        $postArray = $push->getPostArray();
-
-        $push->addNote($response['message'], $this->_method);
-        
-        if (
-            isset($postArray['brq_payment_method']) 
-            && !$order->getPaymentMethodUsedForTransaction() 
-            && $postArray['brq_statuscode'] == '190'
-            )
-        {
-            $order->setPaymentMethodUsedForTransaction($postArray['brq_payment_method']);
-        } elseif (
-            isset($postArray['brq_transaction_method']) 
-            && !$order->getPaymentMethodUsedForTransaction()
-            && $postArray['brq_statuscode'] == '190'
-            )
-        {
-            $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
-        }
-        $order->save();
-
-        $push->setCustomResponseProcessing(true);
-        
-        return $this;
-    }
-
-    /**
-     * Custom response processing for Paymentguarantee. Because paymentguarantee orders should be invoiced as soon
-     * as Buckaroo says that the guarantor has approved the transaction
-     * 
-     * @param Varien_Event_Observer $observer
      */
     public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
     {
@@ -174,86 +138,269 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
      */
     protected function _addAfterpayVariables(&$vars)
     {
+        $session            = Mage::getSingleton('checkout/session');
+        $additionalFields   = $session->getData('additionalFields');
 
-        //add title (frontend)
+        $requestArray       = array();
 
-        //add gender (frontend)
+        //add billing address
+        $billingAddress     = $this->_order->getBillingAddress();
+        $streetFull         = $this->_processAddress($billingAddress->getStreetFull());
+        $billingPhonenumber = $this->_processPhoneNumber($billingAddress->getTelephone());
 
-        //add initials (frontend)
+        $billingInfo = array(
+            'BillingTitle'             => $billingAddress->getFirstname(),
+            'BillingGender'            => $additionalFields['BPE_Customergender'],
+            'BillingInitials'          => strtoupper(substr($billingAddress->getFirstname(),0,1)),
+            'BillingLastName'          => $billingAddress->getLastname(),
+            'BillingBirthDate'         => $additionalFields['BPE_customerbirthdate'],
+            'BillingStreet'            => $streetFull['street'],
+            'BillingHouseNumber'       => $streetFull['house_number'],
+            'BillingHouseNumberSuffix' => $streetFull['number_addition'],
+            'BillingPostalCode'        => $billingAddress->getPostcode(),
+            'BillingCity'              => $billingAddress->getCity(),
+            'BillingRegion'            => $billingAddress->getRegion(),
+            'BillingCountryCode'       => $billingAddress->getCountryCode(),
+            'BillingEmail'             => $billingAddress->getEmail(),
+            'BillingPhoneNumber'       => $billingPhonenumber['clean'],
+            'BillingLanguage'          => $billingAddress->getCountryCode(),
+        );
+
+        $requestArray = array_merge($requestArray,$billingInfo);
 
         //add shipping address (only when different from billing address)
-        $shippingInfo = array();
         if($this->isShippingDifferent()){
-            $streetFull = $this->_order->getShippingAddress()->getStreetFull();
+            $shippingAddress     = $this->_order->getShippingAddress();
+            $streetFull          = $this->_processAddress($shippingAddress->getStreetFull());
+            $shippingPhonenumber = $this->_processPhoneNumber($shippingAddress->getTelephone());
 
             $shippingInfo = array(
-                'AddressesDiffer' => 'true',
-                'ShippingTitle' => '',
-                'ShippingTitle' => '',
-                'ShippingGender' => '',
-                'ShippingInitials' => '',
-                'ShippingLastName' => '',
-                'ShippingBirthDate' => '',
-                'ShippingStreet' => '',
-                'ShippingHouseNumber' => '',
-                'ShippingHouseNumberSuffix' => '',
-                'ShippingPostalCode' => '',
-                'ShippingCity' => '',
-                'ShippingRegion' => '',
-                'ShippingCountryCode' => '',
-                'ShippingEmail' => '',
-                'ShippingPhoneNumber' => '',
-                'ShippingLanguage' => '',
+                'AddressesDiffer'           => 'true',
+                'ShippingTitle'             => $shippingAddress->getFirstname(),
+                'ShippingGender'            => $additionalFields['BPE_Customergender'],
+                'ShippingInitials'          => strtoupper(substr($shippingAddress->getFirstname(),0,1)),
+                'ShippingLastName'          => $shippingAddress->getLastname(),
+                'ShippingBirthDate'         => $additionalFields['BPE_customerbirthdate'],
+                'ShippingStreet'            => $streetFull['street'],
+                'ShippingHouseNumber'       => $streetFull['house_number'],
+                'ShippingHouseNumberSuffix' => $streetFull['number_addition'],
+                'ShippingPostalCode'        => $shippingAddress->getPostcode(),
+                'ShippingCity'              => $shippingAddress->getCity(),
+                'ShippingRegion'            => $shippingAddress->getRegion(),
+                'ShippingCountryCode'       => $shippingAddress->getCountryCode(),
+                'ShippingEmail'             => $shippingAddress->getEmail(),
+                'ShippingPhoneNumber'       => $shippingPhonenumber['clean'],
+                'ShippingLanguage'          => $shippingAddress->getCountryCode(),
             );
+            $requestArray = array_merge($requestArray,$shippingInfo);
         }
 
-        //customer account number (rekening nummer
-
-        //customer ip-address
-
-        //is B2B? add: companyCOCregistration, companyname, costcentre,vatnumber
-
-
-
-
-
-
-
-
-        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/duedate', Mage::app()->getStore()->getStoreId());
-        $dueDateInvoice = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays), date("Y")));
-        $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays + 14), date("Y")));
-
-        $VAT = 0;
-        foreach($this->_order->getFullTaxInfo() as $taxRecord)
-        {
-            $VAT += $taxRecord['amount'];
-        }
-
-        $session = Mage::getSingleton('checkout/session');
-        $additionalFields = $session->getData('additionalFields');
-
-        $gender        = $additionalFields['BPE_Customergender'];
-        $dob           = $additionalFields['BPE_customerbirthdate'];
-        $accountNumber = $additionalFields['BPE_AccountNumber'];
-        
-        $array = array(
-            'InvoiceDate'           => $dueDateInvoice,
-            'DateDue'               => $dueDate,
-            'AmountVat'             => $VAT,
-            'CustomerGender'        => $gender,
-            'CustomerBirthDate'     => $dob,
-            'CustomerEmail'         => $this->_billingInfo['email'],
-            'customeriban'          => $accountNumber,
-            'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
-            'SendMail'              => Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/sendmail', Mage::app()->getStore()->getId()) ? 'TRUE' : 'FALSE',
+        //customer info
+        $customerInfo = array(
+            'CustomerAccountNumber' => $additionalFields['BPE_AccountNumber'],
+            'CustomerIPAddress'     => Mage::helper('core/http')->getRemoteAddr(true),
         );
-        
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
-        } else {
-            $vars['customVars'][$this->_method] = $array;
+
+        $requestArray = array_merge($requestArray,$customerInfo);
+        //is B2B
+        $b2bInfo = array();
+        if($additionalFields['BPE_B2B'] == 2){
+            $b2bInfo = array(
+                'B2B'                    => 'true',
+                'CompanyCOCRegistration' => $additionalFields['BPE_CompanyCOCRegistration'],
+                'CompanyName'            => $additionalFields['BPE_CompanyName'],
+                'CostCentre'             => $additionalFields['BPE_CostCentre'],
+                'VatNumber'              => $additionalFields['BPE_VatNumber'],
+            );
+            $requestArray = array_merge($requestArray,$b2bInfo);
         }
+
+        //add all products max 10
+        $products = $this->_order->getAllItems();
+        $max      = 1;
+        $i        = 1;
+
+
+
+        $article['ArticleDescription']['group'] = 'Accept';
+        $article['ArticleId']['group']          = 'Accept';
+        $article['ArticleQuantity']['group']    = 'Accept';
+        $article['ArticleUnitPrice']['group']   = 'Accept';
+        $article['ArticleVatcategory']['group'] = 'Accept';
+
+        foreach($products as $item){
+            /** @var $item Mage_Sales_Model_Order_Item */
+
+            if (empty($item) || $item->hasParentItemId()) {
+                continue;
+            }
+
+            // Changed calculation from unitPrice to orderLinePrice due to impossible to recalculate unitprice,
+            // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
+            // Quantity will always be 1 and quantity ordered will be in the article description.
+            $productPrice = ($item->getBasePrice() * $item->getQtyOrdered()) + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount();
+            $productPrice = round($productPrice * 100,0);
+
+            /*$article['ArticleDescription'][] = array(
+                'group' => 'Accept',
+                'value' => array((int) $item->getQtyOrdered() . 'x ' . $item->getName()),
+            );
+
+            $article['ArticleId'][] = array(
+                'group' => 'Accept',
+                'value' => array($item->getId()),
+            );
+
+            $article['ArticleQuantity'][] = array(
+                'group' => 'Accept',
+                'value' => array(1),
+            );
+
+            $article['ArticleUnitPrice'][] = array(
+                'group' => 'Accept',
+                'value' => array($productPrice),
+            );
+
+            $article['ArticleVatcategory'][] = array(
+                'group' => 'Accept',
+                'value' => array($this->_getTaxCategory($item->getTaxClassId())),
+            );*/
+
+
+            $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
+            $article['ArticleId']['value']          = $item->getId();
+            $article['ArticleQuantity']['value']    = 1;
+            $article['ArticleUnitPrice']['value']   = round($this->_vars['amountDebit'], 2);
+            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($item->getTaxClassId());
+
+
+
+            if($i <= $max){
+                $i++;
+                continue;
+            }
+            break;
+        }
+        //echo '<pre>';
+        //print_r($article);die;
+
+        $requestArray = array_merge($requestArray, $article);
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
+        } else {
+            $vars['customVars'][$this->_method] = $requestArray;
+        }
+    }
+
+    protected function _getTaxCategory($taxClassId)
+    {
+        if (!$taxClassId) {
+            return 4;
+        }
+
+        $highTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/high', Mage::app()->getStore()->getStoreId()));
+        $lowTaxClasses  = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/low', Mage::app()->getStore()->getStoreId()));
+        $zeroTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/zero', Mage::app()->getStore()->getStoreId()));
+        $noTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/no', Mage::app()->getStore()->getStoreId()));
+
+        if (in_array($taxClassId, $highTaxClasses)) {
+            return 1;
+        } elseif (in_array($taxClassId, $lowTaxClasses)) {
+            return 2;
+        } elseif (in_array($taxClassId, $zeroTaxClasses)) {
+            return 3;
+        } elseif (in_array($taxClassId, $noTaxClasses)) {
+            return 4;
+        } else {
+            Mage::throwException($this->_helper->__('Did not recognize tax class for class ID: ') . $taxClassId);
+        }
+    }
+
+    protected function _processAddress($fullStreet)
+    {
+        //get address from billingInfo
+        $address = $fullStreet;
+
+        $ret = array();
+        $ret['house_number'] = '';
+        $ret['number_addition'] = '';
+        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $address, $matches)) {
+            if ('' == $matches[1]) {
+                // Number at beginning
+                $ret['house_number'] = trim($matches[2]);
+                $ret['street']		 = trim($matches[3]);
+            } else {
+                // Number at end
+                $ret['street']			= trim($matches[1]);
+                $ret['house_number']    = trim($matches[2]);
+                $ret['number_addition'] = trim($matches[3]);
+            }
+        } else {
+            // No number
+            $ret['street'] = $address;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @param $telephoneNumber
+     * @return array
+     */
+    protected function _processPhoneNumber($telephoneNumber)
+    {
+        $number = $telephoneNumber;
+
+        //the final output must like this: 0031123456789 for mobile: 0031612345678
+        //so 13 characters max else number is not valid
+        //but for some error correction we try to find if there is some faulty notation
+
+        $return = array("orginal" => $number, "clean" => false, "mobile" => false, "valid" => false);
+        //first strip out the non-numeric characters:
+        $match = preg_replace('/[^0-9]/Uis', '', $number);
+        if ($match) {
+            $number = $match;
+        }
+
+        if (strlen((string)$number) == 13) {
+            //if the length equal to 13 is, then we can check if its a mobile number or normal number
+            $return['mobile'] = $this->_isMobileNumber($number);
+            //now we can almost say that the number is valid
+            $return['valid'] = true;
+            $return['clean'] = $number;
+        } elseif (strlen((string) $number) > 13) {
+            //if the number is bigger then 13, it means that there are probably a zero to much
+            $return['mobile'] = $this->_isMobileNumber($number);
+            $return['clean'] = $this->_isValidNotation($number);
+            if(strlen((string)$return['clean']) == 13) {
+                $return['valid'] = true;
+            }
+
+        } elseif (strlen((string)$number) == 12 or strlen((string)$number) == 11) {
+            //if the number is equal to 11 or 12, it means that they used a + in their number instead of 00
+            $return['mobile'] = $this->_isMobileNumber($number);
+            $return['clean'] = $this->_isValidNotation($number);
+            if(strlen((string)$return['clean']) == 13) {
+                $return['valid'] = true;
+            }
+
+        } elseif (strlen((string)$number) == 10) {
+            //this means that the user has no trailing "0031" and therfore only
+            $return['mobile'] = $this->_isMobileNumber($number);
+            $return['clean'] = '0031'.substr($number,1);
+            if (strlen((string) $return['clean']) == 13) {
+                $return['valid'] = true;
+            }
+        } else {
+            //if the length equal to 13 is, then we can check if its a mobile number or normal number
+            $return['mobile'] = $this->_isMobileNumber($number);
+            //now we can almost say that the number is valid
+            $return['valid'] = true;
+            $return['clean'] = $number;
+        }
+
+        return $return;
     }
 
     /**
@@ -263,28 +410,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
      */
     protected function isShippingDifferent()
     {
-        //exclude keys that are different in every address
-        $excludeKeys = array(
-            'entity_id',
-            'customer_address_id',
-            'quote_address_id',
-            'region_id',
-            'customer_id',
-            'address_type'
-        );
-        //get the billing and shipping address
-        $billingAddress          = $this->_order->getBillingAddress()->getData();
-        $shippingAddress         = $this->_order->getShippingAddress()->getData();
-        //match the 2 addresses if there is a change
-        $filteredBillingAddress  = array_diff_key($billingAddress, array_flip($excludeKeys));
-        $filteredShippingAddress = array_diff_key($shippingAddress, array_flip($excludeKeys));
-        $addressDiff             = array_diff($filteredBillingAddress, $filteredShippingAddress);
-
-        //if the addresses are not the same then $addressDiff is an array with the key(2) and values that are not the same
-        $AddressesDiffer = false;
-        if( $addressDiff ) {
-            $AddressesDiffer = true;
-        }
-        return $AddressesDiffer;
+        return $this->_order->getShippingAddress()->getSameAsBilling();
     }
 }
