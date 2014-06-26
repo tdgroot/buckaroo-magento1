@@ -78,13 +78,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
 
         return $this;
     }
-    
-	/**
-     * Custom push processing for Paymentguarantee. Because paymentguarantee orders should have been invoiced as 
+
+    /**
+     * Custom push processing for Paymentguarantee. Because paymentguarantee orders should have been invoiced as
      * soon as Buckaroo said that the guarantor had approved the transaction only a note should be added to the
      * order.
-     * 
+     *
      * @param Varien_Event_Observer $observer
+     * @return $this
      */
     public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
     {
@@ -124,8 +125,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
     /**
      * Custom response processing for Paymentguarantee. Because paymentguarantee orders should be invoiced as soon
      * as Buckaroo says that the guarantor has approved the transaction
-     * 
+     *
      * @param Varien_Event_Observer $observer
+     * @return $this
      */
     public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
     {
@@ -135,12 +137,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
 
         $responseModel = $observer->getModel();
         $response = $observer->getResponse();
+        $responseObject = $observer->getResponseobject();
+
+        //because this is an response through SOAP and is not used with pushes, the transaction key will be saved at the
+        //invoice. Only to make it possible to create an online refund for paymentguarantee payments
+        $transactionKey = '';
+        if(isset($responseObject->Key) && !empty($responseObject->Key)){
+            $transactionKey = $responseObject->Key;
+        }
 
         $pushModel = Mage::getModel(
         	'buckaroo3extended/response_push',
             array(
     	        'order'      => $observer->getOrder(),
-    	        'postArray'  => array('brq_statuscode' => $response['code']),
+    	        'postArray'  => array(
+                    'brq_statuscode' => $response['code'],
+                    'brq_transactions' => $transactionKey,
+                ),
     	        'debugEmail' => $responseModel->getDebugEmail(),
     	        'method'     => $this->_method,
             )
@@ -209,4 +222,108 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             $vars['customVars'][$this->_method] = $array;
         }
     }
+
+    public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+
+        $codeBits = explode('_', $this->_code);
+        $code = end($codeBits);
+        $request->setMethod($code);
+
+        return $this;
+    }
+
+    public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $refundRequest = $observer->getRequest();
+
+        $vars = $refundRequest->getVars();
+
+        $array = array(
+            'action'    => 'creditnote',
+            'version'   => 1,
+
+        );
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
+
+        $refundRequest->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     * @var $order Mage_Sales_Model_Order
+     */
+    public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $refundRequest = $observer->getRequest();
+        $order         = $observer->getOrder();
+
+        $vars = $refundRequest->getVars();
+
+        $tax = 0;
+        foreach($order->getFullTaxInfo() as $taxRecord)
+        {
+            $tax += $taxRecord['amount'];
+        }
+        $tax = round($tax * 100,0);
+
+        $array = array(
+            'OriginalInvoiceNumber' => $vars['orderId'],
+            'AmountVat' => $tax,
+        );
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+
+        $refundRequest->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function buckaroo3extended_refund_response_custom_processing(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $response = $observer->getResponse();
+
+        if($response['status'] == self::BUCKAROO_SUCCESS){
+            Mage::getSingleton('core/session')->addNotice(
+                Mage::helper('buckaroo3extended')->__( 'Note: By creating a credit-note for this order does not mean this order will actually be refunded.'."\n"
+                                                     . ' To refund this order please to the Payment Plaza and do it manually.')
+            );
+        }
+
+        return $this;
+    }
+
 }

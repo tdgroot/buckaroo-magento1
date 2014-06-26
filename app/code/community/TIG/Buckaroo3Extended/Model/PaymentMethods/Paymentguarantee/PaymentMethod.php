@@ -9,8 +9,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_paymentguarantee_checkout_form';
 
-    protected $_canRefund               = false;
-    protected $_canRefundInvoicePartial = false;
+    protected $_canRefund               = true;
+    protected $_canRefundInvoicePartial = true;
 
     public function getOrderPlaceRedirectUrl()
     {
