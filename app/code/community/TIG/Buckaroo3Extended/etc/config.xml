@@ -1248,7 +1248,7 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroo3>
-         </payment>
+        </payment>
         <buckaroo>
             <buckaroo3extended>
                 <active>1</active>
@@ -1499,6 +1499,7 @@
                 <payment_fee_label>Fee</payment_fee_label>
                 <order_email>1</order_email>
                 <paymethod>afterpayacceptgiro</paymethod>
+                <business>1</business>
             </buckaroo3extended_afterpay>
 
             <buckaroo3extended_payperemail>
@@ -1635,12 +1636,12 @@
                 <order_status_complete_success></order_status_complete_success>
                 <order_status_complete_failed></order_status_complete_failed>
             </buckaroo3extended_refund>
-         </buckaroo>
+        </buckaroo>
 
-         <sales>
+        <sales>
             <totals_sort>
                 <buckarooFee>25</buckarooFee>
             </totals_sort>
-         </sales>
+        </sales>
     </default>
 </config>

@@ -190,7 +190,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
 
         $client->__SetLocation($location);
-
+        //echo '<pre>';var_dump($TransactionRequest);die;
         try
         {
         	$response = $client->TransactionRequest($TransactionRequest);
@@ -287,12 +287,14 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
 
         $requestParameters = array();
+        Mage::log(var_export($this->_vars['customVars'][$name],true),null,'',true);
         foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
+
             if (
                 (is_null($value) || $value === '')
                 || (
                     is_array($value)
-                    && (is_null($value['value']) || $value['value'] === '')
+                    && ( isset($value['value']) && !is_array($value['value']) && is_null($value['value']) || $value['value'] === '')
                    )
             ) {
                 continue;
