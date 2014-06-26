@@ -121,9 +121,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         Mage::dispatchEvent(
         	'buckaroo3extended_response_custom_processing',
             array(
-        		'model'         => $this,
-                'order'         => $this->getOrder(),
-                'response'      => $parsedResponse,
+        		'model'          => $this,
+                'order'          => $this->getOrder(),
+                'response'       => $parsedResponse,
+                'responseobject' => $this->_response,
             )
         );
 

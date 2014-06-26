@@ -120,6 +120,8 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         $this->_debugEmail .= "Building SOAP request... \n";
 
         //send the transaction request using SOAP
+
+        /** @var $soap TIG_Buckaroo3Extended_Model_Soap */
         $soap = Mage::getModel('buckaroo3extended/soap', array('vars' => $this->getVars(), 'method' => $this->getMethod()));
         list($response, $responseXML, $requestXML) = $soap->transactionRequest();
 
