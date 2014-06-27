@@ -27,13 +27,13 @@
         </li>
         <li>
             <?php
-            echo $this->getLayout()->createBlock('buckaroo3extended/customer_widget_dob')
-                ->setFieldIdFormat($_code . ':billing:%s')
-                ->setFieldNameFormat('payment[' . $_code . '][%s]')
-                ->setIsRequired(true)
-                ->setPaymentMethodCode($_code)
-                ->setDate($this->getCustomer()->getDob())
-                ->toHtml();
+                echo $this->getLayout()->createBlock('buckaroo3extended/customer_widget_dob')
+                                       ->setFieldIdFormat($_code . ':billing:%s')
+                                       ->setFieldNameFormat('payment[' . $_code . '][%s]')
+                                       ->setIsRequired(true)
+                                       ->setPaymentMethodCode($_code)
+                                       ->setDate($this->getCustomer()->getDob())
+                                       ->toHtml();
             ?>
         </li>
         <li>
@@ -45,8 +45,8 @@
 
         <li>
             <?php
-            $ibanConverterLink = '<a target="_blank" href="https://iban.buckaroo.nl/">'.Mage::helper('buckaroo3extended')->__('here').'</a>';
-            echo Mage::helper('buckaroo3extended')->__('Convert your account number to IBAN %s',$ibanConverterLink);
+                $ibanConverterLink = '<a target="_blank" href="https://iban.buckaroo.nl/">'.Mage::helper('buckaroo3extended')->__('here').'</a>';
+                echo Mage::helper('buckaroo3extended')->__('Convert your account number to IBAN %s',$ibanConverterLink);
             ?>
         </li>
 
@@ -93,10 +93,10 @@
                     </select>
                 </div>
                 <?php
-                $style = '';
-                if(is_null($this->getBusinessSelect()) || $this->getBusinessSelect() == '1'){
-                    $style = ' style="display:none;"';
-                }
+                    $style = '';
+                    if(is_null($this->getBusinessSelect()) || $this->getBusinessSelect() == '1'){
+                        $style = ' style="display:none;"';
+                    }
                 ?>
                 <div id="b2b-fields"<?php echo $style;?>>
                     <label class="required" for="<?php echo $_code;?>_BPE_CompanyCOCRegistration"><?php echo $this->__('COC Number');?></label>

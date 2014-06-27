@@ -115,7 +115,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         switch ($response['status'])
 		{
 		    case self::BUCKAROO_ERROR:
-			case self::BUCKAROO_FAILED:		       $updatedFailed = $pushModel->processFailed($newStates, $response['message']);
+			case self::BUCKAROO_FAILED:
+                                                   if(!empty($response['subCode'])){
+                                                       $response['message'] = $response['message'].' - ' . $response['subCode']['code'] .' : '.  $response['subCode']['message'];
+                                                   }
+                                                   $updatedFailed = $pushModel->processFailed($newStates, $response['message']);
 									               break;
 			case self::BUCKAROO_SUCCESS:	       $updatedSuccess = $pushModel->processSuccess($newStates, $response['message']);
 											       break;
@@ -198,7 +202,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         //customer info
         $customerInfo = array(
             'CustomerAccountNumber' => $additionalFields['BPE_AccountNumber'],
-            'CustomerIPAddress'     => Mage::helper('core/http')->getRemoteAddr(true),
+            'CustomerIPAddress'     => Mage::helper('core/http')->getRemoteAddr(),
         );
 
         $requestArray = array_merge($requestArray,$customerInfo);
@@ -217,16 +221,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         //add all products max 10
         $products = $this->_order->getAllItems();
-        $max      = 1;
+        $max      = 9;
         $i        = 1;
 
-
-
-        $article['ArticleDescription']['group'] = 'Accept';
-        $article['ArticleId']['group']          = 'Accept';
-        $article['ArticleQuantity']['group']    = 'Accept';
-        $article['ArticleUnitPrice']['group']   = 'Accept';
-        $article['ArticleVatcategory']['group'] = 'Accept';
+        $group = array();
 
         foreach($products as $item){
             /** @var $item Mage_Sales_Model_Order_Item */
@@ -239,40 +237,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
             // Quantity will always be 1 and quantity ordered will be in the article description.
             $productPrice = ($item->getBasePrice() * $item->getQtyOrdered()) + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount();
-            $productPrice = round($productPrice * 100,0);
-
-            /*$article['ArticleDescription'][] = array(
-                'group' => 'Accept',
-                'value' => array((int) $item->getQtyOrdered() . 'x ' . $item->getName()),
-            );
-
-            $article['ArticleId'][] = array(
-                'group' => 'Accept',
-                'value' => array($item->getId()),
-            );
-
-            $article['ArticleQuantity'][] = array(
-                'group' => 'Accept',
-                'value' => array(1),
-            );
-
-            $article['ArticleUnitPrice'][] = array(
-                'group' => 'Accept',
-                'value' => array($productPrice),
-            );
-
-            $article['ArticleVatcategory'][] = array(
-                'group' => 'Accept',
-                'value' => array($this->_getTaxCategory($item->getTaxClassId())),
-            );*/
+            $productPrice = round($productPrice,2);
 
 
             $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
             $article['ArticleId']['value']          = $item->getId();
             $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = round($this->_vars['amountDebit'], 2);
+            $article['ArticleUnitPrice']['value']   = $productPrice;
             $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($item->getTaxClassId());
 
+            $group[$i] = $article;
 
 
             if($i <= $max){
@@ -281,16 +255,30 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             }
             break;
         }
-        //echo '<pre>';
-        //print_r($article);die;
 
-        $requestArray = array_merge($requestArray, $article);
+        end($group);// move the internal pointer to the end of the array
+        $key             = (int)key($group);
+        $shippingGroupId = $key+1;
+        $group[$shippingGroupId] = $this->_getShippingLine();
+
+        $requestArray = array_merge($requestArray, array('Articles' => $group));
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
         } else {
             $vars['customVars'][$this->_method] = $requestArray;
         }
+    }
+
+    protected function _getShippingLine()
+    {
+        $shipping  = (float) $this->_order->getBaseShippingAmount();
+        $article['ArticleDescription']['value'] = 'Verzendkosten';
+        $article['ArticleId']['value']          = 1;
+        $article['ArticleQuantity']['value']    = 1;
+        $article['ArticleUnitPrice']['value']   = round($shipping + $this->_order->getBaseShippingTaxAmount(), 0);
+        $article['ArticleVatcategory']['value'] = $this->_getTaxCategory(Mage::getStoreConfig('tax/classes/shipping_tax_class', Mage::app()->getStore()->getId()));
+        return $article;
     }
 
     protected function _getTaxCategory($taxClassId)
