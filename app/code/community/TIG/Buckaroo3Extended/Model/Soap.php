@@ -287,14 +287,31 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
 
         $requestParameters = array();
-        Mage::log(var_export($this->_vars['customVars'][$name],true),null,'',true);
+
         foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
+
+            if($fieldName == 'Articles'){
+                if(is_array($value) && !empty($value)){
+                    foreach($value as $groupId => $articleArray){
+                        if(is_array($articleArray) && !empty($articleArray)){
+                            foreach($articleArray as $articleName => $articleValue){
+                                $requestParameter          = new RequestParameter();
+                                $requestParameter->Name    = $articleName;
+                                $requestParameter->GroupID = $groupId;
+                                $requestParameter->_       = $articleValue['value'];
+                                $requestParameters[]       = $requestParameter;
+                            }
+                        }
+                    }
+                    continue;
+                }
+            }
 
             if (
                 (is_null($value) || $value === '')
                 || (
                     is_array($value)
-                    && ( isset($value['value']) && !is_array($value['value']) && is_null($value['value']) || $value['value'] === '')
+                    && (is_null($value['value']) || $value['value'] === '')
                    )
             ) {
                 continue;
