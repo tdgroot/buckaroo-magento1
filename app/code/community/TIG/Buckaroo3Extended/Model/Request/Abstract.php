@@ -12,7 +12,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     public function setVars($vars = array())
     {
         $this->_vars = $vars;
-        
+
         return $this;
     }
 
@@ -24,7 +24,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     public function setMethod($method = '')
     {
         $this->_method = $method;
-        
+
         return $this;
     }
 
@@ -41,44 +41,44 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         } catch (Exception $e) {
             Mage::helper('buckaroo3extended')->logException($e);
             Mage::getModel(
-                'buckaroo3extended/response_abstract', 
+                'buckaroo3extended/response_abstract',
                 array(
-                    'response' => false, 
-                    'XML' => false, 
+                    'response' => false,
+                    'XML' => false,
                     'debugEmail' => $this->_debugEmail
                 )
             )->processResponse();
         }
     }
-    
+
     protected function _sendRequest()
     {
         if (empty($this->_order)) {
             $this->_debugEmail .= "No order was set! :( \n";
             Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
         }
-        
+
         Mage::dispatchEvent('buckaroo3extended_request_setmethod', array('request' => $this, 'order' => $this->_order));
-        
+
         $responseModelClass = Mage::helper('buckaroo3extended')->isAdmin() ? 'buckaroo3extended/response_backendOrder' : 'buckaroo3extended/response_abstract';
-        
+
         $this->_debugEmail .= 'Chosen payment method: ' . $this->_method . "\n";
 
         //if no method has been set (no payment method could identify the chosen method) process the order as if it had failed
         if (empty($this->_method)) {
             $this->_debugEmail .= "No method was set! :( \n";
             $responseModel = Mage::getModel(
-                $responseModelClass, 
+                $responseModelClass,
                 array(
-                    'response' => false, 
-                    'XML' => false, 
+                    'response' => false,
+                    'XML' => false,
                     'debugEmail' => $this->_debugEmail
                 )
             );
             if (!$responseModel->getOrder()) {
                 $responseModel->setOrder($this->_order);
             }
-            
+
             $responseModel->processResponse();
         }
 
@@ -112,8 +112,8 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
 
         $this->_debugEmail .= "The SOAP request has been sent. \n";
-        
-        if (!is_object($requestXML) || !is_object($responseXML)) { 
+
+        if (!is_object($requestXML) || !is_object($responseXML)) {
             $this->_debugEmail .= "Request or response was not an object \n";
         } else {
             $this->_debugEmail .= "Request: " . var_export($requestXML->saveXML(), true) . "\n";
@@ -122,7 +122,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         }
 
         $this->_debugEmail .= "Processing response... \n";
-        
+
         //process the response
         $responseModel = Mage::getModel(
             $responseModelClass,
@@ -132,7 +132,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
                 'debugEmail' => $this->_debugEmail,
             )
         );
-        
+
         if (!$responseModel->getOrder()) {
             $responseModel->setOrder($this->_order);
         }
@@ -151,18 +151,18 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         list($country, $locale, $lang) = $this->_getLocale();
 
-	    //test mode can be set in the general config options, but also in the config options for the individual payment options.
-		//The latter overwrites the first if set to true
-		$test = Mage::getStoreConfig('buckaroo/buckaroo3extended/mode', Mage::app()->getStore()->getStoreId());
+        //test mode can be set in the general config options, but also in the config options for the individual payment options.
+        //The latter overwrites the first if set to true
+        $test = Mage::getStoreConfig('buckaroo/buckaroo3extended/mode', Mage::app()->getStore()->getStoreId());
 
-		if (!$test && Mage::getStoreConfig('buckaroo/buckaroo3extended' . $this->_code . '/mode', Mage::app()->getStore()->getStoreId())) {
-			$test = '1';
-		}
+        if (!$test && Mage::getStoreConfig('buckaroo/buckaroo3extended' . $this->_code . '/mode', Mage::app()->getStore()->getStoreId())) {
+            $test = '1';
+        }
 
-		$this->_vars['country']        = $country;
-		$this->_vars['locale']         = $locale;
-		$this->_vars['lang']           = $lang;
-		$this->_vars['test']           = $test;
+        $this->_vars['country']        = $country;
+        $this->_vars['locale']         = $locale;
+        $this->_vars['lang']           = $lang;
+        $this->_vars['test']           = $test;
 
         $this->_debugEmail .= "Base variables added! \n";
     }
@@ -171,31 +171,31 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         $returnUrl = Mage::getUrl('buckaroo3extended/notify/return', array('_secure' => true));
 
-		$merchantKey = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId());
-		$description = Mage::getStoreConfig('buckaroo/buckaroo3extended/payment_description', $this->_order->getStoreId());
-		$thumbprint  = Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', $this->_order->getStoreId());
+        $merchantKey = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId());
+        $description = Mage::getStoreConfig('buckaroo/buckaroo3extended/payment_description', $this->_order->getStoreId());
+        $thumbprint  = Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', $this->_order->getStoreId());
 
-		$this->_vars['returnUrl']      = $returnUrl;
-		$this->_vars['merchantKey']    = $merchantKey;
-		$this->_vars['description']    = $description;
-		$this->_vars['thumbprint']     = $thumbprint;
+        $this->_vars['returnUrl']      = $returnUrl;
+        $this->_vars['merchantKey']    = $merchantKey;
+        $this->_vars['description']    = $description;
+        $this->_vars['thumbprint']     = $thumbprint;
 
         $this->_debugEmail .= "Shop variables added! \n";
     }
-    
+
     protected function _addSoftwareVariables()
     {
         $platformName = 'Magento';
-        
+
         if (method_exists('Mage', 'getEdition')) {
             $platformName .= ' ' . Mage::getEdition();
         }
-        
+
         $platformVersion = Mage::getVersion();
         $moduleSupplier = 'Total Internet Group';
         $moduleName = 'Buckaroo3Extended';
         $moduleVersion = (string) Mage::getConfig()->getModuleConfig("TIG_Buckaroo3Extended")->version;
-        
+
         $array = array(
             'PlatformName'    => $platformName,
             'PlatformVersion' => $platformVersion,
@@ -203,9 +203,9 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
             'ModuleName'      => $moduleName,
             'ModuleVersion'   => $moduleVersion,
         );
-        
+
         $this->_vars['Software'] = $array;
-        
+
         $this->_debugEmail .= "Software variables added! \n";
     }
 
@@ -223,8 +223,10 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
     protected function _addRefundVariables()
     {
-        $this->_vars['OriginalTransactionKey'] = $this->_invoice->getTransactionId();
-        
-        $this->_debugEmail .= "Refund variables added! \n";
+        $invoice                               = Mage::getModel('sales/order_invoice')->load($this->_invoice);
+        $this->_vars['OriginalTransactionKey'] = $invoice->getTransactionId();
+        $this->_vars['invoiceId']              = $invoice->getIncrementId();
+
+        $this->_debugEmail                    .= "Refund variables added! \n";
     }
 }

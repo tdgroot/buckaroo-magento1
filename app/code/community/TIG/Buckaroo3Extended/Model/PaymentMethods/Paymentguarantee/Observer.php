@@ -13,14 +13,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         $request = $observer->getRequest();
 
         $vars = $request->getVars();
-        
+
         $array = array(
             $this->_method     => array(
                 'action'    => 'PaymentInvitation',
                 'version'   => 1,
             ),
         );
-        
+
         if (array_key_exists('services', $vars) && is_array($vars['services'])) {
             $vars['services'] = array_merge($vars['services'], $array);
         } else {
@@ -47,10 +47,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         $this->_addCustomerVariables($vars, $this->_method);
         $this->_addCreditManagement($vars, $this->_method);
         $this->_addPaymentGuaranteeVariables($vars);
-        
+
         $additionalInformation = $this->_order->getPayment()->getMethodInstance()->getInfoInstance()->getAdditionalInformation();
         if (
-            array_key_exists('checked_terms_and_conditions', $additionalInformation) 
+            array_key_exists('checked_terms_and_conditions', $additionalInformation)
             && $additionalInformation['checked_terms_and_conditions'] === true
         ) {
             $message = Mage::helper('buckaroo3extended')->__('Customer accepted terms and conditions.');
@@ -99,26 +99,26 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         $postArray = $push->getPostArray();
 
         $push->addNote($response['message'], $this->_method);
-        
+
         if (
-            isset($postArray['brq_payment_method']) 
-            && !$order->getPaymentMethodUsedForTransaction() 
+            isset($postArray['brq_payment_method'])
+            && !$order->getPaymentMethodUsedForTransaction()
             && $postArray['brq_statuscode'] == '190'
-            )
+        )
         {
             $order->setPaymentMethodUsedForTransaction($postArray['brq_payment_method']);
         } elseif (
-            isset($postArray['brq_transaction_method']) 
+            isset($postArray['brq_transaction_method'])
             && !$order->getPaymentMethodUsedForTransaction()
             && $postArray['brq_statuscode'] == '190'
-            )
+        )
         {
             $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
         }
         $order->save();
 
         $push->setCustomResponseProcessing(true);
-        
+
         return $this;
     }
 
@@ -147,34 +147,34 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         }
 
         $pushModel = Mage::getModel(
-        	'buckaroo3extended/response_push',
+            'buckaroo3extended/response_push',
             array(
-    	        'order'      => $observer->getOrder(),
-    	        'postArray'  => array(
+                'order'      => $observer->getOrder(),
+                'postArray'  => array(
                     'brq_statuscode' => $response['code'],
                     'brq_transactions' => $transactionKey,
                 ),
-    	        'debugEmail' => $responseModel->getDebugEmail(),
-    	        'method'     => $this->_method,
+                'debugEmail' => $responseModel->getDebugEmail(),
+                'method'     => $this->_method,
             )
         );
 
         $newStates = $pushModel->getNewStates($response['status']);
 
         switch ($response['status'])
-		{
-		    case self::BUCKAROO_ERROR:
-			case self::BUCKAROO_FAILED:		       $updatedFailed = $pushModel->processFailed($newStates, $response['message']);
-									               break;
-			case self::BUCKAROO_SUCCESS:	       $updatedSuccess = $pushModel->processSuccess($newStates, $response['message']);
-											       break;
-			case self::BUCKAROO_NEUTRAL:           $responseModel->_addNote($response['message']);
-			                                       break;
-			case self::BUCKAROO_PENDING_PAYMENT:   $updatedPendingPayment = $responseModel->processPendingPayment($newStates, $response['message']);
-			                                       break;
-			case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $pushModel->processIncorrectPayment($newStates);
-			                                       break;
-		}
+        {
+            case self::BUCKAROO_ERROR:
+            case self::BUCKAROO_FAILED:		       $updatedFailed = $pushModel->processFailed($newStates, $response['message']);
+                break;
+            case self::BUCKAROO_SUCCESS:	       $updatedSuccess = $pushModel->processSuccess($newStates, $response['message']);
+                break;
+            case self::BUCKAROO_NEUTRAL:           $responseModel->_addNote($response['message']);
+                break;
+            case self::BUCKAROO_PENDING_PAYMENT:   $updatedPendingPayment = $responseModel->processPendingPayment($newStates, $response['message']);
+                break;
+            case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $pushModel->processIncorrectPayment($newStates);
+                break;
+        }
 
         $responseModel->setCustomResponseProcessing(true);
     }
@@ -182,7 +182,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
     /**
      * Adds variables required for the SOAP XML for paymentguarantee to the variable array
      * Will merge with old array if it exists
-     * 
+     *
      * @param array $vars
      */
     protected function _addPaymentGuaranteeVariables(&$vars)
@@ -203,7 +203,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         $gender        = $additionalFields['BPE_Customergender'];
         $dob           = $additionalFields['BPE_customerbirthdate'];
         $accountNumber = $additionalFields['BPE_AccountNumber'];
-        
+
         $array = array(
             'InvoiceDate'           => $dueDateInvoice,
             'DateDue'               => $dueDate,
@@ -215,7 +215,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
             'SendMail'              => Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/sendmail', Mage::app()->getStore()->getId()) ? 'TRUE' : 'FALSE',
         );
-        
+
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
         } else {
@@ -286,11 +286,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         {
             $tax += $taxRecord['amount'];
         }
-        $tax = round($tax * 100,0);
+        $tax = round($tax ,2);
 
         $array = array(
             'OriginalInvoiceNumber' => $vars['orderId'],
-            'AmountVat' => $tax,
+            'AmountVat'             => $tax,
         );
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
@@ -318,8 +318,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
 
         if($response['status'] == self::BUCKAROO_SUCCESS){
             Mage::getSingleton('core/session')->addNotice(
-                Mage::helper('buckaroo3extended')->__( 'Note: By creating a credit-note for this order does not mean this order will actually be refunded.'."\n"
-                                                     . ' To refund this order please to the Payment Plaza and do it manually.')
+                Mage::helper('buckaroo3extended')->__( "Note: By creating a credit-note for this order does not mean this order will actually be refunded.\n To refund this order please go to the Payment Plaza and do it manually." )
             );
         }
 
