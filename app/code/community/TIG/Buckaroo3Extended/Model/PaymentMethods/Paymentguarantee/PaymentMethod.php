@@ -16,19 +16,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
     {
         $session = Mage::getSingleton('checkout/session');
 
-        $accountNumber = $_POST[$this->_code.'_bpe_customer_account_number'];
+        $post = Mage::app()->getRequest()->getPost();
+
+        $accountNumber = $post[$this->_code.'_bpe_customer_account_number'];
+
+        $customerBirthDate = date(
+            'Y-m-d', strtotime($post[$this->_code . '_customerbirthdate']['year']
+                . '-' . $post[$this->_code . '_customerbirthdate']['month']
+                . '-' . $post[$this->_code . '_customerbirthdate']['day'])
+        );
 
         $session->setData(
             'additionalFields',
             array(
-                'BPE_Customergender'    => $_POST[$this->_code.'_BPE_Customergender'],
+                'BPE_Customergender'    => $post[$this->_code.'_BPE_Customergender'],
                 'BPE_AccountNumber'     => $this->filterAccount($accountNumber),
-                'BPE_PhoneNumber'     => $_POST[$this->_code.'_bpe_customer_phone_number'],
-                'BPE_customerbirthdate' => date(
-                    'Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
-                    . '-' . $_POST[$this->_code.'_customerbirthdate']['month']
-                    . '-' . $_POST[$this->_code.'_customerbirthdate']['day'])
-                )
+                'BPE_PhoneNumber'       => $post[$this->_code.'_bpe_customer_phone_number'],
+                'BPE_customerbirthdate' => $customerBirthDate,
             )
         );
 
