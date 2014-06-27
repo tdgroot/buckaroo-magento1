@@ -1,4 +1,25 @@
 <?php
+/**  ____________  _     _ _ ________  ___  _ _  _______   ___  ___  _  _ _ ___
+ *   \_ _/ \_ _/ \| |   |_| \ \_ _/  \| _ || \ |/  \_ _/  / __\| _ |/ \| | | _ \
+ *    | | | | | ' | |_  | |   || | '_/|   /|   | '_/| |  | |_ \|   / | | | | __/
+ *    |_|\_/|_|_|_|___| |_|_\_||_|\__/|_\_\|_\_|\__/|_|   \___/|_\_\\_/|___|_|
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Creative Commons License.
+ * If you are unable to obtain it through the world-wide-web, please send an email
+ * to servicedesk@totalinternetgroup.nl so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future. If you wish to customize this module for your
+ * needs please contact servicedesk@totalinternetgroup.nl for more information.
+ *
+ * @copyright   2014 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
+ * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
+ */
+
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
     protected $_code = 'buckaroo3extended_paymentguarantee';
@@ -187,9 +208,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
      */
     protected function _addPaymentGuaranteeVariables(&$vars)
     {
-        $dueDays = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/duedate', Mage::app()->getStore()->getStoreId());
+        $dueDays        = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/duedate', Mage::app()->getStore()->getStoreId());
         $dueDateInvoice = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays), date("Y")));
-        $dueDate = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays + 14), date("Y")));
+        $dueDate        = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays + 14), date("Y")));
 
         $VAT = 0;
         foreach($this->_order->getFullTaxInfo() as $taxRecord)
@@ -197,7 +218,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             $VAT += $taxRecord['amount'];
         }
 
-        $session = Mage::getSingleton('checkout/session');
+        $session          = Mage::getSingleton('checkout/session');
         $additionalFields = $session->getData('additionalFields');
 
         $gender        = $additionalFields['BPE_Customergender'];

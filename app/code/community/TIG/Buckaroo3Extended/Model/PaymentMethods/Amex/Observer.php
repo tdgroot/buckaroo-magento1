@@ -198,7 +198,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
         return $vars;
     }
 
-
+    /**
+     * @param $fullStreet
+     * @return array
+     */
     protected function _processAddress($fullStreet)
     {
         //get address from billingInfo
@@ -226,6 +229,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
         return $ret;
     }
 
+    /**
+     * @param $telephoneNumber
+     * @return array
+     */
     protected function _processPhoneNumber($telephoneNumber)
     {
         $number = $telephoneNumber;

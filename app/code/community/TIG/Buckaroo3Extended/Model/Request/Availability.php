@@ -28,7 +28,8 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
     /**
      * Various checks to determine if Buckaroo payment options should be available to customers
      *
-     * @param boolean $soap
+     * @param null $quote
+     * @return bool
      */
     public static function canUseBuckaroo($quote = null)
     {
@@ -62,23 +63,23 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
      * Checks if all required configuration options are set
      * NOTE: does not check if entered values are valid, only that they're not empty
      *
-     * @param boolean $soap
+     * @return bool
      */
     private static function _checkConfigValues()
     {
         $configValues = false;
 
         //config values that need to be entered
-    	$configEnabled = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/active', Mage::app()->getStore()->getStoreId());
-    	$merchantKeyEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId());
-    	$thumbprintEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', Mage::app()->getStore()->getStoreId());
+    	$configEnabled             = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/active', Mage::app()->getStore()->getStoreId());
+    	$merchantKeyEntered        = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/key', Mage::app()->getStore()->getStoreId());
+    	$thumbprintEntered         = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', Mage::app()->getStore()->getStoreId());
     	$orderStatusSuccessEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', Mage::app()->getStore()->getStoreId());
-    	$orderStatusFailedEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', Mage::app()->getStore()->getStoreId());
+    	$orderStatusFailedEntered  = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', Mage::app()->getStore()->getStoreId());
 
     	//advanced config values that need to be entered
-    	$newOrderStatusEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status', Mage::app()->getStore()->getStoreId());
-    	$orderStateSuccessEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', Mage::app()->getStore()->getStoreId());
-    	$orderStateFailedEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', Mage::app()->getStore()->getStoreId());
+    	$newOrderStatusEntered     = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status', Mage::app()->getStore()->getStoreId());
+    	$orderStateSuccessEntered  = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', Mage::app()->getStore()->getStoreId());
+    	$orderStateFailedEntered   = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', Mage::app()->getStore()->getStoreId());
 
     	if ($configEnabled
     		&& $merchantKeyEntered
@@ -97,6 +98,8 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
 
     /**
      * Checks if the store's base currency is allowed by Buckaroo
+     *
+     * @return bool
      */
     private static function _checkCurrencyAllowed()
     {
@@ -114,15 +117,17 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
     /**
      * If the 'limit by IP' options is set in the backend, check if the user's IP ids allowed
      * NOTE: this is only the general limit by ip option. Individual module's limit by IP options are not checked here
+     *
+     * @return bool
      */
     private static function _checkIpAllowed()
     {
         $ipAllowed = false;
 
-        if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/limit_by_ip'))
+        if (Mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/limit_by_ip'))
     	{
     		$allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
-    		if (in_array($_SERVER['REMOTE_ADDR'], $allowedIp))
+    		if (in_array(Mage::helper('core/http')->getRemoteAddr(), $allowedIp))
     		{
     			$ipAllowed = true;
     		}
@@ -137,6 +142,9 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
      * Checks if the order base grandtotal is zero.
      * NOTE: this check is currently not used. Will be implemented later when I know for certain which payment methods can and cannot handle
      * zero-grandtotal payments.
+     *
+     * @param $quote
+     * @return bool
      */
     private static function _checkGrandTotalNotZero($quote)
     {
