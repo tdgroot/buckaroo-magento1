@@ -1,4 +1,25 @@
 <?php
+/**  ____________  _     _ _ ________  ___  _ _  _______   ___  ___  _  _ _ ___
+ *   \_ _/ \_ _/ \| |   |_| \ \_ _/  \| _ || \ |/  \_ _/  / __\| _ |/ \| | | _ \
+ *    | | | | | ' | |_  | |   || | '_/|   /|   | '_/| |  | |_ \|   / | | | | __/
+ *    |_|\_/|_|_|_|___| |_|_\_||_|\__/|_\_\|_\_|\__/|_|   \___/|_\_\\_/|___|_|
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Creative Commons License.
+ * If you are unable to obtain it through the world-wide-web, please send an email
+ * to servicedesk@totalinternetgroup.nl so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future. If you wish to customize this module for your
+ * needs please contact servicedesk@totalinternetgroup.nl for more information.
+ *
+ * @copyright   2014 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
+ * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
+ */
+
 class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abstract
 {
 	const BUCKAROO_SUCCESS           = 'BUCKAROO_SUCCESS';
@@ -455,16 +476,16 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         return $returnArray;
 	}
 
-	/**
-     * Retrieves an array with information related to a recieved response code.
+    /**
+     * Retrieves an array with information related to a received response code.
      * This method will only be called when it's child cant find it itself. This list
      * is a general list of known status codes. Its not as inclusive as the lists used\
      * by its children. However, this list also contains general error codes not
-     * carried by its children.
      *
-     * @return array $returnArray
+     * @param $code
+     * @return array|bool
      */
-	protected function _parsePostResponse($code)
+    protected function _parsePostResponse($code)
 	{
 	    $isCorrect = $this->_checkCorrectAmount();
 

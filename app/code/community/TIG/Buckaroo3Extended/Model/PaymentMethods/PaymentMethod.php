@@ -1,4 +1,25 @@
 <?php
+/**  ____________  _     _ _ ________  ___  _ _  _______   ___  ___  _  _ _ ___
+ *   \_ _/ \_ _/ \| |   |_| \ \_ _/  \| _ || \ |/  \_ _/  / __\| _ |/ \| | | _ \
+ *    | | | | | ' | |_  | |   || | '_/|   /|   | '_/| |  | |_ \|   / | | | | __/
+ *    |_|\_/|_|_|_|___| |_|_\_||_|\__/|_\_\|_\_|\__/|_|   \___/|_\_\\_/|___|_|
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Creative Commons License.
+ * If you are unable to obtain it through the world-wide-web, please send an email
+ * to servicedesk@totalinternetgroup.nl so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future. If you wish to customize this module for your
+ * needs please contact servicedesk@totalinternetgroup.nl for more information.
+ *
+ * @copyright   2014 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
+ * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
+ */
+
 class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
     public $allowedCurrencies = array();
@@ -121,6 +142,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
 
     public function isAvailable($quote = null)
     {
+
+        if(is_null($quote) && Mage::helper('buckaroo3extended')->isAdmin()){
+            // Uncomment this code to get all active Buckaroo payment methods in the backend. (3th party extensions)
+            /*if(Mage::getStoreConfigFlag('buckaroo/' . $this->_code . '/active', Mage::app()->getStore()->getId())){
+                return true;
+            }*/
+
+            return false;
+        }
+
         //check if the country specified in the billing address is allowed to use this payment method
         if (Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', $quote->getStoreId()) == 1
             && $quote->getBillingAddress()->getCountry())
@@ -176,7 +207,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/' . $this->_code . '/limit_by_ip'))
         {
             $allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
-            if (!in_array($_SERVER['REMOTE_ADDR'], $allowedIp))
+            if (!in_array(Mage::helper('core/http')->getRemoteAddr(), $allowedIp))
             {
                 return false;
             }
@@ -202,4 +233,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         return $filteredAccount;
     }
 
+    public function saveAdditionalData($response)
+    {
+        // child modules will be able to save response info into the serialized additional_data array
+
+        return $this;
+    }
 }

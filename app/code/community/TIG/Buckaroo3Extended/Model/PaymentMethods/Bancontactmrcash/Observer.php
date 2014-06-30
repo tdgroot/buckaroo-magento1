@@ -1,7 +1,7 @@
 <?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
-    protected $_code = 'buckaroo3extended_bancontactmrcash';
+    protected $_code   = 'buckaroo3extended_bancontactmrcash';
     protected $_method = 'bancontactmrcash';
     
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
@@ -15,7 +15,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer exten
         $vars = $request->getVars();
         
         $array = array(
-            $this->_method     => array(
+            $this->_method  => array(
                 'action'	=> 'Pay',
                 'version'   => 1,
             ),
@@ -77,10 +77,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer exten
             return $this;
         }
 
-        $request = $observer->getRequest();
+        $request  = $observer->getRequest();
 
         $codeBits = explode('_', $this->_code);
-        $code = end($codeBits);
+        $code     = end($codeBits);
         $request->setMethod($code);
 
         return $this;

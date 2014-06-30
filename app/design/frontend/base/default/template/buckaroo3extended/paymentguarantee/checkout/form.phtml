@@ -1,10 +1,11 @@
 <?php $_code=$this->getMethodCode() ?>
+
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 <fieldset class="form-list buckaroo-method">
     <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
             <label for="<?php echo $_code;?>_BPE_Customergender" class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label>
-            <div class="input-box">  
+            <div class="input-box">
                 <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" title="<?php echo $this->__('Salutation');?>" id="<?php echo $_code;?>_BPE_Customergender">
                     <option value=''><?php echo $this->__('Select'); ?></option>
                     <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
@@ -28,7 +29,7 @@
             <label class="required" for="payment:day"><?php echo $this->__('Date of birth') ?>: <em>*</em></label>
             <div class="input-box customer-dob customer-billing-dob">
 <?php $dob = $this->getDob(); ?>
-<?php 
+<?php
 $dateInputDD = <<< DATE_INPUT_DD
 <div class="dob-day">
 <input type="text" class="input-text validate-custom validation-over-18" title="{$this->__('Day')}" value="{$dob[0]}" name="{$_code}_customerbirthdate[day]" id="payment:day">
@@ -78,7 +79,7 @@ echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputY
         <li>
             <label for="<?php echo $_code;?>_BPE_customer_account_number" class="required"><?php echo $this->__('Bank account number') ?>: <em>*</em></label>
             <div class="input-box">
-                <input class="input-text required-entry" type="text" title="<?php echo $this->__('Bank account number') ?>" name="<?php echo $_code;?>_bpe_customer_account_number" value="<?php echo $this->getBankAccount(); ?>" id="<?php echo $_code;?>_BPE_customer_account_number" />
+                <input class="input-text required-entry validate-buckaroo-iban" type="text" title="<?php echo $this->__('Bank account number') ?>" name="<?php echo $_code;?>_bpe_customer_account_number" value="<?php echo $this->getBankAccount(); ?>" id="<?php echo $_code;?>_BPE_customer_account_number" />
             </div>
         </li>
         <li class="tac-accept">
@@ -88,14 +89,14 @@ echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputY
             <label for="<?php echo $_code;?>_BPE_terms_and_conditions" class="required"><?php echo $this->__('Yes, I accept the %sterms and condition%s for the use of Payment Guarantee.', '<a href="#" id="paymentguarantee_terms_and_conditions_link">', '</a>') ?> <em>*</em></label>
         </li>
         <li>
-            <?php 
+            <?php
                 $ibanConverterLink = '<a target="_blank" href="https://iban.buckaroo.nl/">'.Mage::helper('buckaroo3extended')->__('here').'</a>';
                 echo Mage::helper('buckaroo3extended')->__('Convert your account number to IBAN %s',$ibanConverterLink);
             ?>
         </li>
         <li>
             <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.')?>
-        </li>   
+        </li>
     </ul>
 </fieldset>
 <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('buckaroo3extended/paymentguarantee/termsAndConditions.phtml')->toHtml();?>

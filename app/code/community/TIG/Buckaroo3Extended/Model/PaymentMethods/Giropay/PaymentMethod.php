@@ -2,8 +2,8 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
-		'EUR',
-	);
+        'EUR',
+    );
 
     protected $_code = 'buckaroo3extended_giropay';
 

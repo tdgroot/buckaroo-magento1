@@ -2,37 +2,41 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
-		'EUR',
-	);
+        'EUR',
+    );
 
     protected $_code = 'buckaroo3extended_paymentguarantee';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_paymentguarantee_checkout_form';
 
-    protected $_canRefund               = false;
-    protected $_canRefundInvoicePartial = false;
+    protected $_canRefund               = true;
+    protected $_canRefundInvoicePartial = true;
 
     public function getOrderPlaceRedirectUrl()
     {
         $session = Mage::getSingleton('checkout/session');
 
-        $accountNumber = $_POST[$this->_code.'_bpe_customer_account_number'];
+        $post = Mage::app()->getRequest()->getPost();
 
-        $session->setData(
-        	'additionalFields',
-            array(
-            	'BPE_Customergender'    => $_POST[$this->_code.'_BPE_Customergender'],
-                'BPE_AccountNumber'     => $this->filterAccount($accountNumber),
-                'BPE_PhoneNumber'     => $_POST[$this->_code.'_bpe_customer_phone_number'],
-        		'BPE_customerbirthdate' => date(
-        			'Y-m-d', strtotime($_POST[$this->_code . '_customerbirthdate']['year']
-        		    . '-' . $_POST[$this->_code.'_customerbirthdate']['month']
-        		    . '-' . $_POST[$this->_code.'_customerbirthdate']['day'])
-        		)
-        	)
+        $accountNumber = $post[$this->_code.'_bpe_customer_account_number'];
+
+        $customerBirthDate = date(
+            'Y-m-d', strtotime($post[$this->_code . '_customerbirthdate']['year']
+                . '-' . $post[$this->_code . '_customerbirthdate']['month']
+                . '-' . $post[$this->_code . '_customerbirthdate']['day'])
         );
 
-    	return parent::getOrderPlaceRedirectUrl();
+        $session->setData(
+            'additionalFields',
+            array(
+                'BPE_Customergender'    => $post[$this->_code.'_BPE_Customergender'],
+                'BPE_AccountNumber'     => $this->filterAccount($accountNumber),
+                'BPE_PhoneNumber'       => $post[$this->_code.'_bpe_customer_phone_number'],
+                'BPE_customerbirthdate' => $customerBirthDate,
+            )
+        );
+
+        return parent::getOrderPlaceRedirectUrl();
     }
 
     public function validate()

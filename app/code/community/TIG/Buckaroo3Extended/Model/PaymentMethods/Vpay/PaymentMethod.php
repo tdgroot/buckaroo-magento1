@@ -1,27 +1,27 @@
-<?php 
+<?php
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Vpay_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
-		'EUR',
-		'GBP',
-		'USD',
-		'CAD',
-		'NOK',
-		'SEK',
-		'DKK',
         'ARS',
+        'AUD',
         'BRL',
+        'CAD',
+        'CHF',
+        'CNY',
+        'DKK',
+        'EUR',
+        'GBP',
         'HRK',
         'LTL',
-        'TRY',
-        'TRL',
-        'AUD',
+        'LVL',
         'MXN',
-        'MXP',
+        'NOK',
         'PLN',
-        'CHF',
-	);
-	
+        'SEK',
+        'TRY',
+        'USD',
+    );
+
     protected $_code = 'buckaroo3extended_vpay';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_vpay_checkout_form';

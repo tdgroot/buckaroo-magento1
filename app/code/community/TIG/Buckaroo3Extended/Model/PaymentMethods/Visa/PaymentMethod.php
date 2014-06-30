@@ -2,28 +2,31 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Visa_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
-		'EUR',
-		'GBP',
-		'USD',
-		'CAD',
-		'SHR',
-		'NOK',
-		'SEK',
-		'DKK',
         'ARS',
-        'BRL',
-        'HRK',
-        'LTL',
-        'TRY',
-        'TRL',
         'AUD',
+        'BRL',
+        'CAD',
+        'CHF',
         'CNY',
+        'CZK',
+        'DKK',
+        'EUR',
+        'GBP',
+        'HRK',
+        'ISK',
+        'JPY',
+        'LTL',
         'LVL',
         'MXN',
-        'MXP',
+        'NOK',
+        'NZD',
         'PLN',
-        'CHF',
-	);
+        'RUB',
+        'SEK',
+        'TRY',
+        'USD',
+        'ZAR',
+    );
 
     protected $_code = 'buckaroo3extended_visa';
 

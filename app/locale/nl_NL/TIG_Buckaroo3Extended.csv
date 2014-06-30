@@ -1,3 +1,4 @@
+"Your order has been placed succesfully.","Uw bestelling is succesvol geplaatst."
 "Payment fee","Betaaltoeslag"
 "Buckaroo","Buckaroo"
 "Version & Support","Versie & Ondersteuning"
@@ -289,3 +290,7 @@
 "Convert your account number to IBAN %s","Converteer nu %s uw rekeningnummer naar IBAN."
 "Please enter these fields as they appear on your bank account.","Vul de velden in zoals in uw bank account staat aangegeven."
 "BIC number","BIC code"
+"Please enter a valid IBAN.","Vul een geldig IBAN in."
+"Mandate reference: %s","Mandaat referentie: %s"
+"The customer attempted to pay this order using %s, but cancelled the payment.","De klant heeft geprobeerd de bestelling te betalen met %s, maar heeft de transactie geannuleerd."
+"Note: By creating a credit-note for this order does not mean this order will actually be refunded.\n To refund this order please go to the Payment Plaza and do it manually.","Wanneer u deze functionaliteit activeert, dan wordt er automatisch een creditnota in de Payment Plaza aangemaakt als u een creditnota aanmaakt in Magento. Let op! Er wordt niet automatisch een refund aangemaakt in de Payment Plaza in het geval er al betaald is. De refund kan alsnog handmatig in het Payment Plaza worden uitgevoerd."

@@ -4,22 +4,22 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
     protected $_payment;
     protected $_invoice;
     protected $_amount;
-    
+
     public function setPayment($payment)
     {
         $this->_payment = $payment;
     }
-    
+
     public function getPayment()
     {
         return $this->_payment;
     }
-    
+
     public function setInvoice($invoice)
     {
         $this->_invoice = $invoice;
     }
-    
+
     public function getInvoice()
     {
         return $this->_invoice;
@@ -29,12 +29,12 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
     {
         $this->_amount = $amount;
     }
-    
+
     public function getAmount()
     {
         return $this->_amount;
     }
-    
+
     public function loadInvoiceByTransactionId($transactionId)
     {
         foreach ($this->getOrder()->getInvoiceCollection() as $invoice) {
@@ -45,30 +45,31 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         }
         return false;
     }
-    
+
     public function __construct($data) {
         if (strpos(__DIR__, '/Model') !== false) {
-	        $dir = str_replace('/Model/Refund/Request', '/certificate', __DIR__);
-	    } else {
-	        $dir = str_replace('/includes/src', '/app/code/community/TIG/Buckaroo3Extended/certificate', __DIR__);
-	    }
-	    define('CERTIFICATE_DIR', $dir);
-	    
-	    $this->setAmount($data['amount']);
-	    $this->setPayment($data['payment']);
-		$this->setOrder($data['payment']->getOrder());
-		$this->setSession(Mage::getSingleton('core/session'));
-		
-		$invoice = $this->loadInvoiceByTransactionId($this->_order->getTransactionKey());
-		if ($invoice === false) {
+            $dir = str_replace('/Model/Refund/Request', '/certificate', __DIR__);
+        } else {
+            $dir = str_replace('/includes/src', '/app/code/community/TIG/Buckaroo3Extended/certificate', __DIR__);
+        }
+        define('CERTIFICATE_DIR', $dir);
+
+        $this->setAmount($data['amount']);
+        $this->setPayment($data['payment']);
+        $this->setOrder($data['payment']->getOrder());
+        $this->setSession(Mage::getSingleton('core/session'));
+
+        $invoice = $this->loadInvoiceByTransactionId($this->_order->getTransactionKey());
+
+        if ($invoice === false) {
             Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
-		}
-		$this->setInvoice($invoice);
-		
-		$this->_setOrderBillingInfo();
-		$this->setDebugEmail('');
-		
-		$this->_checkExpired();
+        }
+        $this->setInvoice($invoice->getId());
+
+        $this->_setOrderBillingInfo();
+        $this->setDebugEmail('');
+
+        $this->_checkExpired();
 
         Mage::dispatchEvent('buckaroo3extended_refund_request_setmethod', array('request' => $this, 'order' => $this->_order));
 
@@ -83,10 +84,10 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
             Mage::helper('buckaroo3extended')->logException($e);
             Mage::throwException($e->getMessage());
         }
-        
+
         return $this;
     }
-    
+
     protected function _sendRefundRequest()
     {
         $this->_debugEmail .= 'Chosen payment method: ' . $this->_method . "\n";
@@ -110,16 +111,18 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         //event that allows individual payment methods to add additional variables such as bankaccount number
         Mage::dispatchEvent('buckaroo3extended_refund_request_addservices', array('request' => $this, 'order' => $this->_order));
         Mage::dispatchEvent('buckaroo3extended_refund_request_addcustomvars', array('request' => $this, 'order' => $this->_order));
-        
+
         $this->_debugEmail .= "Events fired! \n";
 
         //clean the array for a soap request
         $this->setVars($this->_cleanArrayForSoap($this->getVars()));
-        
+
         $this->_debugEmail .= "Variable array:" . var_export($this->_vars, true) . "\n\n";
         $this->_debugEmail .= "Building SOAP request... \n";
 
         //send the transaction request using SOAP
+
+        /** @var $soap TIG_Buckaroo3Extended_Model_Soap */
         $soap = Mage::getModel('buckaroo3extended/soap', array('vars' => $this->getVars(), 'method' => $this->getMethod()));
         list($response, $responseXML, $requestXML) = $soap->transactionRequest();
 
@@ -132,7 +135,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 
         $this->_debugEmail .= "Response recieved. \n";
         //process the response
-        
+
         $processedResponse = Mage::getModel(
             'buckaroo3extended/refund_response_abstract',
             array(
@@ -143,15 +146,15 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
                 'order'      => $this->_order,
             )
         )->processResponse();
-        
+
         $this->setPayment($processedResponse->getPayment());
-        
+
         return $this;
     }
 
     /**
      * Only difference with parent is that here the totalAmount is 'Credit', rather than 'Debit'
-     * 
+     *
      * @see TIG_Buckaroo3Extended_Model_Request_Abstract::_addOrderVariables()
      */
     protected function _addOrderVariables()
@@ -163,7 +166,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         {
             $tax += $taxRecord['amount'];
         }
-        $tax = round($tax * 100,0);
+        $tax = round($tax,2);
 
         $this->_vars['currency']     = $currency;
         $this->_vars['amountCredit'] = $totalAmount;
@@ -172,30 +175,30 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
 
         $this->_debugEmail .= 'Order variables added! \n';
     }
-    
+
     protected function _determinRefundAmountAndCurrency()
-	{
-	    $baseCurrency  = $this->_order->getBaseCurrency()->getCode();
+    {
+        $baseCurrency  = $this->_order->getBaseCurrency()->getCode();
         $currency      = $this->_order->getCurrencyCodeUsedForTransaction();
-	    
-	    if ($baseCurrency == $currency) {
-	        return array($currency, $this->_amount);
-	    } else {
-	        $amount = round($this->_amount * $this->_order->getBaseToOrderRate(), 2);
-	        return array($currency, $amount);
-	    }
-	}
-	
-	protected function _addCustomParameters()
-	{
-		$array = array(
-			'refund_initiated_in_magento' => 1,	
-		);
-		
-		if (isset($this->_vars['customParaeters'])) {
-			$this->_vars['customParameters'] = array_merge($this->_vars['customParameters'], $array);
-		} else {
-			$this->_vars['customParameters'] = $array;
-		}
-	}
+
+        if ($baseCurrency == $currency) {
+            return array($currency, $this->_amount);
+        } else {
+            $amount = round($this->_amount * $this->_order->getBaseToOrderRate(), 2);
+            return array($currency, $amount);
+        }
+    }
+
+    protected function _addCustomParameters()
+    {
+        $array = array(
+            'refund_initiated_in_magento' => 1,
+        );
+
+        if (isset($this->_vars['customParaeters'])) {
+            $this->_vars['customParameters'] = array_merge($this->_vars['customParameters'], $array);
+        } else {
+            $this->_vars['customParameters'] = $array;
+        }
+    }
 }

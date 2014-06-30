@@ -1,10 +1,11 @@
-<?php $_session = Mage::getSingleton('checkout/session'); ?>
-<?php $_code=$this->getMethodCode() ?>
-<?php $gender = $this->getGender(); ?>
-<?php $firstname = $this->getFirstname(); ?>
-<?php $lastname = $this->getLastname(); ?>
-<?php $email = $this->getEmail(); ?>
-<?php $_session = Mage::getSingleton('checkout/session'); ?>
+<?php
+$_session  = Mage::getSingleton('checkout/session');
+$_code     = $this->getMethodCode();
+$gender    = $this->getGender();
+$firstname = $this->getFirstname();
+$lastname  = $this->getLastname();
+$email     = $this->getEmail();
+?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
 <fieldset class="form-list buckaroo-method">

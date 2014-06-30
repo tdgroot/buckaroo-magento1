@@ -121,9 +121,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         Mage::dispatchEvent(
         	'buckaroo3extended_response_custom_processing',
             array(
-        		'model'         => $this,
-                'order'         => $this->getOrder(),
-                'response'      => $parsedResponse,
+        		'model'          => $this,
+                'order'          => $this->getOrder(),
+                'response'       => $parsedResponse,
+                'responseobject' => $this->_response,
             )
         );
 
@@ -198,10 +199,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             )
         );
         $this->_order->save();
-        
-        $payMethod = $this->_order->getPayment()->getMethod();
 
-        $shouldSend = Mage::getStoreConfig('buckaroo/'.$payMethod.'/order_email', $this->_order->getStoreId());
+        $payment = $this->_order->getPayment();
+        $payment->getMethodInstance()->saveAdditionalData($this->_response);
+
+        $shouldSend = Mage::getStoreConfig('buckaroo/' . $payment->getMethod() . '/order_email', $this->_order->getStoreId());
         if(!$this->_order->getEmailSent() && $shouldSend)
         {
         	$this->sendNewOrderEmail();

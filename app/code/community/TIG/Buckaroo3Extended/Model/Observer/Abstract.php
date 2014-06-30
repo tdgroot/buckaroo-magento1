@@ -3,7 +3,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 {
     protected $_storeId;
     protected $_order;
-    protected $_bilingInfo;
+    protected $_billingInfo;
     protected $_method = '';
 
     public function getMethod()
@@ -25,10 +25,11 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
-     * Each payment method has it's own observer. When one of thos observers is called, this checks if it's
+     * Each payment method has it's own observer. When one of the observers is called, this checks if it's
      * payment method is being used and therefore, if this observer needs to do anything.
      *
-     * @param unknown_type $observer
+     * @param $observer
+     * @return bool
      */
     protected function _isChosenMethod($observer)
     {
@@ -45,6 +46,13 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $ret;
     }
 
+    /**
+     * Add credit management required fields to the request
+     *
+     * @param $vars
+     * @param string $serviceName
+     * @return mixed
+     */
     protected function _addCreditManagement(&$vars, $serviceName = 'creditmanagement')
     {
         $method = $this->_order->getPayment()->getMethod();
@@ -72,6 +80,8 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 
     /**
      * Currently used by all payment methods except payment guarantee
+     *
+     * @param $vars
      */
     protected function _addAdditionalCreditManagementVariables(&$vars)
     {
@@ -100,6 +110,13 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     	}
     }
 
+    /**
+     * Add the customer variables to the request
+     *
+     * @param $vars
+     * @param string $serviceName
+     * @return mixed
+     */
     protected function _addCustomerVariables(&$vars, $serviceName = 'creditmanagement')
     {
         if (Mage::helper('buckaroo3extended')->isAdmin()) {
@@ -204,14 +221,13 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		return $vars;
     }
 
-	/**
-	 * Processes billingInfo array to get the initials of the customer
-	 *
-	 * @param array $billingInfo
-	 *
-	 * @return string $initials
-	 */
-	protected function _getInitialsCM()
+    /**
+     *
+     * Processes billingInfo array to get the initials of the customer
+     *
+     * @return string
+     */
+    protected function _getInitialsCM()
 	{
 		$firstname = $this->_billingInfo['firstname'];
 
@@ -225,14 +241,13 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 		return $initials;
 	}
 
-	/**
-	 * Processes the customer's billing_address so as to fit the SOAP request. returning an array
-	 *
-	 * @param array $billingInfo
-	 *
-	 * @return array $ret
-	 */
-	protected function _processAddressCM()
+    /**
+     *
+     * Processes the customer's billing_address so as to fit the SOAP request. returning an array
+     *
+     * @return array
+     */
+    protected function _processAddressCM()
 	{
 		//get address from billingInfo
 		$address = $this->_billingInfo['address'];
@@ -259,14 +274,12 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 	 	return $ret;
 	}
 
-	/**
-	 * processes the customer's phone number so as to fit the betaalgarant SOAP request
-	 *
-	 * @param array $billingInfo
-	 *
-	 * @return array
-	 */
-	protected function _processPhoneNumberCM()
+    /**
+     * processes the customer's phone number so as to fit the betaalgarant SOAP request
+     *
+     * @return array
+     */
+    protected function _processPhoneNumberCM()
 	{
 	    $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
 	    if (isset($additionalFields['BPE_PhoneNumber'])) {
@@ -327,6 +340,12 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $return;
 	}
 
+    /**
+     * validate the phonenumber
+     *
+     * @param $number
+     * @return mixed
+     */
     protected function _isValidNotation($number) {
         //checks if the number is valid, if not: try to fix it
         $invalidNotations = array("00310", "0310", "310", "31");
@@ -368,7 +387,10 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return false;
     }
 
-	protected function _getCustomerLastNamePrefix()
+    /**
+     * @return string
+     */
+    protected function _getCustomerLastNamePrefix()
 	{
 	    $lastName = $this->_billingInfo['lastname'];
 
@@ -385,10 +407,12 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 	    return $prefix;
 	}
 
-	/**
-	 * Certain payment methods require a list of other payment methods that will be used to finalize the payment.
-	 * This method forms that list.å
-	 */
+    /**
+     * Certain payment methods require a list of other payment methods that will be used to finalize the payment.
+     * This method forms that list
+     *
+     * @return string
+     */
     protected function _getPaymentMethodsAllowed()
     {
         $configAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowed_methods', $this->getStoreId());
@@ -420,33 +444,44 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $allowedString;
     }
 
+    /**
+     * @param $enrolled
+     * @param $authenticated
+     * @param $order Mage_Sales_Model_Order
+     * @return mixed|null
+     */
     protected function _getSecureStatus($enrolled, $authenticated, $order)
     {
         $status = null;
         $useSuccessStatus = Mage::getStoreConfig('buckaroo/' . $this->_code . '/active_status', $order->getStoreId());
 
         if ($enrolled && $authenticated && $useSuccessStatus) {
-            switch($order->getState()) {
-                case Mage_Sales_Model_Order::STATE_PROCESSING: $status = Mage::getStoreConfig(
-                                                                   'buckaroo/' . $this->_code . '/secure_status_processing',
-                                                                    $order->getStoreId())
-                                                               ;
-                                                               break;
+            switch ($order->getState()) {
+                case Mage_Sales_Model_Order::STATE_PROCESSING:
+                    $status = Mage::getStoreConfig(
+                        'buckaroo/' . $this->_code . '/secure_status_processing',
+                        $order->getStoreId());
+                    break;
             }
         } elseif (!$enrolled || !$authenticated) {
-            switch($order->getState()) {
-                case Mage_Sales_Model_Order::STATE_PROCESSING: $status = Mage::getStoreConfig(
-                                                                   'buckaroo/' . $this->_code . '/unsecure_status_processing',
-                                                                    $order->getStoreId())
-                                                               ;
-                                                               break;
+            switch ($order->getState()) {
+                case Mage_Sales_Model_Order::STATE_PROCESSING:
+                    $status = Mage::getStoreConfig(
+                        'buckaroo/' . $this->_code . '/unsecure_status_processing',
+                        $order->getStoreId());
+                    break;
             }
         }
 
         return $status;
     }
 
-	protected function _updateSecureStatus($enrolled, $authenticated, $order)
+    /**
+     * @param $enrolled
+     * @param $authenticated
+     * @param $order Mage_Sales_Model_Order
+     */
+    protected function _updateSecureStatus($enrolled, $authenticated, $order)
 	{
         $shouldHold = Mage::getStoreConfig('buckaroo/' . $this->_code . '/unsecure_hold', $order->getStoreId());
 
@@ -478,6 +513,9 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         $order->save();
 	}
 
+    /**
+     * @return int|mixed
+     */
     protected function _getServiceVersion()
     {
         $version = Mage::getStoreConfig('buckaroo/' . $this->_code . '/service_version', $this->getStoreId());
@@ -488,6 +526,10 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $version;
     }
 
+    /**
+     * @param $order Mage_Sales_Model_Order
+     * @return int|mixed
+     */
     protected function _getRefundServiceVersion($order)
     {
         $versionUsed = $order->getBuckarooServiceVersionUsed();
@@ -499,6 +541,11 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         return $this->_getServiceVersion();
     }
 
+    /**
+     * @param $order
+     * @param $shippingAddress
+     * @return array|bool
+     */
     protected function _getSellerProtectionVars($order, $shippingAddress)
     {
         $checkForSellerProtection = Mage::helper('buckaroo3extended')->checkSellersProtection($order);
@@ -519,6 +566,9 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         }
     }
 
+    /**
+     * @param $order Mage_Sales_Model_Order
+     */
     protected function _addCommentHistoryForVirtual($order)
     {
         if($order->getIsVirtual()) {
