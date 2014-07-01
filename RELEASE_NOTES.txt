@@ -2,12 +2,12 @@
 
 - Twee nieuwe betaalmethodes toegevoegd: Carte Bancaire en Carte Bleue
 - Ondersteuning Magento 1.9 Community en Magento 1.14 Enterprise
-- Friesland bank verwijdert uit iDeal
+- Friesland bank verwijderd uit iDeal
 - Mandaat nummer wordt nu bij de order opgeslagen
 - IBAN validatie toegevoegd
 - Updates van de valuta bij alle betaalmethodes
 - Adres validatie bij American Express toegevoegd
-- PayPerEmail bugfix met geanulleerde transacties
+- PayPerEmail bugfix met geannulleerde transacties
 - Aanmaken van Creditnote met BetaalGarant (zie installatiehandleiding hoofdstuk 4.4)
 
 ===== 4.8.2 =====
