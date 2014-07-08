@@ -225,7 +225,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         $invoice                               = Mage::getModel('sales/order_invoice')->load($this->_invoice);
         $this->_vars['OriginalTransactionKey'] = $invoice->getTransactionId();
-        $this->_vars['invoiceId']              = $invoice->getIncrementId();
+        $this->_vars['invoiceId']              = 'CM'.$invoice->getIncrementId();
 
         $this->_debugEmail                    .= "Refund variables added! \n";
     }
