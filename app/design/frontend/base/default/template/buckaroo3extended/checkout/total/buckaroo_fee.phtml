@@ -30,41 +30,41 @@
     <tr>
         <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            <strong>
-                <?php endif; ?>
-                <?php echo $this->escapeHtml($this->getTotal()->getTitle()); ?> <?php echo $this->getTaxLabel(false); ?>
-                <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            </strong>
-        <?php endif; ?>
+                <strong>
+            <?php endif; ?>
+            <?php echo $this->escapeHtml($this->getTotal()->getTitle()); ?> <?php echo $this->getTaxLabel(false); ?>
+            <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
+                </strong>
+            <?php endif; ?>
         </td>
         <td style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            <strong>
-                <?php endif; ?>
-                <?php echo $this->helper('checkout')->formatPrice($this->getValue(false)) ?>
-                <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            </strong>
-        <?php endif; ?>
+                <strong>
+            <?php endif; ?>
+            <?php echo $this->helper('checkout')->formatPrice($this->getValue(false)) ?>
+            <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
+                </strong>
+            <?php endif; ?>
         </td>
     </tr>
     <tr>
         <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            <strong>
-                <?php endif; ?>
-                <?php echo $this->escapeHtml($this->getTotal()->getTitle()); ?> <?php echo $this->getTaxLabel(true); ?>
-                <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            </strong>
-        <?php endif; ?>
+                <strong>
+            <?php endif; ?>
+            <?php echo $this->escapeHtml($this->getTotal()->getTitle()); ?> <?php echo $this->getTaxLabel(true); ?>
+            <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
+                </strong>
+            <?php endif; ?>
         </td>
         <td style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            <strong>
-                <?php endif; ?>
-                <?php echo $this->helper('checkout')->formatPrice($this->getValue(true)) ?>
-                <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            </strong>
-        <?php endif; ?>
+                <strong>
+            <?php endif; ?>
+            <?php echo $this->helper('checkout')->formatPrice($this->getValue(true)) ?>
+            <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
+                </strong>
+            <?php endif; ?>
         </td>
     </tr>
 <?php else: ?>
@@ -76,21 +76,21 @@
     <tr>
         <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            <strong>
-                <?php endif; ?>
-                <?php echo $this->escapeHtml($this->getTotal()->getTitle()); ?>
-                <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            </strong>
-        <?php endif; ?>
+                <strong>
+            <?php endif; ?>
+            <?php echo $this->escapeHtml($this->getTotal()->getTitle()); ?>
+            <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
+                </strong>
+            <?php endif; ?>
         </td>
         <td style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            <strong>
-                <?php endif; ?>
-                <?php echo $this->helper('checkout')->formatPrice($_value) ?>
+                <strong>
+            <?php endif; ?>
+            <?php echo $this->helper('checkout')->formatPrice($_value) ?>
                 <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
-            </strong>
-        <?php endif; ?>
+                </strong>
+            <?php endif; ?>
         </td>
     </tr>
 <?php endif; ?>

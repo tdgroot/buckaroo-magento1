@@ -201,10 +201,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_order->save();
 
         /**
-         * @var MAge_Sales_Model_Order_Payment $payment
+         * @var Mage_Sales_Model_Order_Payment $payment
          */
         $payment = $this->_order->getPayment();
-        $payment->registerAuthorizationNotification($order->getBaseGrandTotal());
+        $payment->registerAuthorizationNotification($this->_order->getBaseGrandTotal());
         $payment->getMethodInstance()->saveAdditionalData($this->_response);
 
         $shouldSend = Mage::getStoreConfig('buckaroo/' . $payment->getMethod() . '/order_email', $this->_order->getStoreId());

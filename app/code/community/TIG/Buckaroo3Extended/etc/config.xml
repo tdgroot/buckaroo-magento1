@@ -2,7 +2,7 @@
 <config>
     <modules>
         <TIG_Buckaroo3Extended>
-            <version>4.9.0</version>
+            <version>4.10.0</version>
         </TIG_Buckaroo3Extended>
     </modules>
     <frontend>
@@ -73,35 +73,14 @@
         </routers>
     </admin>
     <global>
-        <pdf>
-            <totals>
-                <buckaroofee translate="title">
-                    <title>Payment Fee</title>
-                    <source_field>PaymentFee</source_field>
-                    <font_size>7</font_size>
-                    <display_zero>0</display_zero>
-                    <sort_order>650</sort_order>
-                    <amount_prefix></amount_prefix>
-                </buckaroofee>
-            </totals>
-        </pdf>
+
         <blocks>
             <buckaroo3extended>
                 <class>TIG_Buckaroo3Extended_Block</class>
             </buckaroo3extended>
-            <adminhtml>
-                <rewrite>
-                    <sales_order_totals_tax>TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Tax</sales_order_totals_tax>
-                </rewrite>
-            </adminhtml>
         </blocks>
+
         <models>
-            <sales>
-                <rewrite>
-                    <order_creditmemo>TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo</order_creditmemo>
-                    <service_order>TIG_Buckaroo3Extended_Model_PaymentFee_Service_Order</service_order>
-                </rewrite>
-            </sales>
             <buckaroo3extended>
                 <class>TIG_Buckaroo3Extended_Model</class>
                 <resourceModel>buckaroo3extended_resource</resourceModel>
@@ -119,16 +98,13 @@
                 </entities>
             </buckaroo3extended_resource>
         </models>
+
         <helpers>
             <buckaroo3extended>
                 <class>TIG_Buckaroo3Extended_Helper</class>
             </buckaroo3extended>
         </helpers>
-        <helpers>
-            <TIG_Buckaroo3Extended>
-                <class>TIG_Buckaroo3Extended_Helper</class>
-            </TIG_Buckaroo3Extended>
-        </helpers>
+
         <resources>
             <buckaroo3extended_setup>
                 <setup>
@@ -150,87 +126,111 @@
                 </connection>
             </buckaroo3extended_read>
         </resources>
+
         <payment>
             <groups>
                 <buckaroo3extended>Buckaroo3Extended</buckaroo3extended>
             </groups>
         </payment>
+
         <sales>
             <quote>
                 <totals>
-                    <buckarooFee>
-                        <class>buckaroo3extended/paymentFee_quote_address_total</class>
-                        <renderer>buckaroo3extended/paymentFee_checkout_fee</renderer>
-                        <after>tax</after>
-                    </buckarooFee>
+                    <buckaroo_fee>
+                        <class>buckaroo3extended/paymentFee_quote_address_total_fee</class>
+                        <before>tax,grand_total</before>
+                        <after>subtotal,discount,shipping</after>
+                        <renderer>buckaroo3extended/paymentFee_checkout_total_fee</renderer>
+                        <admin_renderer>buckaroo3extended/adminhtml_sales_order_create_totals_fee</admin_renderer>
+                    </buckaroo_fee>
+                    <buckaroo_fee_tax>
+                        <class>buckaroo3extended/paymentFee_quote_address_total_feeTax</class>
+                        <before>grand_total</before>
+                        <after>subtotal,discount,shipping,tax</after>
+                    </buckaroo_fee_tax>
                 </totals>
             </quote>
             <order_invoice>
                 <totals>
-                    <buckarooFee>
-                        <class>buckaroo3extended/paymentFee_order_invoice_total</class>
-                        <after>tax</after>
-                    </buckarooFee>
+                    <subtotal>
+                        <class>buckaroo3extended/paymentFee_order_invoice_total_subtotal</class>
+                    </subtotal>
+                    <buckaroo_fee>
+                        <class>buckaroo3extended/paymentFee_order_invoice_total_fee</class>
+                        <after>subtotal,discount,shipping</after>
+                        <before>tax,grand_total</before>
+                    </buckaroo_fee>
+                    <buckaroo_fee_tax>
+                        <class>buckaroo3extended/paymentFee_order_invoice_total_feeTax</class>
+                        <after>subtotal,discount,shipping,tax</after>
+                        <before>grand_total</before>
+                    </buckaroo_fee_tax>
                 </totals>
             </order_invoice>
             <order_creditmemo>
                 <totals>
-                    <buckarooFee>
-                        <class>buckaroo3extended/paymentFee_order_creditmemo_total</class>
-                        <after>tax</after>
-                    </buckarooFee>
+                    <buckaroo_fee>
+                        <class>buckaroo3extended/paymentFee_order_creditmemo_total_fee</class>
+                        <after>subtotal,discount,shipping</after>
+                        <before>tax,grand_total</before>
+                    </buckaroo_fee>
+                    <buckaroo_fee_tax>
+                        <class>buckaroo3extended/paymentFee_order_creditmemo_total_feeTax</class>
+                        <after>subtotal,discount,shipping,tax</after>
+                        <before>grand_total</before>
+                    </buckaroo_fee_tax>
                 </totals>
             </order_creditmemo>
         </sales>
+        <pdf>
+            <totals>
+                <tax>
+                    <model>buckaroo3extended/paymentFee_order_pdf_total_tax</model>
+                </tax>
+                <grand_total>
+                    <model>buckaroo3extended/paymentFee_order_pdf_total_grandtotal</model>
+                </grand_total>
+                <buckaroo_fee translate="title" module="buckaroo3extended">
+                    <title>Buckaroo Payment Fee</title>
+                    <source_field>buckaroo_fee</source_field>
+                    <font_size>7</font_size>
+                    <display_zero>0</display_zero>
+                    <sort_order>300</sort_order>
+                    <model>buckaroo3extended/paymentFee_order_pdf_total_fee</model>
+                </buckaroo_fee>
+            </totals>
+        </pdf>
         <fieldsets>
-            <sales_convert_quote>
-                <buckaroofee>
+            <sales_convert_quote_address>
+                <buckaroo_fee>
                     <to_order>*</to_order>
-                    <base_payment_fee><to_order>*</to_order></base_payment_fee>
-                </buckaroofee>
-                <sales_convert_quote_address>
-                    <payment_fee><to_order>*</to_order></payment_fee>
-                    <base_payment_fee><to_order>*</to_order></base_payment_fee>
-                </sales_convert_quote_address>
-            </sales_convert_quote>
+                </buckaroo_fee>
+                <base_buckaroo_fee>
+                    <to_order>*</to_order>
+                </base_buckaroo_fee>
+                <buckaroo_fee_tax>
+                    <to_order>*</to_order>
+                </buckaroo_fee_tax>
+                <base_buckaroo_fee_tax>
+                    <to_order>*</to_order>
+                </base_buckaroo_fee_tax>
+            </sales_convert_quote_address>
+            <sales_convert_order>
+                <buckaroo_fee>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </buckaroo_fee>
+                <base_buckaroo_fee>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </base_buckaroo_fee>
+                <buckaroo_fee_tax>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </buckaroo_fee_tax>
+                <base_buckaroo_fee_tax>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </base_buckaroo_fee_tax>
+            </sales_convert_order>
         </fieldsets>
         <events>
-            <sales_quote_collect_totals_after>
-                <observers>
-                    <buckaroofee>
-                        <type>singleton</type>
-                        <class>buckaroo3extended/paymentFee_observer</class>
-                        <method>sales_quote_collect_totals_after</method>
-                    </buckaroofee>
-                </observers>
-            </sales_quote_collect_totals_after>
-            <sales_order_payment_place_end>
-                <observers>
-                    <buckaroofee>
-                        <type>singleton</type>
-                        <class>buckaroo3extended/paymentFee_observer</class>
-                        <method>sales_order_payment_place_end</method>
-                    </buckaroofee>
-                </observers>
-            </sales_order_payment_place_end>
-            <buckaroofee_order_creditmemo_refund_before>
-                <observers>
-                    <buckaroofee>
-                        <type>singleton</type>
-                        <class>buckaroo3extended/paymentFee_observer</class>
-                        <method>buckaroofee_order_creditmemo_refund_before</method>
-                    </buckaroofee>
-                </observers>
-            </buckaroofee_order_creditmemo_refund_before>
-            <sales_order_invoice_register>
-                <observers>
-                    <buckaroofee>
-                        <type>singleton</type>
-                        <class>buckaroo3extended/paymentFee_observer</class>
-                        <method>sales_order_invoice_register</method>
-                    </buckaroofee>
-                </observers>
-            </sales_order_invoice_register>
             <sales_order_payment_refund>
                 <observers>
                     <buckaroo3extended_refund_observer>
@@ -1729,10 +1729,5 @@
             </buckaroo3extended_refund>
         </buckaroo>
 
-        <sales>
-            <totals_sort>
-                <buckarooFee>25</buckarooFee>
-            </totals_sort>
-        </sales>
     </default>
 </config>
