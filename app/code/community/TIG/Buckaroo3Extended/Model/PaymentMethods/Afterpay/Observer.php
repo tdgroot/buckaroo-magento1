@@ -29,7 +29,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'version'  => '1',
             ),
         );
-        
+
         if (array_key_exists('services', $vars) && is_array($vars['services'])) {
             $vars['services'] = array_merge($vars['services'], $array);
         } else {
@@ -137,7 +137,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
     /**
      * Adds variables required for the SOAP XML for paymentguarantee to the variable array
      * Will merge with old array if it exists
-     * 
+     *
      * @param array $vars
      */
     protected function _addAfterpayVariables(&$vars)
@@ -218,7 +218,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             );
             $requestArray = array_merge($requestArray,$b2bInfo);
         }
-
         //add all products max 10
         $products = $this->_order->getAllItems();
         $max      = 9;

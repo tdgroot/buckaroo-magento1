@@ -43,7 +43,7 @@
 			<block type="core/template" name="buckaroo_save_sata_js" template="buckaroo3extended/saveData.phtml"/>
 		</reference>
 	</checkout_onepage_index>
-	
+
 	<onestepcheckout_index_index>
 		<reference name="head">
 			<block type="core/template" name="buckaroo_jquery" template="buckaroo3extended/jquery.phtml"/>
@@ -61,58 +61,40 @@
 			<block type="core/template" name="buckaroo_onestepcheckout" template="buckaroo3extended/oneStepCheckout.phtml"/>
 		</reference>
 	</onestepcheckout_index_index>
-	
-    <sales_order_view>
-        <reference name="order_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_totals_paymentfee" before="tax"/>
-        </reference>
-    </sales_order_view>
-    
-    <sales_order_invoice>
-        <reference name="invoice_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_invoice_totals_paymentfee" before="tax"/>
-        </reference>
-    </sales_order_invoice>
-    
-    <sales_order_creditmemo>
-        <reference name="creditmemo_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_creditmemo_totals_frontend_paymentfee" before="tax"/>
-        </reference>
-    </sales_order_creditmemo>
-    
+
     <sales_order_print>
         <reference name="order_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_totals_paymentfee" before="tax"/>
+            <block type="buckaroo3extended/paymentFee_sales_order_totals_fee" before="tax" name="buckaroo_fee"/>
         </reference>
     </sales_order_print>
-    
+
     <sales_order_printinvoice>
         <reference name="invoice_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_invoice_totals_paymentfee" before="tax"/>
+            <block type="buckaroo3extended/paymentFee_sales_order_invoice_totals_fee" before="tax" name="buckaroo_fee"/>
         </reference>
     </sales_order_printinvoice>
-    
+
     <sales_order_printcreditmemo>
         <reference name="creditmemo_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_creditmemo_totals_frontend_paymentfee" before="tax"/>
+            <block type="buckaroo3extended/paymentFee_sales_order_creditmemo_totals_fee" before="tax" name="buckaroo_fee"/>
         </reference>
     </sales_order_printcreditmemo>
-    
+
     <sales_email_order_items>
         <reference name="order_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_totals_paymentfee" before="tax"/>
+            <block type="buckaroo3extended/paymentFee_sales_order_totals_fee" before="tax" name="buckaroo_fee" />
         </reference>
     </sales_email_order_items>
-    
+
     <sales_email_order_invoice_items>
         <reference name="invoice_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_invoice_totals_paymentfee" before="tax"/>
+            <block type="buckaroo3extended/paymentFee_sales_order_invoice_totals_fee" before="tax" name="buckaroo_fee" />
         </reference>
     </sales_email_order_invoice_items>
-    
+
     <sales_email_order_creditmemo_items>
         <reference name="creditmemo_totals">
-            <block name="buckaroo_fee" type="buckaroo3extended/paymentFee_order_creditmemo_totals_frontend_paymentfee" before="tax"/>
+            <block type="buckaroo3extended/paymentFee_sales_order_creditmemo_totals_fee" before="tax" name="buckaroo_fee" />
         </reference>
     </sales_email_order_creditmemo_items>
 </layout>

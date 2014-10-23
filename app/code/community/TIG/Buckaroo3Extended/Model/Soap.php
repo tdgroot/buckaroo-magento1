@@ -540,6 +540,8 @@ class SoapClientWSSEC extends SoapClient
         $KeyTypeNode->appendChild($SecurityTokenReference);
         $sigNodeSet->appendChild($KeyTypeNode);
 
+
+
         return $domDocument;
     }
 }

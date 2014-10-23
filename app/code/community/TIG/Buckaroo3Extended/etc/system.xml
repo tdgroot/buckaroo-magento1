@@ -3,7 +3,7 @@
     <sections>
         <payment>
             <groups>
-                <buckaroo_banner>
+                <buckaroo_banner module="buckaroo3extended">
                     <frontend_model>buckaroo3extended/adminhtml_system_config_paymentmethodbanner</frontend_model>
                     <sort_order>0</sort_order>
                     <show_in_default>1</show_in_default>
@@ -12,23 +12,85 @@
                 </buckaroo_banner>
             </groups>
         </payment>
+
         <sales>
             <groups>
                 <totals_sort>
                     <fields>
-                        <buckarooFee translate="label comment tooltip">
-                            <label>Payment fee</label>
+                        <buckaroo_fee translate="label" module="buckaroo3extended">
+                            <label>Buckaroo Payment fee</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>2</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </buckarooFee>
+                        </buckaroo_fee>
                     </fields>
                 </totals_sort>
             </groups>
         </sales>
-        <buckaroo translate="label">
+
+        <tax>
+            <groups>
+                <classes>
+                    <fields>
+                        <buckaroo_fee translate="label comment" module="buckaroo3extended">
+                            <label>Tax class for Buckaroo Payment fee</label>
+                            <comment>This tax class will be used when calculating the tax for the Buckaroo Payment fee.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/paymentFee_system_config_source_feeTaxClass</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </buckaroo_fee>
+                    </fields>
+                </classes>
+                <calculation>
+                    <fields>
+                        <buckaroo_fee_including_tax translate="label comment" module="buckaroo3extended">
+                            <label>Buckaroo Payment fee</label>
+                            <comment>Whether the Buckaroo Payment fee you have entered is incl. or excl. tax.</comment>
+                            <frontend_type>select</frontend_type>
+                            <backend_model>tax/config_price_include</backend_model>
+                            <source_model>tax/system_config_source_priceType</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </buckaroo_fee_including_tax>
+                    </fields>
+                </calculation>
+                <cart_display>
+                    <fields>
+                        <buckaroo_fee translate="label" module="buckaroo3extended">
+                            <label>Display Buckaroo Payment fee</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>tax/system_config_source_tax_display_type</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </buckaroo_fee>
+                    </fields>
+                </cart_display>
+                <sales_display>
+                    <fields>
+                        <buckaroo_fee translate="label" module="buckaroo3extended">
+                            <label>Display Buckaroo Payment fee</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>tax/system_config_source_tax_display_type</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </buckaroo_fee>
+                    </fields>
+                </sales_display>
+            </groups>
+        </tax>
+
+        <buckaroo translate="label" module="buckaroo3extended">
             <label>Buckaroo</label>
             <tab>sales</tab>
             <class>buckaroo-section</class>
@@ -229,51 +291,32 @@
                         <show_advanced>1</show_advanced>
                         </depends>
                         </service_version>  -->
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        <fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
                             <frontend_type>text</frontend_type>
-                            <backend_model>buckaroo3extended/adminhtml_system_config_backend_buckaroo_fee</backend_model>
                             <sort_order>53</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
                             <depends>
                                 <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
                             </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        </fee>
+                        <fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                             <depends>
                                 <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
                             </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
+                        </fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -447,28 +490,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sort_order>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <duedate translate="label comment tooltip">
                             <label>Number of days between order and invoice</label>
                             <comment>Maximum days of delay 30.</comment>
@@ -1021,50 +1042,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>53</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -1278,50 +1255,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
+                        <fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
+                            <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
                             <depends>
-                                <active_fee>1</active_fee>
                                 <show_advanced>1</show_advanced>
                             </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
+                        </fee>
+                        <fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
+                            <sort_order>47</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                             <depends>
-                                <active_fee>1</active_fee>
                                 <show_advanced>1</show_advanced>
                             </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
+                        </fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -1534,50 +1493,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <active_fee>1</active_fee>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <active_fee>1</active_fee>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -1790,50 +1705,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <active_fee>1</active_fee>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <active_fee>1</active_fee>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -2025,50 +1896,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -2298,50 +2125,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>62</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -2533,50 +2316,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -2785,50 +2524,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -3037,50 +2732,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <sellers_protection translate="label comment">
                             <label>Seller protection enabled</label>
                             <comment>WARNING: Paypal Seller Protection requires additional configuration. Please consult Buckaroo for more information.</comment>
@@ -3425,50 +3076,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>65</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>66</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>67</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -3699,50 +3306,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>62</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -3951,50 +3514,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -4203,50 +3722,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>62</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -4439,50 +3914,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -4675,50 +4106,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -4911,50 +4298,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -5170,50 +4513,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>70</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>71</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>72</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -5503,50 +4802,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>70</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>71</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>72</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -5813,50 +5068,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>62</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -6065,50 +5276,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <active_fee translate="label comment">
-                            <label>Payment fee enabled</label>
-                            <comment>Enable or disable payment fee.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </active_fee>
-                        <payment_fee translate="label comment tooltip">
-                            <label>Payment fee</label>
-                            <comment>Fee for using this payment method.</comment>
-                            <tooltip>In order to use a set amount, please enter it as a number (i.e. 1.5). In order to use a percentage, please enter a number followed directly by the percentage sign (i.e. 5%).</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee>
-                        <payment_fee_label translate="label comment tooltip">
-                            <label>Payment fee frontend label</label>
-                            <comment>Determines the frontend label shown.</comment>
-                            <tooltip>This label will be shown in all order overviews where this payment fee is used.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <active_fee>1</active_fee>
-                            </depends>
-                            <validate>buckaroo_fee</validate>
-                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
