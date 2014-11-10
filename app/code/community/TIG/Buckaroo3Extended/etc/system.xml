@@ -291,7 +291,7 @@
                         <show_advanced>1</show_advanced>
                         </depends>
                         </service_version>  -->
-                        <fee translate="label comment" modul="buckaroo3extended">
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
                             <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
                             <frontend_type>text</frontend_type>
@@ -303,8 +303,8 @@
                             <depends>
                                 <show_advanced>1</show_advanced>
                             </depends>
-                        </fee>
-                        <fee_label translate="label comment" modul="buckaroo3extended">
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
                             <label>Fee label</label>
                             <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
@@ -316,7 +316,7 @@
                             <depends>
                                 <show_advanced>1</show_advanced>
                             </depends>
-                        </fee_label>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -554,6 +554,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>101</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>102</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -1042,6 +1068,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -1255,7 +1307,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <fee translate="label comment" modul="buckaroo3extended">
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
                             <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
                             <frontend_type>text</frontend_type>
@@ -1267,8 +1319,8 @@
                             <depends>
                                 <show_advanced>1</show_advanced>
                             </depends>
-                        </fee>
-                        <fee_label translate="label comment" modul="buckaroo3extended">
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
                             <label>Fee label</label>
                             <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
@@ -1280,7 +1332,7 @@
                             <depends>
                                 <show_advanced>1</show_advanced>
                             </depends>
-                        </fee_label>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -1493,6 +1545,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -1705,6 +1783,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -1896,6 +2000,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -2125,6 +2255,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -2316,6 +2472,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -2524,6 +2706,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -2732,6 +2940,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <sellers_protection translate="label comment">
                             <label>Seller protection enabled</label>
                             <comment>WARNING: Paypal Seller Protection requires additional configuration. Please consult Buckaroo for more information.</comment>
@@ -3031,32 +3265,6 @@
                                 <use_creditmanagement>1</use_creditmanagement>
                             </depends>
                         </reminder_level>
-                        <max_amount translate="label comment tooltip">
-                            <label>Max order amount (in Base Currency)</label>
-                            <comment>Maximum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>54</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                        </max_amount>
-                        <min_amount translate="label comment tooltip">
-                            <label>Min order amount (in Base Currency)</label>
-                            <comment>Minimum order amount allowed.</comment>
-                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>55</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                        </min_amount>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
                             <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
@@ -3076,6 +3284,58 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
+                        <max_amount translate="label comment tooltip">
+                            <label>Max order amount (in Base Currency)</label>
+                            <comment>Maximum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </max_amount>
+                        <min_amount translate="label comment tooltip">
+                            <label>Min order amount (in Base Currency)</label>
+                            <comment>Minimum order amount allowed.</comment>
+                            <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>64</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </min_amount>
                         <active_status translate="label comment">
                             <label>Method specific status enabled</label>
                             <comment>Enable or disable specific status.</comment>
@@ -3306,12 +3566,38 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>57</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>63</sort_order>
+                            <sort_order>58</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3324,7 +3610,7 @@
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>64</sort_order>
+                            <sort_order>59</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3514,6 +3800,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -3722,6 +4034,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>57</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -3914,6 +4252,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -4106,6 +4470,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -4298,6 +4688,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -4513,6 +4929,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>66</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>67</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -4802,6 +5244,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>66</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>67</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -5068,6 +5536,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>57</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
@@ -5276,6 +5770,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_fee translate="label comment" modul="buckaroo3extended">
+                            <label>Fee</label>
+                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee>
+                        <payment_fee_label translate="label comment" modul="buckaroo3extended">
+                            <label>Fee label</label>
+                            <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_fee_label>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>

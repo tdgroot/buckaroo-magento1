@@ -42,11 +42,6 @@
 class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
-     * Xpath to Buckaroo fee label setting.
-     */
-    const XPATH_BUCKAROO_FEE_LABEL = 'payment/buckaroo_fee/fee_label';
-
-    /**
      * Xpath to Buckaroo fee tax class.
      */
     const XPATH_BUCKAROO_FEE_TAX_CLASS = 'tax/classes/buckaroo_fee';
@@ -223,7 +218,7 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
             return Mage::helper('buckaroo3extended')->__('Buckaroo Fee');
         }
 
-        $xpath = 'buckaroo/' . $paymentMethod . '/fee_label';
+        $xpath = 'buckaroo/' . $paymentMethod . '/payment_fee_label';
         $label = Mage::getStoreConfig($xpath, $store);
         return $label;
     }

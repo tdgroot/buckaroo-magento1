@@ -258,7 +258,7 @@
 "The payment request has been recieved by Buckaroo.","Het betalingsverzoek is door Buckaroo ontvangen."
 "A technical error has occurred.","Er is een technische fout opgetreden."
 "The payment request has been denied by Buckaroo.","Het betalingsverzoek is geweigerd door Buckaroo."
-"The payment request has been successfully recieved by Buckaroo.","Het betalingsverzoek is geaccepteerd door Buckaroo."
+"The payment request has been successfully received by Buckaroo.","Het betalingsverzoek is geaccepteerd door Buckaroo."
 "Customer is being redirected to Buckaroo. Url: %s","De klant wordt doorgestuurd naar Buckaroo om de betaling af te ronden. Url: %s"
 "Buckaroo has sent the following response: %s","Buckaroo heeft de volgende response gestuurd: %s"
 "Merchant is protected by PayPals Seller Protection Policy for both Unauthorized Payment and Item Not Received","Voor deze bestelling geldt een volledige verkopersbescherming"
