@@ -41,7 +41,7 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
     /**
      * Xpath to the Buckaroo fee setting.
      */
-    const XPATH_BUCKAROO_FEE = 'buckaroo/%s/fee';
+    const XPATH_BUCKAROO_FEE = 'buckaroo/%s/payment_fee';
 
     /**
      * Xpath to Buckaroo fee tax class.
