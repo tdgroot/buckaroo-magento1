@@ -39,22 +39,27 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         try {
             $this->_sendRequest();
         } catch (Exception $e) {
+
+            $responseModelClass = Mage::helper('buckaroo3extended')->isAdmin() ? 'buckaroo3extended/response_backendOrder' : 'buckaroo3extended/response_abstract';
+
             Mage::helper('buckaroo3extended')->logException($e);
-            Mage::getModel(
-                'buckaroo3extended/response_abstract',
+            $responseModel = Mage::getModel(
+                $responseModelClass,
                 array(
                     'response' => false,
                     'XML' => false,
                     'debugEmail' => $this->_debugEmail
                 )
-            )->processResponse();
+            );
+            $responseModel->setOrder($this->_order)
+                          ->processResponse();
         }
     }
 
     protected function _sendRequest()
     {
         $responseModelClass = Mage::helper('buckaroo3extended')->isAdmin() ? 'buckaroo3extended/response_backendOrder' : 'buckaroo3extended/response_abstract';
-        
+
         if (empty($this->_order)) {
             $this->_debugEmail .= "No order was set! :( \n";
             Mage::getModel($responseModelClass, array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
@@ -102,7 +107,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         }else {
         	Mage::getSingleton('adminhtml/session_quote')->getQuote()->setReservedOrderId(null)->save();
         }
-        
+
 
         $this->_debugEmail .= "\n";
         //forms an array with all payment-independant variables (such as merchantkey, order id etc.) which are required for the transaction request
