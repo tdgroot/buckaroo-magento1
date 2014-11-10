@@ -97,7 +97,12 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         }
 
         //hack to prevent SQL errors when using onestepcheckout
-        Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
+        if(!Mage::helper('buckaroo3extended')->isAdmin()) {
+        	Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
+        }else {
+        	Mage::getSingleton('adminhtml/session_quote')->getQuote()->setReservedOrderId(null)->save();
+        }
+        
 
         $this->_debugEmail .= "\n";
         //forms an array with all payment-independant variables (such as merchantkey, order id etc.) which are required for the transaction request
