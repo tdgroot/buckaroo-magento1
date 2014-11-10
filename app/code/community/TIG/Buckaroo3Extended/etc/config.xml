@@ -1567,7 +1567,7 @@
                 <sort_order>20</sort_order>
                 <limit_by_ip>0</limit_by_ip>
                 <allowed_currencies>EUR</allowed_currencies>
-                <allowed_methods>all</allowed_methods>
+                <allowed_methods>buckaroo3extended_ideal</allowed_methods>
                 <duedate>0</duedate>
                 <payment_fee_label>Fee</payment_fee_label>
                 <order_email>1</order_email>
