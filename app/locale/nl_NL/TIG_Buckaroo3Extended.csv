@@ -305,3 +305,6 @@
 "Select which giftcards are available to the customer. You can add new cards in System > Buckaroo giftcards","Selecteer welke cadeaukaarten beschikbaar zijn voor de consument. Nieuwe cadeaukaarten kunnen via Systeem > Buckaroo giftcards worden toegevoegd."
 "Hold orders which have no Carte Bancaire SecureCode.","Orders zonder Carte Bancaire SecureCode worden 'onhold' gezet."
 "Hold orders which have no Carte Bleue SecureCode.","Orders zonder Carte Bleue SecureCode worden 'onhold' gezet."
+"A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.","Er is een technische fout opgetreden. Probeer het opnieuw. Als het probleem zich blijft voordoen neem dan contact op met de shopbeheerder."
+"The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.","Dit bedrag wordt berekend op basis van de BTW instellingen in: Systeem > Verkoop > Belasting"
+"This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.","Het label wordt getoond naast de fee tijdens de checkout en op de order, invoice, creditmemo pagina's en PDF."
