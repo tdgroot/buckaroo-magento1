@@ -46,15 +46,16 @@
 
     <adminhtml_sales_order_creditmemo_new>
         <reference name="creditmemo_totals">
-            <block type="buckaroo3extended/adminhtml_sales_order_creditmemo_totals_fee" before="tax"
-                   name="buckaroo_fee"/>
-            <block type="buckaroo3extended/adminhtml_sales_order_creditmemo_create_fee" name="buckaroo_fee_adjustment"
-                   template="buckaroo3extended/sales/order/creditmemo/create/totals/fee.phtml" before="adjustments"/>
+            <block type="buckaroo3extended/adminhtml_sales_order_creditmemo_totals_fee" before="tax" name="buckaroo_fee"/>
+            <block type="buckaroo3extended/adminhtml_sales_order_creditmemo_create_fee" name="buckaroo_fee_adjustment" template="buckaroo3extended/sales/order/creditmemo/create/totals/fee.phtml" before="adjustments"/>
         </reference>
         <reference name="tax">
        		<action method = 'setTemplate'>
        			<template>buckaroo3extended/sales/order/totals/tax.phtml</template>
        		</action>
+        </reference>
+        <reference name="content">
+            <block type="buckaroo3extended/adminhtml_sales_order_creditmemo_create_refundFields" name="buckaroo_refund_fields" template="buckaroo3extended/sales/order/creditmemo/create/refund_fields.phtml"/>
         </reference>
     </adminhtml_sales_order_creditmemo_new>
 
