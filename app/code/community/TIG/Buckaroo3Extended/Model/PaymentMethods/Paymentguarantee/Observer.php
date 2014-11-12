@@ -156,6 +156,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             return $this;
         }
 
+
         $responseModel = $observer->getModel();
         $response = $observer->getResponse();
         $responseObject = $observer->getResponseobject();
@@ -167,6 +168,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             $transactionKey = $responseObject->Key;
         }
 
+        /**
+         * @var $pushModel TIG_Buckaroo3Extended_Model_Response_Push
+         */
         $pushModel = Mage::getModel(
             'buckaroo3extended/response_push',
             array(

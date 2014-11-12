@@ -17,9 +17,6 @@ class TIG_Buckaroo3Extended_Model_Observer_BackendOrder extends Mage_Core_Model_
             
             $request->sendRequest();
 	    } catch (Exception $e) {
-	        Mage::getSingleton('core/session')->addError(
-                Mage::helper('buckaroo3extended')->__($e->getMessage())
-            );
             Mage::throwException($e->getMessage());
 	    }
 	    

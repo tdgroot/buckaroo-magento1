@@ -39,28 +39,47 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         try {
             $this->_sendRequest();
         } catch (Exception $e) {
+
+            $responseModelClass = Mage::helper('buckaroo3extended')->isAdmin() ? 'buckaroo3extended/response_backendOrder' : 'buckaroo3extended/response_abstract';
+
             Mage::helper('buckaroo3extended')->logException($e);
-            Mage::getModel(
-                'buckaroo3extended/response_abstract',
+            $responseModel = Mage::getModel(
+                $responseModelClass,
                 array(
                     'response' => false,
                     'XML' => false,
                     'debugEmail' => $this->_debugEmail
                 )
-            )->processResponse();
+            );
+            $responseModel->setOrder($this->_order)
+                          ->processResponse();
         }
     }
 
     protected function _sendRequest()
     {
+        $responseModelClass = Mage::helper('buckaroo3extended')->isAdmin() ? 'buckaroo3extended/response_backendOrder' : 'buckaroo3extended/response_abstract';
+
         if (empty($this->_order)) {
             $this->_debugEmail .= "No order was set! :( \n";
-            Mage::getModel('buckaroo3extended/response_abstract', array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
+            Mage::getModel($responseModelClass, array('response' => false, 'XML' => false, 'debugEmail' => $this->_debugEmail))->processResponse();
+        }
+
+        if($this->_order->hasTransactionKey()){
+            $message = 'Order '.$this->_order->getIncrementId().' has a new transaction key requested, the current key will be unset.'."\n";
+            $message.= 'current key: '.$this->_order->getTransactionKey();
+
+            $this->_debugEmail .= $message."\n";
+
+            $this->_order->addStatusHistoryComment(
+                Mage::helper('buckaroo3extended')->__('New transaction key requested, the current key is unset.')
+            );
+
+            $this->_order->setTransactionKey(false);
+            $this->_order->save();
         }
 
         Mage::dispatchEvent('buckaroo3extended_request_setmethod', array('request' => $this, 'order' => $this->_order));
-
-        $responseModelClass = Mage::helper('buckaroo3extended')->isAdmin() ? 'buckaroo3extended/response_backendOrder' : 'buckaroo3extended/response_abstract';
 
         $this->_debugEmail .= 'Chosen payment method: ' . $this->_method . "\n";
 
@@ -83,7 +102,12 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         }
 
         //hack to prevent SQL errors when using onestepcheckout
-        Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
+        if(!Mage::helper('buckaroo3extended')->isAdmin()) {
+        	Mage::getSingleton('checkout/session')->getQuote()->setReservedOrderId(null)->save();
+        }else {
+        	Mage::getSingleton('adminhtml/session_quote')->getQuote()->setReservedOrderId(null)->save();
+        }
+
 
         $this->_debugEmail .= "\n";
         //forms an array with all payment-independant variables (such as merchantkey, order id etc.) which are required for the transaction request

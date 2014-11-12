@@ -43,13 +43,6 @@
             </div>
         </li>
 
-        <li>
-            <?php
-                $ibanConverterLink = '<a target="_blank" href="https://iban.buckaroo.nl/">'.Mage::helper('buckaroo3extended')->__('here').'</a>';
-                echo Mage::helper('buckaroo3extended')->__('Convert your account number to IBAN %s',$ibanConverterLink);
-            ?>
-        </li>
-
         <?php $currentBusiness = $this->getBusiness(); ?>
 
         <?php if($currentBusiness == '1'): ?>

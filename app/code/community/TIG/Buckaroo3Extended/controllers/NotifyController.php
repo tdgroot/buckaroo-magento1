@@ -135,7 +135,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_debugEmail .= "\nException trace: " . $e->getTraceAsString() . "\n";
 
             Mage::register('buckaroo_push-error', true);
-            Mage::logException($e);
+            Mage::helper('buckaroo3extended')->logException($e);
             //this will allow the script to continue unhindered
             $processedPush = false;
             $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
@@ -187,6 +187,10 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         );
 
         $module->processReturn();
+
+
+
+
         $this->_redirect('');
     }
 

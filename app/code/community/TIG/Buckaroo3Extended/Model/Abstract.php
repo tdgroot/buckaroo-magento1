@@ -29,7 +29,10 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     const BUCKAROO_PENDING_PAYMENT   = 'BUCKAROO_PENDING_PAYMENT';
     const BUCKAROO_INCORRECT_PAYMENT = 'BUCKAROO_INCORRECT_PAYMENT';
 
-	protected $_order = '';
+    /**
+     *  @var Mage_Sales_Model_Order $_order
+     */
+    protected $_order = '';
 	protected $_debugEmail;
 	protected $_billingInfo = '';
 	protected $_session = '';

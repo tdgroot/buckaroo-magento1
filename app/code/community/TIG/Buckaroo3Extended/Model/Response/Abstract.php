@@ -200,7 +200,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         );
         $this->_order->save();
 
+        /**
+         * @var Mage_Sales_Model_Order_Payment $payment
+         */
         $payment = $this->_order->getPayment();
+        $payment->registerAuthorizationNotification($this->_order->getBaseGrandTotal());
         $payment->getMethodInstance()->saveAdditionalData($this->_response);
 
         $shouldSend = Mage::getStoreConfig('buckaroo/' . $payment->getMethod() . '/order_email', $this->_order->getStoreId());
@@ -260,16 +264,18 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _error()
     {
         $this->_debugEmail .= "The transaction generated an error. \n";
-
+		
+        Mage::getSingleton('core/session')->addError(
+        		Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
+        );
+        
         $this->_order->addStatusHistoryComment(
             Mage::helper('buckaroo3extended')->__(
                 'A technical error has occurred.'
             )
         );
 
-        Mage::getSingleton('core/session')->addError(
-            Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
-        );
+        
 
         $this->_order->cancel()->save();
         $this->_debugEmail .= "The order has been cancelled. \n";
