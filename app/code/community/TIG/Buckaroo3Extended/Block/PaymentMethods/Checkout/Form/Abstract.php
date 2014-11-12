@@ -1,6 +1,9 @@
 <?php
 class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends Mage_Payment_Block_Form
 {
+    /**
+     * construct method
+     */
     protected function _construct()
     {
         $session = Mage::getSingleton('checkout/session');
@@ -12,6 +15,10 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return parent::_construct();
     }
 
+    /**
+     * @param bool $useSpan
+     * @return string
+     */
     public function getMethodLabelAfterHtml($useSpan = true)
     {
         if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
@@ -51,6 +58,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return $feeText;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         $name = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customername');
@@ -65,6 +75,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return $name;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFirstname()
     {
         $firstname = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customerfirstname');
@@ -80,6 +93,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return $firstname;
     }
 
+    /**
+     * @return mixed
+     */
     public function getLastname()
     {
         $lastname = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customerlastname');
@@ -95,6 +111,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return $lastname;
     }
 
+    /**
+     * @return int
+     */
     public function getGender()
     {
         $gender = (int) $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
@@ -107,6 +126,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return $gender;
     }
 
+    /**
+     * @return array|string
+     */
     public function getDob()
     {
         $dob = array(
@@ -135,6 +157,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return $dob;
     }
 
+    /**
+     * @return mixed
+     */
     public function getEmail()
     {
         $email = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customeremail');
@@ -150,6 +175,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return $email;
     }
 
+    /**
+     * @return mixed
+     */
     public function getBankAccount()
     {
         $account = $this->getSession()->getData($this->getMethodCode() . '_bpe_customer_account_number');
@@ -157,6 +185,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         return $account;
     }
 
+    /**
+     * @return null|string
+     */
     public function getPhoneNumber()
     {
         $phoneNumber = $this->getSession()->getData($this->getMethodCode() . '_bpe_customer_phone_number');
@@ -177,5 +208,16 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         }
 
         return $phoneNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBillingCountry()
+    {
+        /** @var Mage_Sales_Model_Quote $quote */
+        $quote = $this->getQuote();
+
+        return $quote->getBillingAddress()->getCountry();
     }
 }
