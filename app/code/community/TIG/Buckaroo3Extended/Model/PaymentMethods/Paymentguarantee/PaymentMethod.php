@@ -21,9 +21,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
         $accountNumber = $post[$this->_code.'_bpe_customer_account_number'];
 
         $customerBirthDate = date(
-            'Y-m-d', strtotime($post[$this->_code . '_customerbirthdate']['year']
-                . '-' . $post[$this->_code . '_customerbirthdate']['month']
-                . '-' . $post[$this->_code . '_customerbirthdate']['day'])
+            'Y-m-d', strtotime($post['payment'][$this->_code]['year']
+                . '-' . $post['payment'][$this->_code]['month']
+                . '-' . $post['payment'][$this->_code]['day'])
         );
 
         $session->setData(

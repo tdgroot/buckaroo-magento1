@@ -293,7 +293,7 @@
                         </service_version>  -->
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>53</sort_order>
                             <show_in_default>1</show_in_default>
@@ -556,7 +556,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>101</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1070,7 +1070,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>51</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1309,7 +1309,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1547,7 +1547,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1785,7 +1785,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2002,7 +2002,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2257,7 +2257,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>51</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2474,7 +2474,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2708,7 +2708,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -2942,7 +2942,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -3286,7 +3286,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
@@ -3568,7 +3568,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>56</sort_order>
                             <show_in_default>1</show_in_default>
@@ -3802,7 +3802,7 @@
                         <!--</show_advanced>-->
                         <!--<payment_fee translate="label comment" modul="buckaroo3extended">-->
                             <!--<label>Fee</label>-->
-                            <!--<comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>-->
+                            <!--<comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>-->
                             <!--<frontend_type>text</frontend_type>-->
                             <!--<sort_order>46</sort_order>-->
                             <!--<show_in_default>1</show_in_default>-->
@@ -4036,7 +4036,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>56</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4254,7 +4254,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4472,7 +4472,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4690,7 +4690,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4931,7 +4931,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>66</sort_order>
                             <show_in_default>1</show_in_default>
@@ -5246,7 +5246,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>66</sort_order>
                             <show_in_default>1</show_in_default>
@@ -5538,7 +5538,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>56</sort_order>
                             <show_in_default>1</show_in_default>
@@ -5772,7 +5772,7 @@
                         </show_advanced>
                         <payment_fee translate="label comment" modul="buckaroo3extended">
                             <label>Fee</label>
-                            <comment>This fee will be charged to the customer when they choose to pay using Buckaroo Payment Fee.</comment>
+                            <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>51</sort_order>
                             <show_in_default>1</show_in_default>
