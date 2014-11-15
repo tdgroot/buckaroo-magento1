@@ -3,10 +3,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 {
     protected $_code = 'buckaroo3extended_afterpay';
     protected $_method = false;
+    /** @var  TIG_Buckaroo3Extended_Helper_Data $_helper */
+    protected $_helper;
 
     protected function _construct()
     {
         $this->_method = Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/paymethod', Mage::app()->getStore()->getStoreId());
+        $this->_helper = Mage::helper('buckaroo3extended');
     }
 
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
@@ -61,10 +64,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         $this->_addAfterpayVariables($vars, $this->_method);
 
-        //echo '<pre>';
-        //var_dump($vars);die;
         $request->setVars($vars);
-
         return $this;
     }
 
@@ -203,11 +203,30 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $customerInfo = array(
             'CustomerAccountNumber' => $additionalFields['BPE_AccountNumber'],
             'CustomerIPAddress'     => Mage::helper('core/http')->getRemoteAddr(),
+            'Accept'                => $additionalFields['BPE_Accept'],
+        );
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+
+        if($this->_helper->isEnterprise()){
+            if((double)$this->_order->getGiftCardsAmount() > 0){
+                $discount = (double)$this->_order->getGiftCardsAmount();
+            }
+        }
+
+        if(abs((double)$this->_order->getDiscountAmount()) > 0){
+            $discount += abs((double)$this->_order->getDiscountAmount());
+        }
+
+
+        //add order Info
+        $orderInfo = array(
+            'Discount' => $discount,
+            'ShippingCosts' => $shippingCosts,
         );
 
         $requestArray = array_merge($requestArray,$customerInfo);
+        $requestArray = array_merge($requestArray,$orderInfo);
         //is B2B
-        $b2bInfo = array();
         if($additionalFields['BPE_B2B'] == 2){
             $b2bInfo = array(
                 'B2B'                    => 'true',
@@ -220,7 +239,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         }
         //add all products max 10
         $products = $this->_order->getAllItems();
-        $max      = 9;
+        $max      = 99;
         $i        = 1;
 
         $group = array();
@@ -257,8 +276,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         end($group);// move the internal pointer to the end of the array
         $key             = (int)key($group);
-        $shippingGroupId = $key+1;
-        $group[$shippingGroupId] = $this->_getShippingLine();
+        $feeGroupId = $key+1;
+        $paymentFeeArray = $this->_getPaymentFeeLine();
+        if(false !== $paymentFeeArray && is_array($paymentFeeArray)){
+            $group[$feeGroupId] = $paymentFeeArray;
+        }
 
         $requestArray = array_merge($requestArray, array('Articles' => $group));
 
@@ -269,15 +291,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         }
     }
 
-    protected function _getShippingLine()
+    protected function _getPaymentFeeLine()
     {
-        $shipping  = (float) $this->_order->getBaseShippingAmount();
-        $article['ArticleDescription']['value'] = 'Verzendkosten';
-        $article['ArticleId']['value']          = 1;
-        $article['ArticleQuantity']['value']    = 1;
-        $article['ArticleUnitPrice']['value']   = round($shipping + $this->_order->getBaseShippingTaxAmount(), 0);
-        $article['ArticleVatcategory']['value'] = $this->_getTaxCategory(Mage::getStoreConfig('tax/classes/shipping_tax_class', Mage::app()->getStore()->getId()));
-        return $article;
+        $fee    = (double) $this->_order->getBuckarooFee();
+        $feeTax = (double) $this->_order->getBuckarooFeeTax();
+
+        if($fee > 0){
+            $article['ArticleDescription']['value'] = 'Servicekosten';
+            $article['ArticleId']['value']          = 1;
+            $article['ArticleQuantity']['value']    = 1;
+            $article['ArticleUnitPrice']['value']   = $fee+$feeTax;
+            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory(Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId()));
+            return $article;
+        }
+        return false;
     }
 
     protected function _getTaxCategory($taxClassId)
@@ -297,10 +324,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             return 2;
         } elseif (in_array($taxClassId, $zeroTaxClasses)) {
             return 3;
-        } elseif (in_array($taxClassId, $noTaxClasses)) {
-            return 4;
         } else {
-            Mage::throwException($this->_helper->__('Did not recognize tax class for class ID: ') . $taxClassId);
+            return 4;
         }
     }
 
@@ -397,6 +422,49 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
      */
     protected function isShippingDifferent()
     {
-        return $this->_order->getShippingAddress()->getSameAsBilling();
+        // exclude certain keys that are always different
+        $excludeKeys = array('entity_id', 'customer_address_id', 'quote_address_id', 'region_id', 'customer_id', 'address_type');
+
+        //get both the order-addresses
+        $oBillingAddress = $this->_order->getBillingAddress()->getData();
+        $oShippingAddress = $this->_order->getShippingAddress()->getData();
+
+        //remove the keys with corresponding values from both the addressess
+        $oBillingAddressFiltered = array_diff_key($oBillingAddress, array_flip($excludeKeys));
+        $oShippingAddressFiltered = array_diff_key($oShippingAddress, array_flip($excludeKeys));
+
+        //differentiate the addressess, when some data is different an array with changes will be returned
+        $addressDiff = array_diff($oBillingAddressFiltered, $oShippingAddressFiltered);
+
+        //if
+        if( !empty($addressDiff) ) { // billing and shipping addresses are different
+            return true;
+        }
+        return false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
