@@ -2,6 +2,9 @@
 class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extended_Model_Abstract
 {
     protected $_storeId;
+    /**
+     *  @var Mage_Sales_Model_Order $_order
+     */
     protected $_order;
     protected $_billingInfo;
     protected $_method = '';
