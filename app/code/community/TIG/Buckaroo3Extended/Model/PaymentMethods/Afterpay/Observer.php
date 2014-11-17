@@ -313,13 +313,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             return 4;
         }
 
-        $highTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/high', Mage::app()->getStore()->getStoreId()));
-        $lowTaxClasses  = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/low', Mage::app()->getStore()->getStoreId()));
-        $zeroTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/zero', Mage::app()->getStore()->getStoreId()));
-        $noTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/no', Mage::app()->getStore()->getStoreId()));
+        $highTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/high', Mage::app()->getStore()->getStoreId()));
+        $middleTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/middle', Mage::app()->getStore()->getStoreId()));
+        $lowTaxClasses    = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/low', Mage::app()->getStore()->getStoreId()));
+        $zeroTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/zero', Mage::app()->getStore()->getStoreId()));
+        $noTaxClasses     = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/no', Mage::app()->getStore()->getStoreId()));
 
         if (in_array($taxClassId, $highTaxClasses)) {
             return 1;
+        }elseif (in_array($taxClassId, $middleTaxClasses)) {
+            return 5;
         } elseif (in_array($taxClassId, $lowTaxClasses)) {
             return 2;
         } elseif (in_array($taxClassId, $zeroTaxClasses)) {
