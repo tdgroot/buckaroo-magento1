@@ -1332,6 +1332,7 @@
                 <thumbprint></thumbprint>
                 <mode>1</mode>
                 <payment_description>Magento Buckaroo</payment_description>
+                <fee_percentage_mode>subtotal</fee_percentage_mode>
             </buckaroo3extended>
 
             <buckaroo3extended_advanced>

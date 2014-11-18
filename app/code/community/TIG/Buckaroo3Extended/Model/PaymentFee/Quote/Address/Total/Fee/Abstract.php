@@ -54,6 +54,11 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
     const XPATH_BUCKAROO_FEE_INCLUDING_TAX = 'tax/calculation/buckaroo_fee_including_tax';
 
     /**
+     * Xpath to the fee_percentage_mode setting.
+     */
+    const XPATH_BUCKAROO_FEE_PERCENTAGE_MODE = 'buckaroo/buckaroo3extended/fee_percentage_mode';
+
+    /**
      * @var string
      */
     protected $_totalCode;
