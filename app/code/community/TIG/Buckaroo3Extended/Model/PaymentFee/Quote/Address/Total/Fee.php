@@ -219,7 +219,52 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
             return 0;
         }
 
-        $fee = (float) Mage::getStoreConfig(sprintf(self::XPATH_BUCKAROO_FEE,$paymentMethod), $storeId);
+        $fee = Mage::getStoreConfig(sprintf(self::XPATH_BUCKAROO_FEE, $paymentMethod), $storeId);
+
+        /**
+         * Determine if the configured fee is a percentage or a flat amount.
+         */
+        if (strpos($fee, '%') !== false) {
+            /**
+             * If the fee is a percentage, get the configured percentage value and determine over which part of the
+             * quote this percentage needs to be calculated.
+             */
+            $percentage = floatval(trim($fee));
+            if (!$quote->isVirtual()) {
+                $address = $quote->getShippingAddress();
+            } else {
+                $address = $quote->getBillingAddress();
+            }
+
+            $calculationAmount = false;
+            $feePercentageMode = Mage::getStoreConfig(self::XPATH_BUCKAROO_FEE_PERCENTAGE_MODE, $storeId);
+            switch ($feePercentageMode) {
+                case 'subtotal':
+                    $calculationAmount = $address->getBaseSubtotal()
+                                       + $address->getBaseTaxAmount()
+                                       - $address->getBaseDiscountAmount();
+                    break;
+                case 'grandtotal':
+                    $calculationAmount = $address->getBaseSubtotal()
+                                       + $address->getBaseTaxAmount()
+                                       + $address->getBaseShippingAmount()
+                                       + $address->getBaseShippingTaxAmount()
+                                       - $address->getBaseDiscountAmount();
+                    break;
+                //no default
+            }
+
+            /**
+             * Calculate the flat fee.
+             */
+            if ($calculationAmount !== false && $calculationAmount > 0) {
+                $fee = $calculationAmount * ($percentage / 100);
+            } else {
+                $fee = 0;
+            }
+        } else {
+            $fee = (float) $fee;
+        }
 
         if ($fee <= 0) {
             return 0;
