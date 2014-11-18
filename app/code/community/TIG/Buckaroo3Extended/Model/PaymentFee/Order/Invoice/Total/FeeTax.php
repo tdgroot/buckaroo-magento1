@@ -80,21 +80,18 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total_FeeTax extends 
          * For all versions except 1.13.0.X and 1.8.0.X we need to add the Payment fee tax to the grand total amounts.
          */
         $helper = Mage::helper('buckaroo3extended');
-        if (
-            ($helper->isEnterprise()
-                && (version_compare(Mage::getVersion(), '1.13.1.0', '>=')
-                    || version_compare(Mage::getVersion(), '1.13.0.0', '<')
-                )
-            )
-            || (!$helper->isEnterprise()
-                && (version_compare(Mage::getVersion(), '1.8.1.0', '>=')
-                    || version_compare(Mage::getVersion(), '1.8.0.0', '<')
-                )
-            )
-        ) {
-            $invoice->setGrandTotal($invoice->getGrandTotal() + $feeTax)
-                    ->setBaseGrandTotal($invoice->getBaseGrandTotal() + $baseFeeTax);
+
+        //fix for Magento 1.6.2.0 for showing correctly taxes in the order totals
+        if (!$helper->isEnterprise() && version_compare(Mage::getVersion(), '1.6.2.0', '==')){
+            $grandTotal     = $invoice->getGrandTotal();
+            $baseGrandTotal = $invoice->getBaseGrandTotal();
+        }else{
+            $grandTotal     = $invoice->getGrandTotal() + $feeTax;
+            $baseGrandTotal = $invoice->getBaseGrandTotal() + $baseFeeTax;
         }
+
+        $invoice->setGrandTotal($grandTotal)
+                ->setBaseGrandTotal($baseGrandTotal);
 
         /**
          * Update the order's COD fee tax amounts.
