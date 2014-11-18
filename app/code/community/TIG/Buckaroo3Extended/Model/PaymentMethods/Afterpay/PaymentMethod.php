@@ -30,7 +30,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_afterpay_checkout_form';
 
-    protected $_canRefund               = false;
+    protected $_canRefund               = true;
     protected $_canRefundInvoicePartial = false;
 
     public function getOrderPlaceRedirectUrl()
@@ -106,7 +106,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
         }
 
         $quoteItems = $quote->getAllVisibleItems();
-        if(count($quoteItems) > 9){
+        if(count($quoteItems) > 99){
             return false;
         }
 
