@@ -252,6 +252,11 @@
                         <class>buckaroo3extended/paymentMethods_paymentguarantee_observer</class>
                         <method>buckaroo3extended_refund_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_refund_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
                     <buckaroo3extended_paymentmethod_observer_ideal>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_ideal_observer</class>
@@ -356,6 +361,11 @@
                         <class>buckaroo3extended/paymentMethods_paymentguarantee_observer</class>
                         <method>buckaroo3extended_refund_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_refund_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
                     <buckaroo3extended_paymentmethod_observer_amex>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_amex_observer</class>

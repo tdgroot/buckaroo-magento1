@@ -134,6 +134,68 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $responseModel->setCustomResponseProcessing(true);
     }
 
+    /** refund methods */
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $canRefund = Mage::getStoreConfig('buckaroo/buckaroo3extended_'.$this->_method.'/creditnote', Mage::app()->getStore()->getId());
+
+        if(!$canRefund){
+            Mage::getSingleton('core/session')->addNotice(
+                Mage::helper('buckaroo3extended')->__( "Currently the option to create a creditnote with a Paymentguarantee transaction is disabled." )
+            );
+            return $this;
+        }
+        $request = $observer->getRequest();
+
+        $codeBits = explode('_', $this->_code);
+        $code = end($codeBits);
+        $request->setMethod($code);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $refundRequest = $observer->getRequest();
+
+        $vars = $refundRequest->getVars();
+
+        $array = array(
+            'action'    => 'creditnote',
+            'version'   => 1,
+
+        );
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
+
+        $refundRequest->setVars($vars);
+
+        return $this;
+    }
+
+    /** INTERNAL METHODS **/
+
     /**
      * Adds variables required for the SOAP XML for paymentguarantee to the variable array
      * Will merge with old array if it exists
