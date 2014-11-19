@@ -2,6 +2,11 @@
 class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends Mage_Payment_Block_Form
 {
     /**
+     * Xpath to the Buckaroo fee setting.
+     */
+    const XPATH_BUCKAROO_FEE = 'buckaroo/%s/payment_fee';
+
+    /**
      * construct method
      */
     protected function _construct()
@@ -27,9 +32,16 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
 
         $code = $this->getMethod()->getCode();
 
-        $paymentFeeModel = Mage::getModel('buckaroo3extended/paymentFee_quote_address_total_fee');
 
-        $paymentFee = $paymentFeeModel->getPaymentFeeBeforeSelect($this->getQuote(), $code);
+
+        $quote = $this->getQuote();
+        /** @todo generate the fee amount dynamic, based on TAX-settings  */
+        //$paymentFeeModel = Mage::getModel('buckaroo3extended/paymentFee_quote_address_total_fee');
+        //$paymentFee = $paymentFeeModel->getPaymentFeeBeforeSelect($quote, $code);
+        $paymentFee = Mage::getStoreConfig(
+            sprintf(self::XPATH_BUCKAROO_FEE, $code),
+            $quote->getStoreId()
+        );
 
         if($paymentFee < 1){
             return '';
