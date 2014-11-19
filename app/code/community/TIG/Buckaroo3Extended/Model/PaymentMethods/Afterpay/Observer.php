@@ -87,52 +87,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         return $this;
     }
 
-    /**
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
-    {
-        if($this->_isChosenMethod($observer) === false) {
-            return $this;
-        }
 
-        $responseModel = $observer->getModel();
-        $response = $observer->getResponse();
-
-        $pushModel = Mage::getModel(
-        	'buckaroo3extended/response_push',
-            array(
-    	        'order'      => $observer->getOrder(),
-    	        'postArray'  => array('brq_statuscode' => $response['code']),
-    	        'debugEmail' => $responseModel->getDebugEmail(),
-    	        'method'     => $this->_method,
-            )
-        );
-
-        $newStates = $pushModel->getNewStates($response['status']);
-
-        switch ($response['status'])
-		{
-		    case self::BUCKAROO_ERROR:
-			case self::BUCKAROO_FAILED:
-                                                   if(!empty($response['subCode'])){
-                                                       $response['message'] = $response['message'].' - ' . $response['subCode']['code'] .' : '.  $response['subCode']['message'];
-                                                   }
-                                                   $updatedFailed = $pushModel->processFailed($newStates, $response['message']);
-									               break;
-			case self::BUCKAROO_SUCCESS:	       $updatedSuccess = $pushModel->processSuccess($newStates, $response['message']);
-											       break;
-			case self::BUCKAROO_NEUTRAL:           $responseModel->_addNote($response['message']);
-			                                       break;
-			case self::BUCKAROO_PENDING_PAYMENT:   $updatedPendingPayment = $responseModel->processPendingPayment($newStates, $response['message']);
-			                                       break;
-			case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $pushModel->processIncorrectPayment($newStates);
-			                                       break;
-		}
-
-        $responseModel->setCustomResponseProcessing(true);
-    }
 
     /** refund methods */
 
@@ -226,10 +181,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             'BillingPostalCode'        => $billingAddress->getPostcode(),
             'BillingCity'              => $billingAddress->getCity(),
             'BillingRegion'            => $billingAddress->getRegion(),
-            'BillingCountryCode'       => $billingAddress->getCountryCode(),
+            'BillingCountry'           => $billingAddress->getCountryId(),
             'BillingEmail'             => $billingAddress->getEmail(),
             'BillingPhoneNumber'       => $billingPhonenumber['clean'],
-            'BillingLanguage'          => $billingAddress->getCountryCode(),
+            'BillingLanguage'          => $billingAddress->getCountryId(),
         );
 
         $requestArray = array_merge($requestArray,$billingInfo);
@@ -253,10 +208,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'ShippingPostalCode'        => $shippingAddress->getPostcode(),
                 'ShippingCity'              => $shippingAddress->getCity(),
                 'ShippingRegion'            => $shippingAddress->getRegion(),
-                'ShippingCountryCode'       => $shippingAddress->getCountryCode(),
+                'ShippingCountry'           => $shippingAddress->getCountryId(),
                 'ShippingEmail'             => $shippingAddress->getEmail(),
                 'ShippingPhoneNumber'       => $shippingPhonenumber['clean'],
-                'ShippingLanguage'          => $shippingAddress->getCountryCode(),
+                'ShippingLanguage'          => $shippingAddress->getCountryId(),
             );
             $requestArray = array_merge($requestArray,$shippingInfo);
         }
@@ -269,7 +224,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         );
         $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
 
-        if($this->_helper->isEnterprise()){
+        if(Mage::helper('buckaroo3extended')->isEnterprise()){
             if((double)$this->_order->getGiftCardsAmount() > 0){
                 $discount = (double)$this->_order->getGiftCardsAmount();
             }
@@ -346,6 +301,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         $requestArray = array_merge($requestArray, array('Articles' => $group));
 
+
+
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
         } else {
@@ -362,7 +319,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $article['ArticleDescription']['value'] = 'Servicekosten';
             $article['ArticleId']['value']          = 1;
             $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = $fee+$feeTax;
+            $article['ArticleUnitPrice']['value']   = round($fee+$feeTax,2);
             $article['ArticleVatcategory']['value'] = $this->_getTaxCategory(Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId()));
             return $article;
         }
@@ -508,28 +465,3 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         return false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
