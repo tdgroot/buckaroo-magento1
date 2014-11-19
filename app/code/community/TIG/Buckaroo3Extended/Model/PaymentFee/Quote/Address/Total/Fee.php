@@ -176,13 +176,23 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
      *
      * @param Mage_Sales_Model_Quote $quote
      * @param string $paymentMethod
-     * @return float
+     * @return float|string
      */
     public function getPaymentFeeBeforeSelect(Mage_Sales_Model_Quote $quote, $paymentMethod = '')
     {
         $store   = $quote->getStore();
         $storeId = $store->getId();
-        $baseFee = $this->_getPaymentFee($quote,$paymentMethod);
+        
+        $configuredFee = Mage::getStoreConfig(
+            sprintf(self::XPATH_BUCKAROO_FEE, $quote->getPayment()->getMethod()), 
+            $storeId
+        );
+        
+        if (strpos($configuredFee, '%') !== false) {
+            return $configuredFee;
+        }
+        
+        $baseFee = $this->_getPaymentFee($quote, $paymentMethod);
         $fee     = $store->convertPrice($baseFee);
         $includeTax  = false;
         if(!$this->getFeeIsInclTax($storeId))
@@ -225,6 +235,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
          * Determine if the configured fee is a percentage or a flat amount.
          */
         if (strpos($fee, '%') !== false) {
+            $this->_feeIsPercentage = true;
+                        
             /**
              * If the fee is a percentage, get the configured percentage value and determine over which part of the
              * quote this percentage needs to be calculated.
@@ -242,18 +254,21 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
                 case 'subtotal':
                     $calculationAmount = $address->getBaseSubtotal()
                                        - $address->getBaseDiscountAmount();
+                                       
+                    $this->_feeIsInclTax = false;
                     break;
                 case 'subtotal_incl_tax':
-                    $calculationAmount = $address->getBaseSubtotal()
-                                       + $address->getBaseTaxAmount()
+                    $calculationAmount = $address->getBaseSubtotalInclTax()
                                        - $address->getBaseDiscountAmount();
+                                       
+                    $this->_feeIsInclTax = true;
                     break;
                 case 'grandtotal':
-                    $calculationAmount = $address->getBaseSubtotal()
-                                       + $address->getBaseTaxAmount()
-                                       + $address->getBaseShippingAmount()
-                                       + $address->getBaseShippingTaxAmount()
+                    $calculationAmount = $address->getBaseSubtotalInclTax()
+                                       + $address->getBaseShippingInclTax()
                                        - $address->getBaseDiscountAmount();
+                                       
+                    $this->_feeIsInclTax = true;
                     break;
                 //no default
             }
