@@ -112,13 +112,12 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_FeeTax
          */
         $paymentMethod = $quote->getPayment()->getMethod();
 
-
-        $baseFee = (float) Mage::getStoreConfig(sprintf(self::XPATH_BUCKAROO_FEE,$paymentMethod), $store);
+        $baseFee = $address->getBaseBuckarooFee();
+        
         $fee     = $store->convertPrice($baseFee);
 
-        $feeIsIncltax = $this->getFeeIsInclTax($store);
-        $feeTax     = $this->_getBuckarooFeeTax($address, $taxRate, $fee, $feeIsIncltax);
-        $baseFeeTax = $this->_getBaseBuckarooFeeTax($address, $taxRate, $baseFee, $feeIsIncltax);
+        $feeTax     = $this->_getBuckarooFeeTax($address, $taxRate, $fee, false);
+        $baseFeeTax = $this->_getBaseBuckarooFeeTax($address, $taxRate, $baseFee, false);
 
         /**
          * Get all taxes that were applied for this tax request.

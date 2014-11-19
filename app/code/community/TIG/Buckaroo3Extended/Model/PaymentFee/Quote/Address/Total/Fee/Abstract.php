@@ -64,6 +64,11 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
     protected $_totalCode;
 
     /**
+     * @var boolean
+     */
+    protected $_feeIsInclTax = null;
+
+    /**
      * Constructor method.
      *
      * Sets several class variables.
@@ -115,6 +120,10 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
      */
     public function getFeeIsInclTax($store = null)
     {
+        if (null !== $this->_feeIsInclTax) {
+            return $this->_feeIsInclTax;
+        }
+        
         if (is_null($store)) {
             $storeId = Mage::app()->getStore()->getId();
         } elseif ($store instanceof Mage_Core_Model_Store) {
@@ -123,7 +132,10 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
             $storeId = $store;
         }
 
-        return Mage::getStoreConfigFlag(self::XPATH_BUCKAROO_FEE_INCLUDING_TAX, $storeId);
+        $feeIsInclTax = Mage::getStoreConfigFlag(self::XPATH_BUCKAROO_FEE_INCLUDING_TAX, $storeId);
+        
+        $this->_feeIsInclTax = $feeIsInclTax;
+        return $feeIsInclTax;
     }
 
     /**
