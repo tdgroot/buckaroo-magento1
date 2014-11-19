@@ -241,6 +241,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
             switch ($feePercentageMode) {
                 case 'subtotal':
                     $calculationAmount = $address->getBaseSubtotal()
+                                       - $address->getBaseDiscountAmount();
+                    break;
+                case 'subtotal_incl_tax':
+                    $calculationAmount = $address->getBaseSubtotal()
                                        + $address->getBaseTaxAmount()
                                        - $address->getBaseDiscountAmount();
                     break;

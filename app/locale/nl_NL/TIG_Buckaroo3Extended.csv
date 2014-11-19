@@ -326,3 +326,8 @@
 "Select which tax classes count as 'low' VAT","Selecteer welke BTW tarief als 'laag' geclassificeerd kan worden."
 "Select which tax classes count as 'zero' VAT","Selecteer welke BTW tarief als 'nul' geclassificeerd kan worden."
 "Select which tax classes count as 'no' VAT","Selecteer welke BTW tarief als 'geen' geclassificeerd kan worden."
+TIG_Buckaroo3Extended::Subtotal,Subtotaal
+TIG_Buckaroo3Extended::Subtotal incl. tax,Subtotaal incl. BTW
+TIG_Buckaroo3Extended::Grand total,Groot totaal
+TIG_Buckaroo3Extended::Fee percentage mode,Toeslag percentage modus
+"TIG_Buckaroo3Extended::This setting only applies to percentage-based Buckaroo fee's.<br />Please choose over which amount the fee percentage is calculated.",Deze instelling is enkel van toepassing op percentage-gebaseerde toeslagen.<br />Kies s.v.p. over welk bedrag het toeslag percentage wordt berekend.

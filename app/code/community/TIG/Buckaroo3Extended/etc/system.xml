@@ -6156,6 +6156,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </manual_empty_cart>
+                        <fee_percentage_mode translate="label comment" module="buckaroo3extended">
+                            <label>Fee percentage mode</label>
+                            <comment><![CDATA[This setting only applies to percentage-based Buckaroo fee's.<br />Please choose over which amount the fee percentage is calculated.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_feePercentageMode</source_model>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </fee_percentage_mode>
                     </fields>
                 </buckaroo3extended_advanced>
             </groups>

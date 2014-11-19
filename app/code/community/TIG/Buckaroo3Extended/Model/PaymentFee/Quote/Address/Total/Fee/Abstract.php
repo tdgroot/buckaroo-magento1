@@ -56,7 +56,7 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
     /**
      * Xpath to the fee_percentage_mode setting.
      */
-    const XPATH_BUCKAROO_FEE_PERCENTAGE_MODE = 'buckaroo/buckaroo3extended/fee_percentage_mode';
+    const XPATH_BUCKAROO_FEE_PERCENTAGE_MODE = 'buckaroo/buckaroo3extended_advanced/fee_percentage_mode';
 
     /**
      * @var string
