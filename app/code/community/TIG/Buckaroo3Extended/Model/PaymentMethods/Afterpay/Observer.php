@@ -101,14 +101,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             return $this;
         }
 
-        $canRefund = Mage::getStoreConfig('buckaroo/buckaroo3extended_'.$this->_method.'/creditnote', Mage::app()->getStore()->getId());
-
-        if(!$canRefund){
-            Mage::getSingleton('core/session')->addNotice(
-                Mage::helper('buckaroo3extended')->__( "Currently the option to create a creditnote with a Paymentguarantee transaction is disabled." )
-            );
-            return $this;
-        }
         $request = $observer->getRequest();
 
         $codeBits = explode('_', $this->_code);
@@ -133,10 +125,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $vars = $refundRequest->getVars();
 
         $array = array(
-            'action'    => 'creditnote',
+            'action'    => 'Refund',
             'version'   => 1,
 
         );
+
+        if($this->_method == false){
+            $this->_method = Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/paymethod', Mage::app()->getStore()->getStoreId());
+        }
 
         if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
             $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
@@ -145,6 +141,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         }
 
         $refundRequest->setVars($vars);
+
+        return $this;
+    }
+
+    public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
 
         return $this;
     }
@@ -208,7 +213,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'ShippingPostalCode'        => $shippingAddress->getPostcode(),
                 'ShippingCity'              => $shippingAddress->getCity(),
                 'ShippingRegion'            => $shippingAddress->getRegion(),
-                'ShippingCountry'           => $shippingAddress->getCountryId(),
+                'ShippingCountryCode'       => $shippingAddress->getCountryId(),
                 'ShippingEmail'             => $shippingAddress->getEmail(),
                 'ShippingPhoneNumber'       => $shippingPhonenumber['clean'],
                 'ShippingLanguage'          => $shippingAddress->getCountryId(),
