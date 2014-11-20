@@ -169,14 +169,14 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
          * amounts accordingly.
          */
         $totalBaseFee = $baseFee - $orderBaseFee - $orderBaseFeeRefunded;
-        if ($totalBaseFee < 0.0001 && $totalBaseFee > -0.0001) {
+        if ($totalBaseFee < 0.01 && $totalBaseFee > -0.01) {
             $baseFee = $orderBaseFee - $orderBaseFeeRefunded;
         }
 
         $fee = $baseFee * $order->getBaseToOrderRate();
 
         $totalFee = $fee - $orderFee - $orderFeeRefunded;
-        if ($totalFee < 0.0001 && $totalFee > -0.0001) {
+        if ($totalFee < 0.01 && $totalFee > -0.01) {
             $fee = $orderFee - $orderFeeRefunded;
         }
 

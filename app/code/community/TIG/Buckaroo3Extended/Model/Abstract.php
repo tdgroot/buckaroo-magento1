@@ -301,7 +301,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             ->setIsActive(true)
             ->setReservedOrderId(null)
             ->save();
-
+        Mage::helper('buckaroo3extended')->log('quote wordt geladen, reserved order id:'.$quote->setReservedOrderId());
         Mage::getSingleton('checkout/session')->replaceQuote($quote);
     }
 

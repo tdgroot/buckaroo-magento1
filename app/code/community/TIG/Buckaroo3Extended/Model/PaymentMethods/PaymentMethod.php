@@ -138,7 +138,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
     public function isAvailable($quote = null)
     {
 
-        if(is_null($quote) && Mage::helper('buckaroo3extended')->isAdmin()){
+        if(is_null($quote) || Mage::helper('buckaroo3extended')->isAdmin()){
             // Uncomment this code to get all active Buckaroo payment methods in the backend. (3th party extensions)
             /*if(Mage::getStoreConfigFlag('buckaroo/' . $this->_code . '/active', Mage::app()->getStore()->getId())){
                 return true;
