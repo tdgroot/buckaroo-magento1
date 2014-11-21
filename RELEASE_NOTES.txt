@@ -1,3 +1,15 @@
+===== 4.10.0 =====
+- Nieuwe betaalmethode Afterpay toegevoegd
+- Betaaltoeslag herschreven
+- Refunden met Bancontact / Mr. Cash
+- BIC velden zijn nu enkel verplicht voor betalingen buiten Nederland
+
+Bugfixes:
+- Validatie op orders waarbij er een 2e transactie wordt aangevraagd verbetert. (canceled orders fix en dubbele transactie fix)
+- Foutafhandeling bij backend-orders verbetert
+- Bij een mislukte transactie wordt het "ReservedOrderId" gereset, zodat er een nieuw ordernummer wordt aangemaakt bij het opnieuw plaatsen van de order.
+
+
 ===== 4.9.0 =====
 
 - Twee nieuwe betaalmethodes toegevoegd: Carte Bancaire en Carte Bleue
