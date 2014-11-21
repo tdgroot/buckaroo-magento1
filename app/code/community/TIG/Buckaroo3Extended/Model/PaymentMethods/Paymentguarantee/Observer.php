@@ -156,6 +156,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             return $this;
         }
 
+
         $responseModel = $observer->getModel();
         $response = $observer->getResponse();
         $responseObject = $observer->getResponseobject();
@@ -167,6 +168,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             $transactionKey = $responseObject->Key;
         }
 
+        /**
+         * @var $pushModel TIG_Buckaroo3Extended_Model_Response_Push
+         */
         $pushModel = Mage::getModel(
             'buckaroo3extended/response_push',
             array(
@@ -234,7 +238,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             'CustomerEmail'         => $this->_billingInfo['email'],
             'customeriban'          => $accountNumber,
             'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
-            'SendMail'              => Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/sendmail', Mage::app()->getStore()->getId()) ? 'TRUE' : 'FALSE',
+            'SendMail'              => Mage::getStoreConfig('buckaroo/buckaroo3extended_'.$this->_method.'/sendmail', Mage::app()->getStore()->getId()) ? 'TRUE' : 'FALSE',
         );
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
@@ -250,6 +254,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
             return $this;
         }
 
+        $canRefund = Mage::getStoreConfig('buckaroo/buckaroo3extended_'.$this->_method.'/creditnote', Mage::app()->getStore()->getId());
+
+        if(!$canRefund){
+            Mage::getSingleton('core/session')->addNotice(
+                Mage::helper('buckaroo3extended')->__( "Currently the option to create a creditnote with a Paymentguarantee transaction is disabled." )
+            );
+            return $this;
+        }
         $request = $observer->getRequest();
 
         $codeBits = explode('_', $this->_code);

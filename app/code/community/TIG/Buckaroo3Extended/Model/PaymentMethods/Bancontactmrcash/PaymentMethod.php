@@ -1,5 +1,6 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_PaymentMethod
+    extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
         'EUR',
@@ -9,6 +10,5 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_PaymentMethod 
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_bancontactmrcash_checkout_form';
 
-    protected $_canRefund               = false;
     protected $_canRefundInvoicePartial = false;
 }

@@ -3,10 +3,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 {
     protected $_code = 'buckaroo3extended_afterpay';
     protected $_method = false;
+    /** @var  TIG_Buckaroo3Extended_Helper_Data $_helper */
+    protected $_helper;
 
     protected function _construct()
     {
         $this->_method = Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/paymethod', Mage::app()->getStore()->getStoreId());
+        $this->_helper = Mage::helper('buckaroo3extended');
     }
 
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
@@ -29,7 +32,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'version'  => '1',
             ),
         );
-        
+
         if (array_key_exists('services', $vars) && is_array($vars['services'])) {
             $vars['services'] = array_merge($vars['services'], $array);
         } else {
@@ -61,10 +64,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         $this->_addAfterpayVariables($vars, $this->_method);
 
-        //echo '<pre>';
-        //var_dump($vars);die;
         $request->setVars($vars);
-
         return $this;
     }
 
@@ -87,57 +87,79 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         return $this;
     }
 
+
+
+    /** refund methods */
+
     /**
      * @param Varien_Event_Observer $observer
      * @return $this
      */
-    public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
+    public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
-        $responseModel = $observer->getModel();
-        $response = $observer->getResponse();
+        $request = $observer->getRequest();
 
-        $pushModel = Mage::getModel(
-        	'buckaroo3extended/response_push',
-            array(
-    	        'order'      => $observer->getOrder(),
-    	        'postArray'  => array('brq_statuscode' => $response['code']),
-    	        'debugEmail' => $responseModel->getDebugEmail(),
-    	        'method'     => $this->_method,
-            )
+        $codeBits = explode('_', $this->_code);
+        $code = end($codeBits);
+        $request->setMethod($code);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $refundRequest = $observer->getRequest();
+
+        $vars = $refundRequest->getVars();
+
+        $array = array(
+            'action'    => 'Refund',
+            'version'   => 1,
+
         );
 
-        $newStates = $pushModel->getNewStates($response['status']);
+        if($this->_method == false){
+            $this->_method = Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/paymethod', Mage::app()->getStore()->getStoreId());
+        }
 
-        switch ($response['status'])
-		{
-		    case self::BUCKAROO_ERROR:
-			case self::BUCKAROO_FAILED:
-                                                   if(!empty($response['subCode'])){
-                                                       $response['message'] = $response['message'].' - ' . $response['subCode']['code'] .' : '.  $response['subCode']['message'];
-                                                   }
-                                                   $updatedFailed = $pushModel->processFailed($newStates, $response['message']);
-									               break;
-			case self::BUCKAROO_SUCCESS:	       $updatedSuccess = $pushModel->processSuccess($newStates, $response['message']);
-											       break;
-			case self::BUCKAROO_NEUTRAL:           $responseModel->_addNote($response['message']);
-			                                       break;
-			case self::BUCKAROO_PENDING_PAYMENT:   $updatedPendingPayment = $responseModel->processPendingPayment($newStates, $response['message']);
-			                                       break;
-			case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $pushModel->processIncorrectPayment($newStates);
-			                                       break;
-		}
+        if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
 
-        $responseModel->setCustomResponseProcessing(true);
+        $refundRequest->setVars($vars);
+
+        return $this;
     }
+
+    public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        return $this;
+    }
+
+    /** INTERNAL METHODS **/
 
     /**
      * Adds variables required for the SOAP XML for paymentguarantee to the variable array
      * Will merge with old array if it exists
-     * 
+     *
      * @param array $vars
      */
     protected function _addAfterpayVariables(&$vars)
@@ -164,10 +186,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             'BillingPostalCode'        => $billingAddress->getPostcode(),
             'BillingCity'              => $billingAddress->getCity(),
             'BillingRegion'            => $billingAddress->getRegion(),
-            'BillingCountryCode'       => $billingAddress->getCountryCode(),
+            'BillingCountry'           => $billingAddress->getCountryId(),
             'BillingEmail'             => $billingAddress->getEmail(),
             'BillingPhoneNumber'       => $billingPhonenumber['clean'],
-            'BillingLanguage'          => $billingAddress->getCountryCode(),
+            'BillingLanguage'          => $billingAddress->getCountryId(),
         );
 
         $requestArray = array_merge($requestArray,$billingInfo);
@@ -191,10 +213,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'ShippingPostalCode'        => $shippingAddress->getPostcode(),
                 'ShippingCity'              => $shippingAddress->getCity(),
                 'ShippingRegion'            => $shippingAddress->getRegion(),
-                'ShippingCountryCode'       => $shippingAddress->getCountryCode(),
+                'ShippingCountryCode'       => $shippingAddress->getCountryId(),
                 'ShippingEmail'             => $shippingAddress->getEmail(),
                 'ShippingPhoneNumber'       => $shippingPhonenumber['clean'],
-                'ShippingLanguage'          => $shippingAddress->getCountryCode(),
+                'ShippingLanguage'          => $shippingAddress->getCountryId(),
             );
             $requestArray = array_merge($requestArray,$shippingInfo);
         }
@@ -203,11 +225,30 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $customerInfo = array(
             'CustomerAccountNumber' => $additionalFields['BPE_AccountNumber'],
             'CustomerIPAddress'     => Mage::helper('core/http')->getRemoteAddr(),
+            'Accept'                => $additionalFields['BPE_Accept'],
+        );
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+
+        if(Mage::helper('buckaroo3extended')->isEnterprise()){
+            if((double)$this->_order->getGiftCardsAmount() > 0){
+                $discount = (double)$this->_order->getGiftCardsAmount();
+            }
+        }
+
+        if(abs((double)$this->_order->getDiscountAmount()) > 0){
+            $discount += abs((double)$this->_order->getDiscountAmount());
+        }
+
+
+        //add order Info
+        $orderInfo = array(
+            'Discount' => $discount,
+            'ShippingCosts' => $shippingCosts,
         );
 
         $requestArray = array_merge($requestArray,$customerInfo);
+        $requestArray = array_merge($requestArray,$orderInfo);
         //is B2B
-        $b2bInfo = array();
         if($additionalFields['BPE_B2B'] == 2){
             $b2bInfo = array(
                 'B2B'                    => 'true',
@@ -218,10 +259,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             );
             $requestArray = array_merge($requestArray,$b2bInfo);
         }
-
         //add all products max 10
         $products = $this->_order->getAllItems();
-        $max      = 9;
+        $max      = 99;
         $i        = 1;
 
         $group = array();
@@ -258,10 +298,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         end($group);// move the internal pointer to the end of the array
         $key             = (int)key($group);
-        $shippingGroupId = $key+1;
-        $group[$shippingGroupId] = $this->_getShippingLine();
+        $feeGroupId = $key+1;
+        $paymentFeeArray = $this->_getPaymentFeeLine();
+        if(false !== $paymentFeeArray && is_array($paymentFeeArray)){
+            $group[$feeGroupId] = $paymentFeeArray;
+        }
 
         $requestArray = array_merge($requestArray, array('Articles' => $group));
+
+
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
@@ -270,15 +315,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         }
     }
 
-    protected function _getShippingLine()
+    protected function _getPaymentFeeLine()
     {
-        $shipping  = (float) $this->_order->getBaseShippingAmount();
-        $article['ArticleDescription']['value'] = 'Verzendkosten';
-        $article['ArticleId']['value']          = 1;
-        $article['ArticleQuantity']['value']    = 1;
-        $article['ArticleUnitPrice']['value']   = round($shipping + $this->_order->getBaseShippingTaxAmount(), 0);
-        $article['ArticleVatcategory']['value'] = $this->_getTaxCategory(Mage::getStoreConfig('tax/classes/shipping_tax_class', Mage::app()->getStore()->getId()));
-        return $article;
+        $fee    = (double) $this->_order->getBuckarooFee();
+        $feeTax = (double) $this->_order->getBuckarooFeeTax();
+
+        if($fee > 0){
+            $article['ArticleDescription']['value'] = 'Servicekosten';
+            $article['ArticleId']['value']          = 1;
+            $article['ArticleQuantity']['value']    = 1;
+            $article['ArticleUnitPrice']['value']   = round($fee+$feeTax,2);
+            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory(Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId()));
+            return $article;
+        }
+        return false;
     }
 
     protected function _getTaxCategory($taxClassId)
@@ -287,21 +337,22 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             return 4;
         }
 
-        $highTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/high', Mage::app()->getStore()->getStoreId()));
-        $lowTaxClasses  = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/low', Mage::app()->getStore()->getStoreId()));
-        $zeroTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/zero', Mage::app()->getStore()->getStoreId()));
-        $noTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/no', Mage::app()->getStore()->getStoreId()));
+        $highTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/high', Mage::app()->getStore()->getStoreId()));
+        $middleTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/middle', Mage::app()->getStore()->getStoreId()));
+        $lowTaxClasses    = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/low', Mage::app()->getStore()->getStoreId()));
+        $zeroTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/zero', Mage::app()->getStore()->getStoreId()));
+        $noTaxClasses     = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/no', Mage::app()->getStore()->getStoreId()));
 
         if (in_array($taxClassId, $highTaxClasses)) {
             return 1;
+        }elseif (in_array($taxClassId, $middleTaxClasses)) {
+            return 5;
         } elseif (in_array($taxClassId, $lowTaxClasses)) {
             return 2;
         } elseif (in_array($taxClassId, $zeroTaxClasses)) {
             return 3;
-        } elseif (in_array($taxClassId, $noTaxClasses)) {
-            return 4;
         } else {
-            Mage::throwException($this->_helper->__('Did not recognize tax class for class ID: ') . $taxClassId);
+            return 4;
         }
     }
 
@@ -398,6 +449,24 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
      */
     protected function isShippingDifferent()
     {
-        return $this->_order->getShippingAddress()->getSameAsBilling();
+        // exclude certain keys that are always different
+        $excludeKeys = array('entity_id', 'customer_address_id', 'quote_address_id', 'region_id', 'customer_id', 'address_type');
+
+        //get both the order-addresses
+        $oBillingAddress = $this->_order->getBillingAddress()->getData();
+        $oShippingAddress = $this->_order->getShippingAddress()->getData();
+
+        //remove the keys with corresponding values from both the addressess
+        $oBillingAddressFiltered = array_diff_key($oBillingAddress, array_flip($excludeKeys));
+        $oShippingAddressFiltered = array_diff_key($oShippingAddress, array_flip($excludeKeys));
+
+        //differentiate the addressess, when some data is different an array with changes will be returned
+        $addressDiff = array_diff($oBillingAddressFiltered, $oShippingAddressFiltered);
+
+        //if
+        if( !empty($addressDiff) ) { // billing and shipping addresses are different
+            return true;
+        }
+        return false;
     }
 }

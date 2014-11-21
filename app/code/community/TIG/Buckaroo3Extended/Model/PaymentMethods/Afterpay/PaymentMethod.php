@@ -30,7 +30,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_afterpay_checkout_form';
 
-    protected $_canRefund               = false;
+    protected $_canRefund               = true;
     protected $_canRefundInvoicePartial = false;
 
     public function getOrderPlaceRedirectUrl()
@@ -53,6 +53,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
             'BPE_PhoneNumber'       => $post[$this->_code.'_bpe_customer_phone_number'],
             'BPE_customerbirthdate' => $customerBirthDate,
             'BPE_B2B'               => (int)$post['buckaroo3extended_afterpay_BPE_BusinessSelect'],
+            'BPE_Accept'            => 'true',
         );
 
         if((int)$array['BPE_B2B'] == 2){
@@ -71,13 +72,29 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
         return parent::getOrderPlaceRedirectUrl();
     }
 
+    public function validate()
+    {
+        $postData = Mage::app()->getRequest()->getPost();
+        if (
+            !array_key_exists('buckaroo3extended_afterpay_bpe_accept', $postData)
+            || $postData['buckaroo3extended_afterpay_bpe_accept'] != 'checked'
+        ) {
+            Mage::throwException(
+                Mage::helper('buckaroo3extended')->__('Please accept the terms and conditions.')
+            );
+        }
+
+        $this->getInfoInstance()->setAdditionalInformation('checked_terms_and_conditions', true);
+
+        return parent::validate();
+    }
+
     /**
      * @param null | Mage_Sales_Model_Quote $quote
      * @return bool
      */
     public function isAvailable($quote = null)
     {
-        return false;
 
         if(is_null($quote) && Mage::helper('buckaroo3extended')->isAdmin()){
             // Uncomment this code to get all active Buckaroo payment methods in the backend. (3th party extensions)
@@ -89,7 +106,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
         }
 
         $quoteItems = $quote->getAllVisibleItems();
-        if(count($quoteItems) > 9){
+        if(count($quoteItems) > 99){
             return false;
         }
 

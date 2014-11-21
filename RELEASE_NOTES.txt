@@ -1,13 +1,26 @@
+===== 4.10.0 =====
+- Nieuwe betaalmethode Afterpay toegevoegd
+- Betaaltoeslag herschreven
+- Refunden met Bancontact / Mr. Cash
+- BIC velden zijn nu enkel verplicht voor betalingen buiten Nederland
+
+Bugfixes:
+- Validatie op orders waarbij er een 2e transactie wordt aangevraagd verbetert. (canceled orders fix en dubbele transactie fix)
+- Foutafhandeling bij backend-orders verbetert
+- Bij een mislukte transactie wordt het "ReservedOrderId" gereset, zodat er een nieuw ordernummer wordt aangemaakt bij het opnieuw plaatsen van de order.
+
+
 ===== 4.9.0 =====
 
 - Twee nieuwe betaalmethodes toegevoegd: Carte Bancaire en Carte Bleue
 - Ondersteuning Magento 1.9 Community en Magento 1.14 Enterprise
-- Friesland bank verwijdert uit iDeal
+- Friesland bank verwijderd uit iDeal
 - Mandaat nummer wordt nu bij de order opgeslagen
 - IBAN validatie toegevoegd
 - Updates van de valuta bij alle betaalmethodes
 - Adres validatie bij American Express toegevoegd
-- PayPerEmail bugfix met geanulleerde transacties
+- PayPerEmail bugfix met geannulleerde transacties
+- Aanmaken van Creditnote met BetaalGarant (zie installatiehandleiding hoofdstuk 4.4)
 
 ===== 4.8.2 =====
 

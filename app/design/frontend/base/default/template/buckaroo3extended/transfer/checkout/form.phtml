@@ -4,7 +4,7 @@
     <?php
     $name = $this->getName();
     $email = $this->getEmail();
-    
+
     $gender = $this->getGender();
     $dob = $this->getDob();
     list($DD, $MM, $YYYY) = $dob;
@@ -14,7 +14,7 @@
         <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
             <li>
                 <label for="<?php echo $_code;?>_BPE_Customergender" class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label>
-                <div class="input-box">  
+                <div class="input-box">
                     <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" id="<?php echo $_code;?>_BPE_Customergender" title="<?php echo $this->__('Salutation');?>">
 	                    <option value=''><?php echo $this->__('Select'); ?></option>
 	                    <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
@@ -29,70 +29,32 @@
                 </div>
             </li>
             <li>
-                <label class="required" for="overschrijving:payment:day"><?php echo $this->__('Date of birth') ?>: <em>*</em></label>
-                    <div class="input-box customer-dob overschrijving_customer-billing-dob" id="">
-<?php 
-$dateInputDD = <<< DATE_INPUT_DD
-<div class="dob-day">
-<input type="text" class="input-text" title="{$this->__('Day')}" value="{$DD}" name="{$_code}_customerbirthdate[day]" id="overschrijving:payment:day">
-<label for="overschrijving:payment:day">{$this->__('DD')}</label>
-</div>
-DATE_INPUT_DD;
-
-$dateInputMM = <<< DATE_INPUT_MM
-<div class="dob-month">
-<input type="text" class="input-text" title="{$this->__('Month')}" value="{$MM}" name="{$_code}_customerbirthdate[month]" id="overschrijving:payment:month">
-<label for="overschrijving:payment:month">{$this->__('MM')}</label>
-</div>
-DATE_INPUT_MM;
-
-$dateInputYYYY = <<< DATE_INPUT_YYYY
-<div class="dob-year">
-<input type="text" class="input-text" title="{$this->__('Year')}" value="{$YYYY}" name="{$_code}_customerbirthdate[year]" id="overschrijving:payment:year">
-<label for="overschrijving:payment:year">{$this->__('YYYY')}</label>
-</div>
-DATE_INPUT_YYYY;
-
-$strtr = array(
-'%b' => '%1$s',
-'%B' => '%1$s',
-'%m' => '%1$s',
-'%d' => '%2$s',
-'%e' => '%2$s',
-'%Y' => '%3$s',
-'%y' => '%3$s'
-);
-
-$dateFormat = preg_replace('/[^\%\w]/', '\\1', Mage::app()->getLocale()->getDateStrFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
-
-echo sprintf(strtr($dateFormat, $strtr), $dateInputMM, $dateInputDD, $dateInputYYYY);
-?>
-                        <div style="display:none;" class="dob-full">
-                            <input type="hidden" name="<?php echo $_code;?>_payment[dob]" id="payment:dob">
-                        </div>
-                        <div style="display: none;" class="validation-advice"></div>
-                    </div>
-                    <script type="text/javascript">
-                    //&lt;![CDATA[
-                    var customer_dob = new Varien.DOB('.overschrijving_customer-billing-dob', true, '%d-%m-%y');
-                    //]]&gt;
-                    </script>
+                <?php
+                echo $this->getLayout()
+                    ->createBlock('buckaroo3extended/customer_widget_dob')
+                    ->setFieldIdFormat($_code . ':billing:%s')
+                    ->setFieldNameFormat('payment[' . $_code . '][%s]')
+                    ->setIsRequired(true)
+                    ->setPaymentMethodCode($_code)
+                    ->setDate($this->getCustomer()->getDob())
+                    ->toHtml();
+                ?>
             </li>
             <li>
                 <label for="<?php echo $_code ?>_BPE_Customermail" class="required"><?php echo $this->__('E-mail address') ?>: <em>*</em></label>
                 <div class="input-box">
                     <input class="input-text validate-email required-entry" type="text" title="<?php echo $this->__('E-mail address') ?>" name="<?php echo $_code ?>_BPE_Customermail" id="<?php echo $_code ?>_BPE_Customermail" value="<?php echo $email ?>" />
                 </div>
-            </li> 
+            </li>
             <li>
                 <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
-            </li>  
+            </li>
         </ul>
     </fieldset>
-    
+
 <?php else: ?>
     <div id="payment-errors" class="validation-advice" style="display:none;"></div>
-    
+
     <fieldset class="form-list">
         <?php $_code = $this->getMethodCode() ?>
         <ul id="payment_form_<?php echo $_code ?>" style="display:none;">

@@ -73,11 +73,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
             return parent::getTitle();
         }
 
-        $feeAllowed = Mage::getStoreConfig('buckaroo/'. $this->_code . '/active_fee', Mage::app()->getStore()->getId());
-		if (!$feeAllowed && $this->_code != 'buckaroo3extended_paymentguarantee') {
-			return parent::getTitle();
-		}
-
         $block = Mage::app()
                      ->getLayout()
                      ->createBlock('buckaroo3extended/paymentMethods_ideal_checkout_form')
@@ -143,7 +138,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
     public function isAvailable($quote = null)
     {
 
-        if(is_null($quote) && Mage::helper('buckaroo3extended')->isAdmin()){
+        if(is_null($quote) || Mage::helper('buckaroo3extended')->isAdmin()){
             // Uncomment this code to get all active Buckaroo payment methods in the backend. (3th party extensions)
             /*if(Mage::getStoreConfigFlag('buckaroo/' . $this->_code . '/active', Mage::app()->getStore()->getId())){
                 return true;

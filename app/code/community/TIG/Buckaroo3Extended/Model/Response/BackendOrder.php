@@ -20,31 +20,24 @@ class TIG_Buckaroo3Extended_Model_Response_BackendOrder extends TIG_Buckaroo3Ext
         $this->_debugEmail .= 'The request failed \n';
         $this->restoreQuote();
 
-        Mage::getSingleton('core/session')->addError(
-            Mage::helper('buckaroo3extended')->__('Your payment was unsuccesful. Please try again or choose another payment method.')
-        );
-
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())) {
             $this->_order->cancel()->save();
         }
 
         $this->sendDebugEmail();
-        Mage::throwException('An error occurred while processing the request');
+        Mage::throwException('An error occurred while processing the payment request, check the Buckaroo debug e-mail for details.');
     }
 
     protected function _error()
     {
         $this->_debugEmail .= "The request generated an error \n";
-        Mage::getSingleton('core/session')->addError(
-            Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
-        );
-
+		
         $this->_order->cancel()->save();
         
         $this->_debugEmail .= "I have cancelled the order! \n";
 
         $this->sendDebugEmail();
-        Mage::throwException('An error occurred while processing the request');
+        Mage::throwException('An error occurred while processing the payment request, check the Buckaroo debug e-mail for details.');
     }
 
     protected function _neutral()

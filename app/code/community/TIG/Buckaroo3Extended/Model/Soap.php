@@ -214,7 +214,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
 
         $client->__SetLocation($location);
-        //echo '<pre>';var_dump($TransactionRequest);die;
+        
         try
         {
             $response = $client->TransactionRequest($TransactionRequest);
@@ -539,6 +539,8 @@ class SoapClientWSSEC extends SoapClient
         $SecurityTokenReference->appendChild($KeyIdentifier);
         $KeyTypeNode->appendChild($SecurityTokenReference);
         $sigNodeSet->appendChild($KeyTypeNode);
+
+
 
         return $domDocument;
     }

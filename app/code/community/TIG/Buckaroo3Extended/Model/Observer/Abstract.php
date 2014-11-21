@@ -2,6 +2,9 @@
 class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extended_Model_Abstract
 {
     protected $_storeId;
+    /**
+     *  @var Mage_Sales_Model_Order $_order
+     */
     protected $_order;
     protected $_billingInfo;
     protected $_method = '';
@@ -285,7 +288,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 	    if (isset($additionalFields['BPE_PhoneNumber'])) {
 	        $number = $additionalFields['BPE_PhoneNumber'];
 	    } else {
-            $number = $this->_billingInfo['telephone'];
+            $number = ($this->_billingInfo['telephone'])?:'1234567890';
 	    }
 
 
@@ -577,7 +580,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                 $commentVirtual = Mage::helper('buckaroo3extended')->__('The order consists of virtual product(s), which is not supported by Seller Protection.');
                 $order->addStatusHistoryComment($commentVirtual)
                       ->save();
-            }   
+            }
         }
     }
 }

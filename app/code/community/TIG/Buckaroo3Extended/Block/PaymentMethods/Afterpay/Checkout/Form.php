@@ -7,6 +7,11 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends 
         parent::_construct();
     }
 
+    public function getPaymethod()
+    {
+        return Mage::getStoreConfig('buckaroo/' . $this->getMethodCode() . '/paymethod', Mage::app()->getStore()->getStoreId());
+    }
+
     public function getBusiness()
     {
         return Mage::getStoreConfig('buckaroo/' . $this->getMethodCode() . '/business', Mage::app()->getStore()->getStoreId());
