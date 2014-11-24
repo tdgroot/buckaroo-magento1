@@ -1,13 +1,11 @@
 ===== 4.10.0 =====
 - Nieuwe betaalmethode Afterpay toegevoegd
-- Betaaltoeslag herschreven
-- Refunden met Bancontact / Mr. Cash
+- Refunden mogelijk gemaakt met Bancontact / Mr. Cash
 - BIC velden zijn nu enkel verplicht voor betalingen buiten Nederland
-
 Bugfixes:
-- Validatie op orders waarbij er een 2e transactie wordt aangevraagd verbetert. (canceled orders fix en dubbele transactie fix)
-- Foutafhandeling bij backend-orders verbetert
-- Bij een mislukte transactie wordt het "ReservedOrderId" gereset, zodat er een nieuw ordernummer wordt aangemaakt bij het opnieuw plaatsen van de order.
+- Extra validatie toevoegd om te controleren of er een 2e transactie-key wordt aangemaakt, indien dit het geval is komt de eerste transactie-key te vervallen. (canceled orders fix en dubbele transactie fix)
+- Foutafhandeling bij backend-orders verbeterd
+- Het correct resetten van het "ReservedOrderId" wanneer er na het plaatsen van een order een foutmelding in de gateway van Buckaroo is opgetreden.
 
 
 ===== 4.9.0 =====
@@ -32,16 +30,16 @@ Bugfixes:
 
 ===== 4.8.0 =====
 
-- De betaalmethode DirectDebit (Eenmalige Machtiging) is vervangen door SepaDirectDebit. Het rekeningnummer moet nu met IBAN ingevuld worden.  
+- De betaalmethode DirectDebit (Eenmalige Machtiging) is vervangen door SepaDirectDebit. Het rekeningnummer moet nu met IBAN ingevuld worden.
 - De BIC code is verplicht bij SepaDirectDebit
 - Giropay geupgraded naar V2, Bankleitzahl is vervangen door de BIC-code van de bank.
-- Bij BetaalGarant (Achteraf betalen) is de IBAN verplicht. 
+- Bij BetaalGarant (Achteraf betalen) is de IBAN verplicht.
 - Bij Giropay, SepaDirectDebit en BetaalGarant een link toegevoegd naar de Buckaroo IBAN-converter
 - Betaalverzoeken worden met Channel "Web" verstuurd, refunds worden met "CallCenter" verstuurd.
 
 ===== 4.7.2 =====
 
-- éM! Payment bankaccount velden zijn niet meer verplicht en daarom verwijdert. 
+- éM! Payment bankaccount velden zijn niet meer verplicht en daarom verwijdert.
 
 ===== 4.7.1 =====
 
@@ -65,22 +63,22 @@ Bugfixes:
 
 - Nieuwe betaalmethode EPS voor Oostenrijk
 
-- Lock op de verwerking van de push 
+- Lock op de verwerking van de push
 
- 
+
 
 === Fixes ===
 
 - Order pending-bug gefixt voor PayperEmail
 
 - Dubbele transacties bij PayperEmail wordt de shop-owner via email op de hoogte gesteld
- 
+
 
 ===== 4.6.1 =====
 
 === Minor Changes ===
 - Een e-bon kadokaart is toegevoegd
-- Bij de overboeking is het nu mogelijk om, zonder gebruik van CM, verloopdatum te bepalen 
+- Bij de overboeking is het nu mogelijk om, zonder gebruik van CM, verloopdatum te bepalen
 
 === Fixes ===
 - 'Refund' is nu mogelijk op store-niveau
