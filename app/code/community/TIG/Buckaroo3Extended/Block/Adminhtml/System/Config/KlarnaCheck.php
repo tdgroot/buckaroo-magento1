@@ -7,7 +7,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_KlarnaCheck
 
     public function getIsKlarnaEnabled()
     {
-        return mage::helper('buckaroo3extended')->getIsKlarnaEnabled();
+        return Mage::helper('buckaroo3extended')->getIsKlarnaEnabled();
     }
 
     public function render(Varien_Data_Form_Element_Abstract $element)
