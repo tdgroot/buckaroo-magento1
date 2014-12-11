@@ -146,6 +146,8 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
                                                    break;
             case self::BUCKAROO_INCORRECT_PAYMENT: $this->_incorrectPayment();
                                                    break;
+            case self::BUCKAROO_REJECTED:          $this->_rejected();
+                                                   break;
             default:                               $this->_neutral();
         }
     }
@@ -248,6 +250,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         );
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())) {
+            $this->_returnGiftcards($this->_order);
             $this->_order->cancel()->save();
         }
 
@@ -264,18 +267,61 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _error()
     {
         $this->_debugEmail .= "The transaction generated an error. \n";
-		
+
         Mage::getSingleton('core/session')->addError(
         		Mage::helper('buckaroo3extended')->__('A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.')
         );
-        
+
         $this->_order->addStatusHistoryComment(
             Mage::helper('buckaroo3extended')->__(
                 'A technical error has occurred.'
             )
         );
 
-        
+        $this->_returnGiftcards($this->_order);
+
+        $this->_order->cancel()->save();
+        $this->_returnGiftcards($this->_order);
+
+        $this->_debugEmail .= "The order has been cancelled. \n";
+        $this->restoreQuote();
+        $this->_debugEmail .= "The quote has been restored. \n";
+
+        $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->_order->getStoreId());
+        $returnUrl = Mage::getUrl($returnLocation, array('_secure' => true));
+
+        $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
+
+        $this->sendDebugEmail();
+        header('Location:' . $returnUrl);
+    }
+
+    protected function _rejected()
+    {
+
+        $this->_debugEmail .= "The transaction generated an error. \n";
+
+        $paymentMethod = $this->_order->getPayment()->getMethod();
+        switch($paymentMethod){
+            case 'buckaroo3extended_afterpay':
+                Mage::getSingleton('checkout/session')->setData('buckarooAfterpayRejected',true);
+                $message = Mage::helper('buckaroo3extended')->__(
+                    'We are sorry to inform you that the request to pay afterwards with AfterPay is not possible at' .
+                    ' this time. This can be due to various (temporary) reasons.<br/><br/> For questions about your' .
+                    ' rejection you can contact the customer service of AfterPay. Or you can visit the website of' .
+                    ' AfterPay and click ""Frequently asked questions"" through this link <a' .
+                    ' href=""http://www.afterpay.nl/page/consument-faq"">http://www.afterpay.nl/page/consument-faq<' .
+                    '/a> in the section ""Datacontrol"".<br/><br/> We advice you to choose a different payment method' .
+                    ' to complete your order.'
+                );
+            break;
+            default:
+                $message = Mage::helper('buckaroo3extended')->__(
+                    'The payment has been rejected, please try again or select a different paymentmethod.'
+                );
+        }
+
+        Mage::getSingleton('core/session')->addError($message);
 
         $this->_order->cancel()->save();
         $this->_debugEmail .= "The order has been cancelled. \n";
@@ -317,6 +363,57 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->sendDebugEmail();
 		header('Location:' . $returnUrl);
 		exit;
+    }
+
+    /**
+     * return the giftcard amount, if there is one
+     * @param $order Mage_Sales_Model_Order
+     */
+    protected function _returnGiftcards($order)
+    {
+        if((float)$order->getGiftCardsAmount() > 0){
+            $this->_revertGiftCardsForOrder($order);
+        }
+    }
+
+    /**
+     * Revert authorized amounts for all order's gift cards
+     *
+     * @param   Mage_Sales_Model_Order $order
+     * @return  Enterprise_GiftCardAccount_Model_Observer
+     */
+    protected function _revertGiftCardsForOrder(Mage_Sales_Model_Order $order)
+    {
+        $cards = Mage::helper('enterprise_giftcardaccount')->getCards($order);
+        if (is_array($cards)) {
+            foreach ($cards as $card) {
+                if (isset($card['authorized'])) {
+                    $this->_revertById($card['i'], $card['authorized']);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Revert amount to gift card
+     *
+     * @param int $id
+     * @param int|float $amount
+     * @return Enterprise_GiftCardAccount_Model_Observer
+     */
+    protected function _revertById($id, $amount = 0)
+    {
+        $giftCard = Mage::getModel('enterprise_giftcardaccount/giftcardaccount')->load($id);
+
+        if ($giftCard) {
+            $giftCard->revert($amount)
+                ->unsOrder()
+                ->save();
+        }
+
+        return $this;
     }
 
     protected function _pendingPayment()
