@@ -7,21 +7,21 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
      * @var boolean
      */
     protected $_callAfterApplyAllUpdates = true;
-    
+
     /**
      * Module version as stored in the db at the time of the update
      *
      * @var string
      */
     protected $_dbVer;
-    
+
     /**
      * Module version as specified in the module's configuration at the time of the update
      *
      * @var string
      */
     protected $_configVer;
-    
+
     protected $_giftcardArray = array(
         array(
             'value' => 'babygiftcard',
@@ -116,23 +116,7 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
             'label' => 'Voetbalshop cadeaucard'
         )
     );
-    
-    protected $_moduleBlackList = array(
-        'TIG_Afterpay'               => 'Afterpay',
-        'Fooman_Surcharge'           => 'Fooman Surcharge',
-        'Klarna_KlarnaPaymentModule' => 'Klarna',
-    );
-    
-    protected $_moduleRewrites = array(
-        'block' => array(
-            'adminhtml/sales_order_totals_tax' => 'TIG_Buckaroo3Extended_Block_PaymentFee_Order_Totals_Tax'
-        ),
-        'model' => array(
-            'sales/order_creditmemo'           => 'TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo',
-            'sales/service_order'              => 'TIG_Buckaroo3Extended_Model_PaymentFee_Service_Order',
-        ),
-    );
-    
+
     /**
      * Set the stored DB version to the specified value
      *
@@ -143,10 +127,10 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
     public function setDbVer($dbVer)
     {
         $this->_dbVer = $dbVer;
-    
+
         return $this;
     }
-    
+
     /**
      * Set the stored config version to the specified value
      *
@@ -157,10 +141,10 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
     public function setConfigVer($configVer)
     {
         $this->_configVer = $configVer;
-    
+
         return $this;
     }
-    
+
     /**
      * Get the stored DB version
      *
@@ -170,7 +154,7 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
     {
         return $this->_dbVer;
     }
-    
+
     /**
      * get the stored config version
      *
@@ -180,15 +164,7 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
     {
         return $this->_configVer;
     }
-    
-    public function getModuleBlackList(){
-        return $this->_moduleBlackList;
-    }
-    
-    public function getModuleRewrites(){
-        return $this->_moduleRewrites;
-    }
-    
+
     /**
      * Store the applied update versions
      *
@@ -198,99 +174,34 @@ class TIG_Buckaroo3Extended_Model_Resource_Setup extends Mage_Core_Model_Resourc
     {
         $dbVer = $this->_getResource()->getDbVersion($this->_resourceName);
         $configVer = (string)$this->_moduleConfig->version;
-    
+
         $this->setDbVer($dbVer);
         $this->setConfigVer($configVer);
-    
+
         return parent::applyUpdates();
     }
-    
+
     /**
      * Check if there are modules installed that can conflict with the buckaroo module
      *
      * @return TIG_Buckaroo3Extended_Model_Resource_Setup
+     * @deprecated v4.10.1
      *
      */
     public function afterApplyAllUpdates()
     {
-        //check version of the module
-        $dbVer = $this->getDbVer();
-        $configVer = $this->getConfigVer();
-        //when the module is not updated but degraded, return before checking
-        if (version_compare($configVer, $dbVer) != self::VERSION_COMPARE_GREATER) {
-            return $this;
-        }
-        
-        if (!method_exists('Mage_AdminNotification_Model_Inbox', 'addCritical')) {
-            return $this;
-        }
-        
-        //get the buckaroo helper
-        $helper = Mage::helper('buckaroo3extended');
-        $messageTitle       = '';
-        $messageDescription = '';
-        
-        //get the blacklist & check if they are installed
-        $conflictedModules = $this->_checkBlacklist();
-        if(!empty($conflictedModules)){
-            $messageDescription .= $helper->__("The module(s) that can conflict with the Buckaroo module are:<br/> %s",implode(', ',$conflictedModules));
-        }   
-        
-        //check if other modules are rewriting the same classes as the buckaroo module does
-        $rewriteClasses = $this->_checkModuleRewrites();
-        if(!empty($rewriteClasses)){
-            $messageDescription .= $helper->__("<br/>There are modules that rewrite classes the Buckaroo module uses:<br/> %s",implode("<br/>",$rewriteClasses));
-        }
-        
-        if(!empty($messageDescription)){
-            $messageTitle = $helper->__('There are modules installed that may conflict with the Buckaroo module.');
-            $inbox = Mage::getModel('adminnotification/inbox');
-            $inbox->addCritical( $messageTitle, $messageDescription, 'http://servicedesk.totalinternetgroup.nl/entries/29080018-Conflicterende-modules' , true )->save();
-        }
-
+        /**
+         * as of version v4.10.0 the rewrites were removed due to the rewritten PaymentFee implementation
+         * so the conflict-detection can be disabled
+         */
         return $this;
-    }
-    
-    protected function _checkModuleRewrites(){
-        $rewrites = $this->getModuleRewrites();
-        $rewriteClasses = array();
-        if(!empty($rewrites)){
-            foreach($rewrites as $type => $rewrites){
-                //get method name to get the right classname
-                $getClassNameMethod = 'get'.ucfirst($type).'ClassName';
-                
-                foreach($rewrites as $rewrite => $buckarooRewrite){
-                    $rewriteClass   = Mage::getConfig()->$getClassNameMethod($rewrite);
-                    
-                    //if the rewrite is not a Buckaroo-rewrite then add it to the message
-                    if($rewriteClass != $buckarooRewrite){
-                        $rewriteClasses[] = $rewriteClass;
-                    }
-                }
-            }
-        }
-        return $rewriteClasses;
-    }
-    
-    protected function _checkBlacklist(){
-        $moduleBlacklist   = $this->getModuleBlackList();   
-        $conflictedModules = array();
-        if(!empty($moduleBlacklist)){
-            foreach($moduleBlacklist as $module => $name){
-               $isInstalled =  Mage::getConfig()->getModuleConfig($module)->version;
-               if($isInstalled){
-                   $conflictedModules[] = $name;
-               }
-            } 
-        }
-        return $conflictedModules;
     }
 
     public function getGiftcardArray()
     {
         return $this->_giftcardArray;
     }
-    
+
     public function getTermsAndConditions()
     {
         $termsAndConditions = <<<TERMS_AND_CONDITIONS
@@ -308,7 +219,7 @@ TERMS_AND_CONDITIONS;
 
         return $termsAndConditions;
     }
-    
+
     public function setTermsAndConditions($termsAndConditions)
     {
         $this->_termsAndConditions = $termsAndConditions;
@@ -396,24 +307,24 @@ INFORMATION_REQUIREMENT;
 
         return $informationRequirement;
     }
-    
+
     public function setInformationRequirement($informationRequirement)
     {
         $this->_informationRequirement = $informationRequirement;
         return $this;
     }
-    
+
     public function installTermsAndConditions()
     {
         $currentStore = Mage::app()->getStore()->getId();
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
-        
+
         $staticBlock = Mage::getModel('cms/block');
         $intrumTermsAndConditions = $staticBlock->load('buckaroo_intrum_terms_and_conditions');
         if ($intrumTermsAndConditions->getId()) {
             return $this;
         }
-        
+
         $parameters = array(
             'title'      => 'Buckaroo Algemene Voorwaarden',
             'identifier' => 'buckaroo_intrum_terms_and_conditions',
@@ -421,23 +332,23 @@ INFORMATION_REQUIREMENT;
             'is_active'  => 1,
             'stores'     => array(0),
         );
-        
+
         $intrumTermsAndConditions->setData($parameters)->save();
         Mage::app()->setCurrentStore($currentStore);
         return $this;
     }
-    
+
     public function installInformationRequirement()
     {
         $currentStore = Mage::app()->getStore()->getId();
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
-        
+
         $staticBlock = Mage::getModel('cms/block');
         $informationRequirement = $staticBlock->load('buckaroo_information_requirement');
         if ($informationRequirement->getId()) {
             return $this;
         }
-        
+
         $parameters = array(
             'title'      => 'Buckaroo Informatieplicht',
             'identifier' => 'buckaroo_information_requirement',
@@ -445,28 +356,28 @@ INFORMATION_REQUIREMENT;
             'is_active'  => 1,
             'stores'     => array(0),
         );
-        
+
         $informationRequirement->setData($parameters)->save();
         Mage::app()->setCurrentStore($currentStore);
         return $this;
     }
-    
+
     public function installBaseGiftcards()
     {
         $giftcards = $this->getGiftcardArray();
         foreach ($giftcards as $giftcard) {
             $giftcardModel = Mage::getModel('buckaroo3extended/giftcard');
             $giftcardModel->load($giftcard['value'], 'servicecode');
-            
+
             if ($giftcardModel->getId()) {
                 continue;
             }
-            
+
             $giftcardModel->setServicecode($giftcard['value'])
                           ->setLabel($giftcard['label'])
                           ->save();
         }
-        
+
         return $this;
     }
 }

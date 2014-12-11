@@ -28,6 +28,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     const BUCKAROO_NEUTRAL           = 'BUCKAROO_NEUTRAL';
     const BUCKAROO_PENDING_PAYMENT   = 'BUCKAROO_PENDING_PAYMENT';
     const BUCKAROO_INCORRECT_PAYMENT = 'BUCKAROO_INCORRECT_PAYMENT';
+    const BUCKAROO_REJECTED          = 'BUCKAROO_REJECTED';
+
 
     /**
      *  @var Mage_Sales_Model_Order $_order
@@ -61,7 +63,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 		           ),
 		    690 => array(
 		               'message' => 'Payment rejected',
-		               'status'  => self::BUCKAROO_FAILED,
+		               'status'  => self::BUCKAROO_REJECTED,
 		           ),
 		    790 => array(
 		               'message' => 'Waiting for user input',
@@ -301,7 +303,6 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             ->setIsActive(true)
             ->setReservedOrderId(null)
             ->save();
-        Mage::helper('buckaroo3extended')->log('quote wordt geladen, reserved order id:'.$quote->setReservedOrderId());
         Mage::getSingleton('checkout/session')->replaceQuote($quote);
     }
 

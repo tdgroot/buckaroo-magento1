@@ -17,6 +17,7 @@
 "Payment fee enabled","Betaaltoeslag ingeschakeld"
 "Payment fee","Betaaltoeslag"
 "Payment fee frontend label","Betaaltoeslag label aan de voorkant"
+"Buckaroo Payment fee", "Buckaroo betaaltoeslag"
 "Method specific status enabled","Methode specifieke status ingeschakeld"
 "Method specific success status","Methode specifieke 'success' status"
 "Method specific failed status","Methode specifieke 'failed' status"
@@ -107,7 +108,7 @@
 "Enable or disable refunding.","Schakel de creditering/terugstorten in of uit. "
 "Allow 2-way refunding from Magento and Payment Plaza.","Verwerk 'refunding' vanuit zowel Magento als Payment Plaza. "
 "Enter a name for the certificate. This is purely administrative.","Voeg een naam toe aan het certificaat ter herkenning."
-"Select which tax class should be used for the Buckaroo Fee.","Selecteer welk btw tarief wordt toegepast op de betaaltoeslag."
+"Select which tax class should be used for the Buckaroo Fee.","Selecteer welk btw tarief wordt toegepast op de Buckaroo betaaltoeslag."
 "This status will be given to new orders.","Deze status wordt toegekend bij nieuwe orders."
 "This status will be given to orders pending payment.","Deze status wordt toegekend bij orders die in afwachting zijn van betalen."
 "This status will be given to orders paid.","Deze status wordt toegekend bij betaalde orders."
@@ -308,7 +309,7 @@
 "Hold orders which have no Carte Bleue SecureCode.","Orders zonder Carte Bleue SecureCode worden 'onhold' gezet."
 "A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.","Er is een technische fout opgetreden. Probeer het opnieuw. Als het probleem zich blijft voordoen neem dan contact op met de shopbeheerder."
 "The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.","Dit bedrag wordt berekend op basis van de BTW instellingen in: Systeem > Verkoop > Belasting"
-"This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.","Het label wordt getoond naast de fee tijdens de checkout en op de order, invoice, creditmemo pagina's en PDF."
+"This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.","Het label wordt getoond naast de betaaltoeslag tijdens de checkout en op de order, invoice, creditmemo pagina's en PDF."
 "Company Name","Bedrijfsnaam"
 "COC Number","KvK nummer"
 "Cost Center","Kostenplaats"
@@ -331,3 +332,10 @@ TIG_Buckaroo3Extended::Subtotal incl. tax,Subtotaal incl. BTW
 TIG_Buckaroo3Extended::Grand total,Groot totaal
 TIG_Buckaroo3Extended::Fee percentage mode,Toeslag percentage modus
 "TIG_Buckaroo3Extended::This setting only applies to percentage-based Buckaroo fee's.<br />Please choose over which amount the fee percentage is calculated.",Deze instelling is enkel van toepassing op percentage-gebaseerde toeslagen.<br />Kies s.v.p. over welk bedrag het toeslag percentage wordt berekend.
+"We are sorry to inform you that the request to pay afterwards with AfterPay is not possible at this time. This can be due to various (temporary) reasons.<br/><br/> For questions about your rejection you can contact the customer service of AfterPay. Or you can visit the website of AfterPay and click ""Frequently asked questions"" through this link <a href=""http://www.afterpay.nl/page/consument-faq"">http://www.afterpay.nl/page/consument-faq</a> in the section ""Datacontrol"".<br/><br/> We advice you to choose a different payment method to complete your order.","Het spijt ons u te moeten mededelen dat uw aanvraag om uw bestelling achteraf te betalen op dit moment niet door AfterPay wordt geaccepteerd. Dit kan om diverse (tijdelijke) redenen zijn.<br/><br/>Voor vragen over uw afwijzing kunt u contact opnemen met de Klantenservice van AfterPay. Of kijk op de website van AfterPay bij ""Veelgestelde vragen"" via de link  <a href=""http://www.afterpay.nl/page/consument-faq"">http://www.afterpay.nl/page/consument-faq</a> onder het kopje ""Gegevenscontrole"".<br/><br/>Wij adviseren u voor een andere betaalmethode te kiezen om alsnog de betaling van uw bestelling af te ronden."
+TIG_Buckaroo3Extended::Fee,Betaaltoeslag
+TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
+"Tax class for Buckaroo Payment fee", "Belasting tarief voor de Buckaroo betaaltoeslag"
+"This tax class will be used when calculating the tax for the Buckaroo Payment fee.","Het geselecteerde belasting tarief zal gebruikt worden in de berekening om de betaaltoeslag te berekenen."
+"Whether the Buckaroo Payment fee you have entered is incl. or excl. tax.","Selecteer hier of de ingevoerde betaaltoeslag inclusief of exclusief BTW is."
+"Display Buckaroo Payment fee","Laat de Buckaroo betaaltoeslag zien"

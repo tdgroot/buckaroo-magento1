@@ -1,3 +1,9 @@
+===== 4.10.1 =====
+- Het bericht voor afwijzing voor de betaalmethode Afterpay toegevoegd
+- Compatibiliteit verbeterd met Onestepcheckout
+- Giftcard functionaliteit verbeterd voor Magento Enterprise
+- Vertalingen bijgewerkt
+
 ===== 4.10.0 =====
 - Nieuwe betaalmethode Afterpay toegevoegd
 - Refunden mogelijk gemaakt met Bancontact / Mr. Cash
