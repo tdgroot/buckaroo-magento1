@@ -4,7 +4,7 @@
 #checkout-step-payment .buckaroo-method ul.form-list { padding:0; }
 #checkout-step-payment .buckaroo-method .input-box { float:none !important; }
 
-#checkout-step-payment .buckaroo-method .customer-dob .dob-day input.input-text, 
+#checkout-step-payment .buckaroo-method .customer-dob .dob-day input.input-text,
 #checkout-step-payment .buckaroo-method .customer-dob .dob-month input.input-text { width:46px !important; }
 #checkout-step-payment .buckaroo-method .customer-dob .dob-year input.input-text  { width:134px !important; }
 
