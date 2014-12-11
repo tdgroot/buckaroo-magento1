@@ -87,8 +87,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         return $this;
     }
 
-
-
     /** refund methods */
 
     /**
@@ -172,7 +170,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         //add billing address
         $billingAddress     = $this->_order->getBillingAddress();
         $streetFull         = $this->_processAddress($billingAddress->getStreetFull());
-        $billingPhonenumber = $this->_processPhoneNumber($billingAddress->getTelephone());
+        $rawPhoneNumber     = $billingAddress->getTelephone();
+        $rawPhoneNumber     = (!empty($rawPhoneNumber))? $rawPhoneNumber : $additionalFields['BPE_PhoneNumber'];
+        $billingPhonenumber = $this->_processPhoneNumber($rawPhoneNumber);
 
         $billingInfo = array(
             'BillingTitle'             => $billingAddress->getFirstname(),
@@ -191,7 +191,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             'BillingPhoneNumber'       => $billingPhonenumber['clean'],
             'BillingLanguage'          => $billingAddress->getCountryId(),
         );
-
         $requestArray = array_merge($requestArray,$billingInfo);
 
         //add shipping address (only when different from billing address)
@@ -229,6 +228,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         );
         $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
 
+        $discount = null;
+
         if(Mage::helper('buckaroo3extended')->isEnterprise()){
             if((double)$this->_order->getGiftCardsAmount() > 0){
                 $discount = (double)$this->_order->getGiftCardsAmount();
@@ -242,7 +243,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         //add order Info
         $orderInfo = array(
-            'Discount' => $discount,
+            'Discount'      => $discount,
             'ShippingCosts' => $shippingCosts,
         );
 
@@ -263,8 +264,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $products = $this->_order->getAllItems();
         $max      = 99;
         $i        = 1;
-
-        $group = array();
+        $group    = array();
 
         foreach($products as $item){
             /** @var $item Mage_Sales_Model_Order_Item */
@@ -276,7 +276,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             // Changed calculation from unitPrice to orderLinePrice due to impossible to recalculate unitprice,
             // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
             // Quantity will always be 1 and quantity ordered will be in the article description.
-            $productPrice = ($item->getBasePrice() * $item->getQtyOrdered()) + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount();
+            $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
+                          + $item->getBaseTaxAmount()
+                          + $item->getBaseHiddenTaxAmount();
             $productPrice = round($productPrice,2);
 
 
@@ -284,7 +286,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $article['ArticleId']['value']          = $item->getId();
             $article['ArticleQuantity']['value']    = 1;
             $article['ArticleUnitPrice']['value']   = $productPrice;
-            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($item->getTaxClassId());
+            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($this->_getTaxClassId($item));
 
             $group[$i] = $article;
 
@@ -298,15 +300,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         end($group);// move the internal pointer to the end of the array
         $key             = (int)key($group);
-        $feeGroupId = $key+1;
+        $feeGroupId      = $key+1;
         $paymentFeeArray = $this->_getPaymentFeeLine();
         if(false !== $paymentFeeArray && is_array($paymentFeeArray)){
             $group[$feeGroupId] = $paymentFeeArray;
         }
 
         $requestArray = array_merge($requestArray, array('Articles' => $group));
-
-
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
@@ -331,17 +331,26 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         return false;
     }
 
+    /**
+     * @param Mage_Sales_Model_Order_Item $item
+     * @return array|bool|string
+     */
+    protected function _getTaxClassId(Mage_Sales_Model_Order_Item $item)
+    {
+        return Mage::getResourceModel('catalog/product')->getAttributeRawValue($item->getProductId(), 'tax_class_id', $item->getStoreId());
+    }
+
     protected function _getTaxCategory($taxClassId)
     {
         if (!$taxClassId) {
             return 4;
         }
 
-        $highTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/high', Mage::app()->getStore()->getStoreId()));
-        $middleTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/middle', Mage::app()->getStore()->getStoreId()));
-        $lowTaxClasses    = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/low', Mage::app()->getStore()->getStoreId()));
-        $zeroTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/zero', Mage::app()->getStore()->getStoreId()));
-        $noTaxClasses     = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/no', Mage::app()->getStore()->getStoreId()));
+        $highTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/high', Mage::app()->getStore()->getStoreId()));
+        $middleTaxClasses = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/middle', Mage::app()->getStore()->getStoreId()));
+        $lowTaxClasses    = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/low', Mage::app()->getStore()->getStoreId()));
+        $zeroTaxClasses   = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/zero', Mage::app()->getStore()->getStoreId()));
+        $noTaxClasses     = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_afterpay/no', Mage::app()->getStore()->getStoreId()));
 
         if (in_array($taxClassId, $highTaxClasses)) {
             return 1;
