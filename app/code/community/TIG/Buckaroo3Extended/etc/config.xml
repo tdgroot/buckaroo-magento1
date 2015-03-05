@@ -940,13 +940,13 @@
                         <method>buckaroo3extended_push_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
                 </observers>
-                <observers>
-                    <buckaroo3extended_paymentmethod_observer_afterpay>
-                        <type>Singleton</type>
-                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
-                        <method>buckaroo3extended_push_custom_processing</method>
-                    </buckaroo3extended_paymentmethod_observer_afterpay>
-                </observers>
+                <!--<observers>-->
+                    <!--<buckaroo3extended_paymentmethod_observer_afterpay>-->
+                        <!--<type>Singleton</type>-->
+                        <!--<class>buckaroo3extended/paymentMethods_afterpay_observer</class>-->
+                        <!--<method>buckaroo3extended_push_custom_processing</method>-->
+                    <!--</buckaroo3extended_paymentmethod_observer_afterpay>-->
+                <!--</observers>-->
                 <observers>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
                         <type>Singleton</type>
