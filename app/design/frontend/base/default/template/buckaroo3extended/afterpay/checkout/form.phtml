@@ -54,13 +54,13 @@
         <?php if($currentBusiness == '1'): ?>
 
             <li>
-                <input type="hidden" name="<?php echo $_code;?>_BPE_BusinessSelect" value="1" />
+                <input type="hidden" name="<?php echo $_code;?>_BPE_BusinessSelect" value="1" id="<?php echo $_code;?>_BPE_BusinessSelect"/>
             </li>
 
         <?php elseif($currentBusiness == '2'):?>
 
             <li>
-                <input type="hidden" name="<?php echo $_code;?>_BPE_BusinessSelect" value="2" />
+                <input type="hidden" name="<?php echo $_code;?>_BPE_BusinessSelect" value="2" id="<?php echo $_code;?>_BPE_BusinessSelect"/>
                 <div id="b2b-fields">
                     <label class="required" for="<?php echo $_code;?>_BPE_CompanyCOCRegistration"><?php echo $this->__('COC Number');?></label>
                     <div class="input-box">
