@@ -1753,6 +1753,21 @@
                 <order_status_complete_success></order_status_complete_success>
                 <order_status_complete_failed></order_status_complete_failed>
             </buckaroo3extended_refund>
+
+            <buckaroo3extended_masterpass>
+                <active>0</active>
+                <mode>0</mode>
+                <title>MasterPass</title>
+                <allowspecific>0</allowspecific>
+                <specificcountry></specificcountry>
+                <order_status_success></order_status_success>
+                <order_status_failed></order_status_failed>
+                <sort_order>200</sort_order>
+                <limit_by_ip>0</limit_by_ip>
+                <allowed_currencies>EUR</allowed_currencies>
+                <payment_fee_label>Fee</payment_fee_label>
+                <order_email>1</order_email>
+            </buckaroo3extended_masterpass>
         </buckaroo>
 
     </default>

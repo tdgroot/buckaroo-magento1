@@ -43,6 +43,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
     protected $_method = 'masterpass';
 
     /**
+     * @var Mage_Sales_Model_Order
+     */
+    protected $_order;
+
+    /**
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -116,13 +121,32 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
             $this->_addAdditionalCreditManagementVariables($vars);
         }
 
-        /**
-         * @todo implement actual custom vars
-         */
-        $array = array(
-            'ArticleUnitprice' => '10',
-            'ArticleQuantity' => '10',
-        );
+        $products = $this->_order->getAllItems();
+        $group    = array();
+
+        foreach($products as $item){
+            /** @var Mage_Sales_Model_Order_Item $item */
+            if (empty($item) || $item->hasParentItemId()) {
+                continue;
+            }
+
+            // Changed calculation from unitPrice to orderLinePrice due to impossible to recalculate unitprice,
+            // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
+            // Quantity will always be 1 and quantity ordered will be in the article description.
+            $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
+                + $item->getBaseTaxAmount()
+                + $item->getBaseHiddenTaxAmount();
+            $productPrice = round($productPrice,2);
+
+
+            $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
+            $article['ArticleQuantity']['value']    = 1;
+            $article['ArticleUnitPrice']['value']   = $productPrice;
+
+            $group[] = $article;
+        }
+        $array = array('Articles' => $group);
+
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
         } else {
