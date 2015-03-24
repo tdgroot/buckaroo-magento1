@@ -40,17 +40,37 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_PaymentMethod
     extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     /**
+     * @var array Allowed currencies
+     */
+    public $allowedCurrencies = array(
+        'ARS',
+        'AUD',
+        'BRL',
+        'CAD',
+        'CHF',
+        'CNY',
+        'CZK',
+        'DKK',
+        'EUR',
+        'GBP',
+        'HRK',
+        'ISK',
+        'JPY',
+        'LTL',
+        'LVL',
+        'MXN',
+        'NOK',
+        'NZD',
+        'PLN',
+        'RUB',
+        'SEK',
+        'TRY',
+        'USD',
+        'ZAR',
+    );
+
+    /**
      * @var string Payment Code
      */
     protected $_code = 'buckaroo3extended_masterpass';
-
-    /**
-     * @param null $quote
-     *
-     * @return bool
-     */
-    public function isAvailable($quote = null)
-    {
-        return true;
-    }
 }
