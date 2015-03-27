@@ -73,4 +73,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_PaymentMethod
      * @var string Payment Code
      */
     protected $_code = 'buckaroo3extended_masterpass';
+
+    protected $_formBlockType = 'buckaroo3extended/paymentMethods_masterpass_checkout_form';
 }

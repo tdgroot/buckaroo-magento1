@@ -121,9 +121,28 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
             $this->_addAdditionalCreditManagementVariables($vars);
         }
 
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+
+        $discount = null;
+
+        if(Mage::helper('buckaroo3extended')->isEnterprise()){
+            if((double)$this->_order->getGiftCardsAmount() > 0){
+                $discount = (double)$this->_order->getGiftCardsAmount();
+            }
+        }
+
+        if(abs((double)$this->_order->getDiscountAmount()) > 0){
+            $discount += abs((double)$this->_order->getDiscountAmount());
+        }
+
+        $array = array(
+            'Discount'              => $discount,
+            'ShippingCosts'         => $shippingCosts,
+            'ShippingSuppression'   => 'TRUE',
+        );
+
         $products = $this->_order->getAllItems();
         $group    = array();
-
         foreach($products as $item){
             /** @var Mage_Sales_Model_Order_Item $item */
             if (empty($item) || $item->hasParentItemId()) {
@@ -141,11 +160,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
 
             $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
             $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = $productPrice;
+            $article['ArticleUnitPrice']['value']   = (string) $productPrice;
 
             $group[] = $article;
         }
-        $array = array('Articles' => $group);
+
+        $paymentFeeArray = $this->_getPaymentFeeLine();
+        if(false !== $paymentFeeArray && is_array($paymentFeeArray)){
+            $group[] = $paymentFeeArray;
+        }
+
+        $array['Articles'] = $group;
 
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
@@ -156,6 +181,24 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
         $request->setVars($vars);
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function _getPaymentFeeLine()
+    {
+        $fee        = (float) $this->_order->getBuckarooFee();
+        $feeTax     = (float) $this->_order->getBuckarooFeeTax();
+        $feeTotal   = (float) $fee+$feeTax;
+
+        if($fee > 0){
+            $article['ArticleDescription']['value'] = 'Servicekosten';
+            $article['ArticleQuantity']['value']    = 1;
+            $article['ArticleUnitPrice']['value']   = (string) round($feeTotal,2);
+            return $article;
+        }
+        return false;
     }
 
     /**
