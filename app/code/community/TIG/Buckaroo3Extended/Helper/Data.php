@@ -162,7 +162,7 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getIsKlarnaEnabled()
     {
-        return false;//Mage::helper('core')->isModuleEnabled('Klarna_KlarnaPaymentModule');
+        return Mage::helper('core')->isModuleEnabled('Klarna_KlarnaPaymentModule');
     }
 
     public function checkRegionRequired()
