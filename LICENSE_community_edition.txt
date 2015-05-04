@@ -22,8 +22,8 @@ PRODUCTS/SOFTWARE/SCRIPTS/SERVICES YOU PURCHASE FROM US.
 
 4. This Agreement gives you the right to use only one copy of the Software on
    one Magento installation solely for your own personal or business use,
-   subject to all other terms of this Agreement. A separate License should be
-   purchased for each new Software installation. Any distribution of the Software
+   subject to all other terms of this Agreement. A separate License should be 
+   purchased for each new Software installation. Any distribution of the Software 
    without our consent, including noncommercial distribution is regarded as
    violation of this Agreement and entails liability, according to the current law.
 
