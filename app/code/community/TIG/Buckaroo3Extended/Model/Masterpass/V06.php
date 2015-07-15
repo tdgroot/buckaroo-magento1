@@ -36,4 +36,8 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
             ))->processResponse();
         }
     }
+
+    public function pay() {
+        return true;
+    }
 }

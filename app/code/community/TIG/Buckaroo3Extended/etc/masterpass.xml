@@ -4,12 +4,6 @@
         <v06 translate="title" module="buckaroo3extended">
             <model>buckaroo3extended/masterpass_v06</model>
             <title>Buckaroo MasterPass v6</title>
-            <features>
-                <lightbox/>
-                <pairing>
-                    <model>buckaroo3extended/masterpass_pairing</model>
-                </pairing>
-            </features>
             <options>
                 <supported_countries>NL,BE,DE</supported_countries>
                 <supported_currencies>EUR,USD</supported_currencies>
