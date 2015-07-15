@@ -20,9 +20,15 @@ class TIG_Buckaroo3Extended_Model_Response_Quote extends TIG_Buckaroo3Extended_M
         $this->_debugEmail .= "Returning response parameters\n";
         $this->sendDebugEmail();
 
-        // TODO: return the Service values and/or save them with the quote
-        var_dump($this->getResponse());
+        $responseParameters = $this->getResponse()->Services->Service->ResponseParameter;
 
-		exit;
+        $parameters = array();
+        foreach($responseParameters as $data) {
+            $data = (array)$data;
+            $parameters[$data['Name']] = $data['_'];
+        }
+
+        // TODO: return the Service values and/or save them with the quote
+        Mage::register('masterpass_parameters', $parameters);
     }
 }

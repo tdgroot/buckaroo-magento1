@@ -23,7 +23,7 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
             $quoteRequest->setVars($vars);
 
             // do the request
-            $quoteRequest->sendRequest();
+            return $quoteRequest->sendRequest();
         }
         catch (Exception $e)
         {
