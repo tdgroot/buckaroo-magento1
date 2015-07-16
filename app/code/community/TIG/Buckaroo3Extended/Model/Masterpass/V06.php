@@ -23,7 +23,10 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
             $quoteRequest->setVars($vars);
 
             // do the request
-            return $quoteRequest->sendRequest();
+            $quoteRequest->sendRequest();
+
+            // By this point we can be sure that masterpass_parameters is set in the registry
+            return Mage::registry('masterpass_parameters');
         }
         catch (Exception $e)
         {
