@@ -54,7 +54,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     public function sendRequest()
     {
         try {
-            $this->_sendRequest();
+            return $this->_sendRequest();
         } catch (Exception $e) {
             Mage::helper('buckaroo3extended')->logException($e);
             $responseModel = Mage::getModel($this->_responseModelClass, array(
@@ -62,7 +62,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
                 'XML'        => false,
                 'debugEmail' => $this->_debugEmail,
             ));
-            $responseModel->setOrder($this->_order)
+            return $responseModel->setOrder($this->_order)
                           ->processResponse();
         }
     }
@@ -71,7 +71,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         if (empty($this->_order)) {
             $this->_debugEmail .= "No order was set! :( \n";
-            Mage::getModel($this->_responseModelClass, array(
+            return Mage::getModel($this->_responseModelClass, array(
                 'response'   => false,
                 'XML'        => false,
                 'debugEmail' => $this->_debugEmail,
@@ -108,7 +108,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
                 $responseModel->setOrder($this->_order);
             }
 
-            $responseModel->processResponse();
+            return $responseModel->processResponse();
         }
 
         //hack to prevent SQL errors when using onestepcheckout
@@ -167,7 +167,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         if (!$responseModel->getOrder()) {
             $responseModel->setOrder($this->_order);
         }
-        $responseModel->processResponse();
+        return $responseModel->processResponse();
     }
 
     protected function _addServices()

@@ -16,31 +16,32 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
             // initiate request
             $quoteRequest = Mage::getModel('buckaroo3extended/request_quote', array('quote' => $quote));
 
-            // append the vars with default lightbox params
+            // append the vars with lightbox config
             $vars = $quoteRequest->getVars();
             $vars['customVars']['masterpass']['LightboxRequest'] = true;
             $vars['customVars']['masterpass']['InitializeUrl'] = Mage::app()->getStore()->getCurrentUrl(false);
             $quoteRequest->setVars($vars);
 
             // do the request
-            $quoteRequest->sendRequest();
+            $parameters = $quoteRequest->sendRequest();
 
-            // By this point we can be sure that masterpass_parameters is set in the registry
-            return Mage::registry('masterpass_parameters');
+            // return lightbox parameters
+            return $parameters;
         }
         catch (Exception $e)
         {
             Mage::helper('buckaroo3extended')->logException($e);
 
-            Mage::getModel('buckaroo3extended/response_abstract', array(
+            return Mage::getModel('buckaroo3extended/response_abstract', array(
                 'response'   => false,
                 'XML'        => false,
-                'debugEmail' => $quoteRequest->getDebugEmail(),
+                'debugEmail' => isset($quoteRequest) ? $quoteRequest->getDebugEmail() : '',
             ))->processResponse();
         }
     }
 
-    public function pay() {
+    public function pay()
+    {
         return true;
     }
 }
