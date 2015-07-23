@@ -158,6 +158,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
     public function returnAction()
     {
+
         $postData = $this->getRequest()->getPost();
         if (isset($postData['brq_invoicenumber'])) {
             $orderId = $postData['brq_invoicenumber'];
@@ -166,30 +167,45 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return;
         }
 
-        $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        if (isset($postData['brq_transaction_method']) && $postData['brq_transaction_method'] == 'masterpass') {
 
-        $this->_paymentCode = $this->_order->getPayment()->getMethod();
+            /**
+             * @var TIG_Buckaroo3Extended_Model_Response_MasterPass $module
+             */
+            $module = Mage::getModel(
+                'buckaroo3extended/response_masterPass',
+                array(
+                    'postArray'  => $postData,
+                )
+            );
 
-        $debugEmail = 'Payment code: ' . $this->_paymentCode . "\n\n";
-        $debugEmail .= 'POST variables received: ' . var_export($postData, true) . "\n\n";
+            $redirectData = $module->processReturn();
+            $this->_redirect($redirectData['path'], $redirectData['params']);
 
-        /**
-         * @var TIG_Buckaroo3Extended_Model_Response_Return $module
-         */
-        $module = Mage::getModel(
-            'buckaroo3extended/response_return',
-            array(
-                'order'      => $this->_order,
-                'postArray'  => $postData,
-                'debugEmail' => $debugEmail,
-                'method'     => $this->_paymentCode,
-            )
-        );
+            return;
+        } else {
+            $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-        $module->processReturn();
+            $this->_paymentCode = $this->_order->getPayment()->getMethod();
 
+            $debugEmail = 'Payment code: ' . $this->_paymentCode . "\n\n";
+            $debugEmail .= 'POST variables received: ' . var_export($postData, true) . "\n\n";
 
+            /**
+             * @var TIG_Buckaroo3Extended_Model_Response_Return $module
+             */
+            $module = Mage::getModel(
+                'buckaroo3extended/response_return',
+                array(
+                    'order'      => $this->_order,
+                    'postArray'  => $postData,
+                    'debugEmail' => $debugEmail,
+                    'method'     => $this->_paymentCode,
+                )
+            );
 
+            $module->processReturn();
+        }
 
         $this->_redirect('');
     }
