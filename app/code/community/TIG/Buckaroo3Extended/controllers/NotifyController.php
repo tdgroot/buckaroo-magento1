@@ -172,14 +172,24 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             /**
              * @var TIG_Buckaroo3Extended_Model_Response_MasterPass $module
              */
-            $module = Mage::getModel(
-                'buckaroo3extended/response_masterPass',
-                array(
-                    'postArray'  => $postData,
-                )
-            );
 
-            $redirectData = $module->processReturn();
+            try {
+                $module = Mage::getModel(
+                    'buckaroo3extended/response_masterPass',
+                    array(
+                        'postArray' => $postData,
+                    )
+                );
+
+                $redirectData = $module->processReturn();
+            } catch(Exception $e) {
+                $helper = Mage::helper('buckaroo3extended');
+                Mage::getSingleton('checkout/session')->addError(
+                    $helper->__('Something went wrong while checkout out with MasterPass. Try again.')
+                );
+                $redirectData['path'] = 'checkout/cart';
+                $redirectData['params'] = array();
+            }
             $this->_redirect($redirectData['path'], $redirectData['params']);
 
             return;
