@@ -6,13 +6,6 @@ class TIG_Buckaroo3Extended_Model_Observer_BackendOrder extends Mage_Core_Model_
         $order = $observer->getOrder();
         $method = $order->getPayment()->getMethod();
 
-        $newStates = Mage::helper('buckaroo3extended')->getNewStates('BUCKAROO_PENDING_PAYMENT', $order, $method);
-
-        var_dump($newStates);
-        die();
-
-        $newStates = Mage::helper('buckaroo3extended')->getNewStates('BUCKAROO_PENDING_PAYMENT', $order, $method);
-
         if (strpos($method, 'buckaroo3extended') === false) {
             return $this;
         }
@@ -25,6 +18,13 @@ class TIG_Buckaroo3Extended_Model_Observer_BackendOrder extends Mage_Core_Model_
             $request->sendRequest();
         } catch (Exception $e) {
             Mage::throwException($e->getMessage());
+        }
+
+        // Now set our custom pending status
+        $newStates = Mage::helper('buckaroo3extended')->getNewStates('BUCKAROO_PENDING_PAYMENT', $order, $method);
+        if ($newStates[1] !== null) {
+            $order->setStatus($newStates[1]);
+            $order->save();
         }
 
         return $this;

@@ -458,8 +458,6 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         ) {
             $states['incorrect']['status'] = 'payment_review';
         }
-echo '<pre>';
-        var_dump($states);
 
         // See if we even need to use custom statuses
         $useStatus = Mage::getStoreConfig('buckaroo/' . $method . '/active_status', $storeId);
@@ -474,10 +472,10 @@ echo '<pre>';
                 $states['success']['status'] = $customSuccess;
             }
             if (!empty($customFailure)) {
-                $states['success']['failure'] = $customFailure;
+                $states['failure']['status'] = $customFailure;
             }
             if (!empty($customPending)) {
-                $states['success']['pending'] = $customPending;
+                $states['pending']['status'] = $customPending;
             }
         }
 
