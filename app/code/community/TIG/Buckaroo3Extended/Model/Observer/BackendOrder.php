@@ -1,7 +1,7 @@
 <?php
 class TIG_Buckaroo3Extended_Model_Observer_BackendOrder extends Mage_Core_Model_Abstract
 {
-	public function checkout_submit_all_after(Varien_Event_Observer $observer)
+    public function checkout_submit_all_after(Varien_Event_Observer $observer)
     {
         $order = $observer->getOrder();
         $method = $order->getPayment()->getMethod();
@@ -23,9 +23,9 @@ class TIG_Buckaroo3Extended_Model_Observer_BackendOrder extends Mage_Core_Model_
                     ->setOrderBillingInfo();
 
             $request->sendRequest();
-	    } catch (Exception $e) {
+        } catch (Exception $e) {
             Mage::throwException($e->getMessage());
-	    }
+        }
 
         return $this;
     }

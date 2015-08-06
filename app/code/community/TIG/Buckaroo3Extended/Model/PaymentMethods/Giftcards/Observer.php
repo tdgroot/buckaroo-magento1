@@ -55,8 +55,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         $availableCards .= ',ideal';
 
         $array = array(
-        		'servicesSelectableByClient' => $availableCards,
-        		'continueOnImcomplete'       => 'RedirectToHTML',
+                'servicesSelectableByClient' => $availableCards,
+                'continueOnImcomplete'       => 'RedirectToHTML',
         );
 
         if (array_key_exists('customVars', $vars)) {

@@ -121,8 +121,8 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     {
         $gender = (int) $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
         if (!$gender) {
-        	$customerId = $this->getAddress()->getCustomerId();
-			$customer = Mage::getModel('customer/customer')->load($customerId);
+            $customerId = $this->getAddress()->getCustomerId();
+            $customer = Mage::getModel('customer/customer')->load($customerId);
             $gender = (int) $customer->getGender();
         }
 
