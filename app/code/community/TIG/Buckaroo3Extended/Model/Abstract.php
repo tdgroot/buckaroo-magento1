@@ -30,7 +30,6 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     const BUCKAROO_INCORRECT_PAYMENT = 'BUCKAROO_INCORRECT_PAYMENT';
     const BUCKAROO_REJECTED          = 'BUCKAROO_REJECTED';
 
-
     /**
      *  @var Mage_Sales_Model_Order $_order
      */

@@ -188,9 +188,6 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
         $module->processReturn();
 
-
-
-
         $this->_redirect('');
     }
 

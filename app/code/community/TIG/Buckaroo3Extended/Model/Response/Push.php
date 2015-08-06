@@ -93,7 +93,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             }
         }
 
-		$newStates = $this->_getNewStates($response['status']);
+		$newStates = $this->getNewStates($response['status']);
 
 		$this->_debugEmail .= "Response recieved: " . var_export($response, true) . "\n\n";
 		$this->_debugEmail .= "Current state: " . $this->_order->getState() . "\nCurrent status: " . $this->_order->getStatus() . "\n";
@@ -288,93 +288,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 	    $this->_addNote($description);
 	}
 
-	/**
-	 * Determines which state and status an order will recieve based on its response code
-	 * and the configuration. Will use configuration for the payment method used or, if
-	 * that's not set, use the default
-	 *
-	 * @param string $code
-	 *
-	 * @return array $newStates
-	 *
-	 * @note currently the states are only used by _processpendingPayment(). May be removed completely in the future
-	 */
-	protected function _getNewStates($code)
-	{
-	    $order = $this->getorder();
-        $storeId = $order->getStoreId();
-
-        $useStatus = Mage::getStoreConfig('buckaroo/' . $this->_method . '/active_status', $storeId);
-
-	    //get the possible new states for the order
-		$stateSuccess                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', $storeId);
-		$stateFailure                = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', $storeId);
-		$statePendingpayment         = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', $storeId);
-
-		//get the possible new status for the order based on the payment method's individual config options
-		//these are optional
-		$customSuccessStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_success', $storeId);
-		$customFailureStatus         = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_failed', $storeId);
-		$customPendingPaymentStatus  = Mage::getStoreConfig('buckaroo/' . $this->_method . '/order_status_pendingpayment', $storeId);
-
-		//get the possible default new status for the order based on the general config options
-		//these should always be set
-		$defaultSuccessStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', $storeId);
-		$defaultFailureStatus        = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', $storeId);
-		$defaultPendingPaymentStatus = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', $storeId);
-
-		//determine whether to use the default or custom status
-		if ($useStatus && $customSuccessStatus && !empty($customSuccessStatus)) {
-			$statusSuccess = $customSuccessStatus;
-		} else {
-			$statusSuccess = $defaultSuccessStatus;
-		}
-
-		if ($useStatus && $customFailureStatus && !empty($customFailureStatus)) {
-			$statusFailure = $customFailureStatus;
-		} else {
-			$statusFailure = $defaultFailureStatus;
-		}
-
-		if ($useStatus && $customPendingPaymentStatus && !empty($customPendingPaymentStatus)) {
-			$statusPendingpayment = $customPendingPaymentStatus;
-		} else {
-			$statusPendingpayment = $defaultPendingPaymentStatus;
-		}
-
-		$stateIncorrectPayment  = 'holded';
-		$statusIncorrectPayment = 'buckaroo_incorrect_payment';
-
-		//magento 1.4 compatibility
-		$version15 = '1.5.0.0';
-        $version14 = '1.4.0.0';
-		if (version_compare(Mage::getVersion(), $version15, '<')
-		    && version_compare(Mage::getVersion(), $version14, '>')
-		    && $statusIncorrectPayment == 'buckaroo_incorrect_payment'
-		    )
-		{
-		    $statusIncorrectPayment = 'payment_review';
-		}
-
-		switch($code)
-        {
-            case self::BUCKAROO_SUCCESS:           $newStates = array($stateSuccess, $statusSuccess);
-                                                   break;
-            case self::BUCKAROO_ERROR:
-            case self::BUCKAROO_FAILED:            $newStates = array($stateFailure, $statusFailure);
-                                                   break;
-            case self::BUCKAROO_NEUTRAL:           $newStates = array(null, null);
-                                                   break;
-            case self::BUCKAROO_PENDING_PAYMENT:   $newStates = array($statePendingpayment, $statusPendingpayment);
-                                                   break;
-            case self::BUCKAROO_INCORRECT_PAYMENT: $newStates = array($stateIncorrectPayment, $statusIncorrectPayment);
-                                                   break;
-            default:					           $newStates = array(null, null);
-        }
-
-        return $newStates;
-	}
-
     /**
      * Process a succesful order. Sets its new state and status, sends an order confirmation email
      * and creates an invoice if set in config.
@@ -545,7 +458,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      */
     public function getNewStates($code)
 	{
-	    return $this->_getNewStates($code);
+        return Mage::helper('buckaroo3extended')->getNewStates($code, $this->getOrder(), $this->_method);
 	}
 
     /**
