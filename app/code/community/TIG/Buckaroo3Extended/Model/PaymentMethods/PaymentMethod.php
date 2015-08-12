@@ -131,7 +131,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
             throw new Exception('Buckaroo refunding is currently disabled in the configuration menu.');
             return false;
         }
-
         return true;
     }
 
