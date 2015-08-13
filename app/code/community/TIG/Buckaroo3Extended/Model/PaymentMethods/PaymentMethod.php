@@ -209,14 +209,18 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         // get current currency code
         $currency = Mage::app()->getStore()->getBaseCurrencyCode();
 
-
         // currency is not available for this module
         if (!in_array($currency, $this->allowedCurrencies))
         {
             return false;
         }
 
-        return TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote);
+        if(!TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote)){
+            return false;
+        }
+
+        return parent::isAvailable($quote);
+
     }
 
     public function filterAccount($accountNumber)
