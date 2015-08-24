@@ -213,7 +213,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
     {
         $totalAmount = $this->_calculateTotalAmount();
         if(0 == $this->_order->getBaseTotalRefunded()){
-            $totalAmount = $totalAmount - $this->_order->getBaseBuckarooFee();
+            $totalAmount = $totalAmount - ($this->_order->getBaseBuckarooFee() + $this->_order->getBaseBuckarooFeeTaxInvoiced());
         }
 
         return $totalAmount;
