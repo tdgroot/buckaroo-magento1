@@ -66,9 +66,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         }
 
         if (!Mage::helper('buckaroo3extended')->isAdmin()) {
-        	$additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+            $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         } else {
-        	$additionalFields = Mage::getSingleton('core/session')->getData('additionalFields');
+            $additionalFields = Mage::getSingleton('core/session')->getData('additionalFields');
         }
 
         if (is_array($additionalFields)
