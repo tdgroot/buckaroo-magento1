@@ -132,7 +132,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
         $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
         $TransactionRequest->Invoice = $invoiceNumber;
-        $TransactionRequest->Order = $this->_vars['orderId'];
+//        $TransactionRequest->Order = $this->_vars['orderId'];
         $TransactionRequest->Description = $this->_vars['description'];
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;

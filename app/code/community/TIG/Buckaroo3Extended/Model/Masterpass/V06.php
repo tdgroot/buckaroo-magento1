@@ -18,7 +18,7 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
 
             // append the vars with lightbox config
             $vars = $quoteRequest->getVars();
-            $vars['customVars']['masterpass']['LightboxRequest'] = true;
+            $vars['customVars']['masterpass']['LightboxRequest'] = 'true';
             $vars['customVars']['masterpass']['InitializeUrl'] = Mage::app()->getStore()->getCurrentUrl(false);
             $quoteRequest->setVars($vars);
 
