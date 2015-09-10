@@ -1,6 +1,9 @@
 <?php
 class TIG_Buckaroo3Extended_Model_Masterpass_v06
 {
+    /**
+     * InitializeCheckout - return parameters from Masterpass for the lightbox javascript
+     */
     public function lightbox()
     {
         try
@@ -15,12 +18,6 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
 
             // initiate request
             $quoteRequest = Mage::getModel('buckaroo3extended/request_quote', array('quote' => $quote));
-
-            // append the vars with lightbox config
-            $vars = $quoteRequest->getVars();
-            $vars['customVars']['masterpass']['LightboxRequest'] = 'true';
-            $vars['customVars']['masterpass']['InitializeUrl'] = Mage::app()->getStore()->getCurrentUrl(false);
-            $quoteRequest->setVars($vars);
 
             // do the request
             $parameters = $quoteRequest->sendRequest();
@@ -40,8 +37,12 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
         }
     }
 
+    /**
+     * FinalizeCheckout - finish a payment when all supplied information is final
+     */
     public function pay()
     {
-        return true;
+        // @TODO implement Buckaroo FinalizeCheckout request
+        return false;
     }
 }
