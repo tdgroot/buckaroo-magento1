@@ -41,23 +41,24 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
     public function __construct($data = array())
     {
-        define(
-        'LIB_DIR',
-            Mage::getBaseDir()
-            . DS
-            . 'app'
-            . DS
-            . 'code'
-            . DS
-            . 'community'
-            . DS
-            . 'TIG'
-            . DS
-            . 'Buckaroo3Extended'
-            . DS
-            . 'lib'
-            . DS
-        );
+        if(!defined('LIB_DIR')) {
+            define('LIB_DIR',
+                Mage::getBaseDir()
+                . DS
+                . 'app'
+                . DS
+                . 'code'
+                . DS
+                . 'community'
+                . DS
+                . 'TIG'
+                . DS
+                . 'Buckaroo3Extended'
+                . DS
+                . 'lib'
+                . DS
+            );
+        }
 
         $this->setVars($data['vars']);
         $this->setMethod($data['method']);
@@ -132,7 +133,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
         $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
         $TransactionRequest->Invoice = $invoiceNumber;
-//        $TransactionRequest->Order = $this->_vars['orderId'];
+        // do not add an Order node if we are dealing with a quote
+        if(strpos($this->_vars['orderId'], 'quote_') === false) {
+            $TransactionRequest->Order = $this->_vars['orderId'];
+        }
         $TransactionRequest->Description = $this->_vars['description'];
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
