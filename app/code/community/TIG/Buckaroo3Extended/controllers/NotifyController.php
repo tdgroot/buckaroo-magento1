@@ -167,11 +167,14 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return;
         }
 
-        if (isset($postData['brq_transaction_method']) && $postData['brq_transaction_method'] == 'masterpass') {
+        if (isset($postData['brq_transaction_method'])
+            && $postData['brq_transaction_method'] == 'masterpass'
+            && isset($postData['brq_SERVICE_masterpass_Version'])
+            && $postData['brq_SERVICE_masterpass_Version'] == 'v6'
+        ) {
             /**
              * @var TIG_Buckaroo3Extended_Model_Response_MasterPass $module
              */
-
             try {
                 $module = Mage::getModel(
                     'buckaroo3extended/response_masterPass',

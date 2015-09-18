@@ -6,14 +6,13 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
      */
     public function lightbox()
     {
-        try
-        {
+        try {
             // get quote from session
             $session = Mage::getSingleton('checkout/session');
             $quote = $session->getQuote();
 
             // set Masterpass as chosen payment method
-            $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_masterpass_paymentMethod');
+            $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_masterpassLightbox_paymentMethod');
             $quote->getPayment()->importData(array('method' => $paymentMethod->getCode()));
 
             // initiate request
@@ -24,9 +23,7 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
 
             // return lightbox parameters
             return $parameters;
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             Mage::helper('buckaroo3extended')->logException($e);
 
             return Mage::getModel('buckaroo3extended/response_abstract', array(

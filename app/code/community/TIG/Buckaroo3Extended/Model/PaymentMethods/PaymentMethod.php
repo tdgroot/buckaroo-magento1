@@ -197,11 +197,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         }
 
         //limit by ip
-        if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/' . $this->_code . '/limit_by_ip'))
-        {
+        if (Mage::getStoreConfig('dev/restrict/allow_ips')
+            && Mage::getStoreConfig('buckaroo/' . $this->_code . '/limit_by_ip')
+        ) {
             $allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
-            if (!in_array(Mage::helper('core/http')->getRemoteAddr(), $allowedIp))
-            {
+            if (!in_array(Mage::helper('core/http')->getRemoteAddr(), $allowedIp)) {
                 return false;
             }
         }
