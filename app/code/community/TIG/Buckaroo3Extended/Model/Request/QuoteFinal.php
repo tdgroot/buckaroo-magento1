@@ -20,9 +20,11 @@ class TIG_Buckaroo3Extended_Model_Request_QuoteFinal extends TIG_Buckaroo3Extend
         $this->_debugEmail .= "Firing request events. \n";
         //event that allows individual payment methods to add additional variables such as bankaccount number
         Mage::dispatchEvent('buckaroo3extended_request_addservices', array('request' => $this, 'order' => $this->_order));
-        Mage::dispatchEvent('buckaroo3extended_request_addcustomvars', array('request' => $this, 'order' => $this->_order));
-        Mage::dispatchEvent('buckaroo3extended_request_addcustomparameters', array('request' => $this, 'order' => $this->_order));
 
+        /**
+         * This needs to be added after the events, as it will overwrite the service action.
+         */
+        $this->_addQuoteFinalVariables();
         $this->_debugEmail .= "Events fired! \n";
 
         //clean the array for a soap request
@@ -61,18 +63,24 @@ class TIG_Buckaroo3Extended_Model_Request_QuoteFinal extends TIG_Buckaroo3Extend
     }
 
     /**
-     * Overload the cleanup function to convert self into an InitializeCheckout request
-     *
-     * @param array $array
-     * @return array $cleanArray
+     * Add specific variables for the quote finalization.
      */
-    public function _cleanArrayForSoap($array)
+    protected function _addQuoteFinalVariables()
     {
-        $array['services']['masterpass']['action'] = 'FinalizeCheckout';
+        $this->_vars['services']['masterpass']['action'] = 'FinalizeCheckout';
 
         $originalTrx = Mage::getSingleton('checkout/session')->getBuckarooMasterPassTrx();
-        $array['OriginalTransactionKey'] = $originalTrx;
+        $this->_vars['OriginalTransactionKey'] = $originalTrx;
+        $this->_vars['request_type'] = 'DataRequest';
+    }
 
-        return parent::_cleanArrayForSoap($array);
+    protected function _addOrderVariables()
+    {
+        list($currency, $totalAmount) = $this->_determineAmountAndCurrency();
+
+        $this->_vars['currency'] = $currency;
+        $this->_vars['amount']   = $totalAmount;
+
+        $this->_debugEmail .= "Order variables added! \n";
     }
 }

@@ -35,7 +35,9 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
     }
 
     /**
-     * FinalizeCheckout - finish a payment when all supplied information is final
+     * FinalizeCheckout - finish a payment when all supplied information is final.
+     *
+     * @return boolean
      */
     public function pay()
     {
@@ -49,17 +51,6 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
         $quoteFinalRequest->setOrder($order);
 
         $response = $quoteFinalRequest->sendRequest();
-
-        /**
-         * invoicenumber is invalid for the action FinalizeCheckOut.
-         * originaltransaction (or originaltransactionreference and originaltransactionreferencetype) should be provided for the action originaltransactionreferencetype.
-         */
-
-        var_dump($response);
-        die;
-
-        // @TODO implement Buckaroo FinalizeCheckout request
-
-        return false;
+        return true;
     }
 }

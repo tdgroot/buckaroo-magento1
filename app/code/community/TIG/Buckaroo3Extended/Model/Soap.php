@@ -130,13 +130,20 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
         $TransactionRequest = new Body();
         $TransactionRequest->Currency = $this->_vars['currency'];
-        $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
-        $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
+
+        if (isset($this->_vars['amountDebit'])) {
+            $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
+        }
+        if (isset($this->_vars['amountCredit'])) {
+            $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
+        }
+        if (isset($this->_vars['amount'])) {
+            $TransactionRequest->Amount = round($this->_vars['amount'], 2);
+        }
+
+
         $TransactionRequest->Invoice = $invoiceNumber;
-        // do not add an Order node if we are dealing with a quote
-//        if(strpos($this->_vars['orderId'], 'quote_') === false) {
-            $TransactionRequest->Order = $this->_vars['orderId'];
-//        }
+        $TransactionRequest->Order = $this->_vars['orderId'];
         $TransactionRequest->Description = $this->_vars['description'];
         $TransactionRequest->ReturnURL = $this->_vars['returnUrl'];
         $TransactionRequest->StartRecurrent = FALSE;
@@ -224,12 +231,13 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
         $client->__SetLocation($location);
 
-        try
-        {
-            $response = $client->TransactionRequest($TransactionRequest);
-        } catch (SoapFault $e) {
-            $this->logException($e->getMessage());
-            return $this->_error($client);
+        $requestType = 'TransactionRequest';
+        if (!empty($this->_vars['request_type'])) {
+            $requestType = $this->_vars['request_type'];
+        }
+
+        try {
+            $response = $client->$requestType($TransactionRequest);
         } catch (Exception $e) {
             $this->logException($e->getMessage());
             return $this->_error($client);
