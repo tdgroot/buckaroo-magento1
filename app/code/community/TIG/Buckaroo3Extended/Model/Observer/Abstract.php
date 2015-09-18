@@ -418,7 +418,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
      */
     protected function _getPaymentMethodsAllowed()
     {
-        $configAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowed_methods', $this->getStoreId());
+        $configAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowed_methods', $this->_order->getStoreId());
 
         $allowedArray = explode(',', $configAllowed);
 
