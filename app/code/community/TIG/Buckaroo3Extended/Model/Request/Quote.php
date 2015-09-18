@@ -94,4 +94,30 @@ class TIG_Buckaroo3Extended_Model_Request_Quote extends TIG_Buckaroo3Extended_Mo
 
         return parent::_cleanArrayForSoap($array);
     }
+
+    /**
+     * Determines the totalamount of the order and the currency to be used based on which currencies are available
+     * and which currency the customer has selected.
+     *
+     * Will default to base currency if the selected currency is unavailable.
+     *
+     * @return array
+     */
+    protected function _determineAmountAndCurrency()
+    {
+        $currenciesAllowed = array('EUR');
+
+        $currentCurrency = Mage::app()->getStore()->getCurrentCurrencyCode();
+
+        // currency is not available for this module
+        if (in_array($currentCurrency, $currenciesAllowed)) {
+            $currency = $currentCurrency;
+            $totalAmount = $this->_order->getSubtotal();
+        } else {
+            $totalAmount = $this->_order->getBaseSubtotal();
+            $currency = $this->_order->getBaseCurrency()->getCode();
+        }
+
+        return array($currency, $totalAmount);
+    }
 }

@@ -136,8 +136,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
 
         $array = array(
             'Discount'              => $discount,
-            'ShippingCosts'         => $shippingCosts,
-            'ShippingSuppression'   => 'TRUE',
+            'ShippingSuppression'   => 'FALSE',
         );
 
         $products = $this->_order->getAllItems();
@@ -172,8 +171,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
         $array['Articles'] = $group;
 
         // fallback if the request is based on a quote
-        if($this->_order instanceof Mage_Sales_Model_Quote)
-        {
+        if ($this->_order instanceof Mage_Sales_Model_Quote) {
             $quote = $this->_order;
 
             // repair empty order ID
@@ -199,12 +197,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
 
                 $groupId++;
             }
-
-            // repair empty shipping costs
-            $array['ShippingCosts'] = (string) round($vars['amountDebit'] - $quote->getBaseSubtotalWithDiscount(), 2);
-
-            // enable remote shipping selection
-            $array['ShippingSuppression'] = 'FALSE';
         }
 
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
