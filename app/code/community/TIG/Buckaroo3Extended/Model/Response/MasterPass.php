@@ -79,7 +79,7 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
     {
         $masterPassData = array(
             'order' => array(
-                'quote_id'  => str_replace('quote_', '', $postData['brq_ordernumber']),
+                'quote_id'  => str_replace('quote_', '', $postData['brq_invoicenumber']),
                 'addresses' => array(
                     'billing' => array(
                         'firstname'     => urldecode($postData['brq_SERVICE_masterpass_CustomerFirstName']),

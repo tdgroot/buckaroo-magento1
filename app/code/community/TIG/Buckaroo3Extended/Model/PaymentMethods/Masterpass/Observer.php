@@ -65,7 +65,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
 
         $vars = $request->getVars();
         $serviceVersion = $this->_getServiceVersion();
-
         $array = array(
             $this->_method     => array(
                 'action'	=> 'PaymentInvitation',

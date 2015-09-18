@@ -168,7 +168,6 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         }
 
         if (isset($postData['brq_transaction_method']) && $postData['brq_transaction_method'] == 'masterpass') {
-
             /**
              * @var TIG_Buckaroo3Extended_Model_Response_MasterPass $module
              */
