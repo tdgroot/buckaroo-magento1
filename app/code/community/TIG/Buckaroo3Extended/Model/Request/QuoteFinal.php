@@ -2,28 +2,6 @@
 class TIG_Buckaroo3Extended_Model_Request_QuoteFinal extends TIG_Buckaroo3Extended_Model_Request_Abstract
 {
     /**
-     * @param array $params
-     */
-//    public function __construct($params = array())
-//    {
-//        $quote = isset($params['quote']) ? $params['quote'] : null;
-//
-//        if($quote instanceof Mage_Sales_Model_Quote)
-//        {
-//            // use quote as order
-//            $this->setOrder($quote);
-//            $this->setMethod($quote->getPayment()->getMethodCode());
-//        }
-//
-//        parent::__construct();
-//
-//        // make the response use quote as order
-//        if($quote instanceof Mage_Sales_Model_Quote) {
-//            $this->setResponseModelClass('buckaroo3extended/response_quote');
-//        }
-//    }
-
-    /**
      * Overload the request function to avoid order transaction key calls on the quote
      */
     protected function _sendRequest()
@@ -90,10 +68,10 @@ class TIG_Buckaroo3Extended_Model_Request_QuoteFinal extends TIG_Buckaroo3Extend
      */
     public function _cleanArrayForSoap($array)
     {
-        // prepare InitializeCheckout request vars
-        //        $array['customVars']['masterpass']['LightboxRequest'] = 'true';
-        //        $array['customVars']['masterpass']['InitializeUrl'] = Mage::app()->getStore()->getCurrentUrl(false);
         $array['services']['masterpass']['action'] = 'FinalizeCheckout';
+
+        $originalTrx = Mage::getSingleton('checkout/session')->getBuckarooMasterPassTrx();
+        $array['OriginalTransactionKey'] = $originalTrx;
 
         return parent::_cleanArrayForSoap($array);
     }

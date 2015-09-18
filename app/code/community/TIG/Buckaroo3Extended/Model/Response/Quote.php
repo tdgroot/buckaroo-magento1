@@ -14,6 +14,70 @@ class TIG_Buckaroo3Extended_Model_Response_Quote extends TIG_Buckaroo3Extended_M
         parent::__construct($data);
     }
 
+    public function processResponse()
+    {
+        if ($this->_response === false) {
+            $this->_debugEmail .= "An error occurred in building or sending the SOAP request.. \n";
+            return $this->_error();
+        }
+
+        $this->_debugEmail .= "verifiying authenticity of the response... \n";
+        $verified = $this->_verifyResponse();
+
+        if ($verified !== true) {
+            $this->_debugEmail .= "The authenticity of the response could NOT be verified. \n";
+            return $this->_verifyError();
+        }
+        $this->_debugEmail .= "Verified as authentic! \n\n";
+
+        if (isset($this->_response->Key))
+        {
+            Mage::getSingleton('checkout/session')->setBuckarooMasterPassTrx($this->_response->Key);
+            $this->_debugEmail .= 'Transaction key saved in session: ' . $this->_response->Key . "\n";
+        }
+
+        //sets the currency used by Buckaroo
+        if (!$this->_order->getCurrencyCodeUsedForTransaction()
+            && is_object($this->_response)
+            && isset($this->_response->Currency))
+        {
+            $this->_order->setCurrencyCodeUsedForTransaction($this->_response->Currency);
+            $this->_order->save();
+        }
+
+        if (is_object($this->_response) && isset($this->_response->RequiredAction)) {
+            $requiredAction = $this->_response->RequiredAction->Type;
+        } else {
+            $requiredAction = false;
+        }
+
+        $parsedResponse = $this->_parseResponse();
+        $this->_addSubCodeComment($parsedResponse);
+
+        if (!is_null($requiredAction)
+            && $requiredAction !== false
+            && $requiredAction == 'Redirect')
+        {
+            $this->_debugEmail .= "Redirecting customer... \n";
+            return $this->_redirectUser();
+        }
+
+        $this->_debugEmail .= "Parsed response: " . var_export($parsedResponse, true) . "\n";
+
+        $this->_debugEmail .= "Dispatching custom order processing event... \n";
+        Mage::dispatchEvent(
+            'buckaroo3extended_response_custom_processing',
+            array(
+                'model'          => $this,
+                'order'          => $this->getOrder(),
+                'response'       => $parsedResponse,
+                'responseobject' => $this->_response,
+            )
+        );
+
+        return $this->_requiredAction($parsedResponse);
+    }
+
     protected function _success()
     {
         $this->sendDebugEmail();

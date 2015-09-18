@@ -168,7 +168,7 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
      * @param array $response
      * @return array
      */
-    protected function _canProcessPush($response = array())
+    protected function _canProcessPush($isReturn = false, $response = array())
     {
         $correctSignature = false;
         $signature        = $this->_calculateSignature();

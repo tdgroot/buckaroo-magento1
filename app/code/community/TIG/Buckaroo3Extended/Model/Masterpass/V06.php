@@ -43,15 +43,14 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
     public function pay()
     {
         $session = Mage::getSingleton('checkout/session');
-        $quote = $session->getQuote();
 
         // Check if order exists and create order from quote if not
-        $order = Mage::getModel('sales/order')->load($quote->getId(), 'quote_id');
+        $order = $session->getLastRealOrder();
 
         // initiate request
         $quoteFinalRequest = Mage::getModel('buckaroo3extended/request_quoteFinal');
         $quoteFinalRequest->setOrder($order);
-//            ->setOrderBillingInfo();
+
         $response = $quoteFinalRequest->sendRequest();
 
         /**

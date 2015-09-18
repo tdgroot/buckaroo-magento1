@@ -54,10 +54,18 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 
     public function __construct($data = array())
     {
-    	$this->setCurrentOrder($data['order']);
-    	$this->setPostArray($data['postArray']);
-    	$this->setDebugEmail($data['debugEmail']);
-    	$this->setMethod($data['method']);
+        if (!empty($data['order'])) {
+            $this->setCurrentOrder($data['order']);
+        }
+        if (!empty($data['postArray'])) {
+            $this->setPostArray($data['postArray']);
+        }
+        if (!empty($data['debugEmail'])) {
+            $this->setDebugEmail($data['debugEmail']);
+        }
+        if (!empty($data['method'])) {
+            $this->setMethod($data['method']);
+        }
     }
 
     /**
