@@ -109,12 +109,22 @@ class TIG_Buckaroo3Extended_Model_Request_Quote extends TIG_Buckaroo3Extended_Mo
 
         $currentCurrency = Mage::app()->getStore()->getCurrentCurrencyCode();
 
+        if ($this->_order->getIsVirtual()) {
+            $address = $this->_order->getBillingAddress();
+        } else {
+            $address = $this->_order->getShippingAddress();
+        }
+
         // currency is not available for this module
         if (in_array($currentCurrency, $currenciesAllowed)) {
             $currency = $currentCurrency;
-            $totalAmount = $this->_order->getSubtotal();
+            $totalAmount = $address->getSubtotal()
+                         + $address->getTaxAmount()
+                         - $address->getDiscountAmount();
         } else {
-            $totalAmount = $this->_order->getBaseSubtotal();
+            $totalAmount = $address->getBaseSubtotal()
+                         + $address->getBaseTaxAmount()
+                         - $address->getBaseDiscountAmount();
             $currency = $this->_order->getBaseCurrency()->getCode();
         }
 

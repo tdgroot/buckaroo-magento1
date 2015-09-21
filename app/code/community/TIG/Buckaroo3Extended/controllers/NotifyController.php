@@ -100,7 +100,16 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_debugEmail .= "\n/////////// TEST /////////\n";
         }
 
-        $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        if (strpos($orderId, 'quote_') !== false) {
+            $trx = $this->_postArray['brq_transactions'];
+
+            $collection = Mage::getResourceModel('sales/order_collection')
+                                ->addFieldToFilter('transaction_key', array('eq' => $trx));
+
+            $this->_order = $collection->getFirstItem();
+        } else {
+            $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        }
 
         if (!$this->_order) {
             return false;
