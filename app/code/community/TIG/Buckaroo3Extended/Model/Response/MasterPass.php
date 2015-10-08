@@ -89,7 +89,7 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
                         'street'        => urldecode($postData['brq_SERVICE_masterpass_BillingLine1']),
                         'postcode'      => urldecode($postData['brq_SERVICE_masterpass_BillingPostalCode']),
                         'region'        => urldecode($postData['brq_SERVICE_masterpass_BillingCountrySubdivision']),
-                        'telephone'     => '-',
+                        'telephone'     => urldecode($postData['brq_SERVICE_masterpass_BillingRecipientPhoneNumber']),
                     ),
                     'shipping' => array(
                         'firstname'     => urldecode($postData['brq_SERVICE_masterpass_CustomerFirstName']),
@@ -99,7 +99,7 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
                         'street'        => urldecode($postData['brq_SERVICE_masterpass_ShippingLine1']),
                         'postcode'      => urldecode($postData['brq_SERVICE_masterpass_ShippingPostalCode']),
                         'region'        => urldecode($postData['brq_SERVICE_masterpass_ShippingCountrySubdivision']),
-                        'telephone'     => '-',
+                        'telephone'     => urldecode($postData['brq_SERVICE_masterpass_ShippingRecipientPhoneNumber']),
                     ),
                 ),
             ),
@@ -109,6 +109,7 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
             ),
             'customer' => array(
                 'firstname' => urldecode($postData['brq_SERVICE_masterpass_CustomerFirstName']),
+                'fullname' => urldecode($postData['brq_SERVICE_masterpass_CustomerFullName']),
                 'lastname' => urldecode($postData['brq_SERVICE_masterpass_CustomerLastName']),
                 'email' => urldecode($postData['brq_SERVICE_masterpass_customeremail']),
             ),
@@ -117,6 +118,14 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
                 'card_number_ending'    => urldecode($postData['brq_SERVICE_masterpass_CardNumberEnding']),
             ),
         );
+
+        // Check phone numbers for at least a value
+        if (empty($masterPassData['order']['addresses']['billing']['telephone'])) {
+            $masterPassData['order']['addresses']['billing']['telephone'] = '-';
+        }
+        if (empty($masterPassData['order']['addresses']['shipping']['telephone'])) {
+            $masterPassData['order']['addresses']['shipping']['telephone'] = '-';
+        }
         return $masterPassData;
     }
 
