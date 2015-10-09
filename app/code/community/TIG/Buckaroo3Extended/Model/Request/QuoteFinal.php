@@ -37,6 +37,9 @@ class TIG_Buckaroo3Extended_Model_Request_QuoteFinal extends TIG_Buckaroo3Extend
         $soap = Mage::getModel('buckaroo3extended/soap', array('vars' => $this->getVars(), 'method' => $this->getMethod()));
         list($response, $responseXML, $requestXML) = $soap->transactionRequest();
 
+        //and reload the order
+        $this->_order = Mage::getModel('sales/order')->load($this->_order->getId());
+
         $this->_order->setTransactionKey(Mage::getSingleton('checkout/session')->getBuckarooMasterPassTrx())->save();
 
         $this->_debugEmail .= "The SOAP request has been sent. \n";

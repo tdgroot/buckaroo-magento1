@@ -50,15 +50,15 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         return $this->_debugEmail;
     }
 
-	public function setPushLock($orderId)
-	{
-		$this->_processPush = Mage::getModel('buckaroo3extended/process')->setId('push_' . $orderId);
-	}
+    public function setPushLock($orderId)
+    {
+        $this->_processPush = Mage::getModel('buckaroo3extended/process')->setId('push_' . $orderId);
+    }
 
-	public function getPushLock()
-	{
-		return $this->_processPush;
-	}
+    public function getPushLock()
+    {
+        return $this->_processPush;
+    }
 
     /**
      *
@@ -101,12 +101,8 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         }
 
         if (strpos($orderId, 'quote_') !== false) {
-            $trx = $this->_postArray['brq_transactions'];
-
-            $collection = Mage::getResourceModel('sales/order_collection')
-                                ->addFieldToFilter('transaction_key', array('eq' => $trx));
-
-            $this->_order = $collection->getFirstItem();
+            $quoteId = str_replace('quote_', '', $orderId);
+            $this->_order = Mage::getModel('sales/order')->load($quoteId, 'quote_id');
         } else {
             $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         }
@@ -116,20 +112,22 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         }
 
 
-		//order exists, instantiate the lock-object for the push
-		$this->setPushLock($this->_order->getId());
+        //order exists, instantiate the lock-object for the push
+        $this->setPushLock($this->_order->getId());
 
-		if ($this->_processPush->isLocked())
-	    {
-	        $this->_debugEmail .= "\n".'Currently another push is being processed, the current push will not be processed.'."\n";
+        if ($this->_processPush->isLocked())
+        {
+            $this->_debugEmail .= "\n".'Currently another push is being processed, the current push will not be processed.'."\n";
             $this->_debugEmail .= "\n".'sent from: ' . __FILE__ . '@' . __LINE__."\n";
             $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
             $module->setDebugEmail($this->_debugEmail);
             $module->sendDebugEmail();
-            return false;
-	    }
 
-	    $this->_processPush->lockAndBlock();
+            $this->getResponse()->setHttpResponseCode(503);
+            return false;
+        }
+
+        $this->_processPush->lockAndBlock();
         $this->_debugEmail .= "\n".'Push is gelocked, hij kan nu verwerkt worden.'."\n";
 
         $this->_paymentCode = $this->_order->getPayment()->getMethod();
@@ -157,8 +155,8 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
         $this->_debugEmail .= "\n".' sent from: ' . __FILE__ . '@' . __LINE__;
 
-		// Remove the lock.
-		$this->_processPush->unlock();
+        // Remove the lock.
+        $this->_processPush->unlock();
         $this->_debugEmail .= "\n".'Push is afgerond, lock is vrij gegeven'."\n";
         //send debug email
         $module->setDebugEmail($this->_debugEmail);
