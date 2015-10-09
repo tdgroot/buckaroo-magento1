@@ -111,7 +111,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         }
 
-        if (!$this->_order) {
+        if (!$this->_order || !$this->_order->getId()) {
             return false;
         }
 
