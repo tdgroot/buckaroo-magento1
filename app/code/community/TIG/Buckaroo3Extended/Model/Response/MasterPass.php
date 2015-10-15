@@ -58,14 +58,13 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
         $return = new Varien_Object();
         Mage::dispatchEvent('masterpass_generate_summary_url', array('return' => $return, 'masterpass_data' => $masterPassData));
 
-        if (!$return->getPath() || !$return->getParams()) {
+        if (!$return->getPath()) {
             Mage::throwException(
                 Mage::helper('buckaroo3extended')->__('No MasterPass summary url available')
             );
         }
 
         $masterPassUrlData['path'] = $return->getPath();
-        $masterPassUrlData['params'] = $return->getParams();
 
         return $masterPassUrlData;
     }
