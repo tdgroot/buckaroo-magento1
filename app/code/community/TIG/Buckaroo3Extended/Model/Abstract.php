@@ -399,6 +399,9 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             case 'buckaroo3extended_sofortueberweisung': $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_sofortueberweisung_paymentMethod');
                                                          $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_sofortueberweisung/allowed_currencies', $this->getStoreId());
                                                          break;
+            case 'buckaroo3extended_maestro':            $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_maestro_paymentMethod');
+                                                         $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_maestro/allowed_currencies', $this->getStoreId());
+                                                         break;
             default:                                     $paymentMethod = null;
                                                          $currenciesAllowedConfig = 'EUR';
         }
