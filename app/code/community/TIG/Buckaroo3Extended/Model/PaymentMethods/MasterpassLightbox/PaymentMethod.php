@@ -74,6 +74,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_PaymentMetho
      */
     protected $_code = 'buckaroo3extended_masterpass_lightbox';
 
+    protected $_canRefund               = false;
+    protected $_canRefundInvoicePartial = false;
+
     /**
      * MasterPass lightbox is only available in the lightbox.
      *
