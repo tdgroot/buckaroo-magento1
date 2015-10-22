@@ -44,7 +44,7 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
         $session = Mage::getSingleton('checkout/session');
 
         // Check if order exists and create order from quote if not
-        $order = $session->getLastRealOrder();
+        $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
 
         // initiate request
         $quoteFinalRequest = Mage::getModel('buckaroo3extended/request_quoteFinal');

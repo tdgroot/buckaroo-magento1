@@ -38,6 +38,10 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     {
         $ret = false;
 
+        if (null === $observer->getOrder()) {
+            return false;
+        }
+
         $chosenMethod = $observer->getOrder()->getPayment()->getMethod();
 
         if ($chosenMethod === $this->_code) {
