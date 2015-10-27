@@ -31,7 +31,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     const BUCKAROO_REJECTED          = 'BUCKAROO_REJECTED';
 
     /**
-     *  @var Mage_Sales_Model_Order $_order
+     *  @var Mage_Sales_Model_Order|Mage_Sales_Model_Quote $_order
      */
     protected $_order = '';
     protected $_debugEmail;
