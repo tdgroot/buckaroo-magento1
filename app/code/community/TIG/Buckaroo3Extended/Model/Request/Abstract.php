@@ -244,6 +244,17 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         list($currency, $totalAmount) = $this->_determineAmountAndCurrency();
 
+        // If we have a quote instead of an order, we need to look elsewhere for the total
+        if ($this->_order instanceof Mage_Sales_Model_Quote) {
+            $correctAmount = $this->_order->getShippingAddress()->getBaseGrandTotal();
+            if ($correctAmount == 0) {
+                $correctAmount = $this->_order->getBillingAddress()->getBaseGrandTotal();
+            }
+            if ($correctAmount > 0) {
+                $totalAmount = $correctAmount;
+            }
+        }
+
         $this->_vars['currency']     = $currency;
         $this->_vars['amountCredit'] = 0;
         $this->_vars['amountDebit']  = $totalAmount;
