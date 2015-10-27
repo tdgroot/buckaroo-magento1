@@ -36,7 +36,7 @@
  * @copyright   Copyright (c) 2013 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Adminhtml_GiftcardController extends Mage_Adminhtml_Controller_Action
+class TIG_Buckaroo3Extended_BuckarooAdminhtml_GiftcardController extends Mage_Adminhtml_Controller_Action
 {
     protected function _construct()
     {
