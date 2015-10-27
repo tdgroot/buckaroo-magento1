@@ -194,6 +194,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
 
                 $productPrice = ($item->getBasePrice() * $item->getQty()) + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount();
 
+                if($item->getProductType() == 'bundle') {
+                    $productPrice = $quote->getSubtotal() + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount();
+                }
+
                 $array['Articles'][$groupId]['ArticleDescription']['value'] = (int) $item->getQty() . 'x ' . $item->getName();
                 $array['Articles'][$groupId]['ArticleUnitPrice']['value']   = (string) round($productPrice, 2);
 
