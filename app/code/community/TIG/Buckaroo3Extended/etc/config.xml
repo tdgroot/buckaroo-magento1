@@ -63,13 +63,13 @@
     </adminhtml>
     <admin>
         <routers>
-            <admin_buckaroo3extended>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>TIG_Buckaroo3Extended</module>
-                    <frontName>admin_buckaroo3extended</frontName>
+                    <modules>
+                        <buckaroo3extended_admin before="Mage_Adminhtml">TIG_Buckaroo3Extended</buckaroo3extended_admin>
+                    </modules>
                 </args>
-            </admin_buckaroo3extended>
+            </adminhtml>
         </routers>
     </admin>
     <global>
