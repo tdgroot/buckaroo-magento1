@@ -44,8 +44,8 @@ class TIG_Buckaroo3Extended_Model_Sources_FeePercentageMode
     public function toOptionArray()
     {
         $helper = Mage::helper('buckaroo3extended');
-    	$array = array(
-    		 array(
+        $array = array(
+             array(
                  'value' => 'subtotal',
                  'label' => $helper->__('Subtotal')
              ),
@@ -53,11 +53,11 @@ class TIG_Buckaroo3Extended_Model_Sources_FeePercentageMode
                  'value' => 'subtotal_incl_tax',
                  'label' => $helper->__('Subtotal incl. tax')
              ),
-    		 array(
+             array(
                  'value' => 'grandtotal',
                  'label' => $helper->__('Grand total')
              ),
-    	);
-    	return $array;
+        );
+        return $array;
     }
 }
