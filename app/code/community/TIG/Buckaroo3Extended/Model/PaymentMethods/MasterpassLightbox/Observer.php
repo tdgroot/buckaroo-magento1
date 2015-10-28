@@ -36,10 +36,10 @@
  * @copyright   Copyright (c) 2015 Total Internet Group B.V. (http://www.tig.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
+class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
     extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
-    protected $_code = 'buckaroo3extended_masterpass';
+    protected $_code = 'buckaroo3extended_masterpass_lightbox';
     protected $_method = 'masterpass';
 
     /**
@@ -67,7 +67,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
         $serviceVersion = $this->_getServiceVersion();
         $array = array(
             $this->_method     => array(
-                'action'    => 'PaymentInvitation',
+                'action'	=> 'PaymentInvitation',
                 'version'   => $serviceVersion,
             ),
         );
@@ -81,7 +81,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $array['creditmanagement'] = array(
-                'action'    => 'Invoice',
+                'action'	=> 'Invoice',
                 'version'   => 1,
             );
         }
@@ -136,8 +136,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
 
         $array = array(
             'Discount'              => $discount,
-            'ShippingCosts'         => $shippingCosts,
-            'ShippingSuppression'   => 'TRUE',
+            'ShippingSuppression'   => 'FALSE',
         );
 
         $products = $this->_order->getAllItems();
@@ -172,8 +171,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
         $array['Articles'] = $group;
 
         // fallback if the request is based on a quote
-        if($this->_order instanceof Mage_Sales_Model_Quote)
-        {
+        if ($this->_order instanceof Mage_Sales_Model_Quote) {
             $quote = $this->_order;
 
             // repair empty order ID
@@ -203,12 +201,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
 
                 $groupId++;
             }
-
-            // repair empty shipping costs
-            $array['ShippingCosts'] = (string) round($vars['amountDebit'] - $quote->getBaseSubtotalWithDiscount(), 2);
-
-            // enable remote shipping selection
-            $array['ShippingSuppression'] = 'FALSE';
         }
 
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
