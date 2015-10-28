@@ -51,7 +51,7 @@ class TIG_Buckaroo3Extended_Helper_StateCodes extends Mage_Core_Helper_Abstract
             'BC' => array('British Columbia'),
             'MB' => array('Manitoba'),
             'NB' => array('New Brunswick'),
-            'NL' => array('Newfoundland'),
+            'NL' => array('Newfoundland and Labrador', 'Newfoundland', 'Labrador'),
             'NT' => array('Northwest Territories'),
             'NS' => array('Nova Scotia'),
             'NU' => array('Nunavut'),
@@ -59,7 +59,7 @@ class TIG_Buckaroo3Extended_Helper_StateCodes extends Mage_Core_Helper_Abstract
             'PE' => array('Prince Edward Island'),
             'QC' => array('Quebec'),
             'SK' => array('Saskatchewan'),
-            'YT' => array('Yukon'),
+            'YT' => array('Yukon Territory', 'Yukon'),
         ),
         'IT' => array(
             'AG' => array('Agrigento'),
