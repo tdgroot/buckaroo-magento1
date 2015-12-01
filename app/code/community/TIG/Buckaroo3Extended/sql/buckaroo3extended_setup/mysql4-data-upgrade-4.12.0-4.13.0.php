@@ -65,8 +65,9 @@ foreach ($statusArray as $data) {
 
     // Check if it already has a status - if it doesn't, we're going to add it
     if (!$statusDb->getStatus()) {
-        $statusDb->setData($data);
+        $statusDb->setData($data)->setStatus($data['status']);
         $statusDb->save();
+        $statusDb->assignState($data['state'], false);
     }
 }
 
