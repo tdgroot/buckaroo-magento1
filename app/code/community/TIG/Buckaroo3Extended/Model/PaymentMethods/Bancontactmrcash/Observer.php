@@ -17,16 +17,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
 
         $array = array(
             $this->_method  => array(
-                'action'	=> 'Pay',
+                'action'    => 'Pay',
                 'version'   => 1,
             ),
         );
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
-        	$array['creditmanagement'] = array(
-        			'action'	=> 'Invoice',
-        			'version'   => 1,
-        	);
+            $array['creditmanagement'] = array(
+                    'action'    => 'Invoice',
+                    'version'   => 1,
+            );
         }
 
         if (array_key_exists('services', $vars) && is_array($vars['services'])) {
@@ -53,9 +53,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
         $vars = $request->getVars();
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
-        	$this->_addCustomerVariables($vars);
-        	$this->_addCreditManagement($vars);
-        	$this->_addAdditionalCreditManagementVariables($vars);
+            $this->_addCustomerVariables($vars);
+            $this->_addCreditManagement($vars);
+            $this->_addAdditionalCreditManagementVariables($vars);
         }
 
         $array = array(
@@ -91,6 +91,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
     {
         $ret = false;
 
+        if (null === $observer->getOrder()) {
+            return false;
+        }
+
         $chosenMethod = $observer->getOrder()->getPayment()->getMethod();
 
         if ($chosenMethod === $this->_code) {
@@ -125,7 +129,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
         $vars = $refundRequest->getVars();
 
         $array = array(
-            'action'	=> 'Refund',
+            'action'    => 'Refund',
             'version'   => 1,
         );
 

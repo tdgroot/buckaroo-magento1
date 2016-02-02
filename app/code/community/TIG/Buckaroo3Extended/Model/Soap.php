@@ -29,50 +29,69 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
     protected $_debugEmail;
 
+    /**
+     * @param array $vars
+     */
     public function setVars($vars = array())
     {
         $this->_vars = $vars;
     }
 
+    /**
+     * @return mixed
+     */
     public function getVars()
     {
         return $this->_vars;
     }
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = array())
     {
-        define(
-        'LIB_DIR',
-            Mage::getBaseDir()
-            . DS
-            . 'app'
-            . DS
-            . 'code'
-            . DS
-            . 'community'
-            . DS
-            . 'TIG'
-            . DS
-            . 'Buckaroo3Extended'
-            . DS
-            . 'lib'
-            . DS
-        );
+        if(!defined('LIB_DIR')) {
+            define('LIB_DIR',
+                Mage::getBaseDir()
+                . DS
+                . 'app'
+                . DS
+                . 'code'
+                . DS
+                . 'community'
+                . DS
+                . 'TIG'
+                . DS
+                . 'Buckaroo3Extended'
+                . DS
+                . 'lib'
+                . DS
+            );
+        }
 
         $this->setVars($data['vars']);
         $this->setMethod($data['method']);
     }
 
+    /**
+     * @return mixed
+     */
     public function getMethod()
     {
         return $this->_method;
     }
 
+    /**
+     * @param string $method
+     */
     public function setMethod($method = '')
     {
         $this->_method = $method;
     }
 
+    /**
+     * @return array
+     */
     public function transactionRequest()
     {
         try
@@ -123,14 +142,25 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $client->thumbprint = $this->_vars['thumbprint'];
 
         // Get the order so we can get the storeId relevant for this order
+        /** @var Mage_Sales_Model_Order $order */
         $order = Mage::getModel('sales/order')->load($this->_vars['orderId'], 'increment_id');
         // And pass the storeId to the WSDL client
         $client->storeId = $order->getStoreId();
 
         $TransactionRequest = new Body();
         $TransactionRequest->Currency = $this->_vars['currency'];
-        $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
-        $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
+
+        if (isset($this->_vars['amountDebit'])) {
+            $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
+        }
+        if (isset($this->_vars['amountCredit'])) {
+            $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
+        }
+        if (isset($this->_vars['amount'])) {
+            $TransactionRequest->Amount = round($this->_vars['amount'], 2);
+        }
+
+
         $TransactionRequest->Invoice = $invoiceNumber;
         $TransactionRequest->Order = $this->_vars['orderId'];
         $TransactionRequest->Description = $this->_vars['description'];
@@ -220,12 +250,13 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
         $client->__SetLocation($location);
 
-        try
-        {
-            $response = $client->TransactionRequest($TransactionRequest);
-        } catch (SoapFault $e) {
-            $this->logException($e->getMessage());
-            return $this->_error($client);
+        $requestType = 'TransactionRequest';
+        if (!empty($this->_vars['request_type'])) {
+            $requestType = $this->_vars['request_type'];
+        }
+
+        try {
+            $response = $client->$requestType($TransactionRequest);
         } catch (Exception $e) {
             $this->logException($e->getMessage());
             return $this->_error($client);
@@ -251,6 +282,11 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         return array($response, $responseDomDOC, $requestDomDOC);
     }
 
+    /**
+     * @param SoapClientWSSEC|bool $client
+     *
+     * @return array
+     */
     protected function _error($client = false)
     {
         $response = false;
@@ -277,6 +313,9 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         return array($response, $responseDomDOC, $requestDomDOC);
     }
 
+    /**
+     * @param $TransactionRequest
+     */
     protected function _addServices(&$TransactionRequest)
     {
         $services = array();
@@ -304,6 +343,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $TransactionRequest->Services->Service = $services;
     }
 
+    /**
+     * @param $service
+     * @param $name
+     */
     protected function _addCustomFields(&$service, $name)
     {
         if (
@@ -366,6 +409,11 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         }
     }
 
+    /**
+     * @param $TransactionRequest
+     *
+     * @return mixed
+     */
     protected function _addCustomParameters(&$TransactionRequest)
     {
         $requestParameters = array();
@@ -403,7 +451,9 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     }
 }
 
-
+/**
+ * Class SoapClientWSSEC
+ */
 class SoapClientWSSEC extends SoapClient
 {
     /**
@@ -426,7 +476,7 @@ class SoapClientWSSEC extends SoapClient
 
     /**
      * Thumbprint from Payment Plaza
-     * @var type
+     * @var string
      */
     public $thumbprint = '';
 
@@ -436,6 +486,16 @@ class SoapClientWSSEC extends SoapClient
      */
     public $storeId = null;
 
+    /**
+     * @param string $request
+     * @param string $location
+     * @param string $action
+     * @param int    $version
+     * @param int    $one_way
+     *
+     * @return string
+     * @throws Exception
+     */
     public function __doRequest ($request , $location , $action , $version , $one_way = 0 )
     {
         // Add code to inspect/dissect/debug/adjust the XML given in $request here
@@ -451,7 +511,14 @@ class SoapClientWSSEC extends SoapClient
         return parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
     }
 
-    //Get nodeset based on xpath and ID
+    /**
+     * Get nodeset based on xpath and ID
+     *
+     * @param          $ID
+     * @param DOMXPath $xPath
+     *
+     * @return DOMNode
+     */
     private function getReference($ID, $xPath)
     {
         $query = '//*[@Id="'.$ID.'"]';
@@ -459,18 +526,36 @@ class SoapClientWSSEC extends SoapClient
         return $nodeset->item(0);
     }
 
-    //Canonicalize nodeset
+    /**
+     * Canonicalize nodeset
+     *
+     * @param DOMNode $Object
+     *
+     * @return DOMNode
+     */
     private function getCanonical($Object)
     {
         return $Object->C14N(true, false);
     }
 
-    //Calculate digest value (sha1 hash)
+    /**
+     * Calculate digest value (sha1 hash)
+     *
+     * @param $input
+     *
+     * @return string
+     */
     private function calculateDigestValue($input)
     {
         return base64_encode(pack('H*',sha1($input)));
     }
 
+    /**
+     * @param DOMDocument $domDocument
+     *
+     * @return DOMDocument
+     * @throws Exception
+     */
     private function signDomDocument($domDocument)
     {
         //create xPath
@@ -561,6 +646,9 @@ class SoapClientWSSEC extends SoapClient
     }
 }
 
+/**
+ * @property SecurityType Security
+ */
 class Header
 {
     public $MessageControlBlock;
@@ -626,6 +714,11 @@ class MessageControlBlock
     public $Software;
 }
 
+/**
+ * @property float Amount
+ * @property string ServicesSelectableByClient
+ * @property bool ContinueOnIncomplete
+ */
 class Body
 {
     public $Currency;
@@ -658,6 +751,9 @@ class Service
     public $Version;
 }
 
+/**
+ * @property int|string GroupID
+ */
 class RequestParameter
 {
     public $_;
