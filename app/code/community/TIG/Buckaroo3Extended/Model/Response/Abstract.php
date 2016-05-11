@@ -73,7 +73,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->_debugEmail .= "verifiying authenticity of the response... \n";
         $verified = $this->_verifyResponse();
-        
+
         if ($verified !== true) {
             $this->_debugEmail .= "The authenticity of the response could NOT be verified. \n";
             return $this->_verifyError();
@@ -203,6 +203,18 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $payment->getMethodInstance()->saveAdditionalData($this->_response);
 
         $shouldSend = Mage::getStoreConfig('buckaroo/' . $payment->getMethod() . '/order_email', $this->_order->getStoreId());
+
+        $response = $this->_parseResponse();
+
+        /**
+         * Do not send order confirmation email when the payment is still pending.
+         * See: JIRA BUCK-160
+         * @date 11-05-16
+         */
+        if ($response['status'] == self::BUCKAROO_PENDING_PAYMENT) {
+            $shouldSend = false;
+        }
+
         if(!$this->_order->getEmailSent() && $shouldSend)
         {
             $this->sendNewOrderEmail();
