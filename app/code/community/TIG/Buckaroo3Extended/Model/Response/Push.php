@@ -12,6 +12,11 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     protected $_debugEmail = '';
     protected $_method = '';
 
+    protected $creditCardMethods = array(
+        'mastercard',
+        'visa'
+    );
+
     public function setCurrentOrder($order)
     {
         $this->_order = $order;
@@ -591,7 +596,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             ) {
                 $hasPlusInName = strpos($value, '+');
                 $value = urldecode($value);
-                if ($key == 'brq_customer_name' && $hasPlusInName !== false) {
+                /**
+                 * Because the customer name can be filled in by hand when its a creditcard payment do an check for
+                 * + characters because the paymentplaza doesn't urldecode when creating the signature.
+                 */
+                if ($key == 'brq_customer_name'
+                    && $hasPlusInName !== false
+                    && $this->_checkPaymentMethodIsCreditCard($sortableArray['brq_payment_method'])
+                ) {
                     $value = str_replace(' ','+', $value);
                 }
             }
@@ -607,6 +619,21 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $this->_debugEmail .= "\nSignature: {$signature}\n";
 
         return $signature;
+    }
+
+    /**
+     * @param $method
+     *
+     * @return bool
+     */
+    protected function _checkPaymentMethodIsCreditCard($method)
+    {
+        $isCreditCard = false;
+        if (in_array($method, $this->creditCardMethods)) {
+            $isCreditCard = true;
+        }
+
+        return $isCreditCard;
     }
 
     /**
