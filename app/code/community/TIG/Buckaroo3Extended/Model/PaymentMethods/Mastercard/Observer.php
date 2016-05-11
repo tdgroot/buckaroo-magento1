@@ -147,7 +147,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Mastercard_Observer extends TIG
              * A,Y,N,U :
              * Attempt/ Yes will lead to a successfull transaction/payment while No/ Unknown will leade to a failure.
              */
-            $authenticated = $response['brq_SERVICE_visa_Authentication'];
+            $authenticated = $response['brq_SERVICE_mastercard_Authentication'];
             $authenticated = ($authenticated == 'Y' || $authenticated == 'A') ? true : false;
         }
 

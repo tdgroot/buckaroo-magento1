@@ -589,7 +589,11 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             if ('brq_SERVICE_masterpass_CustomerPhoneNumber' !== $key
                 && 'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber' !== $key
             ) {
+                $hasPlusInName = strpos($value, '+');
                 $value = urldecode($value);
+                if ($key == 'brq_customer_name' && $hasPlusInName !== false) {
+                    $value = str_replace(' ','+', $value);
+                }
             }
             $signatureString .= $key . '=' . $value;
         }
