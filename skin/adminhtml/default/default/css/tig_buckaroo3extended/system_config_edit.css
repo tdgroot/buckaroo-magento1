@@ -20,3 +20,7 @@
 .buckaroo-section.active {
 	background-color:white !important;
 }
+
+.module-message.buckaroo h4 {
+	margin: 3px 40px 0 40px !important;
+}
