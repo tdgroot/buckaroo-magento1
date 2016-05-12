@@ -57,11 +57,11 @@
 			</action>
 			<action method="addItem">
 				<type>skin_js</type>
-				<name>js/TIG/Buckaroo3Extended/paymentGuaranteeTermsAndConditions.js</name>
+				<name>js/TIG/Buckaroo3Extended/paymentGuaranteeObserver.js</name>
 			</action>
             <action method="addItem">
                 <type>skin_js</type>
-                <name>js/TIG/Buckaroo3Extended/afterpayTermsAndConditions.js</name>
+                <name>js/TIG/Buckaroo3Extended/afterpayObserver.js</name>
             </action>
 		</reference>
 		<reference name="before_body_end">
