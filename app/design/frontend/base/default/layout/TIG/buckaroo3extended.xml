@@ -38,6 +38,10 @@
 				<type>skin_js</type>
 				<name>js/TIG/Buckaroo3Extended/paymentGuaranteeTermsAndConditions.js</name>
 			</action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/TIG/Buckaroo3Extended/afterpayTermsAndConditions.js</name>
+            </action>
 		</reference>
 		<reference name="before_body_end">
 			<block type="core/template" name="buckaroo_save_sata_js" template="buckaroo3extended/saveData.phtml"/>
@@ -55,6 +59,10 @@
 				<type>skin_js</type>
 				<name>js/TIG/Buckaroo3Extended/paymentGuaranteeTermsAndConditions.js</name>
 			</action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/TIG/Buckaroo3Extended/afterpayTermsAndConditions.js</name>
+            </action>
 		</reference>
 		<reference name="before_body_end">
 			<block type="core/template" name="buckaroo_save_sata_js" template="buckaroo3extended/saveData.phtml"/>
