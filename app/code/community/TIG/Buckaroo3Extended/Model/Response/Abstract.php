@@ -208,8 +208,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         /**
          * Do not send order confirmation email when the payment is still pending.
-         * See: JIRA BUCK-160
-         * @date 11-05-16
          */
         if ($response['status'] == self::BUCKAROO_PENDING_PAYMENT) {
             $shouldSend = false;
