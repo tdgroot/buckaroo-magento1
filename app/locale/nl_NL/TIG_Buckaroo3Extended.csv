@@ -340,3 +340,7 @@ TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
 "Whether the Buckaroo Payment fee you have entered is incl. or excl. tax.","Selecteer hier of de ingevoerde betaaltoeslag inclusief of exclusief BTW is."
 "Display Buckaroo Payment fee","Laat de Buckaroo betaaltoeslag zien"
 "The payment has been rejected","please try again or select a different paymentmethod.","De betaling is afgewezen, probeer het opnieuw of selecteer een andere betaalmethode."
+"Your payment was unsuccesful, cancelled by the merchant. Please contact the shop owner.","Uw betaling was niet succesvol, deze is geanuleerd. Als het probleem zich blijft voordoen neem dan contact op met de shopbeheerder."
+"Your payment was unsuccesful, cancelled by consumer.","Uw betaling is volgens ons systeem door u geanuleerd. Mocht dit niet het geval zijn neem dan contact op met de shopbeheerder."
+"A validation error has occurred. Please try again. If this problem persists, please contact the shop owner.","Er is een validatie fout opgetreden. Probeer het opnieuw. Als het probleem zich blijft voordoen neem dan contact op met de shopbeheerder."
+"Tampering with the default settings may negatively affect the translations. Use at your own risk.","Het aanpassen van deze waardes zal er voor zorgen dat de standaard vertalingen niet meer werken. Gebruik op eigen risico."
