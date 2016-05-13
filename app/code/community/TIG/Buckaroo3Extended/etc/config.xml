@@ -1443,13 +1443,13 @@
             </buckaroo3extended_advanced>
 
             <buckaroo3extended_response>
-                <response_payment_failure>Your payment was unsuccesful. Please try again or choose another payment method.</response_payment_failure>
+                <response_payment_failure>Your payment was unsuccessful. Please try again or choose another payment method.</response_payment_failure>
                 <response_validation_error>A validation error has occurred. Please try again. If this problem persists, please contact the shop owner.</response_validation_error>
                 <response_technical_error>A technical error has occurred. Please try again. If this problem persists, please contact the shop owner.</response_technical_error>
                 <response_payment_rejected>The payment has been rejected, please try again or select a different paymentmethod.</response_payment_rejected>
-                <response_canceled_by_user>Your payment was unsuccesful, cancelled by consumer.</response_canceled_by_user>
-                <response_canceled_by_merchant>Your payment was unsuccesful, cancelled by the merchant. Please contact the shop owner.</response_canceled_by_merchant>
-                <response_default>Your payment was unsuccesful. Please try again or choose another payment method.</response_default>
+                <response_canceled_by_user>Your payment was unsuccessful, cancelled by consumer.</response_canceled_by_user>
+                <response_canceled_by_merchant>Your payment was unsuccessful, cancelled by the merchant. Please contact the shop owner.</response_canceled_by_merchant>
+                <response_default>Your payment was unsuccessful. Please try again or choose another payment method.</response_default>
             </buckaroo3extended_response>
 
             <buckaroo3extended_ideal>
