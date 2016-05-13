@@ -136,7 +136,7 @@ jQuery_1123("#billing\\:telephone").change(
             jQuery_1123('#buckaroo3extended_paymentguarantee_BPE_Customerphone').val(phone);
             sendData(jQuery_1123('#buckaroo3extended_paymentguarantee_BPE_Customerphone'));
         }
-
+        jQuery_1123('#buckaroo3extended_paymentguarantee_BPE_Customerphone').val(phone);
         oldPhone = phone;
     }
 );

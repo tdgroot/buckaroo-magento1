@@ -17,8 +17,9 @@ document.observe('click', function(event, element) {
 document.observe('change', function(e) {
    if (e.findElement('#p_method_buckaroo3extended_paymentguarantee')) {
        var phoneNumber = jQuery_1123("#billing\\:telephone").val();
+       var newBPEPhone = jQuery_1123('#buckaroo3extended_paymentguarantee_BPE_Customerphone').val();
 
-       if (!phoneNumber && phoneNumber.length == 0) {
+       if (!phoneNumber && phoneNumber.length == 0 || newBPEPhone !== phoneNumber) {
            jQuery_1123('#buckaroo3extended_paymentguarantee_BPE_Customerphone').parent().parent().show();
        }
    }
