@@ -364,21 +364,20 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         }
 
         if (
-          Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
-          && $this->_order->canCancel()
+            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
+            && $this->_order->canCancel()
         ) {
-            $this->_order->cancel()
-                         ->save();
+            $this->_order->cancel();
         }
 
         if ($this->_order->getState() == Mage_Sales_Model_Order::STATE_CANCELED) {
             $this->_order->addStatusHistoryComment($description, $newStates[1])
-                         ->save();
+                ->save();
 
             $this->_order->setStatus($newStates[1])->save();
         } else {
             $this->_order->addStatusHistoryComment($description)
-                         ->save();
+                ->save();
         }
 
         return true;
