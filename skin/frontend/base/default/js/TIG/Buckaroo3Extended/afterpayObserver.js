@@ -36,12 +36,20 @@
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
 
+var phoneNumber = false;
+
 document.observe('change', function(e) {
     if (e.findElement('#p_method_buckaroo3extended_afterpay')) {
-        var phoneNumber = jQuery_1123("#billing\\:telephone").val();
+       phoneNumber = jQuery_1123("#billing\\:telephone").val();
 
         if (!phoneNumber && phoneNumber.length == 0) {
             jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').parent().parent().show();
         }
     }
+
+    jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').change(function(e) {
+        jQuery_1123("#billing\\:telephone").val(jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').val());
+    });
+
 });
+

@@ -197,7 +197,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         exit;
     }
 
-    protected function _success()
+    /**
+     * @param string $status
+     */
+    protected function _success($status = self::BUCKAROO_SUCCESS)
     {
         $this->_debugEmail .= "The response indicates a successful request. \n";
 
@@ -217,17 +220,16 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $shouldSend = Mage::getStoreConfig('buckaroo/' . $payment->getMethod() . '/order_email', $this->_order->getStoreId());
 
-        $response = $this->_parseResponse();
-
         /**
          * Do not send order confirmation email when the payment is still pending.
          */
-        if ($response['status'] == self::BUCKAROO_PENDING_PAYMENT) {
+        if ($status == self::BUCKAROO_PENDING_PAYMENT) {
             $shouldSend = false;
         }
 
-        if(!$this->_order->getEmailSent() && $shouldSend)
+        if(!$this->_order->getEmailSent() && false !== $shouldSend)
         {
+            $this->_debugEmail .= "New Order email has been send \n";
             $this->sendNewOrderEmail();
         }
 
@@ -488,7 +490,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
     protected function _pendingPayment()
     {
-        $this->_success();
+        $this->_success(self::BUCKAROO_PENDING_PAYMENT);
     }
 
     protected function _incorrectPayment($message = '')
