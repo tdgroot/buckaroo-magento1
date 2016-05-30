@@ -593,17 +593,24 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             if ('brq_SERVICE_masterpass_CustomerPhoneNumber' !== $key
                 && 'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber' !== $key
             ) {
-                $hasPlusInName = strpos($value, '+');
+                $hasPlusInName  = strpos($value, '+');
+                $hadMinusInName = strpos($value, '-');
+
                 $value = urldecode($value);
                 /**
                  * Because the customer name can be filled in by hand when its a creditcard payment do an check for
                  * + characters because the paymentplaza doesn't urldecode when creating the signature.
                  */
                 if ($key == 'brq_customer_name'
-                    && $hasPlusInName !== false
                     && $this->_checkPaymentMethodIsCreditCard($sortableArray['brq_payment_method'])
                 ) {
-                    $value = str_replace(' ','+', $value);
+                    if ($hasPlusInName !== false) {
+                        $value = str_replace(' ','+', $value);
+                    }
+
+                    if ($hadMinusInName !== false) {
+                        $value = str_replace(' ','-', $value);
+                    }
                 }
             }
             $signatureString .= $key . '=' . $value;
