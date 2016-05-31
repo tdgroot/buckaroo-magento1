@@ -30,11 +30,11 @@ jQuery_144("#billing\\:firstname").change(
             sendData(jQuery_144('#buckaroo3extended_payperemail_BPE_Customerfirstname'));
         }
 
-        jQuery_144('#buckaroo3extended_paymentguarantee_BPE_Customername').html(
+        jQuery_144('#buckaroo3extended_paymentguarantee_BPE_Customername').val(
             firstname + ' ' + jQuery_144("#billing\\:lastname").val()
         );
 
-        jQuery_144('#buckaroo3extended_transfer_BPE_Customername').html(
+        jQuery_144('#buckaroo3extended_transfer_BPE_Customername').val(
             firstname + ' ' + jQuery_144("#billing\\:lastname").val()
         );
 
@@ -71,11 +71,11 @@ jQuery_144("#billing\\:lastname").change(
             sendData(jQuery_144('#buckaroo3extended_payperemail_BPE_Customerlastname'));
         }
 
-        jQuery_144('#buckaroo3extended_paymentguarantee_BPE_Customername').html(
+        jQuery_144('#buckaroo3extended_paymentguarantee_BPE_Customername').val(
             jQuery_144("#billing\\:firstname").val() + ' ' + lastname
         );
 
-        jQuery_144('#buckaroo3extended_transfer_BPE_Customername').html(
+        jQuery_144('#buckaroo3extended_transfer_BPE_Customername').val(
             jQuery_144("#billing\\:firstname").val() + ' ' + lastname
         );
 
