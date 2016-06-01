@@ -42,8 +42,21 @@ document.observe('change', function(e) {
     if (e.findElement('#p_method_buckaroo3extended_afterpay')) {
        phoneNumber = jQuery_1123("#billing\\:telephone").val();
 
-        if (!phoneNumber && phoneNumber.length == 0) {
+        if (!phoneNumber) {
             jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').parent().parent().show();
+        } else {
+            jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').parent().parent().hide();
+            jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').val(phoneNumber);
+        }
+    }
+
+    if (e.findElement("#billing\\:telephone")) {
+        phoneNumber = jQuery_1123("#billing\\:telephone").val();
+        if (!phoneNumber) {
+            jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').parent().parent().show();
+        } else {
+            jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').parent().parent().hide();
+            jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').val(phoneNumber);
         }
     }
 

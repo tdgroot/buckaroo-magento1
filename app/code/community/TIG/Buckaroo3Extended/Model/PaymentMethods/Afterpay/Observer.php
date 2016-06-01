@@ -171,7 +171,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $billingAddress     = $this->_order->getBillingAddress();
         $streetFull         = $this->_processAddress($billingAddress->getStreetFull());
         $rawPhoneNumber     = $billingAddress->getTelephone();
-        $rawPhoneNumber     = (!empty($rawPhoneNumber))? $rawPhoneNumber : $additionalFields['BPE_PhoneNumber'];
+        $rawPhoneNumber     = (!empty($rawPhoneNumber))? $rawPhoneNumber : $additionalFields['BPE_Customerphone'];
         $billingPhonenumber = $this->_processPhoneNumber($rawPhoneNumber);
 
         $billingInfo = array(
