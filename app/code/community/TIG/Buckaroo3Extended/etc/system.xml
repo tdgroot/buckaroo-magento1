@@ -6526,7 +6526,7 @@
                     </fields>
                 </buckaroo3extended_certificate>
                 <buckaroo3extended_response translate="label">
-                    <label>Response Configuration</label>
+                    <label>Customise default error messages</label>
                     <sort_order>21500</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
