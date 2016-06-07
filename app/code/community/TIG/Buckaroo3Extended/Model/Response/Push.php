@@ -12,6 +12,11 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     protected $_debugEmail = '';
     protected $_method = '';
 
+    protected $creditCardMethods = array(
+        'mastercard',
+        'visa'
+    );
+
     public function setCurrentOrder($order)
     {
         $this->_order = $order;
@@ -359,21 +364,20 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         }
 
         if (
-          Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
-          && $this->_order->canCancel()
+            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
+            && $this->_order->canCancel()
         ) {
-            $this->_order->cancel()
-                         ->save();
+            $this->_order->cancel();
         }
 
         if ($this->_order->getState() == Mage_Sales_Model_Order::STATE_CANCELED) {
             $this->_order->addStatusHistoryComment($description, $newStates[1])
-                         ->save();
+                ->save();
 
             $this->_order->setStatus($newStates[1])->save();
         } else {
             $this->_order->addStatusHistoryComment($description)
-                         ->save();
+                ->save();
         }
 
         return true;
@@ -589,7 +593,25 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             if ('brq_SERVICE_masterpass_CustomerPhoneNumber' !== $key
                 && 'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber' !== $key
             ) {
+                $hasPlusInName  = strpos($value, '+');
+                $hadMinusInName = strpos($value, '-');
+
                 $value = urldecode($value);
+                /**
+                 * Because the customer name can be filled in by hand when its a creditcard payment do an check for
+                 * + characters because the paymentplaza doesn't urldecode when creating the signature.
+                 */
+                if ($key == 'brq_customer_name'
+                    && $this->_checkPaymentMethodIsCreditCard($sortableArray['brq_payment_method'])
+                ) {
+                    if ($hasPlusInName !== false) {
+                        $value = str_replace(' ','+', $value);
+                    }
+
+                    if ($hadMinusInName !== false) {
+                        $value = str_replace(' ','-', $value);
+                    }
+                }
             }
             $signatureString .= $key . '=' . $value;
         }
@@ -603,6 +625,21 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $this->_debugEmail .= "\nSignature: {$signature}\n";
 
         return $signature;
+    }
+
+    /**
+     * @param $method
+     *
+     * @return bool
+     */
+    protected function _checkPaymentMethodIsCreditCard($method)
+    {
+        $isCreditCard = false;
+        if (in_array($method, $this->creditCardMethods)) {
+            $isCreditCard = true;
+        }
+
+        return $isCreditCard;
     }
 
     /**
