@@ -25,7 +25,7 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
         <div class="input-box">
             <label for="<?php echo $_code;?>_BPE_Customerfirstname"><?php echo $this->__('First Name') ?> <span class="required">*</span></label>
             <br>
-            <input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php this->escapeHtml($firstname); ?>" id="<?php echo $_code;?>_BPE_Customerfirstname" />
+            <input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerfirstname" value="<?php $this->escapeHtml($firstname); ?>" id="<?php echo $_code;?>_BPE_Customerfirstname" />
         </div>
     </li>
 
@@ -33,7 +33,7 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
         <div class="input-box">
             <label for="<?php echo $_code;?>_BPE_Customerlastname"><?php echo $this->__('Last Name') ?> <span class="required">*</span></label>
             <br>
-            <input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php this->escapeHtml($lastname); ?>" id="<?php echo $_code;?>_BPE_Customerlastname" />
+            <input class="input-text required-entry" type="input" name="<?php echo $_code;?>_BPE_Customerlastname" value="<?php $this->escapeHtml($lastname); ?>" id="<?php echo $_code;?>_BPE_Customerlastname" />
         </div>
     </li>
 
@@ -41,7 +41,7 @@ $gender=(int)Mage::getSingleton('checkout/session')->getQuote()->getCustomerGend
         <div class="input-box">
             <label for="<?php echo $_code;?>_BPE_Customermail"><?php echo $this->__('E-mail') ?> <span class="required">*</span></label>
             <br>
-        	<input class="input-text required-entry validate-email" type="input" name="<?php echo $_code;?>_BPE_Customermail" value="<?php this->escapeHtml($email); ?>" id="<?php echo $_code;?>_BPE_Customermail" />
+        	<input class="input-text required-entry validate-email" type="input" name="<?php echo $_code;?>_BPE_Customermail" value="<?php $this->escapeHtml($email); ?>" id="<?php echo $_code;?>_BPE_Customermail" />
         </div>
     </li>
 
