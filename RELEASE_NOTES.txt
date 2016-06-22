@@ -1,7 +1,7 @@
 ===== 4.15.2 =====
 - Verwijderd configuratieveld voor Afterpay, Giftcard "Verstuur email met betalingsinstructies"
 - Spelfouten op supporttab gecorrigeerd
-- Corrigering van versienummer
+- Correctie van versienummer
 
 ===== 4.15.1 =====
 - Afterpay oplossing 31 in telefoonnummer
@@ -9,7 +9,7 @@
 ===== 4.15.0 =====
 - Merchant kan via Backend zelf feedback instellen voor foutmeldingen 
 - Payperemail via Backend bij meerdere valuta
-- Betallagarant validatie in de checkout op telefoonnummer
+- Betaalgarant validatie in de checkout op telefoonnummer
 - Order bevestigingse-mail
 - jQuery upgrade naar versie 1.12.3
 - 691 rejected status vertaling
