@@ -1,3 +1,26 @@
+===== 4.15.2 =====
+- Verwijderd configuratieveld voor Afterpay, Giftcard "Verstuur email met betalingsinstructies"
+- Spelfouten op supporttab gecorrigeerd
+- Correctie van versienummer
+
+===== 4.15.1 =====
+- Afterpay oplossing 31 in telefoonnummer
+
+===== 4.15.0 =====
+- Merchant kan via Backend zelf feedback instellen voor foutmeldingen 
+- Payperemail via Backend bij meerdere valuta
+- Betaalgarant validatie in de checkout op telefoonnummer
+- Order bevestigingse-mail
+- jQuery upgrade naar versie 1.12.3
+- 691 rejected status vertaling
+- eMaestro andere valuta
+- Paypermail back-end multistore
+- Authentification status A/U wordt inzichtelijk gemaakt
+- Refunden met MisterCash
+- Nieuwe logo van Buckaroo
+- OSC 4.5.5 ondersteuning	
+- Afterpay van Buckaroo neemt telefoonnummer over van de bestelling
+
 ===== 4.10.1 =====
 - Het bericht voor afwijzing voor de betaalmethode Afterpay toegevoegd
 - Compatibiliteit verbeterd met Onestepcheckout

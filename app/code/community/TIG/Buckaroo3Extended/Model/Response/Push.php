@@ -586,6 +586,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 
         //sort the array
         $sortableArray = $this->buckarooSort($origArray);
+        
+        //check if encoding is used for the received postData
+        $doUrlDecode = $this->_checkDoubleEncoding($sortableArray['brq_timestamp']);
+        $this->_debugEmail .= "URL Encoding = " . var_export($doUrlDecode, true) . "\n";
 
         //turn into string and add the secret key to the end
         $signatureString = '';
@@ -593,24 +597,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             if ('brq_SERVICE_masterpass_CustomerPhoneNumber' !== $key
                 && 'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber' !== $key
             ) {
-                $hasPlusInName  = strpos($value, '+');
-                $hadMinusInName = strpos($value, '-');
-
-                $value = urldecode($value);
-                /**
-                 * Because the customer name can be filled in by hand when its a creditcard payment do an check for
-                 * + characters because the paymentplaza doesn't urldecode when creating the signature.
-                 */
-                if ($key == 'brq_customer_name'
-                    && $this->_checkPaymentMethodIsCreditCard($sortableArray['brq_payment_method'])
-                ) {
-                    if ($hasPlusInName !== false) {
-                        $value = str_replace(' ','+', $value);
-                    }
-
-                    if ($hadMinusInName !== false) {
-                        $value = str_replace(' ','-', $value);
-                    }
+                if ($doUrlDecode) {
+                    $value = urldecode($value);    
                 }
             }
             $signatureString .= $key . '=' . $value;
@@ -625,6 +613,24 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $this->_debugEmail .= "\nSignature: {$signature}\n";
 
         return $signature;
+    }
+
+    /**
+     * Check if the BPE 3.0 Plaza setting "Enable double encoding of redirect data" is checked
+     * Timestamp will contain an "+"
+     *
+     * @param $postFieldTimestamp
+     *
+     * @return bool
+     */
+    protected function _checkDoubleEncoding($postFieldTimestamp)
+    {
+        $hasDoubleEncoding = false;
+        if (strpos($postFieldTimestamp, '+') !== false) {
+            $hasDoubleEncoding = true;
+        } 
+
+        return $hasDoubleEncoding;
     }
 
     /**
