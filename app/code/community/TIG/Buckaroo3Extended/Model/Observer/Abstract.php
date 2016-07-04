@@ -259,26 +259,49 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         //get address from billingInfo
         $address = $this->_billingInfo['address'];
 
-        $ret = array();
-        $ret['house_number'] = '';
-        $ret['number_addition'] = '';
-        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $address, $matches)) {
-            if ('' == $matches[1]) {
-                // Number at beginning
-                $ret['house_number'] = trim($matches[2]);
-                $ret['street']         = trim($matches[3]);
-            } else {
-                // Number at end
-                $ret['street']            = trim($matches[1]);
-                 $ret['house_number']    = trim($matches[2]);
-                 $ret['number_addition'] = trim($matches[3]);
-            }
-        } else {
-             // No number
-             $ret['street'] = $address;
+        $addressRegexResult = preg_match('#\A(.*?)\s+(\d+[a-zA-Z]{0,1}\s{0,1}[-]{1}\s{0,1}\d*[a-zA-Z]{0,1}|\d+[a-zA-Z-]{0,1}\d*[a-zA-Z]{0,1})#', $address, $matches);
+        if (!$addressRegexResult || !is_array($matches)) {
+            $addressData = array(
+                'street'           => $address,
+                'house_number'          => '',
+                'number_addition' => '',
+            );
+
+            return $addressData;
         }
 
-         return $ret;
+        $streetname = '';
+        $housenumber = '';
+        $housenumberExtension = '';
+        if (isset($matches[1])) {
+            $streetname = $matches[1];
+        }
+
+        if (isset($matches[2])) {
+            $housenumber = $matches[2];
+        }
+
+        if (!empty($housenumber)) {
+            $housenumber = trim($housenumber);
+            $housenumberRegexResult = preg_match('#^([\d]+)(.*)#s', $housenumber, $matches);
+            if ($housenumberRegexResult && is_array($matches)) {
+                if (isset($matches[1])) {
+                    $housenumber = $matches[1];
+                }
+
+                if (isset($matches[2])) {
+                    $housenumberExtension = trim($matches[2]);
+                }
+            }
+        }
+
+        $addressData = array(
+            'street'           => $streetname,
+            'house_number'          => $housenumber,
+            'number_addition' => $housenumberExtension,
+        );
+
+        return $addressData;
     }
 
     /**
