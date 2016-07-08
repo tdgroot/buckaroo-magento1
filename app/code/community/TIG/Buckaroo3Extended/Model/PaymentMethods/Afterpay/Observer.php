@@ -243,6 +243,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $discount += abs((double)$this->_order->getDiscountAmount());
         }
 
+        $discount = round($discount,2);
 
         //add order Info
         $orderInfo = array(
