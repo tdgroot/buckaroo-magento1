@@ -301,6 +301,39 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             break;
         }
 
+        if (Mage::helper('buckaroo3extended')->isEnterprise()) {
+            $gwId = 1;
+            $gwTax = Mage::helper('enterprise_giftwrapping')->getWrappingTaxClass($this->_order->getStoreId());
+
+            if ($this->_order->getGwBasePrice() > 0) {
+                $gwPrice = $this->_order->getGwBasePrice() + $this->_order->getGwBaseTaxAmount();
+
+                $gwOrder = array();
+                $gwOrder['ArticleDescription']['value'] = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Order');
+                $gwOrder['ArticleId']['value'] = 'gwo_' . $this->_order->getGwId();
+                $gwOrder['ArticleQuantity']['value'] = 1;
+                $gwOrder['ArticleUnitPrice']['value'] = $gwPrice;
+                $gwOrder['ArticleVatcategory']['value'] = $gwTax;
+
+                $group[] = $gwOrder;
+
+                $gwId += $this->_order->getGwId();
+            }
+
+            if ($this->_order->getGwItemsBasePrice() > 0) {
+                $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwBaseTaxAmount();
+
+                $gwiOrder = array();
+                $gwiOrder['ArticleDescription']['value'] = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items');
+                $gwiOrder['ArticleId']['value'] = 'gwi_' . $gwId;
+                $gwiOrder['ArticleQuantity']['value'] = 1;
+                $gwiOrder['ArticleUnitPrice']['value'] = $gwiPrice;
+                $gwiOrder['ArticleVatcategory']['value'] = $gwTax;
+
+                $group[] = $gwiOrder;
+            }
+        }
+
         end($group);// move the internal pointer to the end of the array
         $key             = (int)key($group);
         $feeGroupId      = $key+1;
