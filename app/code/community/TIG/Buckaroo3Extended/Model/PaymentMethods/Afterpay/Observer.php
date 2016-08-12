@@ -321,7 +321,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             }
 
             if ($this->_order->getGwItemsBasePrice() > 0) {
-                $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwBaseTaxAmount();
+                $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwItemsBaseTaxAmount();
 
                 $gwiOrder = array();
                 $gwiOrder['ArticleDescription']['value'] = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items');
