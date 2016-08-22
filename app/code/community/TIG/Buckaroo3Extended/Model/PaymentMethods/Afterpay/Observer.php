@@ -176,7 +176,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $rawPhoneNumber = $additionalFields['BPE_PhoneNumber'];
         }
 
-        $billingPhonenumber = $this->_processPhoneNumber($rawPhoneNumber);
+        $billingPhonenumber = ($billingAddress->getCountryId() == 'BE' ? $this->_processPhoneNumberBe($rawPhoneNumber) : $this->_processPhoneNumber($rawPhoneNumber));
         $billingInfo = array(
             'BillingTitle'             => $billingAddress->getFirstname(),
             'BillingGender'            => $additionalFields['BPE_Customergender'],
@@ -200,7 +200,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         if($this->isShippingDifferent()){
             $shippingAddress     = $this->_order->getShippingAddress();
             $streetFull          = $this->_processAddress($shippingAddress->getStreetFull());
-            $shippingPhonenumber = $this->_processPhoneNumber($shippingAddress->getTelephone());
+            $shippingPhonenumber = ($shippingAddress->getCountryId() ? $this->_processPhoneNumberBe($shippingAddress->getTelephone()) : $this->_processPhoneNumber($shippingAddress->getTelephone()));
 
             $shippingInfo = array(
                 'AddressesDiffer'           => 'true',
@@ -480,6 +480,69 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         } else {
             //if the length equal to 13 is, then we can check if its a mobile number or normal number
             $return['mobile'] = $this->_isMobileNumber($number);
+            //now we can almost say that the number is valid
+            $return['valid'] = true;
+            $return['clean'] = $number;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param $telephoneNumber
+     * @return array
+     */
+    protected function _processPhoneNumberBe($telephoneNumber)
+    {
+        $number = $telephoneNumber;
+
+        //the final output must like this: 003212345678 for mobile: 0032461234567
+        //so 13 characters max else number is not valid
+        //but for some error correction we try to find if there is some faulty notation
+
+        $return = array("orginal" => $number, "clean" => false, "mobile" => false, "valid" => false);
+
+        //first strip out the non-numeric characters:
+        $match = preg_replace('/[^0-9]/Uis', '', $number);
+        if ($match) {
+            $number = $match;
+        }
+
+        $return['mobile'] = $this->_isMobileNumberBe($number);
+        $numberLength = strlen((string)$number);
+
+        if (($return['mobile'] && $numberLength == 13) || (!$return['mobile'] && $numberLength == 12)) {
+            //if the length equal to 12 or 13 is, then we can check if the number is valid
+            $return['valid'] = true;
+            $return['clean'] = $number;
+        } elseif ($numberLength > 13 || (!$return['mobile'] && $numberLength > 12)) {
+            //if the number is bigger then 13, it means that there are probably a zero to much
+            $return['clean'] = $this->_isValidNotationBe($number);
+            $cleanLength = strlen((string)$return['clean']);
+
+            if (($return['mobile'] && $cleanLength == 13) || (!$return['mobile'] && $cleanLength == 12)) {
+                $return['valid'] = true;
+            }
+        } elseif (($return['mobile'] && ($numberLength == 11 || $numberLength == 12))
+            || (!$return['mobile'] && ($numberLength == 10 || $numberLength == 11))
+        ) {
+            //if the number is equal to 10, 11 or 12, it means that they used a + in their number instead of 00
+            $return['clean'] = $this->_isValidNotationBe($number);
+            $cleanLength = strlen((string)$return['clean']);
+
+            if (($return['mobile'] && $cleanLength == 13) || (!$return['mobile'] && $cleanLength == 12)) {
+                $return['valid'] = true;
+            }
+        } elseif (($return['mobile'] && $numberLength == 10) || (!$return['mobile'] && $numberLength == 9)) {
+            //this means that the user has no trailing "0032" and therfore only
+            $return['clean'] = '0032'.substr($number, 1);
+            $cleanLength = strlen((string)$return['clean']);
+
+            if (($return['mobile'] && $cleanLength == 13) || (!$return['mobile'] && $cleanLength == 12)) {
+                $return['valid'] = true;
+            }
+        } else {
+            $return['mobile'] = $this->_isMobileNumberBe($number);
             //now we can almost say that the number is valid
             $return['valid'] = true;
             $return['clean'] = $number;
