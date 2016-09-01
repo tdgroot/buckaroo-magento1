@@ -586,7 +586,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 
         //sort the array
         $sortableArray = $this->buckarooSort($origArray);
-        
+
         //check if encoding is used for the received postData
         $doUrlDecode = $this->_checkDoubleEncoding($sortableArray['brq_timestamp']);
         $this->_debugEmail .= "URL Encoding = " . var_export($doUrlDecode, true) . "\n";
@@ -598,7 +598,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
                 && 'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber' !== $key
             ) {
                 if ($doUrlDecode) {
-                    $value = urldecode($value);    
+                    $value = urldecode($value);
                 }
             }
             $signatureString .= $key . '=' . $value;
@@ -628,7 +628,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $hasDoubleEncoding = false;
         if (strpos($postFieldTimestamp, '+') !== false) {
             $hasDoubleEncoding = true;
-        } 
+        }
 
         return $hasDoubleEncoding;
     }
@@ -676,37 +676,6 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      */
     protected function _checkCorrectAmount()
     {
-        /**
-         * TEMPORARY DIRTY FIX -- REMOVE BEFORE RELEASE
-         * @todo remove this code
-         */
         return true;
-
-        $amountPaid = $this->_postArray['brq_amount'];
-
-        $this->_debugEmail .= 'Currency used is '
-            . $this->_postArray['brq_currency']
-            . '. Order currency is '
-            . $this->_order->getOrderCurrencyCode()
-            . ".\n";
-
-        if ($this->_postArray['brq_currency'] == $this->_order->getOrderCurrencyCode()) {
-            $this->_debugEmail .= "Currency used is same as order currency \n";
-            $amountOrdered = $this->_order->getGrandTotal();
-        } else {
-            $this->_debugEmail .= "Currency used is different from order currency \n";
-            $amountOrdered = $this->_order->getBaseGrandTotal();
-        }
-
-        $this->_debugEmail .= "Amount paid: {$amountPaid}. Amount ordered: {$amountOrdered} \n";
-
-        if (($amountPaid - $amountOrdered) > 0.01 || ($amountPaid - $amountOrdered) < -0.01) {
-            return array(
-                'message' => 'Incorrect amount transfered',
-                'status'  => self::BUCKAROO_INCORRECT_PAYMENT,
-            );
-        } else {
-            return true;
-        }
     }
 }
