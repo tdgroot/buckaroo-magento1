@@ -205,6 +205,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
         $merchantKey = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId());
         $description = Mage::getStoreConfig('buckaroo/buckaroo3extended/payment_description', $this->_order->getStoreId());
+        $description = str_replace('{{ORDER_ID}}', $this->_order->getIncrementId(), $description);
         $thumbprint  = Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', $this->_order->getStoreId());
 
         $this->_vars['returnUrl']      = $returnUrl;
