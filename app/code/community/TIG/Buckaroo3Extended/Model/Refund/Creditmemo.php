@@ -275,7 +275,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         $items = array();
         foreach ($this->_order->getAllItems() as $orderItem)
         {
-            if (!in_array($orderItem->getId(), array_flip($items))) {
+            if (!in_array($orderItem->getId(), array_keys($items))) {
 
                 $creditAmount = 0;
                 if (isset($this->_postArray['brq_amount_credit'])) {
