@@ -33,6 +33,42 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
     protected $_canRefund               = true;
     protected $_canRefundInvoicePartial = false;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function canCapture()
+    {
+        $storeId = Mage::app()->getStore()->getId();
+
+        // Try to look StoreID up based on adminhtml session
+        if (Mage::helper('buckaroo3extended')->isAdmin()) {
+            $quote = Mage::getSingleton('adminhtml/session_quote');
+
+            if ($quote) {
+                $storeId = $quote->getStoreId();
+            }
+        }
+
+        $paymentFlow = Mage::getStoreConfig('buckaroo/' . $this->_code . '/payment_flow', $storeId);
+        if ($paymentFlow == TIG_Buckaroo3Extended_Model_Sources_PaymentFlow::TIG_BUCKAROO_PAYMENTFLOW_ORDER) {
+            return false;
+        }
+
+        return $this->_canCapture;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function capture(Varien_Object $payment, $amount)
+    {
+        if (!$this->canCapture()) {
+            Mage::throwException(Mage::helper('payment')->__('Capture action is not available.'));
+        }
+
+        return $this;
+    }
+
     public function getOrderPlaceRedirectUrl()
     {
         $session = Mage::getSingleton('checkout/session');
