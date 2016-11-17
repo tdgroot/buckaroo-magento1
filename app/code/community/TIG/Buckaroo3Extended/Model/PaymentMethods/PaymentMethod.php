@@ -244,4 +244,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
 
         return $this;
     }
+
+    public function getConfigData($field, $storeId = null)
+    {
+        if (null === $storeId) {
+            $storeId = $this->getStore();
+        }
+
+        switch ($field) {
+            case 'payment_action':
+                $pathStart = 'buckaroo';
+                break;
+            default:
+                $pathStart = 'payment';
+                break;
+        }
+
+        $path = $pathStart.'/'.$this->getCode().'/'.$field;
+        return Mage::getStoreConfig($path, $storeId);
+    }
 }

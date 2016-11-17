@@ -26,9 +26,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', Mage::app()->getStore()->getStoreId());
         }
 
+        $paymentAction = Mage::getStoreConfig(
+            'buckaroo/' . $this->_code . '/payment_action',
+            Mage::app()->getStore()->getStoreId()
+        );
+
+        if ($paymentAction == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+            $serviceAction = 'Authorize';
+        } else {
+            $serviceAction = 'Pay';
+        }
+
         $array = array(
             $this->_method => array(
-                'action'   => 'Pay',
+                'action'   => $serviceAction,
                 'version'  => '1',
             ),
         );
