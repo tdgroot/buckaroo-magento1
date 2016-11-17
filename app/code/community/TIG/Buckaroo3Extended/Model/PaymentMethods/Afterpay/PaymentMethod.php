@@ -49,8 +49,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
             }
         }
 
-        $paymentFlow = Mage::getStoreConfig('buckaroo/' . $this->_code . '/payment_flow', $storeId);
-        if ($paymentFlow == TIG_Buckaroo3Extended_Model_Sources_PaymentFlow::TIG_BUCKAROO_PAYMENTFLOW_ORDER) {
+        if ($this->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_ORDER) {
             return false;
         }
 

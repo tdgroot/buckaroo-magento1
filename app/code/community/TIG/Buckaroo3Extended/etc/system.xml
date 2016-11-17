@@ -845,7 +845,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <payment_flow translate="label comment" module="buckaroo3extended">
+                        <payment_action translate="label comment" module="buckaroo3extended">
                             <label>Payment flow</label>
                             <comment>Whether to use separate authorize and capture calls or to use a combined 'pay' call.</comment>
                             <frontend_type>select</frontend_type>
@@ -857,7 +857,7 @@
                             <depends>
                                 <show_advanced>1</show_advanced>
                             </depends>
-                        </payment_flow>
+                        </payment_action>
                         <payment_fee translate="label comment" module="buckaroo3extended">
                             <label>Fee</label>
                             <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
@@ -1149,7 +1149,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
-                        <payment_flow translate="label comment" module="buckaroo3extended">
+                        <payment_action translate="label comment" module="buckaroo3extended">
                             <label>Payment flow</label>
                             <comment>Whether to use separate authorize and capture calls or to use a combined 'pay' call.</comment>
                             <frontend_type>select</frontend_type>
@@ -1161,7 +1161,7 @@
                             <depends>
                                 <show_advanced>1</show_advanced>
                             </depends>
-                        </payment_flow>
+                        </payment_action>
                         <payment_fee translate="label comment" module="buckaroo3extended">
                             <label>Fee</label>
                             <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>

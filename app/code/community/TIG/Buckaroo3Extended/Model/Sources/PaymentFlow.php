@@ -38,9 +38,6 @@
  */
 class TIG_Buckaroo3Extended_Model_Sources_PaymentFlow
 {
-    const TIG_BUCKAROO_PAYMENTFLOW_ORDER = 'order';
-    const TIG_BUCKAROO_PAYMENTFLOW_AUTHORIZE = 'authorize';
-
     /**
      * @return array
      */
@@ -50,11 +47,11 @@ class TIG_Buckaroo3Extended_Model_Sources_PaymentFlow
 
         $array = array(
             array(
-                'value' => self::TIG_BUCKAROO_PAYMENTFLOW_ORDER,
+                'value' => Mage_Payment_Model_Method_Abstract::ACTION_ORDER,
                 'label' => $helper->__('Combined')
             ),
             array(
-                'value' => self::TIG_BUCKAROO_PAYMENTFLOW_AUTHORIZE,
+                'value' => Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE,
                 'label' => $helper->__('Separate authorize and capture')
             ),
         );
@@ -62,3 +59,4 @@ class TIG_Buckaroo3Extended_Model_Sources_PaymentFlow
         return $array;
     }
 }
+
