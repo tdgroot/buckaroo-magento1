@@ -30,6 +30,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_afterpay_checkout_form';
 
+    protected $_canOrder                = true;
     protected $_canRefund               = true;
     protected $_canRefundInvoicePartial = false;
 
