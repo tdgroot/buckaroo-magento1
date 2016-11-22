@@ -163,6 +163,38 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         return $this;
     }
 
+    public function buckaroo3extended_capture_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+
+        $vars = $request->getVars();
+
+        if($this->_method == false){
+            $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', Mage::app()->getStore()->getStoreId());
+        }
+
+        $array = array(
+            $this->_method => array(
+                'action'   => 'Capture',
+                'version'  => '1',
+            ),
+        );
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
+        } else {
+            $vars['services'] = $array;
+        }
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
     /** INTERNAL METHODS **/
 
     /**
@@ -175,6 +207,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
     {
         $session            = Mage::getSingleton('checkout/session');
         $additionalFields   = $session->getData('additionalFields');
+
+        $paymentAdditionalInformation = $this->_order->getPayment()->getAdditionalInformation();
+        if (is_array($paymentAdditionalInformation)
+            && count($paymentAdditionalInformation) > 0
+            && strlen($paymentAdditionalInformation['BPE_AccountNumber']) > 0
+        ) {
+            $additionalFields = $paymentAdditionalInformation;
+        }
 
         $requestArray       = array();
 

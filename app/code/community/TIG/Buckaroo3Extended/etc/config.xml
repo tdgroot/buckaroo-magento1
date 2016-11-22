@@ -1117,6 +1117,15 @@
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
                 </observers>
             </buckaroo3extended_response_custom_processing>
+            <buckaroo3extended_capture_request_addservices>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_capture_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
+                </observers>
+            </buckaroo3extended_capture_request_addservices>
         </events>
     </global>
     <default>

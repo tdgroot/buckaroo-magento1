@@ -39,17 +39,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
      */
     public function canCapture()
     {
-        $storeId = Mage::app()->getStore()->getId();
-
-        // Try to look StoreID up based on adminhtml session
-        if (Mage::helper('buckaroo3extended')->isAdmin()) {
-            $quote = Mage::getSingleton('adminhtml/session_quote');
-
-            if ($quote) {
-                $storeId = $quote->getStoreId();
-            }
-        }
-
         if ($this->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_ORDER) {
             return false;
         }
@@ -66,15 +55,33 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
             Mage::throwException(Mage::helper('payment')->__('Capture action is not available.'));
         }
 
+        /** @var TIG_Buckaroo3Extended_Model_Request_Capture $captureRequest */
+        $captureRequest = Mage::getModel(
+            'buckaroo3extended/request_capture',
+            array(
+                'payment' => $payment
+            )
+        );
+
+//        $captureRequest->setOrder($payment->getOrder());
+
+        try {
+            $captureRequest->sendRequest();
+        } catch (Exception $e) {
+            Mage::helper('buckaroo3extended')->logException($e);
+            Mage::throwException($e->getMessage());
+        }
+
         return $this;
     }
 
-    public function getOrderPlaceRedirectUrl()
+    /**
+     * @param $post
+     *
+     * @return array
+     */
+    protected function _getBPEPostData($post)
     {
-        $session = Mage::getSingleton('checkout/session');
-
-        $post = Mage::app()->getRequest()->getPost();
-
         $accountNumber = isset($post[$this->_code . '_bpe_customer_account_number']) ? $post[$this->_code . '_bpe_customer_account_number'] : '';
 
         $customerBirthDate = date(
@@ -103,6 +110,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
             $array = array_merge($array,$additionalArray);
         }
 
+        return $array;
+    }
+
+    public function getOrderPlaceRedirectUrl()
+    {
+        $session = Mage::getSingleton('checkout/session');
+
+        $post = Mage::app()->getRequest()->getPost();
+
+        $array = $this->_getBPEPostData($post);
+
         $session->setData('additionalFields',$array);
 
         return parent::getOrderPlaceRedirectUrl();
@@ -121,6 +139,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
         }
 
         $this->getInfoInstance()->setAdditionalInformation('checked_terms_and_conditions', true);
+
+        $BPEArray = $this->_getBPEPostData($postData);
+
+        foreach ($BPEArray as $key => $value) {
+            $this->getInfoInstance()->setAdditionalInformation($key, $value);
+        }
 
         return parent::validate();
     }
