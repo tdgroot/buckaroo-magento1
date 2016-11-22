@@ -36,8 +36,32 @@
  * @copyright   Copyright (c) 2016 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_Response_Quote extends TIG_Buckaroo3Extended_Model_Response_BackendOrder
+class TIG_Buckaroo3Extended_Model_Response_Capture extends TIG_Buckaroo3Extended_Model_Response_BackendOrder
 {
+    protected $_payment;
+
+    /**
+     * @param $payment
+     */
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+
+    public function __construct($data)
+    {
+        $this->setPayment($data['payment']);
+        parent::__construct($data);
+    }
+
     public function processResponse()
     {
         if ($this->_response === false) {
@@ -54,22 +78,13 @@ class TIG_Buckaroo3Extended_Model_Response_Quote extends TIG_Buckaroo3Extended_M
         }
         $this->_debugEmail .= "Verified as authentic! \n\n";
 
-        if (!$this->_order->getTransactionKey()
-            && is_object($this->_response)
+        if (is_object($this->_response)
             && isset($this->_response->Key))
         {
-            $this->_order->setTransactionKey($this->_response->Key);
-            $this->_order->save();
+//            $this->_order->setTransactionKey($this->_response->Key);
+//            $this->_order->save();
+            $this->_payment->setTransactionKey($this->_response->Key)->save();
             $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->Key . "\n";
-        }
-
-        //sets the currency used by Buckaroo
-        if (!$this->_order->getCurrencyCodeUsedForTransaction()
-            && is_object($this->_response)
-            && isset($this->_response->Currency))
-        {
-            $this->_order->setCurrencyCodeUsedForTransaction($this->_response->Currency);
-            $this->_order->save();
         }
 
         $parsedResponse = $this->_parseResponse();

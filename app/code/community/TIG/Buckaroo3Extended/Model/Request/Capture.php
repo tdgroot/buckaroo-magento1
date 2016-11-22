@@ -38,11 +38,30 @@
  */
 class TIG_Buckaroo3Extended_Model_Request_Capture extends TIG_Buckaroo3Extended_Model_Request_Abstract
 {
+    protected $_payment;
+
+    /**
+     * @param $payment
+     */
+    public function setPayment($payment)
+    {
+        $this->_payment = $payment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPayment()
+    {
+        return $this->_payment;
+    }
+
     /**
      * @param array $params
      */
     public function __construct($params = array())
     {
+        $this->setPayment($params['payment']);
         $this->setOrder($params['payment']->getOrder());
 
         parent::__construct();
@@ -105,6 +124,7 @@ class TIG_Buckaroo3Extended_Model_Request_Capture extends TIG_Buckaroo3Extended_
             'response'   => $response,
             'XML'        => $responseXML,
             'debugEmail' => $this->_debugEmail,
+            'payment'    => $this->_payment,
         ));
 
         if (!$responseModel->getOrder()) {
