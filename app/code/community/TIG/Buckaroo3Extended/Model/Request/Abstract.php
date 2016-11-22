@@ -272,4 +272,14 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
         $this->_debugEmail                    .= "Refund variables added! \n";
     }
+
+    /**
+     * Add variables for Capture requests
+     */
+    protected function _addCaptureVariables()
+    {
+        $this->_vars['OriginalTransactionKey'] = $this->_order->getTransactionKey();
+
+        $this->_debugEmail .= "Capture variables added! \n";
+    }
 }

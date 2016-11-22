@@ -66,6 +66,7 @@ class TIG_Buckaroo3Extended_Model_Request_Capture extends TIG_Buckaroo3Extended_
         $this->_addOrderVariables();
         $this->_addShopVariables();
         $this->_addSoftwareVariables();
+        $this->_addCaptureVariables();
 
         $this->_debugEmail .= "Firing request events. \n";
         //event that allows individual payment methods to add additional variables such as bankaccount number

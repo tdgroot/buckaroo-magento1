@@ -211,6 +211,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $paymentAdditionalInformation = $this->_order->getPayment()->getAdditionalInformation();
         if (is_array($paymentAdditionalInformation)
             && count($paymentAdditionalInformation) > 0
+            && isset($paymentAdditionalInformation['BPE_AccountNumber'])
             && strlen($paymentAdditionalInformation['BPE_AccountNumber']) > 0
         ) {
             $additionalFields = $paymentAdditionalInformation;
