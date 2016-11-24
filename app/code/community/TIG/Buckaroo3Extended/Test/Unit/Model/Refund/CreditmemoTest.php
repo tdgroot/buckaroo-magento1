@@ -2,12 +2,15 @@
 class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     protected function _getInstance($data = array()){
-        $creditmemo = new TIG_Buckaroo3Extended_Model_Refund_Creditmemo();
+        //$creditmemo = new TIG_Buckaroo3Extended_Model_Refund_Creditmemo($data);
+
+        $class = new ReflectionClass('TIG_Buckaroo3Extended_Model_Refund_Creditmemo');
+        $creditmemo = $class->newInstanceWithoutConstructor();
 
         if(!array_key_exists('order',$data)){
 
         }else{
-            $this->invokeMethod($creditmemo,'setCurrentOrder',$data['order']);
+            $this->invokeMethod($creditmemo,'setCurrentOrder',array($data['order']));
         }
 
         if(!array_key_exists('storeId',$data)){
@@ -51,23 +54,46 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
         return $creditmemo;
     }
 
-    public function test1Provider()
+    public function _getCreditmemoDataItemsTestProvider()
     {
         return array(
-            array('a', 'b'),
-            array('c', 'd'),
+            array(1, 99),
+            array(666, 99),
         );
     }
 
     /**
      * @test
-     * @dataProvider test1Provider
+     * @dataProvider _getCreditmemoDataItemsTestProvider
      */
-    public function test1($a, $b){
-        $creditmemo = $this->_getInstance();
+    public function _getCreditmemoDataItemsTest($id, $qty){
+        $postArray = array('brq_amount_credit'=>3);
+
+        // Create the mock order item.
+        $mockMageOrderItem = $this->getMockBuilder('Mage_Sales_Model_Order_Item')->getMock();
+        $mockMageOrderItem->method('getId')->will($this->returnValue($id));
+        $mockMageOrderItem->method('getQtyRefunded')->will($this->returnValue($qty));
+        $mockMageOrderItem->method('getQtyInvoiced')->will($this->returnValue($qty));
+
+        // Create the mock order.
+        $mockMageOrder = $this->getMock('mage_sales_model_order');
+        $mockMageOrder->method('getId')->will($this->returnValue(1));
+        $mockMageOrder->method('getAllItems')->will($this->returnValue(array(
+                $mockMageOrderItem,
+            )));
+        $mockMageOrder->method('getBaseTotalRefunded')->will($this->returnValue(array(
+                $mockMageOrderItem,
+            )));
+
+        $creditmemo = $this->_getInstance(
+            array(
+                'postArray'=>$postArray,
+                'order'=>$mockMageOrder,
+            ));
         $result = $this->invokeMethod($creditmemo,'_getCreditmemoDataItems');
 
-        $this->assertArrayHasKey(1,$result);
+            $this->assertArrayHasKey($id,$result);
+
     }
 
 
