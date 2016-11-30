@@ -103,4 +103,22 @@ class TIG_Buckaroo3Extended_Model_Response_Capture extends TIG_Buckaroo3Extended
 
         return $this->_requiredAction($parsedResponse);
     }
+
+    protected function _success($status = self::BUCKAROO_SUCCESS)
+    {
+        $this->_debugEmail .= "The request was successful \n";
+        if(!$this->_order->getEmailSent())
+        {
+            $this->_order->sendNewOrderEmail();
+        }
+
+        $this->sendDebugEmail();
+    }
+
+    protected function _neutral()
+    {
+        $this->_debugEmail .= "The request was neutral \n";
+
+        $this->sendDebugEmail();
+    }
 }
