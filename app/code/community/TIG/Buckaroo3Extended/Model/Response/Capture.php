@@ -81,9 +81,7 @@ class TIG_Buckaroo3Extended_Model_Response_Capture extends TIG_Buckaroo3Extended
         if (is_object($this->_response)
             && isset($this->_response->Key))
         {
-//            $this->_order->setTransactionKey($this->_response->Key);
-//            $this->_order->save();
-            $this->_payment->setTransactionKey($this->_response->Key)->save();
+            $this->_payment->setTransactionId($this->_response->Key);
             $this->_debugEmail .= 'Transaction key saved: ' . $this->_response->Key . "\n";
         }
 

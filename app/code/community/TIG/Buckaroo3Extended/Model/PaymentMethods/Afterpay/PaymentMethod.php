@@ -63,8 +63,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
             )
         );
 
-//        $captureRequest->setOrder($payment->getOrder());
-
         try {
             $captureRequest->sendRequest();
         } catch (Exception $e) {
