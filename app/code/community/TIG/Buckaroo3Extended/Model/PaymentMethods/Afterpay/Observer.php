@@ -582,10 +582,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
     }
 
     /**
-     * @param Mage_Sales_Model_Order_Item $item
+     * @param Mage_Sales_Model_Order_Item|Mage_Sales_Model_Order_Invoice_Item $item
      * @return array|bool|string
      */
-    protected function _getTaxClassId(Mage_Sales_Model_Order_Item $item)
+    protected function _getTaxClassId($item)
     {
         return Mage::getResourceModel('catalog/product')->getAttributeRawValue($item->getProductId(), 'tax_class_id', $item->getStoreId());
     }
