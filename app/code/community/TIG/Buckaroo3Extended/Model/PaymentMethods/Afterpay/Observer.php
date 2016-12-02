@@ -481,7 +481,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 + $item->getBaseHiddenTaxAmount();
             $productPrice = round($productPrice,2);
 
-
             $article['ArticleDescription']['value'] = (int) $item->getQty() . 'x ' . $item->getName();
             $article['ArticleId']['value']          = $item->getOrderItemId();
             $article['ArticleQuantity']['value']    = 1;
