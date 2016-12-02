@@ -292,9 +292,11 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
             $partialAmount = $lastInvoice->getBaseGrandTotal();
         }
 
-        $this->_vars['amountDebit'] = $partialAmount;
-        $this->_vars['invoiceId'] = $this->_order->getIncrementId() . '-'
-            . count($invoiceCollection) . '-' . substr(md5(date("YMDHis")), 0, 6);
+        if ($partialAmount < $this->_vars['amountDebit']) {
+            $this->_vars['amountDebit'] = $partialAmount;
+            $this->_vars['invoiceId']   = $this->_order->getIncrementId() . '-'
+                . count($invoiceCollection) . '-' . substr(md5(date("YMDHis")), 0, 6);
+        }
 
         $this->_debugEmail .= "Capture variables added! \n";
     }

@@ -221,7 +221,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         $this->_addAfterpayVariables($vars, $this->_method);
 
-        if ($this->_order->getPayment()->canCapturePartial() && count($this->_order->getInvoiceCollection()) > 0) {
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        /** @var Mage_Sales_Model_Order_Invoice $lastInvoice */
+        $lastInvoice = $invoiceCollection->getLastItem();
+
+        if ($this->_order->getPayment()->canCapturePartial()
+            && count($this->_order->getInvoiceCollection()) > 0
+            && $lastInvoice->getBaseGrandTotal() < $this->_order->getBaseGrandTotal()
+        ) {
             $this->_addPartialArticlesVariables($vars, $this->_method);
         } else {
             $this->_addArticlesVariables($vars, $this->_method);
