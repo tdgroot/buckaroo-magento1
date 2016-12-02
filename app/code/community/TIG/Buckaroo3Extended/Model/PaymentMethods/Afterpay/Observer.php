@@ -75,6 +75,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
         $this->_addAfterpayVariables($vars, $this->_method);
         $this->_addArticlesVariables($vars, $this->_method);
+        $this->_addShippingCostsVariables($vars, $this->_method);
 
         $request->setVars($vars);
         return $this;
@@ -228,12 +229,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $lastInvoice = $invoiceCollection->getLastItem();
 
         if ($this->_order->getPayment()->canCapturePartial()
-            && count($this->_order->getInvoiceCollection()) > 0
+            && count($invoiceCollection) > 0
             && $lastInvoice->getBaseGrandTotal() < $this->_order->getBaseGrandTotal()
         ) {
             $this->_addPartialArticlesVariables($vars, $this->_method);
         } else {
             $this->_addArticlesVariables($vars, $this->_method);
+        }
+
+        // Shipping costs only need to be send with the first invoice
+        if (count($invoiceCollection) == 1) {
+            $this->_addShippingCostsVariables($vars, $this->_method);
         }
 
         $request->setVars($vars);
@@ -326,7 +332,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             'CustomerIPAddress'     => Mage::helper('core/http')->getRemoteAddr(),
             'Accept'                => $additionalFields['BPE_Accept'],
         );
-        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
 
         $discount = null;
 
@@ -344,7 +349,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         //add order Info
         $orderInfo = array(
             'Discount'      => $discount,
-            'ShippingCosts' => $shippingCosts,
         );
 
         $requestArray = array_merge($requestArray,$customerInfo);
@@ -365,6 +369,24 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
         } else {
             $vars['customVars'][$this->_method] = $requestArray;
+        }
+    }
+
+    /**
+     * @param $vars
+     */
+    protected function _addShippingCostsVariables(&$vars)
+    {
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+
+        $orderInfo = array(
+            'ShippingCosts' => $shippingCosts,
+        );
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $orderInfo);
+        } else {
+            $vars['customVars'][$this->_method] = $orderInfo;
         }
     }
 
