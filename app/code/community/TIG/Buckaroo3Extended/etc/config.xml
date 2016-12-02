@@ -1126,6 +1126,15 @@
                     </buckaroo3extended_paymentmethod_observer_afterpay>
                 </observers>
             </buckaroo3extended_capture_request_addservices>
+            <buckaroo3extended_capture_request_addcustomvars>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_capture_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
+                </observers>
+            </buckaroo3extended_capture_request_addcustomvars>
         </events>
     </global>
     <default>
