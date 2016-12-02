@@ -90,8 +90,8 @@ class TIG_Buckaroo3Extended_Model_Request_Capture extends TIG_Buckaroo3Extended_
         $this->_debugEmail .= "Firing request events. \n";
         //event that allows individual payment methods to add additional variables such as bankaccount number
         Mage::dispatchEvent('buckaroo3extended_capture_request_addservices', array('request' => $this, 'order' => $this->_order));
-        Mage::dispatchEvent('buckaroo3extended_request_addcustomvars', array('request' => $this, 'order' => $this->_order));
-        Mage::dispatchEvent('buckaroo3extended_request_addcustomparameters', array('request' => $this, 'order' => $this->_order));
+        Mage::dispatchEvent('buckaroo3extended_capture_request_addcustomvars', array('request' => $this, 'order' => $this->_order));
+        Mage::dispatchEvent('buckaroo3extended_capture_request_addcustomparameters', array('request' => $this, 'order' => $this->_order));
 
         $this->_debugEmail .= "Events fired! \n";
 
