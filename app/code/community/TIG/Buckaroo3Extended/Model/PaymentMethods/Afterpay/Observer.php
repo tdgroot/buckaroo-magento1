@@ -220,7 +220,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         }
 
         $this->_addAfterpayVariables($vars, $this->_method);
-        $this->_addPartialArticlesVariables($vars, $this->_method);
+
+        if ($this->_order->getPayment()->canCapturePartial() && count($this->_order->getInvoiceCollection()) > 0) {
+            $this->_addPartialArticlesVariables($vars, $this->_method);
+        } else {
+            $this->_addArticlesVariables($vars, $this->_method);
+        }
 
         $request->setVars($vars);
         return $this;
@@ -440,10 +445,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $group[$feeGroupId] = $paymentFeeArray;
         }
 
+        $requestArray = array('Articles' => $group);
+
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $group);
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
         } else {
-            $vars['customVars'][$this->_method] = $group;
+            $vars['customVars'][$this->_method] = $requestArray;
         }
     }
 
@@ -452,56 +459,31 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
      */
     protected function _addPartialArticlesVariables(&$vars)
     {
-        //add all products max 10
-        $products = $this->_order->getAllItems();
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        $products = $invoiceCollection->getLastItem()->getAllItems();
         $max      = 99;
         $i        = 1;
         $group    = array();
 
-        if ($this->_order->getPayment()->canCapturePartial())
-        {
-            /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $collection */
-            $collection = $this->_order->getInvoiceCollection();
-
-            /** @var Mage_Sales_Model_Order_Invoice $lastItem */
-            $lastItem = $collection->getLastItem();
-
-            $allItems = $lastItem->getAllItems();
-
-            $products = $this->_order->getInvoiceCollection()->getLastItem()->getAllItems();
-        }
-
-        foreach($products as $item){
-            /** @var $item Mage_Sales_Model_Order_Item */
-
-            if (empty($item) || $item->hasParentItemId() || ($item->getOrderItem() && $item->getOrderItem()->getParentItem())) {
+        /** @var Mage_Sales_Model_Order_Invoice_Item $item */
+        foreach ($products as $item) {
+            if (empty($item) || ($item->getOrderItem() && $item->getOrderItem()->getParentItem())) {
                 continue;
             }
-
-            /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $tst */
-            $tst = $this->_order->getInvoiceCollection();
-            /** @var Mage_Sales_Model_Order_Invoice $ts */
-            $ts = $tst->getLastItem();
-            $ts->getAllItems();
-            Mage::log('invoice available: ', null, 'tigqty.log', true);
-            Mage::log(count($this->_order->getInvoiceCollection()), null, 'tigqty.log', true);
-            Mage::log(get_class($this->_order->getInvoiceCollection()), null, 'tigqty.log', true);
-            Mage::log('qty to invoice: ', null, 'tigqty.log', true);
-            Mage::log($item->getName() . ' - ' . $item->getQtyToInvoice(), null, 'tigqty.log', true);
-            Mage::log('canPartialCapture:', null, 'tigqty.log', true);
-            Mage::log($this->_order->getPayment()->canCapturePartial(), null, 'tigqty.log', true);
 
             // Changed calculation from unitPrice to orderLinePrice due to impossible to recalculate unitprice,
             // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
             // Quantity will always be 1 and quantity ordered will be in the article description.
-            $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
+            $productPrice = ($item->getBasePrice() * $item->getQty())
                 + $item->getBaseTaxAmount()
                 + $item->getBaseHiddenTaxAmount();
             $productPrice = round($productPrice,2);
 
 
-            $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
-            $article['ArticleId']['value']          = $item->getId();
+            $article['ArticleDescription']['value'] = (int) $item->getQty() . 'x ' . $item->getName();
+            $article['ArticleId']['value']          = $item->getOrderItemId();
             $article['ArticleQuantity']['value']    = 1;
             $article['ArticleUnitPrice']['value']   = $productPrice;
             $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($this->_getTaxClassId($item));
@@ -516,7 +498,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             break;
         }
 
-        if (Mage::helper('buckaroo3extended')->isEnterprise()) {
+        if (Mage::helper('buckaroo3extended')->isEnterprise() && count($invoiceCollection) == 1) {
             $gwId = 1;
             $gwTax = Mage::helper('enterprise_giftwrapping')->getWrappingTaxClass($this->_order->getStoreId());
 
@@ -554,14 +536,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $feeGroupId      = $key+1;
         $paymentFeeArray = $this->_getPaymentFeeLine();
 
-        if (false !== $paymentFeeArray && is_array($paymentFeeArray)) {
+        if (false !== $paymentFeeArray && is_array($paymentFeeArray) && count($invoiceCollection) == 1) {
             $group[$feeGroupId] = $paymentFeeArray;
         }
 
+        $requestArray = array('Articles' => $group);
+
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $group);
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
         } else {
-            $vars['customVars'][$this->_method] = $group;
+            $vars['customVars'][$this->_method] = $requestArray;
         }
     }
 
