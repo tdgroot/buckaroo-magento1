@@ -165,6 +165,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_capture_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -243,6 +248,43 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         }
 
         $request->setVars($vars);
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_cancelauthorize_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+
+        $vars = $request->getVars();
+
+        if($this->_method == false){
+            $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', Mage::app()->getStore()->getStoreId());
+        }
+
+        $array = array(
+            $this->_method => array(
+                'action'   => 'CancelAuthorize',
+                'version'  => '1',
+            ),
+        );
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
+        } else {
+            $vars['services'] = $array;
+        }
+
+        $request->setVars($vars);
+
         return $this;
     }
 

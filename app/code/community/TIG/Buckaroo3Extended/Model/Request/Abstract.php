@@ -300,4 +300,15 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
         $this->_debugEmail .= "Capture variables added! \n";
     }
+
+    /**
+     * Add variables for Cancel Authorize requests.
+     * AmountDebit and AmountCredit are swapped since this is not a pay request, but a cancel one.
+     */
+    protected function _addCancelAuthorizeVariables()
+    {
+        $this->_vars['OriginalTransactionKey'] = $this->_order->getTransactionKey();
+        $this->_vars['amountCredit'] = $this->_vars['amountDebit'];
+        $this->_vars['amountDebit']  = 0;
+    }
 }
