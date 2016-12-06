@@ -74,29 +74,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function cancel(Varien_Object $payment)
-    {
-        /** @var TIG_Buckaroo3Extended_Model_Request_CancelAuthorize $captureRequest */
-        $cancelAuthorizeRequest = Mage::getModel(
-            'buckaroo3extended/request_cancelAuthorize',
-            array(
-                'payment' => $payment
-            )
-        );
-
-        try {
-            $cancelAuthorizeRequest->sendRequest();
-        } catch (Exception $e) {
-            Mage::helper('buckaroo3extended')->logException($e);
-            Mage::throwException($e->getMessage());
-        }
-
-        return $this;
-    }
-
-    /**
      * @param $post
      *
      * @return array

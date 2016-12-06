@@ -240,6 +240,15 @@
                     </buckaroo3extended_refund_observer>
                 </observers>
             </sales_order_payment_refund>
+            <sales_order_payment_cancel>
+                <observers>
+                    <buckaroo3extended_cancelauthorize_observer>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/observer_cancelAuthorize</class>
+                        <method>sales_order_payment_cancel_authorize</method>
+                    </buckaroo3extended_cancelauthorize_observer>
+                </observers>
+            </sales_order_payment_cancel>
             <buckaroo3extended_refund_request_setmethod>
                 <observers>
                     <buckaroo3extended_paymentmethod_observer_payperemail>

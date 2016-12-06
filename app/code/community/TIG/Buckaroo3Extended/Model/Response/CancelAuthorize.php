@@ -37,7 +37,7 @@
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
 
-class TIG_Buckaroo3Extended_Model_Response_Capture extends TIG_Buckaroo3Extended_Model_Response_BackendOrder
+class TIG_Buckaroo3Extended_Model_Response_CancelAuthorize extends TIG_Buckaroo3Extended_Model_Response_BackendOrder
 {
     protected $_payment;
 
@@ -117,10 +117,9 @@ class TIG_Buckaroo3Extended_Model_Response_Capture extends TIG_Buckaroo3Extended
     protected function _success($status = self::BUCKAROO_SUCCESS)
     {
         $this->_debugEmail .= "The request was successful \n";
-        if(!$this->_order->getEmailSent())
-        {
-            $this->_order->sendNewOrderEmail();
-        }
+
+        $comment = Mage::helper('buckaroo3extended')->__('Buckaroo cancel request was successfully processed.');
+        $this->_order->addStatusHistoryComment($comment)->save();
 
         $this->sendDebugEmail();
     }
@@ -133,5 +132,33 @@ class TIG_Buckaroo3Extended_Model_Response_Capture extends TIG_Buckaroo3Extended
         $this->_debugEmail .= "The request was neutral \n";
 
         $this->sendDebugEmail();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _failed($message = '')
+    {
+        $this->_debugEmail .= 'The request failed \n';
+
+        $comment = Mage::helper('buckaroo3extended')->__('Unfortunately the Buckaroo cancel request could not be processed succesfully.');
+        $this->_order->addStatusHistoryComment($comment)->save();
+
+        $this->sendDebugEmail();
+        Mage::throwException('An error occurred while processing the payment request, check the Buckaroo debug e-mail for details.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _error($message = '')
+    {
+        $this->_debugEmail .= "The request generated an error \n";
+
+        $comment = Mage::helper('buckaroo3extended')->__('Unfortunately the Buckaroo cancel request could not be processed succesfully.');
+        $this->_order->addStatusHistoryComment($comment)->save();
+
+        $this->sendDebugEmail();
+        Mage::throwException('An error occurred while processing the payment request, check the Buckaroo debug e-mail for details.');
     }
 }
