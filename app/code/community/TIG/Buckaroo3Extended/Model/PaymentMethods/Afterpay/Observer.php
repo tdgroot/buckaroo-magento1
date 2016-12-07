@@ -375,16 +375,26 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             'Accept'                => $additionalFields['BPE_Accept'],
         );
 
+        /** @var Mage_Sales_Model_Order|Mage_Sales_Model_Order_Invoice $discountData */
+        $discountData = $this->_order;
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        if (count($invoiceCollection) > 0) {
+            $discountData = $invoiceCollection->getLastItem();
+        }
+
         $discount = null;
 
         if(Mage::helper('buckaroo3extended')->isEnterprise()){
-            if((double)$this->_order->getGiftCardsAmount() > 0){
-                $discount = (double)$this->_order->getGiftCardsAmount();
+            if((double)$discountData->getGiftCardsAmount() > 0){
+                $discount = (double)$discountData->getGiftCardsAmount();
             }
         }
 
-        if(abs((double)$this->_order->getDiscountAmount()) > 0){
-            $discount += abs((double)$this->_order->getDiscountAmount());
+        if(abs((double)$discountData->getDiscountAmount()) > 0){
+            $discount += abs((double)$discountData->getDiscountAmount());
         }
 
 
