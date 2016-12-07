@@ -26,9 +26,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', Mage::app()->getStore()->getStoreId());
         }
 
+        $paymentAction = Mage::getStoreConfig(
+            'buckaroo/' . $this->_code . '/payment_action',
+            Mage::app()->getStore()->getStoreId()
+        );
+
+        if ($paymentAction == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+            $serviceAction = 'Authorize';
+        } else {
+            $serviceAction = 'Pay';
+        }
+
         $array = array(
             $this->_method => array(
-                'action'   => 'Pay',
+                'action'   => $serviceAction,
                 'version'  => '1',
             ),
         );
@@ -63,6 +74,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         }
 
         $this->_addAfterpayVariables($vars, $this->_method);
+        $this->_addArticlesVariables($vars, $this->_method);
+        $this->_addShippingCostsVariables($vars, $this->_method);
 
         $request->setVars($vars);
         return $this;
@@ -152,6 +165,129 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_capture_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+
+        $vars = $request->getVars();
+
+        if($this->_method == false){
+            $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', Mage::app()->getStore()->getStoreId());
+        }
+
+        $array = array(
+            $this->_method => array(
+                'action'   => 'Capture',
+                'version'  => '1',
+            ),
+        );
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
+        } else {
+            $vars['services'] = $array;
+        }
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_capture_request_addcustomvars(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request            = $observer->getRequest();
+        $this->_billingInfo = $request->getBillingInfo();
+        $this->_order       = $request->getOrder();
+
+        $vars = $request->getVars();
+
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+            $this->_addCustomerVariables($vars);
+            $this->_addCreditManagement($vars);
+            $this->_addAdditionalCreditManagementVariables($vars);
+        }
+
+        $this->_addAfterpayVariables($vars, $this->_method);
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        /** @var Mage_Sales_Model_Order_Invoice $lastInvoice */
+        $lastInvoice = $invoiceCollection->getLastItem();
+
+        if ($this->_order->getPayment()->canCapturePartial()
+            && count($invoiceCollection) > 0
+            && $lastInvoice->getBaseGrandTotal() < $this->_order->getBaseGrandTotal()
+        ) {
+            $this->_addPartialArticlesVariables($vars, $this->_method);
+        } else {
+            $this->_addArticlesVariables($vars, $this->_method);
+        }
+
+        // Shipping costs only need to be send with the first invoice
+        if (count($invoiceCollection) == 1) {
+            $this->_addShippingCostsVariables($vars, $this->_method);
+        }
+
+        $request->setVars($vars);
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_cancelauthorize_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+
+        $vars = $request->getVars();
+
+        if($this->_method == false){
+            $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', Mage::app()->getStore()->getStoreId());
+        }
+
+        $array = array(
+            $this->_method => array(
+                'action'   => 'CancelAuthorize',
+                'version'  => '1',
+            ),
+        );
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
+        } else {
+            $vars['services'] = $array;
+        }
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
     /** INTERNAL METHODS **/
 
     /**
@@ -164,6 +300,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
     {
         $session            = Mage::getSingleton('checkout/session');
         $additionalFields   = $session->getData('additionalFields');
+
+        $paymentAdditionalInformation = $this->_order->getPayment()->getAdditionalInformation();
+        if (is_array($paymentAdditionalInformation)
+            && count($paymentAdditionalInformation) > 0
+            && isset($paymentAdditionalInformation['BPE_AccountNumber'])
+            && strlen($paymentAdditionalInformation['BPE_AccountNumber']) > 0
+        ) {
+            $additionalFields = $paymentAdditionalInformation;
+        }
 
         $requestArray       = array();
 
@@ -229,25 +374,33 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             'CustomerIPAddress'     => Mage::helper('core/http')->getRemoteAddr(),
             'Accept'                => $additionalFields['BPE_Accept'],
         );
-        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+
+        /** @var Mage_Sales_Model_Order|Mage_Sales_Model_Order_Invoice $discountData */
+        $discountData = $this->_order;
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        if (count($invoiceCollection) > 0) {
+            $discountData = $invoiceCollection->getLastItem();
+        }
 
         $discount = null;
 
         if(Mage::helper('buckaroo3extended')->isEnterprise()){
-            if((double)$this->_order->getGiftCardsAmount() > 0){
-                $discount = (double)$this->_order->getGiftCardsAmount();
+            if((double)$discountData->getGiftCardsAmount() > 0){
+                $discount = (double)$discountData->getGiftCardsAmount();
             }
         }
 
-        if(abs((double)$this->_order->getDiscountAmount()) > 0){
-            $discount += abs((double)$this->_order->getDiscountAmount());
+        if(abs((double)$discountData->getDiscountAmount()) > 0){
+            $discount += abs((double)$discountData->getDiscountAmount());
         }
 
 
         //add order Info
         $orderInfo = array(
             'Discount'      => $discount,
-            'ShippingCosts' => $shippingCosts,
         );
 
         $requestArray = array_merge($requestArray,$customerInfo);
@@ -263,6 +416,37 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             );
             $requestArray = array_merge($requestArray,$b2bInfo);
         }
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
+        } else {
+            $vars['customVars'][$this->_method] = $requestArray;
+        }
+    }
+
+    /**
+     * @param $vars
+     */
+    protected function _addShippingCostsVariables(&$vars)
+    {
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+
+        $orderInfo = array(
+            'ShippingCosts' => $shippingCosts,
+        );
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $orderInfo);
+        } else {
+            $vars['customVars'][$this->_method] = $orderInfo;
+        }
+    }
+
+    /**
+     * @param array $vars
+     */
+    protected function _addArticlesVariables(&$vars)
+    {
         //add all products max 10
         $products = $this->_order->getAllItems();
         $max      = 99;
@@ -280,8 +464,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
             // Quantity will always be 1 and quantity ordered will be in the article description.
             $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
-                          + $item->getBaseTaxAmount()
-                          + $item->getBaseHiddenTaxAmount();
+                + $item->getBaseTaxAmount()
+                + $item->getBaseHiddenTaxAmount();
             $productPrice = round($productPrice,2);
 
 
@@ -298,6 +482,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 $i++;
                 continue;
             }
+
             break;
         }
 
@@ -338,11 +523,106 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $key             = (int)key($group);
         $feeGroupId      = $key+1;
         $paymentFeeArray = $this->_getPaymentFeeLine();
-        if(false !== $paymentFeeArray && is_array($paymentFeeArray)){
+
+        if (false !== $paymentFeeArray && is_array($paymentFeeArray)) {
             $group[$feeGroupId] = $paymentFeeArray;
         }
 
-        $requestArray = array_merge($requestArray, array('Articles' => $group));
+        $requestArray = array('Articles' => $group);
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
+        } else {
+            $vars['customVars'][$this->_method] = $requestArray;
+        }
+    }
+
+    /**
+     * @param array $vars
+     */
+    protected function _addPartialArticlesVariables(&$vars)
+    {
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        $products = $invoiceCollection->getLastItem()->getAllItems();
+        $max      = 99;
+        $i        = 1;
+        $group    = array();
+
+        /** @var Mage_Sales_Model_Order_Invoice_Item $item */
+        foreach ($products as $item) {
+            if (empty($item) || ($item->getOrderItem() && $item->getOrderItem()->getParentItem())) {
+                continue;
+            }
+
+            // Changed calculation from unitPrice to orderLinePrice due to impossible to recalculate unitprice,
+            // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
+            // Quantity will always be 1 and quantity ordered will be in the article description.
+            $productPrice = ($item->getBasePrice() * $item->getQty())
+                + $item->getBaseTaxAmount()
+                + $item->getBaseHiddenTaxAmount();
+            $productPrice = round($productPrice,2);
+
+            $article['ArticleDescription']['value'] = (int) $item->getQty() . 'x ' . $item->getName();
+            $article['ArticleId']['value']          = $item->getOrderItemId();
+            $article['ArticleQuantity']['value']    = 1;
+            $article['ArticleUnitPrice']['value']   = $productPrice;
+            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($this->_getTaxClassId($item));
+
+            $group[$i] = $article;
+
+
+            if($i <= $max){
+                $i++;
+                continue;
+            }
+            break;
+        }
+
+        if (Mage::helper('buckaroo3extended')->isEnterprise() && count($invoiceCollection) == 1) {
+            $gwId = 1;
+            $gwTax = Mage::helper('enterprise_giftwrapping')->getWrappingTaxClass($this->_order->getStoreId());
+
+            if ($this->_order->getGwBasePrice() > 0) {
+                $gwPrice = $this->_order->getGwBasePrice() + $this->_order->getGwBaseTaxAmount();
+
+                $gwOrder = array();
+                $gwOrder['ArticleDescription']['value'] = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Order');
+                $gwOrder['ArticleId']['value'] = 'gwo_' . $this->_order->getGwId();
+                $gwOrder['ArticleQuantity']['value'] = 1;
+                $gwOrder['ArticleUnitPrice']['value'] = $gwPrice;
+                $gwOrder['ArticleVatcategory']['value'] = $gwTax;
+
+                $group[] = $gwOrder;
+
+                $gwId += $this->_order->getGwId();
+            }
+
+            if ($this->_order->getGwItemsBasePrice() > 0) {
+                $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwItemsBaseTaxAmount();
+
+                $gwiOrder = array();
+                $gwiOrder['ArticleDescription']['value'] = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items');
+                $gwiOrder['ArticleId']['value'] = 'gwi_' . $gwId;
+                $gwiOrder['ArticleQuantity']['value'] = 1;
+                $gwiOrder['ArticleUnitPrice']['value'] = $gwiPrice;
+                $gwiOrder['ArticleVatcategory']['value'] = $gwTax;
+
+                $group[] = $gwiOrder;
+            }
+        }
+
+        end($group);// move the internal pointer to the end of the array
+        $key             = (int)key($group);
+        $feeGroupId      = $key+1;
+        $paymentFeeArray = $this->_getPaymentFeeLine();
+
+        if (false !== $paymentFeeArray && is_array($paymentFeeArray) && count($invoiceCollection) == 1) {
+            $group[$feeGroupId] = $paymentFeeArray;
+        }
+
+        $requestArray = array('Articles' => $group);
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
@@ -368,10 +648,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
     }
 
     /**
-     * @param Mage_Sales_Model_Order_Item $item
+     * @param Mage_Sales_Model_Order_Item|Mage_Sales_Model_Order_Invoice_Item $item
      * @return array|bool|string
      */
-    protected function _getTaxClassId(Mage_Sales_Model_Order_Item $item)
+    protected function _getTaxClassId($item)
     {
         return Mage::getResourceModel('catalog/product')->getAttributeRawValue($item->getProductId(), 'tax_class_id', $item->getStoreId());
     }

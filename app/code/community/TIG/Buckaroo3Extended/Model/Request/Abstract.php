@@ -272,4 +272,43 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
         $this->_debugEmail                    .= "Refund variables added! \n";
     }
+
+    /**
+     * Add variables for Capture requests
+     */
+    protected function _addCaptureVariables()
+    {
+        $this->_vars['OriginalTransactionKey'] = $this->_order->getTransactionKey();
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        /** @var Mage_Sales_Model_Order_Invoice $lastInvoice */
+        $lastInvoice = $invoiceCollection->getLastItem();
+
+        if ($this->_currentCurrencyIsAllowed()) {
+            $partialAmount = $lastInvoice->getGrandTotal();
+        } else {
+            $partialAmount = $lastInvoice->getBaseGrandTotal();
+        }
+
+        if ($partialAmount < $this->_vars['amountDebit']) {
+            $this->_vars['amountDebit'] = $partialAmount;
+            $this->_vars['invoiceId']   = $this->_order->getIncrementId() . '-'
+                . count($invoiceCollection) . '-' . substr(md5(date("YMDHis")), 0, 6);
+        }
+
+        $this->_debugEmail .= "Capture variables added! \n";
+    }
+
+    /**
+     * Add variables for Cancel Authorize requests.
+     * AmountDebit and AmountCredit are swapped since this is not a pay request, but a cancel one.
+     */
+    protected function _addCancelAuthorizeVariables()
+    {
+        $this->_vars['OriginalTransactionKey'] = $this->_order->getTransactionKey();
+        $this->_vars['amountCredit'] = $this->_vars['amountDebit'];
+        $this->_vars['amountDebit']  = 0;
+    }
 }
