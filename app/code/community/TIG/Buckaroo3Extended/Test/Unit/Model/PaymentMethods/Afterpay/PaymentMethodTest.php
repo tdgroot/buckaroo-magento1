@@ -46,7 +46,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
         if ($this->_instance === null) {
             $this->_instance = $this->getMock(
                 'TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod',
-                array('getConfigPaymentAction')
+                array('getConfigPaymentAction', 'getInfoInstance')
             );
         }
 
@@ -99,6 +99,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
 
     /**
      * @expectedException Mage_Core_Exception
+     * @expectedExceptionMessage Capture action is not available.
      */
     public function testShouldThrowAnExceptionIfCantCapture()
     {
@@ -108,5 +109,60 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
             ->will($this->returnValue(Mage_Payment_Model_Method_Abstract::ACTION_ORDER));
 
         $instance->capture(new Varien_Object(), 0);
+    }
+
+    public function testValidate()
+    {
+        $mockOrderAddress = $this->getMock('Mage_Sales_Model_Order_Address', array('getCountryId'));
+        $mockOrderAddress->expects($this->once())
+            ->method('getCountryId')
+            ->will($this->returnValue('NL'));
+
+        $mockOrder = $this->getMock('Mage_Sales_Model_Order', array('getBillingAddress'));
+        $mockOrder->expects($this->once())
+            ->method('getBillingAddress')
+            ->will($this->returnValue($mockOrderAddress));
+
+        $mockPaymentInfo = $this->getMock('Mage_Sales_Model_Order_Payment', array('getOrder'));
+        $mockPaymentInfo->expects($this->once())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+
+        $instance = $this->_getInstance();
+        $instance->expects($this->any())
+            ->method('getInfoInstance')
+            ->will($this->returnValue($mockPaymentInfo));
+
+        $postData = array(
+            $instance->getCode() . '_bpe_accept'                  => 'checked',
+            $instance->getCode() . '_bpe_customer_account_number' => 'NL32INGB0000012345',
+            $instance->getCode() . '_BPE_Customergender'          => 1,
+            $instance->getCode() . '_bpe_customer_phone_number'   => '0513744112',
+            $instance->getCode() . '_BPE_BusinessSelect'          => 1,
+            'payment' => array(
+                $instance->getCode() => array(
+                    'year' => 1990,
+                    'month' => 01,
+                    'day' => 01
+                )
+            )
+        );
+
+        $request = Mage::app()->getRequest();
+        $request->setPost($postData);
+
+        $result = $instance->validate();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod', $result);
+    }
+
+    /**
+     * @expectedException Mage_Core_Exception
+     * @expectedExceptionMessage Please accept the terms and conditions.
+     */
+    public function testShouldThrowAnExceptionIfNotAcceptedTos()
+    {
+        $instance = $this->_getInstance();
+        $instance->validate();
     }
 }
