@@ -53,6 +53,14 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
         return $this->_instance;
     }
 
+    public function testCanOrder()
+    {
+        $instance = $this->_getInstance();
+        $result = $instance->canCapture();
+
+        $this->assertTrue($result);
+    }
+
     /**
      * @return array
      */
