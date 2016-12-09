@@ -36,82 +36,50 @@
  * @copyright   Copyright (c) 2016 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
-    /** @var null|TIG_Buckaroo3Extended_Model_Request_Capture */
+    /** @var null|TIG_Buckaroo3Extended_Model_Response_Capture */
     protected $_instance = null;
-
-    public function setUp()
-    {
-        $this->registerMockSessions(array('core'));
-        Mage::app()->getStore()->setCurrentCurrencyCode('EUR');
-
-        $params = array(
-            'payment' => $this->_getMockPayment(),
-            'debugEmail' => '',
-            'response' => false,
-            'XML' => false
-        );
-
-        $mockCaptureResponse = $this->getMock(
-            'TIG_Buckaroo3Extended_Model_Response_Capture',
-            array('processResponse'),
-            array($params)
-        );
-
-        $this->setModelMock('buckaroo3extended/response_capture', $mockCaptureResponse);
-
-        // final classes are not mockable, so mock the superclass instead
-        $mockSoap = $this->getMock(
-            'TIG_Buckaroo3Extended_Model_Abstract',
-            array('transactionRequest'),
-            array(
-                'vars' => array(),
-                'method' => 'buckaroo3extended_afterpay'
-            )
-        );
-
-        $this->setModelMock('buckaroo3extended/soap', $mockSoap);
-    }
 
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $params = array('payment' => $this->_getMockPayment());
+            $params = array(
+                'payment' => $this->_getMockPayment(),
+                'debugEmail' => '',
+                'response' => $this->_getResponseData(),
+                'XML' => false
+            );
 
             $this->_instance = $this->getMock(
-                'TIG_Buckaroo3Extended_Model_Request_Capture',
-                array(
-                    '_addBaseVariables',
-                    '_addOrderVariables',
-                    '_addShopVariables',
-                    '_addSoftwareVariables',
-                    '_addCaptureVariables'
-                    ),
+                'TIG_Buckaroo3Extended_Model_Response_Capture',
+                array('_verifySignature', '_verifyDigest', '_verifyResponse'),
                 array($params)
             );
+
+            $this->_instance->expects($this->any())
+                ->method('_verifySignature')
+                ->will($this->returnValue(true));
+            $this->_instance->expects($this->any())
+                ->method('_verifyDigest')
+                ->will($this->returnValue(true));
         }
 
         return $this->_instance;
     }
 
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function _getMockOrderAddress()
+    protected function _getResponseData()
     {
-        $mockOrderAddress = $this->getMock('Mage_Sales_Model_Order_Address', array('getData', 'getStreetFull', 'getFirstname'));
-        $mockOrderAddress->expects($this->any())
-            ->method('getData')
-            ->will($this->returnValue(array()));
-        $mockOrderAddress->expects($this->any())
-            ->method('getStreetFull')
-            ->will($this->returnValue('Hoofdstraat 90 1'));
-        $mockOrderAddress->expects($this->any())
-            ->method('getFirstname')
-            ->will($this->returnValue('Test'));
+        $responseData = [
+            'Status' => [
+                'Code' => [
+                    'Code' => '190'
+                ]
+            ]
+        ];
 
-        return $mockOrderAddress;
+        $responseDataObject = json_decode(json_encode($responseData));
+        return $responseDataObject;
     }
 
     /**
@@ -119,20 +87,20 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
      */
     protected function _getMockPayment()
     {
-        $mockOrderAddress = $this->_getMockOrderAddress();
+        $mockOrderAddress = $this->getMock('Mage_Sales_Model_Order_Address');
 
         $mockOrder = $this->getMock(
             'Mage_Sales_Model_Order',
-            array('getBillingAddress', 'getShippingAddress', 'getPayment')
+            array('getBillingAddress', 'getPayment')
         );
         $mockOrder->expects($this->any())
             ->method('getBillingAddress')
             ->will($this->returnValue($mockOrderAddress));
-        $mockOrder->expects($this->any())
-            ->method('getShippingAddress')
-            ->will($this->returnValue($mockOrderAddress));
 
-        $mockPayment = $this->getMock('Mage_Sales_Model_Order_Payment', array('getOrder', 'getMethod'));
+        $mockPayment = $this->getMock(
+            'Mage_Sales_Model_Order_Payment',
+            array('getOrder', 'getMethod')
+        );
         $mockPayment->expects($this->any())
             ->method('getOrder')
             ->will($this->returnValue($mockOrder));
@@ -147,17 +115,14 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
         return $mockPayment;
     }
 
-    public function testSendRequest()
+    public function testProcessResponse()
     {
+        $this->markTestIncomplete('Figure out how to test void methods');
         $instance = $this->_getInstance();
 
-        $instance->expects($this->once())->method('_addBaseVariables');
-        $instance->expects($this->once())->method('_addOrderVariables');
-        $instance->expects($this->once())->method('_addShopVariables');
-        $instance->expects($this->once())->method('_addSoftwareVariables');
-        $instance->expects($this->once())->method('_addCaptureVariables');
+        $instance->expects($this->once())->method('_verifyResponse');
 
-        $instance->sendRequest();
+        $instance->processResponse();
     }
 
     public function testGetPayment()
