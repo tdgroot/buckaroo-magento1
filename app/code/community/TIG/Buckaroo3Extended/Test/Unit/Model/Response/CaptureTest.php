@@ -51,11 +51,10 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
                 'XML' => false
             );
 
-            $this->_instance = $this->getMock(
-                'TIG_Buckaroo3Extended_Model_Response_Capture',
-                null,
-                array($params)
-            );
+            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Capture')
+                ->setMethods(null)
+                ->setConstructorArgs(array($params))
+                ->getMock();
         }
 
         return $this->_instance;
@@ -66,15 +65,13 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
      */
     protected function _getMockPayment()
     {
-        $mockOrder = $this->getMock(
-            'Mage_Sales_Model_Order',
-            array('getPayment')
-        );
+        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
+            ->setMethods(array('getPayment'))
+            ->getMock();
 
-        $mockPayment = $this->getMock(
-            'Mage_Sales_Model_Order_Payment',
-            array('getOrder', 'getMethod')
-        );
+        $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('getOrder', 'getMethod'))
+            ->getMock();
         $mockPayment->expects($this->any())
             ->method('getOrder')
             ->will($this->returnValue($mockOrder));

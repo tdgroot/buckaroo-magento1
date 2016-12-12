@@ -61,10 +61,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest ext
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this->getMock(
-                'TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod',
-                array('getCode')
-            );
+            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod')
+                ->setMethods(array('getCode'))
+                ->getMock();
 
             $this->_instance->expects($this->any())
                 ->method('getCode')

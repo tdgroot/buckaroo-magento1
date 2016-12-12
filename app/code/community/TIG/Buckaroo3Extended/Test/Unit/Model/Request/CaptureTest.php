@@ -43,7 +43,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
 
     public function setUp()
     {
-        $this->registerMockSessions(array('core'));
+        $this->registerMockSessions();
         Mage::app()->getStore()->setCurrentCurrencyCode('EUR');
 
         $params = array(
@@ -53,23 +53,23 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
             'XML' => false
         );
 
-        $mockCaptureResponse = $this->getMock(
-            'TIG_Buckaroo3Extended_Model_Response_Capture',
-            array('processResponse'),
-            array($params)
-        );
+        $mockCaptureResponse = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Capture')
+            ->setMethods(array('processResponse'))
+            ->setConstructorArgs(array($params))
+            ->getMock();
 
         $this->setModelMock('buckaroo3extended/response_capture', $mockCaptureResponse);
 
         // final classes are not mockable, so mock the superclass instead
-        $mockSoap = $this->getMock(
-            'TIG_Buckaroo3Extended_Model_Abstract',
-            array('transactionRequest'),
-            array(
-                'vars' => array(),
-                'method' => 'buckaroo3extended_afterpay'
+        $mockSoap = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Abstract')
+            ->setMethods(array('transactionRequest'))
+            ->setConstructorArgs(
+                array(
+                    'vars' => array(),
+                    'method' => 'buckaroo3extended_afterpay'
+                )
             )
-        );
+            ->getMock();
 
         $this->setModelMock('buckaroo3extended/soap', $mockSoap);
     }
@@ -79,17 +79,18 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
         if ($this->_instance === null) {
             $params = array('payment' => $this->_getMockPayment());
 
-            $this->_instance = $this->getMock(
-                'TIG_Buckaroo3Extended_Model_Request_Capture',
-                array(
-                    '_addBaseVariables',
-                    '_addOrderVariables',
-                    '_addShopVariables',
-                    '_addSoftwareVariables',
-                    '_addCaptureVariables'
-                    ),
-                array($params)
-            );
+            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_Capture')
+                ->setMethods(
+                    array(
+                        '_addBaseVariables',
+                        '_addOrderVariables',
+                        '_addShopVariables',
+                        '_addSoftwareVariables',
+                        '_addCaptureVariables'
+                    )
+                )
+                ->setConstructorArgs(array($params))
+                ->getMock();
         }
 
         return $this->_instance;
@@ -100,7 +101,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
      */
     protected function _getMockOrderAddress()
     {
-        $mockOrderAddress = $this->getMock('Mage_Sales_Model_Order_Address', array('getData', 'getStreetFull', 'getFirstname'));
+        $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')
+            ->setMethods(array('getData', 'getStreetFull', 'getFirstname'))
+            ->getMock();
         $mockOrderAddress->expects($this->any())
             ->method('getData')
             ->will($this->returnValue(array()));
@@ -121,10 +124,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
     {
         $mockOrderAddress = $this->_getMockOrderAddress();
 
-        $mockOrder = $this->getMock(
-            'Mage_Sales_Model_Order',
-            array('getBillingAddress', 'getShippingAddress', 'getPayment')
-        );
+        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
+            ->setMethods(array('getBillingAddress', 'getShippingAddress', 'getPayment'))
+            ->getMock();
         $mockOrder->expects($this->any())
             ->method('getBillingAddress')
             ->will($this->returnValue($mockOrderAddress));
@@ -132,7 +134,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
             ->method('getShippingAddress')
             ->will($this->returnValue($mockOrderAddress));
 
-        $mockPayment = $this->getMock('Mage_Sales_Model_Order_Payment', array('getOrder', 'getMethod'));
+        $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('getOrder', 'getMethod'))
+            ->getMock();
         $mockPayment->expects($this->any())
             ->method('getOrder')
             ->will($this->returnValue($mockOrder));
