@@ -47,39 +47,18 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
             $params = array(
                 'payment' => $this->_getMockPayment(),
                 'debugEmail' => '',
-                'response' => $this->_getResponseData(),
+                'response' => false,
                 'XML' => false
             );
 
             $this->_instance = $this->getMock(
                 'TIG_Buckaroo3Extended_Model_Response_Capture',
-                array('_verifySignature', '_verifyDigest', '_verifyResponse'),
+                null,
                 array($params)
             );
-
-            $this->_instance->expects($this->any())
-                ->method('_verifySignature')
-                ->will($this->returnValue(true));
-            $this->_instance->expects($this->any())
-                ->method('_verifyDigest')
-                ->will($this->returnValue(true));
         }
 
         return $this->_instance;
-    }
-
-    protected function _getResponseData()
-    {
-        $responseData = [
-            'Status' => [
-                'Code' => [
-                    'Code' => '190'
-                ]
-            ]
-        ];
-
-        $responseDataObject = json_decode(json_encode($responseData));
-        return $responseDataObject;
     }
 
     /**
@@ -87,15 +66,10 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
      */
     protected function _getMockPayment()
     {
-        $mockOrderAddress = $this->getMock('Mage_Sales_Model_Order_Address');
-
         $mockOrder = $this->getMock(
             'Mage_Sales_Model_Order',
-            array('getBillingAddress', 'getPayment')
+            array('getPayment')
         );
-        $mockOrder->expects($this->any())
-            ->method('getBillingAddress')
-            ->will($this->returnValue($mockOrderAddress));
 
         $mockPayment = $this->getMock(
             'Mage_Sales_Model_Order_Payment',
@@ -113,16 +87,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
             ->will($this->returnValue($mockPayment));
 
         return $mockPayment;
-    }
-
-    public function testProcessResponse()
-    {
-        $this->markTestIncomplete('Figure out how to test void methods');
-        $instance = $this->_getInstance();
-
-        $instance->expects($this->once())->method('_verifyResponse');
-
-        $instance->processResponse();
     }
 
     public function testGetPayment()
