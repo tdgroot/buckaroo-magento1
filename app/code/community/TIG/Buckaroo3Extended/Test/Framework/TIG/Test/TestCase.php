@@ -87,6 +87,10 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase extends PHPUnit_Fra
             $modules = array('core', 'customer', 'checkout', 'catalog', 'reports');
         }
 
+        if (!in_array('core', $modules)) {
+            array_unshift($modules, 'core');
+        }
+
         foreach ($modules as $module) {
             $class = "$module/session";
             $sessionMock = $this->getMockBuilder(
@@ -109,14 +113,14 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase extends PHPUnit_Fra
                         ->will($this->returnValue(
                             Mage_Core_Model_Session_Abstract::SESSION_ID_QUERY_PARAM
                         ));
-            $sessionMock->expects($this->any())
-                        ->method('getCookieShouldBeReceived')
-                        ->will($this->returnValue(false));
+//            $sessionMock->expects($this->any())
+//                        ->method('getCookieShouldBeReceived')
+//                        ->will($this->returnValue(false));
             $this->setSingletonMock($class, $sessionMock);
             $this->setModelMock($class, $sessionMock);
         }
 
-        $cookieMock = $this->getMock('Mage_Core_Model_Cookie');
+        $cookieMock = $this->getMockBuilder('Mage_Core_Model_Cookie')->getMock();
         $cookieMock->expects($this->any())
                    ->method('get')
                    ->will($this->returnValue(serialize('dummy')));
@@ -124,7 +128,7 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase extends PHPUnit_Fra
         Mage::register('_singleton/core/cookie', $cookieMock);
 
         // mock visitor log observer
-        $logVisitorMock = $this->getMock('Mage_Log_Model_Visitor');
+        $logVisitorMock = $this->getMockBuilder('Mage_Log_Model_Visitor')->getMock();
         $this->setModelMock('log/visitor', $logVisitorMock);
 
         /**
@@ -133,7 +137,7 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase extends PHPUnit_Fra
         $factoryName = 'enterprise_catalogpermissions/permission_index';
         $className = Mage::getConfig()->getModelClassName($factoryName);
         if (class_exists($className)) {
-            $mockPermissions = $this->getMock($className);
+            $mockPermissions = $this->getMockBuilder($className)->getMock();
             $mockPermissions->expects($this->any())
                             ->method('getIndexForCategory')
                             ->withAnyParameters()

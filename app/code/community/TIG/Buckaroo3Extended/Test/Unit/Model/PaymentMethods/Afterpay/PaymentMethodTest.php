@@ -44,10 +44,10 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this->getMock(
-                'TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod',
-                array('getConfigPaymentAction', 'getInfoInstance')
-            );
+            $this->_instance = $this
+                ->getMockBuilder('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod')
+                ->setMethods(array('getConfigPaymentAction', 'getInfoInstance'))
+                ->getMock();
         }
 
         return $this->_instance;
@@ -121,17 +121,21 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
 
     public function testValidate()
     {
-        $mockOrderAddress = $this->getMock('Mage_Sales_Model_Order_Address', array('getCountryId'));
+        $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')
+            ->setMethods(array('getCountryId'))
+            ->getMock();
         $mockOrderAddress->expects($this->once())
             ->method('getCountryId')
             ->will($this->returnValue('NL'));
 
-        $mockOrder = $this->getMock('Mage_Sales_Model_Order', array('getBillingAddress'));
+        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')->setMethods(array('getBillingAddress'))->getMock();
         $mockOrder->expects($this->once())
             ->method('getBillingAddress')
             ->will($this->returnValue($mockOrderAddress));
 
-        $mockPaymentInfo = $this->getMock('Mage_Sales_Model_Order_Payment', array('getOrder'));
+        $mockPaymentInfo = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('getOrder'))
+            ->getMock();
         $mockPaymentInfo->expects($this->once())
             ->method('getOrder')
             ->will($this->returnValue($mockOrder));

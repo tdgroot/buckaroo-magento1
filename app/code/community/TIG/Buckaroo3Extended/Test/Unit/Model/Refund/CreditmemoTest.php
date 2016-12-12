@@ -70,18 +70,17 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
         $postArray = array('brq_amount_credit'=>3);
 
         // Create the mock order item.
-        $mockMageOrderItem = $this->getMockBuilder('Mage_Sales_Model_Order_Item')->getMock();
+        $mockMageOrderItem = $this->getMockBuilder('Mage_Sales_Model_Order_Item')
+            ->setMethods(array('getId', 'getQtyRefunded', 'getQtyInvoiced'))
+            ->getMock();
         $mockMageOrderItem->method('getId')->will($this->returnValue($id));
         $mockMageOrderItem->method('getQtyRefunded')->will($this->returnValue($qty));
         $mockMageOrderItem->method('getQtyInvoiced')->will($this->returnValue($qty));
 
         // Create the mock order.
-        $mockMageOrder = $this->getMock('mage_sales_model_order');
+        $mockMageOrder = $this->getMockBuilder('Mage_Sales_Model_Order')->setMethods(array('getId', 'getAllItems'))->getMock();
         $mockMageOrder->method('getId')->will($this->returnValue(1));
         $mockMageOrder->method('getAllItems')->will($this->returnValue(array(
-                $mockMageOrderItem,
-            )));
-        $mockMageOrder->method('getBaseTotalRefunded')->will($this->returnValue(array(
                 $mockMageOrderItem,
             )));
 
