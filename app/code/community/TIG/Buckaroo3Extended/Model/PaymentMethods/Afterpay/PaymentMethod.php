@@ -101,7 +101,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
             $additionalArray = array(
                 'BPE_CompanyCOCRegistration' => $post[$this->_code . '_BPE_CompanyCOCRegistration'],
                 'BPE_CompanyName'            => $post[$this->_code . '_BPE_CompanyName'],
-                'BPE_VatNumber'              => $post[$this->_code . '_BPE_VatNumber'],
             );
 
             $array = array_merge($array,$additionalArray);

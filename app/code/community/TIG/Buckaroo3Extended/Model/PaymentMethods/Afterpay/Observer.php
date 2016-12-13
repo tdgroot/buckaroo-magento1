@@ -411,7 +411,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'B2B'                    => 'true',
                 'CompanyCOCRegistration' => $additionalFields['BPE_CompanyCOCRegistration'],
                 'CompanyName'            => $additionalFields['BPE_CompanyName'],
-                'VatNumber'              => $additionalFields['BPE_VatNumber'],
             );
             $requestArray = array_merge($requestArray,$b2bInfo);
         }
