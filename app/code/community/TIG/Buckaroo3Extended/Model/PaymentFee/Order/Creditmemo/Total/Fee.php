@@ -59,6 +59,13 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
         $fee     = $creditmemo->getBuckarooFee();
         $baseFee = $creditmemo->getBaseBuckarooFee();
 
+        $invoiceFee = $creditmemo->getInvoice()->getBuckarooFee();
+        $invoiceBaseFee = $creditmemo->getInvoice()->getBaseBuckarooFee();
+
+        if ($invoiceFee < 0.01 || $invoiceBaseFee < 0.01) {
+            return $this;
+        }
+
         /**
          * If the creditmemo has a fee already, we only need to set the totals. This is the case for existing
          * creditmemos that are being viewed.
