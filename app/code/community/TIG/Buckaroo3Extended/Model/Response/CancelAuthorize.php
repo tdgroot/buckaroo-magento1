@@ -62,7 +62,10 @@ class TIG_Buckaroo3Extended_Model_Response_CancelAuthorize extends TIG_Buckaroo3
      */
     public function __construct($data)
     {
-        $this->setPayment($data['payment']);
+        if (!empty($data['payment'])) {
+            $this->setPayment($data['payment']);
+        }
+
         parent::__construct($data);
     }
 
