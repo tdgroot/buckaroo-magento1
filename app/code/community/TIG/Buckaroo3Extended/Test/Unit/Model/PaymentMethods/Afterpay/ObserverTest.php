@@ -93,7 +93,30 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         return $mockOrder;
     }
 
-    public function testBuckaroo3extended_request_addservices()
+    /**
+     * @return array
+     */
+    public function testBuckaroo3extended_request_addservicesDataprovider()
+    {
+        return array(
+            array(
+                Mage_Payment_Model_Method_Abstract::ACTION_ORDER,
+                'Pay'
+            ),
+            array(
+                Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE,
+                'Authorize'
+            )
+        );
+    }
+
+    /**
+     * @param $paymethod
+     * @param $expected
+     *
+     * @dataProvider testBuckaroo3extended_request_addservicesDataprovider
+     */
+    public function testBuckaroo3extended_request_addservices($paymethod, $expected)
     {
         $this->registerMockSessions(array('checkout'));
 
@@ -115,6 +138,8 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
 
 
         $instance = $this->_getInstance();
+        Mage::app()->getStore()->setConfig('buckaroo/' . $instance->getCode() . '/payment_action', $paymethod);
+
         $resultInstance = $instance->buckaroo3extended_request_addservices($mockObserver);
         $resultVars = $mockRequest->getVars();
 
@@ -123,7 +148,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         $expectedVars = array(
             'services' => array(
                 $instance->getMethod() => array(
-                    'action' => 'Authorize',
+                    'action' => $expected,
                     'version' => '1'
                 )
             )
