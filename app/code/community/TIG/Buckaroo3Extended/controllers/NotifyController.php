@@ -84,8 +84,19 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
         $this->_debugEmail = '';
         if (isset($postData['brq_invoicenumber'])) {
+            $invoice = null;
+            if (isset($postData['brq_relatedtransaction_refund'])) {
+                /** @var Mage_Sales_Model_Order_Invoice $invoice */
+                $invoice = Mage::getModel('sales/order_invoice')
+                    ->load($postData['brq_relatedtransaction_refund'], 'transaction_id');
+            }
+
             $this->_postArray = $postData;
             $orderId = $this->_postArray['brq_invoicenumber'];
+
+            if (null !== $invoice && $invoice->getOrderIncrementId() != $this->_postArray['brq_invoicenumber']) {
+                $orderId = $invoice->getOrderIncrementId();
+            }
         } else if (isset($postData['bpe_invoice'])) {
             $this->_restructurePostArray();
             $orderId = $this->_postArray['brq_invoicenumber'];
