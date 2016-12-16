@@ -79,8 +79,7 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
         if(!array_key_exists('debugEmail',$data)){
 
         }else{
-            $this->setDebugEmail($data['debugEmail']);
-
+            $this->invokeMethod($creditmemo,'setDebugEmail',array($data['debugEmail']));
         }
 
         return $creditmemo;
