@@ -36,9 +36,9 @@
  * @copyright   Copyright (c) 2016 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CancelAuthorizeTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
-    /** @var null|TIG_Buckaroo3Extended_Model_Request_Capture */
+    /** @var null|TIG_Buckaroo3Extended_Model_Request_CancelAuthorize */
     protected $_instance = null;
 
     public function setUp()
@@ -53,11 +53,11 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
             'XML' => false
         );
 
-        $mockCaptureResponse = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Capture')
+        $mockCancelAuthorizeResponse = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_CancelAuthorize')
             ->setConstructorArgs(array($params))
             ->getMock();
 
-        $this->setModelMock('buckaroo3extended/response_capture', $mockCaptureResponse);
+        $this->setModelMock('buckaroo3extended/response_cancelAuthorize', $mockCancelAuthorizeResponse);
 
         // final classes are not mockable, so mock the superclass instead
         $mockSoap = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Abstract')
@@ -77,14 +77,14 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
         if ($this->_instance === null) {
             $params = array('payment' => $this->_getMockPayment());
 
-            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_Capture')
+            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_CancelAuthorize')
                 ->setMethods(
                     array(
                         '_addBaseVariables',
                         '_addOrderVariables',
                         '_addShopVariables',
                         '_addSoftwareVariables',
-                        '_addCaptureVariables'
+                        '_addCancelAuthorizeVariables'
                     )
                 )
                 ->setConstructorArgs(array($params))
@@ -149,19 +149,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
         return $mockPayment;
     }
 
-    public function testSendRequest()
-    {
-        $instance = $this->_getInstance();
-
-        $instance->expects($this->once())->method('_addBaseVariables');
-        $instance->expects($this->once())->method('_addOrderVariables');
-        $instance->expects($this->once())->method('_addShopVariables');
-        $instance->expects($this->once())->method('_addSoftwareVariables');
-        $instance->expects($this->once())->method('_addCaptureVariables');
-
-        $instance->sendRequest();
-    }
-
     public function testGetPayment()
     {
         $payment = $this->_getMockPayment();
@@ -170,5 +157,18 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Request_CaptureTest extends TIG_Buck
         $result = $instance->getPayment();
 
         $this->assertEquals($payment, $result);
+    }
+
+    public function testSendRequest()
+    {
+        $instance = $this->_getInstance();
+
+        $instance->expects($this->once())->method('_addBaseVariables');
+        $instance->expects($this->once())->method('_addOrderVariables');
+        $instance->expects($this->once())->method('_addShopVariables');
+        $instance->expects($this->once())->method('_addSoftwareVariables');
+        $instance->expects($this->once())->method('_addCancelAuthorizeVariables');
+
+        $instance->sendRequest();
     }
 }
