@@ -286,7 +286,7 @@
 "WARNING: Paypal Seller Protection requires additional configuration. Please consult Buckaroo for more information.","LET OP: Het gebruik van de PayPal verkopersbescherming vereist aanvullende instellingen in de configuratie van Magento. Raadpleeg Buckaroo voor meer informatie."
 "EPS","EPS"
 "Send order confirmation email","Verstuur order bevestigings email"
-"Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.","Activeer om een orderbevestigingsemail te versturen wanneer de order succesvol is afgerond. Specifiek voor deze betaalmethode. Dit betekent niet automatisch dat de betaling ook (al) geslaagd is."
+"Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).","Activeer om een orderbevestigingsemail te versturen wanneer de order succesvol is afgerond. Specifiek voor deze betaalmethode. Dit betekent niet automatisch dat de betaling ook (al) geslaagd is."
 "Status Success received for order %s while the order currently the status %s has.","Voor order %s is de status Success ontvangen terwijl de order de status %s heeft."
 "here","hier"
 "Convert your account number to IBAN %s","Converteer nu %s uw rekeningnummer naar IBAN."
