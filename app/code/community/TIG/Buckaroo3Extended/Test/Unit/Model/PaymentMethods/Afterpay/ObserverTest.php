@@ -157,6 +157,40 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         $this->assertEquals($expectedVars, $resultVars);
     }
 
+    public function testBuckaroo3extended_request_addcustomvars()
+    {
+        $this->registerMockSessions(array('checkout'));
+
+        $mockOrder = $this->_getMockOrder();
+
+        $mockRequest = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_Abstract')
+            ->setMethods(array('getOrder'))
+            ->getMock();
+        $mockRequest->expects($this->once())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+
+        $mockObserver = $this->getMockBuilder('Varien_Event_Observer')
+            ->setMethods(array('getOrder', 'getRequest'))
+            ->getMock();
+        $mockObserver->expects($this->any())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+        $mockObserver->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($mockRequest));
+
+        $instance = $this->_getInstance();
+        $resultInstance = $instance->buckaroo3extended_request_addcustomvars($mockObserver);
+        $resultVars = $mockRequest->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+
+        // TODO: Let the request fill actual data instead of empty/null values to test against
+        $this->assertArrayHasKey('customVars', $resultVars);
+        $this->assertArrayHasKey('Articles', $resultVars['customVars'][0]);
+    }
+
     public function testBuckaroo3extended_capture_request_addservices()
     {
         $this->registerMockSessions(array('checkout'));
