@@ -44,10 +44,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this->getMock(
-                'TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer',
-                array('_loadLastOrder')
-            );
+            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer')
+                ->setMethods(array('_loadLastOrder'))
+                ->getMock();
 
             $this->_instance->expects($this->any())
                 ->method('_loadLastOrder')
@@ -57,44 +56,210 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         return $this->_instance;
     }
 
-    public function testBuckaroo3extended_request_addservices()
+    protected function _getMockOrder()
     {
-        $this->registerMockSessions(array('core', 'checkout'));
+        $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')
+            ->setMethods(null)
+            ->getMock();
 
-        $mockPayment = $this->getMock('Mage_Sales_Model_Order_Payment', array('getMethod'));
-        $mockPayment->expects($this->once())
+        $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('getMethod'))
+            ->getMock();
+        $mockPayment->expects($this->any())
             ->method('getMethod')
             ->will($this->returnValue('buckaroo3extended_afterpay'));
 
-        $mockOrder = $this->getMock(
-            'Mage_Sales_Model_Order',
-            array('getPayment', 'getPaymentMethodUsedForTransaction')
-        );
-        $mockOrder->expects($this->once())
+        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
+            ->setMethods(array(
+                'getPayment',
+                'getPaymentMethodUsedForTransaction',
+                'getBillingAddress',
+                'getShippingAddress'
+            ))
+            ->getMock();
+        $mockOrder->expects($this->any())
             ->method('getPayment')
             ->will($this->returnValue($mockPayment));
         $mockOrder->expects($this->any())
             ->method('getPaymentMethodUsedForTransaction')
             ->will($this->returnValue(false));
+        $mockOrder->expects($this->any())
+            ->method('getBillingAddress')
+            ->will($this->returnValue($mockOrderAddress));
+        $mockOrder->expects($this->any())
+            ->method('getShippingAddress')
+            ->will($this->returnValue($mockOrderAddress));
 
-        $mockRequest = $this->getMock('TIG_Buckaroo3Extended_Model_Request_Abstract', array('getVars'));
-        $mockRequest->expects($this->once())
-            ->method('getVars')
-            ->will($this->returnValue(array()));
+        return $mockOrder;
+    }
 
-        $mockObserver = $this->getMock('Varien_Event_Observer', array('getOrder', 'getRequest'));
+    /**
+     * @return array
+     */
+    public function testBuckaroo3extended_request_addservicesDataprovider()
+    {
+        return array(
+            array(
+                Mage_Payment_Model_Method_Abstract::ACTION_ORDER,
+                'Pay'
+            ),
+            array(
+                Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE,
+                'Authorize'
+            )
+        );
+    }
+
+    /**
+     * @param $paymethod
+     * @param $expected
+     *
+     * @dataProvider testBuckaroo3extended_request_addservicesDataprovider
+     */
+    public function testBuckaroo3extended_request_addservices($paymethod, $expected)
+    {
+        $this->registerMockSessions(array('checkout'));
+
+        $mockOrder = $this->_getMockOrder();
+
+        $mockRequest = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_Abstract')
+            ->setMethods(null)
+            ->getMock();
+
+        $mockObserver = $this->getMockBuilder('Varien_Event_Observer')
+            ->setMethods(array('getOrder', 'getRequest'))
+            ->getMock();
         $mockObserver->expects($this->any())
             ->method('getOrder')
             ->will($this->returnValue($mockOrder));
-
         $mockObserver->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($mockRequest));
 
 
         $instance = $this->_getInstance();
-        $result = $instance->buckaroo3extended_request_addservices($mockObserver);
+        Mage::app()->getStore()->setConfig('buckaroo/' . $instance->getCode() . '/payment_action', $paymethod);
 
-        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $result);
+        $resultInstance = $instance->buckaroo3extended_request_addservices($mockObserver);
+        $resultVars = $mockRequest->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+
+        $expectedVars = array(
+            'services' => array(
+                $instance->getMethod() => array(
+                    'action' => $expected,
+                    'version' => '1'
+                )
+            )
+        );
+
+        $this->assertEquals($expectedVars, $resultVars);
+    }
+
+    public function testBuckaroo3extended_request_addcustomvars()
+    {
+        $this->registerMockSessions(array('checkout'));
+
+        $mockOrder = $this->_getMockOrder();
+
+        $mockRequest = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_Abstract')
+            ->setMethods(array('getOrder'))
+            ->getMock();
+        $mockRequest->expects($this->once())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+
+        $mockObserver = $this->getMockBuilder('Varien_Event_Observer')
+            ->setMethods(array('getOrder', 'getRequest'))
+            ->getMock();
+        $mockObserver->expects($this->any())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+        $mockObserver->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($mockRequest));
+
+        $instance = $this->_getInstance();
+        $resultInstance = $instance->buckaroo3extended_request_addcustomvars($mockObserver);
+        $resultVars = $mockRequest->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+
+        // TODO: Let the request fill actual data instead of empty/null values to test against
+        $this->assertArrayHasKey('customVars', $resultVars);
+        $this->assertArrayHasKey('Articles', $resultVars['customVars'][0]);
+    }
+
+    public function testBuckaroo3extended_capture_request_addservices()
+    {
+        $this->registerMockSessions(array('checkout'));
+
+        $mockOrder = $this->_getMockOrder();
+
+        $mockRequest = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_Abstract')
+            ->setMethods(null)
+            ->getMock();
+
+        $mockObserver = $this->getMockBuilder('Varien_Event_Observer')
+            ->setMethods(array('getOrder', 'getRequest'))
+            ->getMock();
+        $mockObserver->expects($this->any())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+        $mockObserver->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($mockRequest));
+
+        $instance = $this->_getInstance();
+        $resultInstance = $instance->buckaroo3extended_capture_request_addservices($mockObserver);
+        $resultVars = $mockRequest->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+
+        $expectedVars = array(
+            'services' => array(
+                $instance->getMethod() => array(
+                    'action' => 'Capture',
+                    'version' => '1'
+                )
+            )
+        );
+
+        $this->assertEquals($expectedVars, $resultVars);
+    }
+
+    public function testBuckaroo3extended_capture_request_addcustomvars()
+    {
+        $this->registerMockSessions(array('checkout'));
+
+        $mockOrder = $this->_getMockOrder();
+
+        $mockRequest = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_Abstract')
+            ->setMethods(array('getOrder'))
+            ->getMock();
+        $mockRequest->expects($this->once())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+
+        $mockObserver = $this->getMockBuilder('Varien_Event_Observer')
+            ->setMethods(array('getOrder', 'getRequest'))
+            ->getMock();
+        $mockObserver->expects($this->any())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+        $mockObserver->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($mockRequest));
+
+        $instance = $this->_getInstance();
+        $resultInstance = $instance->buckaroo3extended_capture_request_addcustomvars($mockObserver);
+        $resultVars = $mockRequest->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+
+        // TODO: Let the request fill actual data instead of empty/null values to test against
+        $this->assertArrayHasKey('customVars', $resultVars);
+        $this->assertArrayHasKey('Articles', $resultVars['customVars'][0]);
     }
 }

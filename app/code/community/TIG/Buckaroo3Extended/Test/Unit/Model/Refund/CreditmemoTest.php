@@ -1,11 +1,43 @@
 <?php
 class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
-    protected function _getInstance($data = array()){
-        //$creditmemo = new TIG_Buckaroo3Extended_Model_Refund_Creditmemo($data);
+    public function createInstanceWithoutConstructor($class)
+    {
+        $reflector = new ReflectionClass($class);
 
-        $class = new ReflectionClass('TIG_Buckaroo3Extended_Model_Refund_Creditmemo');
-        $creditmemo = $class->newInstanceWithoutConstructor();
+        if (method_exists($class, 'newInstanceWithoutConstructor')) {
+            return $class->newInstanceWithoutConstructor();
+        }
+
+        $properties = $reflector->getProperties();
+        $defaults = $reflector->getDefaultProperties();
+
+        $serealized = "O:" . strlen($class) . ":\"$class\":".count($properties) .':{';
+
+        foreach ($properties as $property) {
+            $name = $property->getName();
+            if ($property->isProtected()) {
+                $name = chr(0) . '*' .chr(0) .$name;
+            } elseif ($property->isPrivate()) {
+                $name = chr(0)  . $class.  chr(0).$name;
+            }
+
+            $serealized .= serialize($name);
+
+            if (array_key_exists($property->getName(), $defaults)) {
+                $serealized .= serialize($defaults[$property->getName()]);
+            } else {
+                $serealized .= serialize(null);
+            }
+        }
+
+        $serealized .="}";
+
+        return unserialize($serealized);
+    }
+
+    protected function _getInstance($data = array()){
+        $creditmemo = $this->createInstanceWithoutConstructor('TIG_Buckaroo3Extended_Model_Refund_Creditmemo');
 
         if(!array_key_exists('order',$data)){
 
@@ -47,8 +79,7 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
         if(!array_key_exists('debugEmail',$data)){
 
         }else{
-            $this->setDebugEmail($data['debugEmail']);
-
+            $this->invokeMethod($creditmemo,'setDebugEmail',array($data['debugEmail']));
         }
 
         return $creditmemo;
@@ -70,18 +101,17 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
         $postArray = array('brq_amount_credit'=>3);
 
         // Create the mock order item.
-        $mockMageOrderItem = $this->getMockBuilder('Mage_Sales_Model_Order_Item')->getMock();
+        $mockMageOrderItem = $this->getMockBuilder('Mage_Sales_Model_Order_Item')
+            ->setMethods(array('getId', 'getQtyRefunded', 'getQtyInvoiced'))
+            ->getMock();
         $mockMageOrderItem->method('getId')->will($this->returnValue($id));
         $mockMageOrderItem->method('getQtyRefunded')->will($this->returnValue($qty));
         $mockMageOrderItem->method('getQtyInvoiced')->will($this->returnValue($qty));
 
         // Create the mock order.
-        $mockMageOrder = $this->getMock('mage_sales_model_order');
+        $mockMageOrder = $this->getMockBuilder('Mage_Sales_Model_Order')->setMethods(array('getId', 'getAllItems'))->getMock();
         $mockMageOrder->method('getId')->will($this->returnValue(1));
         $mockMageOrder->method('getAllItems')->will($this->returnValue(array(
-                $mockMageOrderItem,
-            )));
-        $mockMageOrder->method('getBaseTotalRefunded')->will($this->returnValue(array(
                 $mockMageOrderItem,
             )));
 

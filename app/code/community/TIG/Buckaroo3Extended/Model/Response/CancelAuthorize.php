@@ -62,7 +62,10 @@ class TIG_Buckaroo3Extended_Model_Response_CancelAuthorize extends TIG_Buckaroo3
      */
     public function __construct($data)
     {
-        $this->setPayment($data['payment']);
+        if (!empty($data['payment'])) {
+            $this->setPayment($data['payment']);
+        }
+
         parent::__construct($data);
     }
 
@@ -145,7 +148,10 @@ class TIG_Buckaroo3Extended_Model_Response_CancelAuthorize extends TIG_Buckaroo3
         $this->_order->addStatusHistoryComment($comment)->save();
 
         $this->sendDebugEmail();
-        Mage::throwException('An error occurred while processing the payment request, check the Buckaroo debug e-mail for details.');
+
+        if (Mage::helper('buckaroo3extended')->isAdmin()) {
+            Mage::throwException('An error occurred while processing the payment request, check the Buckaroo debug e-mail for details.');
+        }
     }
 
     /**
@@ -159,6 +165,9 @@ class TIG_Buckaroo3Extended_Model_Response_CancelAuthorize extends TIG_Buckaroo3
         $this->_order->addStatusHistoryComment($comment)->save();
 
         $this->sendDebugEmail();
-        Mage::throwException('An error occurred while processing the payment request, check the Buckaroo debug e-mail for details.');
+
+        if (Mage::helper('buckaroo3extended')->isAdmin()) {
+            Mage::throwException('An error occurred while processing the payment request, check the Buckaroo debug e-mail for details.');
+        }
     }
 }

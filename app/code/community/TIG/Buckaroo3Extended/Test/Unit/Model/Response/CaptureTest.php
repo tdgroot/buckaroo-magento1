@@ -36,76 +36,63 @@
  * @copyright   Copyright (c) 2016 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
-    protected $_code = 'unittest_payment';
-
-    /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod */
+    /** @var null|TIG_Buckaroo3Extended_Model_Response_Capture */
     protected $_instance = null;
-
-    public function setUp()
-    {
-        $configData = $this->testGetConfigDataProvider();
-
-        foreach ($configData as $config) {
-            $pathstart = 'payment';
-
-            if ($config[0] == 'payment_action') {
-                $pathstart = 'buckaroo';
-            }
-
-            Mage::app()->getStore()->setConfig($pathstart . '/' . $this->_code . '/' . $config[0], $config[1]);
-        }
-    }
 
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod')
-                ->setMethods(array('getCode'))
-                ->getMock();
+            $params = array(
+                'payment' => $this->_getMockPayment(),
+                'debugEmail' => '',
+                'response' => false,
+                'XML' => false
+            );
 
-            $this->_instance->expects($this->any())
-                ->method('getCode')
-                ->will($this->returnValue($this->_code));
+            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Capture')
+                ->setMethods(null)
+                ->setConstructorArgs(array($params))
+                ->getMock();
         }
 
         return $this->_instance;
     }
 
-    public function testGetConfigDataProvider()
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function _getMockPayment()
     {
-        return array(
-            array(
-                'active',
-                '1'
-            ),
-            array(
-                'payment_action',
-                'order'
-            ),
-            array(
-                'title',
-                'Payment Title'
-            ),
-            array(
-                'sort_order',
-                '10'
-            )
-        );
+        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
+            ->setMethods(array('getPayment'))
+            ->getMock();
+
+        $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('getOrder', 'getMethod'))
+            ->getMock();
+        $mockPayment->expects($this->any())
+            ->method('getOrder')
+            ->will($this->returnValue($mockOrder));
+        $mockPayment->expects($this->any())
+            ->method('getMethod')
+            ->will($this->returnValue('buckaroo3extended_afterpay'));
+
+        $mockOrder->expects($this->any())
+            ->method('getPayment')
+            ->will($this->returnValue($mockPayment));
+
+        return $mockPayment;
     }
 
-    /**
-     * @param $field
-     * @param $expected
-     *
-     * @dataProvider testGetConfigDataProvider
-     */
-    public function testGetConfigData($field, $expected)
+    public function testGetPayment()
     {
-        $instance = $this->_getInstance();
-        $result = $instance->getConfigData($field);
+        $payment = $this->_getMockPayment();
 
-        $this->assertEquals($expected, $result);
+        $instance = $this->_getInstance();
+        $result = $instance->getPayment();
+
+        $this->assertEquals($payment, $result);
     }
 }
