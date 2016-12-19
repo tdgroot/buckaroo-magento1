@@ -105,6 +105,11 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Observer_CancelAuthorizeTest extends
                 'once'
             ),
             array(
+                Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE,
+                'buckaroo3extended_afterpay2',
+                'once'
+            ),
+            array(
                 Mage_Payment_Model_Method_Abstract::ACTION_ORDER,
                 'buckaroo3extended_afterpay',
                 'never'
