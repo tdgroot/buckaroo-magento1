@@ -47,12 +47,17 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
             $params = array(
                 'payment' => $this->_getMockPayment(),
                 'debugEmail' => '',
-                'response' => false,
+                'response' => true,
                 'XML' => false
             );
 
             $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Capture')
-                ->setMethods(null)
+                ->setMethods(array(
+                    '_verifyResponse',
+                    '_parseResponse',
+                    '_addSubCodeComment',
+                    '_requiredAction'
+                ))
                 ->setConstructorArgs(array($params))
                 ->getMock();
         }
@@ -94,5 +99,22 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
         $result = $instance->getPayment();
 
         $this->assertEquals($payment, $result);
+    }
+
+    public function testProcessResponse()
+    {
+        $instance = $this->_getInstance();
+        $instance->setOrder($this->_getMockPayment()->getOrder());
+
+        $instance->expects($this->once())->method('_verifyResponse')->willReturn(true);
+        $instance->expects($this->once())
+            ->method('_parseResponse')
+            ->willReturn(array(
+                'status' => TIG_Buckaroo3Extended_Model_Response_Abstract::BUCKAROO_SUCCESS
+            ));
+        $instance->expects($this->once())->method('_addSubCodeComment');
+        $instance->expects($this->once())->method('_requiredAction');
+
+        $instance->processResponse();
     }
 }
