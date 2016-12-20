@@ -36,15 +36,15 @@
  * @copyright   Copyright (c) 2016 Total Internet Group B.V. (http://www.totalinternetgroup.nl)
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay2_ObserverTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
-    /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer */
+    /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer */
     protected $_instance = null;
 
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer')
+            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer')
                 ->setMethods(array('_loadLastOrder'))
                 ->getMock();
 
@@ -67,7 +67,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
             ->getMock();
         $mockPayment->expects($this->any())
             ->method('getMethod')
-            ->will($this->returnValue('buckaroo3extended_afterpay'));
+            ->will($this->returnValue('buckaroo3extended_afterpay2'));
 
         $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
             ->setMethods(array(
@@ -143,7 +143,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         $resultInstance = $instance->buckaroo3extended_request_addservices($mockObserver);
         $resultVars = $mockRequest->getVars();
 
-        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer', $resultInstance);
 
         $expectedVars = array(
             'services' => array(
@@ -184,7 +184,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         $resultInstance = $instance->buckaroo3extended_request_addcustomvars($mockObserver);
         $resultVars = $mockRequest->getVars();
 
-        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer', $resultInstance);
 
         // TODO: Let the request fill actual data instead of empty/null values to test against
         $this->assertArrayHasKey('customVars', $resultVars);
@@ -215,7 +215,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         $resultInstance = $instance->buckaroo3extended_capture_request_addservices($mockObserver);
         $resultVars = $mockRequest->getVars();
 
-        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer', $resultInstance);
 
         $expectedVars = array(
             'services' => array(
@@ -256,7 +256,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         $resultInstance = $instance->buckaroo3extended_capture_request_addcustomvars($mockObserver);
         $resultVars = $mockRequest->getVars();
 
-        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer', $resultInstance);
 
         // TODO: Let the request fill actual data instead of empty/null values to test against
         $this->assertArrayHasKey('customVars', $resultVars);
@@ -287,7 +287,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
         $resultInstance = $instance->buckaroo3extended_cancelauthorize_request_addservices($mockObserver);
         $resultVars = $mockRequest->getVars();
 
-        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer', $resultInstance);
 
         $expectedVars = array(
             'services' => array(
