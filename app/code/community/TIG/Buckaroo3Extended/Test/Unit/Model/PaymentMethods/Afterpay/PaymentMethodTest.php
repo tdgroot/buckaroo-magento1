@@ -41,6 +41,37 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
     /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod */
     protected $_instance = null;
 
+    public function setUp()
+    {
+        $this->registerMockSessions();
+        Mage::app()->getStore()->setCurrentCurrencyCode('EUR');
+
+        $params = array(
+            'payment' => $this->_getMockPayment(),
+            'debugEmail' => '',
+            'response' => false,
+            'XML' => false
+        );
+
+        $mockCaptureResponse = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Capture')
+            ->setConstructorArgs(array($params))
+            ->getMock();
+
+        $this->setModelMock('buckaroo3extended/response_capture', $mockCaptureResponse);
+
+        // final classes are not mockable, so mock the superclass instead
+        $mockSoap = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Abstract')
+            ->setConstructorArgs(
+                array(
+                    'vars' => array(),
+                    'method' => 'buckaroo3extended_afterpay'
+                )
+            )
+            ->getMock();
+
+        $this->setModelMock('buckaroo3extended/soap', $mockSoap);
+    }
+
     protected function _getInstance()
     {
         if ($this->_instance === null) {
@@ -51,6 +82,42 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
         }
 
         return $this->_instance;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function _getMockPayment()
+    {
+        $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')
+            ->setMethods(array('getCountryId'))
+            ->getMock();
+        $mockOrderAddress->expects($this->any())
+            ->method('getCountryId')
+            ->will($this->returnValue('NL'));
+
+        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
+            ->setMethods(array('getPayment', 'getBillingAddress', 'getShippingAddress'))
+            ->getMock();
+        $mockOrder->expects($this->any())
+            ->method('getBillingAddress')
+            ->will($this->returnValue($mockOrderAddress));
+        $mockOrder->expects($this->any())
+            ->method('getShippingAddress')
+            ->will($this->returnValue($mockOrderAddress));
+
+        $mockPaymentInfo = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('getOrder'))
+            ->getMock();
+        $mockPaymentInfo->expects($this->any())
+            ->method('getOrder')
+            ->willReturn($mockOrder);
+
+        $mockOrder->expects($this->any())
+            ->method('getPayment')
+            ->willReturn($mockPaymentInfo);
+
+        return $mockPaymentInfo;
     }
 
     public function testCanOrder()
@@ -102,7 +169,12 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
 
     public function testCapture()
     {
-        $this->markTestIncomplete('TODO: Create "working" capture test case');
+        $mockPaymentInfo = $this->_getMockPayment();
+        $instance = $this->_getInstance();
+
+        $result = $instance->capture($mockPaymentInfo, 0);
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod', $result);
     }
 
     /**
@@ -121,24 +193,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_PaymentMetho
 
     public function testValidate()
     {
-        $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')
-            ->setMethods(array('getCountryId'))
-            ->getMock();
-        $mockOrderAddress->expects($this->once())
-            ->method('getCountryId')
-            ->will($this->returnValue('NL'));
-
-        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')->setMethods(array('getBillingAddress'))->getMock();
-        $mockOrder->expects($this->once())
-            ->method('getBillingAddress')
-            ->will($this->returnValue($mockOrderAddress));
-
-        $mockPaymentInfo = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
-            ->setMethods(array('getOrder'))
-            ->getMock();
-        $mockPaymentInfo->expects($this->once())
-            ->method('getOrder')
-            ->will($this->returnValue($mockOrder));
+        $mockPaymentInfo = $this->_getMockPayment();
 
         $instance = $this->_getInstance();
         $instance->expects($this->any())

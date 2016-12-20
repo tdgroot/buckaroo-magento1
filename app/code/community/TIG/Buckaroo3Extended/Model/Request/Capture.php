@@ -71,6 +71,28 @@ class TIG_Buckaroo3Extended_Model_Request_Capture extends TIG_Buckaroo3Extended_
     }
 
     /**
+     * The responsemodel in the catch needs extra data that the abstract doesn't provide
+     *
+     * {@inheritdoc}
+     */
+    public function sendRequest()
+    {
+        try {
+            return $this->_sendRequest();
+        } catch (Exception $e) {
+            Mage::helper('buckaroo3extended')->logException($e);
+            $responseModel = Mage::getModel($this->_responseModelClass, array(
+                'response'   => false,
+                'XML'        => false,
+                'debugEmail' => $this->_debugEmail,
+                'payment'    => $this->_payment
+            ));
+            return $responseModel->setOrder($this->_order)
+                ->processResponse();
+        }
+    }
+
+    /**
      * @return mixed
      */
     protected function _sendRequest()
