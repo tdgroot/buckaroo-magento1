@@ -60,9 +60,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Observer_CancelAuthorizeTest extends
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Observer_CancelAuthorize')
-                ->setMethods(null)
-                ->getMock();
+            $this->_instance = new TIG_Buckaroo3Extended_Model_Observer_CancelAuthorize();
         }
 
         return $this->_instance;

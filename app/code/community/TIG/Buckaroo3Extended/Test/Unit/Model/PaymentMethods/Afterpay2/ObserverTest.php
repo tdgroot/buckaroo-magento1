@@ -44,13 +44,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay2_ObserverTes
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer')
-                ->setMethods(array('_loadLastOrder'))
-                ->getMock();
-
-            $this->_instance->expects($this->any())
-                ->method('_loadLastOrder')
-                ->will($this->returnSelf());
+            $this->_instance = new TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay2_Observer();
         }
 
         return $this->_instance;

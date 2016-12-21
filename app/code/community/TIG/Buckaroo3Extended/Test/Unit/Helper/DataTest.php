@@ -44,9 +44,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Helper_Data extends TIG_Buckaroo3Extended_
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Helper_Data')
-                ->setMethods(null)
-                ->getMock();
+            $this->_instance = new TIG_Buckaroo3Extended_Helper_Data();
         }
 
         return $this->_instance;
