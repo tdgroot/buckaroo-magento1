@@ -48,21 +48,13 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
     protected $_helper = null;
 
     /**
-     * @param $helper
-     */
-    protected function setHelper($helper)
-    {
-        $this->_helper = $helper;
-    }
-
-    /**
      * @return TIG_Buckaroo3Extended_Helper_Data
      */
     protected function getHelper()
     {
         if ($this->_helper === null) {
             $helper = Mage::helper('buckaroo3extended');
-            $this->setHelper($helper);
+            $this->_helper = $helper;
         }
 
         return $this->_helper;
