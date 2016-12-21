@@ -56,10 +56,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = $this
-                ->getMockBuilder('TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee')
-                ->setMethods(array('getHelper', '_updateCreditmemoTotals', '_updateCreditmemoTotalsFromParams'))
-                ->getMock();
+            $this->_instance = new TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee();
         }
 
         return $this->_instance;
@@ -148,7 +145,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
                 array(
                     'fee' => 0,
                     'invoiceFee' => 3.45,
-                    'orderFee' => 0,
+                    'orderFee' => 4.56,
                     'orderRefundFee' => 0,
                     'paramsFee' => 4.56
                 ),
@@ -225,9 +222,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
         $mockCreditmemo->expects($this->once())->method('getBaseBuckarooFee')->willReturn($fee['fee']);
 
         $instance = $this->_getInstance();
-        $instance->expects($this->any())->method('getHelper')->willReturn($mockHelper);
-        $instance->expects($this->$updateTotalsExpects())->method('_updateCreditmemoTotals');
-        $instance->expects($this->$updateTotalsParamsExpects())->method('_updateCreditmemoTotalsFromParams');
+        $this->setProperty('_helper', $mockHelper, $instance);
 
         $result = $instance->collect($mockCreditmemo);
 

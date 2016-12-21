@@ -45,9 +45,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Sources_PaymentFlowTest extends TIG_
     {
         if ($this->_instance === null) {
             $this->_instance = Mage::getModel('buckaroo3extended/sources_paymentFlow');
-//            $this->_instance = $this->getMock(
-//                'TIG_Buckaroo3Extended_Model_Sources_PaymentFlow'
-//            );
         }
 
         return $this->_instance;

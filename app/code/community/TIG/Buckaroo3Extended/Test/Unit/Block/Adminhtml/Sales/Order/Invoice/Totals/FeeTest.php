@@ -59,13 +59,8 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_Adminhtml_Sales_Order_Invoice_Totals
             $mockParentBlock->expects($this->any())
                 ->method('addTotalBefore');
 
-            $this->_instance = $this
-                ->getMockBuilder('TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee')
-                ->setMethods(array('getParentBlock', 'getDisplayMode', 'getTaxLabel'))
-                ->getMock();
-            $this->_instance->expects($this->once())
-                ->method('getParentBlock')
-                ->willReturn($mockParentBlock);
+            $this->_instance = new TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee();
+            $this->setProperty('_parentBlock', $mockParentBlock, $this->_instance);
         }
 
         return $this->_instance;
@@ -125,33 +120,25 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_Adminhtml_Sales_Order_Invoice_Totals
                 '2',
                 'once',
                 'once',
-                TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee::DISPLAY_MODE_BOTH,
-                'once',
-                'atLeastOnce'
+                TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee::DISPLAY_MODE_BOTH
             ),
             array(
                 '3.14',
                 'never',
                 'once',
-                TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee::DISPLAY_MODE_EXCL,
-                'once',
-                'never'
+                TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee::DISPLAY_MODE_EXCL
             ),
             array(
                 '1.19',
                 'once',
                 'once',
-                TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee::DISPLAY_MODE_INCL,
-                'once',
-                'never'
+                TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee::DISPLAY_MODE_INCL
             ),
             array(
                 '0',
                 'never',
                 'never',
-                null,
-                'never',
-                'never'
+                null
             )
         );
     }
@@ -161,8 +148,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_Adminhtml_Sales_Order_Invoice_Totals
      * @param $buckarooFeeTaxExpects
      * @param $orderExpects
      * @param $displayMode
-     * @param $displayModeExpects
-     * @param $taxLabelExpects
      *
      * @dataProvider testInitTotalsDataprovider
      */
@@ -170,9 +155,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_Adminhtml_Sales_Order_Invoice_Totals
         $buckarooFee,
         $buckarooFeeTaxExpects,
         $orderExpects,
-        $displayMode,
-        $displayModeExpects,
-        $taxLabelExpects
+        $displayMode
     ) {
         $mockOrder = $this->_getMockOrder();
         $mockInvoice = $this->_getMockInvoice();
@@ -180,6 +163,12 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_Adminhtml_Sales_Order_Invoice_Totals
         $mockInvoice->expects($this->$buckarooFeeTaxExpects())->method('getBuckarooFeeTax');
         $mockInvoice->expects($this->$buckarooFeeTaxExpects())->method('getBaseBuckarooFeeTax');
         $mockInvoice->expects($this->$orderExpects())->method('getOrder')->willReturn($mockOrder);
+
+        $store = Mage::app()->getStore();
+        $store->setConfig(
+            TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee::XPATH_DISPLAY_MODE_BUCKAROO_FEE,
+            $displayMode
+        );
 
         $mockInvoice->expects($this->once())
             ->method('getBuckarooFee')
@@ -189,13 +178,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_Adminhtml_Sales_Order_Invoice_Totals
             ->willReturn($buckarooFee);
 
         $instance = $this->_getInstance();
-
-        $instance->expects($this->$displayModeExpects())
-            ->method('getDisplayMode')
-            ->willReturn($displayMode);
-        $instance->expects($this->$taxLabelExpects())
-            ->method('getTaxLabel');
-
         $result = $instance->initTotals();
 
         $this->assertInstanceOf('TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Invoice_Totals_Fee', $result);

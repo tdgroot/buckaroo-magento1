@@ -41,6 +41,15 @@ class TIG_Buckaroo3Extended_Model_Response_Capture extends TIG_Buckaroo3Extended
     protected $_payment;
 
     /**
+     * {@inheritdoc}
+     */
+    public function __construct($data)
+    {
+        $this->setPayment($data['payment']);
+        parent::__construct($data);
+    }
+
+    /**
      * @param $payment
      */
     public function setPayment($payment)
@@ -54,15 +63,6 @@ class TIG_Buckaroo3Extended_Model_Response_Capture extends TIG_Buckaroo3Extended
     public function getPayment()
     {
         return $this->_payment;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($data)
-    {
-        $this->setPayment($data['payment']);
-        parent::__construct($data);
     }
 
     /**
