@@ -307,8 +307,27 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
      */
     protected function _addCancelAuthorizeVariables()
     {
+        $currentCurrencyIsAllowed = $this->_currentCurrencyIsAllowed();
+        $amountDebit = $this->_order->getBaseGrandTotal();
+
+        if ($currentCurrencyIsAllowed) {
+            $amountDebit = $this->_order->getGrandTotal();
+        }
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        /** @var Mage_Sales_Model_Order_Invoice $invoice */
+        foreach ($invoiceCollection as $invoice) {
+            if ($currentCurrencyIsAllowed) {
+                $amountDebit -= $invoice->getGrandTotal();
+            } else {
+                $amountDebit -= $invoice->getBaseGrandTotal();
+            }
+        }
+
         $this->_vars['OriginalTransactionKey'] = $this->_order->getTransactionKey();
-        $this->_vars['amountCredit'] = $this->_vars['amountDebit'];
+        $this->_vars['amountCredit'] = $amountDebit;
         $this->_vars['amountDebit']  = 0;
     }
 }
