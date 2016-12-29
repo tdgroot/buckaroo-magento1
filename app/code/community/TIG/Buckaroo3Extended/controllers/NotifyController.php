@@ -84,8 +84,19 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
         $this->_debugEmail = '';
         if (isset($postData['brq_invoicenumber'])) {
+            $invoice = null;
+            if (isset($postData['brq_relatedtransaction_refund'])) {
+                /** @var Mage_Sales_Model_Order_Invoice $invoice */
+                $invoice = Mage::getModel('sales/order_invoice')
+                    ->load($postData['brq_relatedtransaction_refund'], 'transaction_id');
+            }
+
             $this->_postArray = $postData;
             $orderId = $this->_postArray['brq_invoicenumber'];
+
+            if (null !== $invoice && $invoice->getOrderIncrementId() != $this->_postArray['brq_invoicenumber']) {
+                $orderId = $invoice->getOrderIncrementId();
+            }
         } else if (isset($postData['bpe_invoice'])) {
             $this->_restructurePostArray();
             $orderId = $this->_postArray['brq_invoicenumber'];
@@ -275,6 +286,14 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return array($module, $processedPush);
         }
 
+        // C012 and C017 are Afterpay Capture transactions which don't need an update
+        if ($this->_postArray['brq_transaction_type'] == 'C012'
+            || $this->_postArray['brq_transaction_type'] == 'C017'
+        ) {
+            list($processedPush, $module) = $this->_updateCapture();
+            return array($module, $processedPush);
+        }
+
         Mage::throwException('unable to process PUSH');
         return false;
     }
@@ -328,6 +347,30 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     protected function _updateCreditmemo()
     {
         $this->_debugEmail .= "Recieved PUSH to update creditmemo. Unfortunately the module does not support creditmemo updates at this time. The PUSH is ignored.";
+
+        $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId());
+        if (empty($debugEmailConfig))
+        {
+            return;
+        }
+
+        $mail = $this->_debugEmail;
+
+        mail(
+            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId()),
+            'Buckaroo 3 Extended Debug Email',
+            $mail
+        );
+
+        return $this;
+    }
+
+    /**
+     * Capture updates are currently not supported
+     */
+    protected function _updateCapture()
+    {
+        $this->_debugEmail .= "Recieved PUSH to update capture. Unfortunately the module does not support capture updates at this time. The PUSH is ignored.";
 
         $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId());
         if (empty($debugEmailConfig))

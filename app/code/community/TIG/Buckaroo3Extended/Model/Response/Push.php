@@ -320,8 +320,22 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $this->_autoInvoice();
 
         $description = Mage::helper('buckaroo3extended')->__($description);
+        $description .= " (#{$this->_postArray['brq_statuscode']})<br>";
 
-        $description .= " (#{$this->_postArray['brq_statuscode']})";
+        $paymentMethod = $this->_order->getPayment()->getMethodInstance();
+
+        if ($this->_postArray['brq_currency'] == $this->_order->getBaseCurrencyCode()) {
+            $currencyCode = $this->_order->getBaseCurrencyCode();
+        } else {
+            $currencyCode = $this->_order->getOrderCurrencyCode();
+        }
+        $brqAmount = Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']);
+
+        if ($paymentMethod->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+            $description .= 'Total amount of ' . $brqAmount . ' has been paid';
+        } else {
+            $description .= 'Total amount of ' . $brqAmount . ' has been authorized. Please create an invoice to capture the authorized amount.';
+        }
 
         //sets the transaction key if its defined ($trx)
         //will retrieve it from the response array, if response actually is an array
@@ -518,6 +532,12 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         //check if the module is configured to create invoice on success
         if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', $this->_order->getStoreId()))
         {
+            return false;
+        }
+
+        //Check if the method has to be authorized first before an invoice can be made
+        $paymentMethod = $this->_order->getPayment()->getMethodInstance();
+        if ($paymentMethod->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
             return false;
         }
 
