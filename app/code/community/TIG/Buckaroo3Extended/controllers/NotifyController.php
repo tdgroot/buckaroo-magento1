@@ -199,6 +199,9 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
                 $redirectData['path'] = 'checkout/cart';
                 $redirectData['params'] = array();
             }
+            if(!isset($redirectData['params'])){
+                $redirectData['params'] = [];
+            }
             $this->_redirect($redirectData['path'], $redirectData['params']);
 
             return;
