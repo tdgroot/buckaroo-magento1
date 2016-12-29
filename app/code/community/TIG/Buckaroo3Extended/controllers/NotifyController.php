@@ -211,7 +211,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
                 $redirectData['params'] = array();
             }
             if(!isset($redirectData['params'])){
-                $redirectData['params'] = [];
+                $redirectData['params'] = array();
             }
             $this->_redirect($redirectData['path'], $redirectData['params']);
 

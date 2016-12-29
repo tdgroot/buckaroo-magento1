@@ -250,7 +250,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
     {
         return in_array($status, $this->_orderMailStatusses);
     }
-    
+
     public function getConfigData($field, $storeId = null)
     {
         if (null === $storeId) {
