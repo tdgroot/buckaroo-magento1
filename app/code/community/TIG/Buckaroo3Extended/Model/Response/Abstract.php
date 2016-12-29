@@ -216,14 +216,15 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
          */
         $payment = $this->_order->getPayment();
         $payment->registerAuthorizationNotification($this->_order->getBaseGrandTotal());
-        $payment->getMethodInstance()->saveAdditionalData($this->_response);
+        $paymentMethodInstance = $payment->getMethodInstance();
+        $paymentMethodInstance->saveAdditionalData($this->_response);
 
         $shouldSend = Mage::getStoreConfig('buckaroo/' . $payment->getMethod() . '/order_email', $this->_order->getStoreId());
 
         /**
-         * Do not send order confirmation email when the payment is still pending.
+         * Only send order confirmation email when payment status allows it.
          */
-        if ($status == self::BUCKAROO_PENDING_PAYMENT) {
+        if (!$paymentMethodInstance->shouldSendOrderConfirmEmailForStatus($status)) {
             $shouldSend = false;
         }
 

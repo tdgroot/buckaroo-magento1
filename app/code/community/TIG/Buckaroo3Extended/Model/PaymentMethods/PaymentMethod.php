@@ -35,6 +35,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
     protected $_canUseCheckout          = true;
     protected $_canUseForMultishipping  = false;
     protected $_canSaveCc               = false;
+    protected $_orderMailStatusses      = array( TIG_Buckaroo3Extended_Model_Response_Abstract::BUCKAROO_SUCCESS);
 
     protected $_payment;
 
@@ -243,5 +244,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         // child modules will be able to save response info into the serialized additional_data array
 
         return $this;
+    }
+
+    public function shouldSendOrderConfirmEmailForStatus($status){
+        return in_array($status,$this->_orderMailStatusses);
     }
 }
