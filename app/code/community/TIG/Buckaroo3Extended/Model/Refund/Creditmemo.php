@@ -96,6 +96,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
 
         $order  = $this->_order;
 
+        /** @var Mage_Sales_Model_Service_Order $service */
         $service = Mage::getModel('sales/service_order', $order);
 
         $savedData = $this->_getItemData($data);
