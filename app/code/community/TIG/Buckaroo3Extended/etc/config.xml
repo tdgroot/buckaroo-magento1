@@ -5,6 +5,11 @@
             <version>4.16.0</version>
         </TIG_Buckaroo3Extended>
     </modules>
+    <tig>
+        <buckaroo>
+            <stability>stable</stability>
+        </buckaroo>
+    </tig>
     <frontend>
         <layout>
             <updates>
