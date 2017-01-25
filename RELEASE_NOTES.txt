@@ -4,6 +4,7 @@
 - Mogelijke melding Uncaught ReferenceError: jQuery is not defined in de checkout opgelost
 - PHP7 ondersteuning voor Masterpass
 - Check toegevoegd voor betaalmethodes om te kijken of de orderbevestiging e-mail verzonden moet worden bij een bepaalde betaalstatus.
+- Payperemail probleem opgelost waar een syntax error kon ontstaan.
 
 ===== 4.15.3 =====
 - Bij Afterpay betalingen via België wordt er bij telefoonnummers van meer dan 10 tekens "0031" toegevoegd
