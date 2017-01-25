@@ -7,7 +7,7 @@
     </modules>
     <tig>
         <buckaroo>
-            <stability>beta</stability>
+            <stability>RC2</stability>
         </buckaroo>
     </tig>
     <frontend>
