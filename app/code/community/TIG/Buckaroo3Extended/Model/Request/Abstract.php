@@ -201,7 +201,10 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
     protected function _addShopVariables()
     {
-        $returnUrl = Mage::getUrl('buckaroo3extended/notify/return', array('_secure' => true));
+        $returnUrl = Mage::getUrl('buckaroo3extended/notify/return', array(
+            '_secure' => true,
+            '_store' => $this->_order->getStoreId(),
+        ));
 
         $merchantKey = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId());
         $description = Mage::getStoreConfig('buckaroo/buckaroo3extended/payment_description', $this->_order->getStoreId());
