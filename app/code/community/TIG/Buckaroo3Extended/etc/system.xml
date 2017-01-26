@@ -259,7 +259,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
@@ -526,7 +526,7 @@
                         </allowed_methods>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
@@ -826,21 +826,9 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </no>
-                        <sendmail translate="label comment tooltip">
-                            <label>Send payment email</label>
-                            <comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
-                            <tooltip>Set to 'No' leaves the customer uninformed on the payment obligations.</tooltip>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>80</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>buckaroo3extended_paymentguarantee_advanced</validate>
-                        </sendmail>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
@@ -857,11 +845,24 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_action translate="label comment" module="buckaroo3extended">
+                            <label>Payment flow</label>
+                            <comment>Whether to use separate authorize and capture calls or to use a combined 'pay' call.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_paymentFlow</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_action>
                         <payment_fee translate="label comment" module="buckaroo3extended">
                             <label>Fee</label>
                             <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>101</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -874,7 +875,7 @@
                             <label>Fee label</label>
                             <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>102</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -888,7 +889,7 @@
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -902,7 +903,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>111</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -918,7 +919,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesFailed</source_model>
-                            <sort_order>112</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -933,7 +934,7 @@
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>113</sort_order>
+                            <sort_order>170</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -946,7 +947,7 @@
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>114</sort_order>
+                            <sort_order>180</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -960,7 +961,7 @@
                             <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>buckaroo3extended/sources_afterpay_availableCurrencies</source_model>
-                            <sort_order>130</sort_order>
+                            <sort_order>190</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -973,7 +974,7 @@
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
                             <source_model>buckaroo3extended/sources_allspecificcountries</source_model>
-                            <sort_order>140</sort_order>
+                            <sort_order>200</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -986,7 +987,7 @@
                             <comment>Only available when set to 'specific countries'.</comment>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>adminhtml/system_config_source_country</source_model>
-                            <sort_order>150</sort_order>
+                            <sort_order>210</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1001,7 +1002,7 @@
                             <tooltip>Magento developer client restrictions.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>160</sort_order>
+                            <sort_order>220</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1129,21 +1130,9 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </no>
-                        <sendmail translate="label comment tooltip">
-                            <label>Send payment email</label>
-                            <comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
-                            <tooltip>Set to 'No' leaves the customer uninformed on the payment obligations.</tooltip>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>80</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>buckaroo3extended_paymentguarantee_advanced</validate>
-                        </sendmail>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
@@ -1160,11 +1149,24 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </show_advanced>
+                        <payment_action translate="label comment" module="buckaroo3extended">
+                            <label>Payment flow</label>
+                            <comment>Whether to use separate authorize and capture calls or to use a combined 'pay' call.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_paymentFlow</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <show_advanced>1</show_advanced>
+                            </depends>
+                        </payment_action>
                         <payment_fee translate="label comment" module="buckaroo3extended">
                             <label>Fee</label>
                             <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>101</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1177,7 +1179,7 @@
                             <label>Fee label</label>
                             <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>102</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1191,7 +1193,7 @@
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1205,7 +1207,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>111</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1221,7 +1223,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesFailed</source_model>
-                            <sort_order>112</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1236,7 +1238,7 @@
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>113</sort_order>
+                            <sort_order>170</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1249,7 +1251,7 @@
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>114</sort_order>
+                            <sort_order>180</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1263,7 +1265,7 @@
                             <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>buckaroo3extended/sources_afterpay2_availableCurrencies</source_model>
-                            <sort_order>130</sort_order>
+                            <sort_order>190</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1276,7 +1278,7 @@
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
                             <source_model>buckaroo3extended/sources_allspecificcountries</source_model>
-                            <sort_order>140</sort_order>
+                            <sort_order>200</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1289,7 +1291,7 @@
                             <comment>Only available when set to 'specific countries'.</comment>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>adminhtml/system_config_source_country</source_model>
-                            <sort_order>150</sort_order>
+                            <sort_order>210</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1304,7 +1306,7 @@
                             <tooltip>Magento developer client restrictions.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>160</sort_order>
+                            <sort_order>220</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1361,7 +1363,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>45</sort_order>
@@ -1610,7 +1612,7 @@
                         </unsecure_hold>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -1848,7 +1850,7 @@
                         </unsecure_hold>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -2086,7 +2088,7 @@
                         </unsecure_hold>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -2303,7 +2305,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -2558,7 +2560,7 @@
                         </unsecure_hold>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>49</sort_order>
@@ -2775,7 +2777,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -3009,7 +3011,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -3243,7 +3245,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -3587,7 +3589,7 @@
                         </reminder_level>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>59</sort_order>
@@ -3869,7 +3871,7 @@
                         </reminder_level>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>54</sort_order>
@@ -4103,7 +4105,7 @@
                         <!--</sort_order>-->
                         <!--<order_email translate="label comment">-->
                             <!--<label>Send order confirmation email</label>-->
-                            <!--<comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>-->
+                            <!--<comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>-->
                             <!--<frontend_type>select</frontend_type>-->
                             <!--<source_model>buckaroo3extended/sources_yesno</source_model>-->
                             <!--<sort_order>44</sort_order>-->
@@ -4337,7 +4339,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>54</sort_order>
@@ -4555,7 +4557,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -4773,7 +4775,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -4991,7 +4993,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -5218,21 +5220,9 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </cards_allowed>
-                        <send_mail translate="label comment tooltip">
-                            <label>Send payment email</label>
-                            <comment>Buckaroo sends an email to the customer with the payment procedures.</comment>
-                            <tooltip>Set to 'No' leaves the customer uninformed on the payment obligations.</tooltip>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>buckaroo3extended_giftcards_advanced</validate>
-                        </send_mail>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>64</sort_order>
@@ -5547,7 +5537,7 @@
                         </reminder_level>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>64</sort_order>
@@ -5839,7 +5829,7 @@
                         </reminder_level>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>54</sort_order>
@@ -6073,7 +6063,7 @@
                         </sort_order>
                         <order_email translate="label comment">
                             <label>Send order confirmation email</label>
-                            <comment>Enable to send an order confirmation email to the customer when the payment is succesfull. Specific for this payment method.</comment>
+                            <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>44</sort_order>
@@ -6526,7 +6516,7 @@
                     </fields>
                 </buckaroo3extended_certificate>
                 <buckaroo3extended_response translate="label">
-                    <label>Customise default error messages</label>
+                    <label>Custom default error messages</label>
                     <sort_order>21500</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
