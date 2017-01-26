@@ -104,6 +104,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                 'AmountVat'        => $VAT,
                 'CustomerType'     => 1,
                 'MaxReminderLevel' => $reminderLevel,
+                'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
         );
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars']['creditmanagement'])) {
