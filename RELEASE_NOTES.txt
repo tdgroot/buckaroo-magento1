@@ -1,3 +1,16 @@
+===== 4.16.0 =====
+- Authorize & (partial) capture is nu mogelijk met Afterpay
+- De refund gerelateerde notices en warnings zijn opgelost
+- Mogelijke melding Uncaught ReferenceError: jQuery is not defined in de checkout opgelost
+- PHP7 ondersteuning voor Masterpass
+- Check toegevoegd voor betaalmethodes om te kijken of de orderbevestiging e-mail verzonden moet worden bij een bepaalde betaalstatus.
+
+===== 4.15.3 =====
+- Bij Afterpay betalingen via België wordt er bij telefoonnummers van meer dan 10 tekens "0031" toegevoegd
+- Na een status 690 vanuit Buckaroo blijft AfterPay nu zichtbaar in decheckout
+- XSS issue met Buckaroo extensie icm OneStepCheckout en paymentguarantee/transfer opgelost
+- Ondersteuning Giftwrap toeslag (Enterprise) in combinatie
+
 ===== 4.15.2 =====
 - Verwijderd configuratieveld voor Afterpay, Giftcard "Verstuur email met betalingsinstructies"
 - Spelfouten op supporttab gecorrigeerd
