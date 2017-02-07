@@ -248,6 +248,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
             return false;
         }
 
+        //Afterpay B2B cannot be used when ordering with a BE address
+        $paymethod = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', $storeId);
+        $business = Mage::getStoreConfig('buckaroo/' . $this->_code . '/business', $storeId);
+        if ($quote
+            && $paymethod == 'afterpaydigiaccept'
+            && $business == '2'
+            && $quote->getBillingAddress()->getCountry() == 'BE'
+        ) {
+            return false;
+        }
+
         $canUseBuckaroo = TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote);
 
         return $canUseBuckaroo;
