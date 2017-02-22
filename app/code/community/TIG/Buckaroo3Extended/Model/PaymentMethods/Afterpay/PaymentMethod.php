@@ -32,7 +32,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
     protected $_canOrder                = true;
     protected $_canRefund               = true;
-    protected $_canRefundInvoicePartial = false;
+    protected $_canRefundInvoicePartial = true;
 
     /**
      * {@inheritdoc}
