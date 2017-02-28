@@ -1360,6 +1360,13 @@
                 <sort_order>210</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_masterpass_lightbox>
+            <buckaroo3extended_afterpay>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_klarna_paymentMethod</model>
+                <title>Klarna</title>
+                <sort_order>220</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_afterpay>
             <buckaroo2012ideal>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
@@ -1926,6 +1933,22 @@
                 <payment_fee_label>Fee</payment_fee_label>
                 <order_email>1</order_email>
             </buckaroo3extended_masterpass_lightbox>
+
+            <buckaroo3extended_klarna>
+                <active>0</active>
+                <mode>0</mode>
+                <title>Klarna</title>
+                <allowspecific>0</allowspecific>
+                <specificcountry></specificcountry>
+                <order_status_success></order_status_success>
+                <order_status_failed></order_status_failed>
+                <sort_order>210</sort_order>
+                <limit_by_ip>0</limit_by_ip>
+                <allowed_currencies>EUR</allowed_currencies>
+                <payment_fee_label>Fee</payment_fee_label>
+                <order_email>1</order_email>
+                <send_invoice_by>email</send_invoice_by>
+            </buckaroo3extended_klarna>
         </buckaroo>
         <tax>
             <calculation>
