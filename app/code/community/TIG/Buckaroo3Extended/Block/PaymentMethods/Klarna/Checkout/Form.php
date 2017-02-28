@@ -29,13 +29,11 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Klarna_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
 {
-    public $allowedCurrencies = array(
-            'EUR',
-        );
-
-    protected $_code = 'buckaroo3extended_klarna';
-
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_klarna_checkout_form';
+    public function __construct()
+    {
+        $this->setTemplate('buckaroo3extended/klarna/checkout/form.phtml');
+        parent::_construct();
+    }
 }

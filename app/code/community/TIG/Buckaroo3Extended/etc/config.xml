@@ -1360,13 +1360,13 @@
                 <sort_order>210</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_masterpass_lightbox>
-            <buckaroo3extended_afterpay>
+            <buckaroo3extended_klarna>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_klarna_paymentMethod</model>
                 <title>Klarna</title>
                 <sort_order>220</sort_order>
                 <group>buckaroo3extended</group>
-            </buckaroo3extended_afterpay>
+            </buckaroo3extended_klarna>
             <buckaroo2012ideal>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
