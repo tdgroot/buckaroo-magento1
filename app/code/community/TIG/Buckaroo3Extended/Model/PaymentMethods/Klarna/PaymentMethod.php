@@ -38,4 +38,40 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
     protected $_code = 'buckaroo3extended_klarna';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_klarna_checkout_form';
+
+    /**
+     * @return string
+     */
+    public function getOrderPlaceRedirectUrl()
+    {
+        $session = Mage::getSingleton('checkout/session');
+        $post = Mage::app()->getRequest()->getPost();
+
+        $postArray = $this->getBPEPostData($post);
+        $session->setData('additionalFields', $postArray);
+
+        return parent::getOrderPlaceRedirectUrl();
+    }
+
+    /**
+     * @param array $post
+     *
+     * @return array
+     */
+    private function getBPEPostData($post)
+    {
+        $dobPost = $post['payment'][$this->_code];
+        $customerDob = date(
+            'Y-m-d',
+            strtotime($dobPost['year'] . '-' . $dobPost['month'] . '-' . $dobPost['day'])
+        );
+
+        $postArray = array(
+            'BPE_customer_gender'      => $post[$this->_code . '_BPE_customer_gender'],
+            'BPE_customer_phonenumber' => $post[$this->_code . '_BPE_customer_phonenumber'],
+            'BPE_customer_dob'         => $customerDob,
+        );
+
+        return $postArray;
+    }
 }
