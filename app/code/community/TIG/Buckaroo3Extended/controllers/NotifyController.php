@@ -271,6 +271,23 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return array($module, $processedPush);
         }
 
+        $amountOrdered = $this->_order->getBaseGrandTotal();
+        if ($this->_postArray['brq_currency'] == $this->_order->getOrderCurrencyCode()) {
+            $amountOrdered = $this->_order->getGrandTotal();
+        }
+
+        // Save an order comment when a partial payment through transfer has been made
+        if ($this->_paymentCode == 'buckaroo3extended_transfer'
+            && $this->_postArray['brq_transaction_method'] == 'transfer'
+            && $this->_postArray['brq_amount'] < $amountOrdered
+            && $this->_order->getTransactionKey() != $this->_postArray['brq_transactions']
+            && $this->_order->getIncrementId() == $this->_postArray['brq_invoicenumber']
+            && (isset($this->_postArray['brq_websitekey']) && $merchantKey == $this->_postArray['brq_websitekey'])
+        ) {
+            list($processedPush, $module) = $this->_updateTransferPartialPaid();
+            return array($module, $processedPush);
+        }
+
         if ($this->_pushIsCreditmemo($this->_postArray)) {
             list($processedPush, $module) = $this->_updateCreditmemo();
             return array($module, $processedPush);
@@ -296,6 +313,26 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
         Mage::throwException('unable to process PUSH');
         return false;
+    }
+
+    protected function _updateTransferPartialPaid()
+    {
+        $this->_debugEmail .= "Order has been partial paid by Transer method. \n";
+
+        /** @var TIG_Buckaroo3Extended_Model_Response_Push $module */
+        $module = Mage::getModel(
+            'buckaroo3extended/response_push',
+            array(
+                'order'      => $this->_order,
+                'postArray'  => $this->_postArray,
+                'debugEmail' => $this->_debugEmail,
+                'method'     => $this->_paymentCode,
+            )
+        );
+
+        $processedPush = $module->processPartialTransferMessage();
+
+        return array($processedPush, $module);
     }
 
     protected function _updateOrderWithKey()
