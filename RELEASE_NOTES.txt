@@ -1,5 +1,6 @@
 ===== 4.16.0 =====
 - Authorize & (partial) capture is nu mogelijk met Afterpay
+- Partial Refund is nu mogelijk met Afterpay
 - De refund gerelateerde notices en warnings zijn opgelost
 - Mogelijke melding Uncaught ReferenceError: jQuery is not defined in de checkout opgelost
 - PHP7 ondersteuning voor Masterpass
@@ -9,6 +10,7 @@
 - OneStepCheckout ondersteunde versies geupdate.
 - Afterpay aanpassing waarbij de korting wordt afgerond op 2 decimalen.
 - Adresvalidatie is verberterd.
+- Overboeking terugkopping bij deelbetalingen in order comments.
 
 ===== 4.15.3 =====
 - Bij Afterpay betalingen via België wordt er bij telefoonnummers van meer dan 10 tekens "0031" toegevoegd
