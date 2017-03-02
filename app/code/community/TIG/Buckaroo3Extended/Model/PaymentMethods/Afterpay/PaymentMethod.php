@@ -32,7 +32,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
     protected $_canOrder                = true;
     protected $_canRefund               = true;
-    protected $_canRefundInvoicePartial = false;
+    protected $_canRefundInvoicePartial = true;
 
     /**
      * {@inheritdoc}
@@ -245,6 +245,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
         // Currency is not available for this module
         if (!in_array($currency, $this->allowedCurrencies)) {
+            return false;
+        }
+
+        //Afterpay B2B cannot be used when ordering with a BE address
+        $paymethod = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', $storeId);
+        $business = Mage::getStoreConfig('buckaroo/' . $this->_code . '/business', $storeId);
+        if ($quote
+            && $paymethod == 'afterpaydigiaccept'
+            && $business == '2'
+            && $quote->getBillingAddress()->getCountry() == 'BE'
+        ) {
             return false;
         }
 

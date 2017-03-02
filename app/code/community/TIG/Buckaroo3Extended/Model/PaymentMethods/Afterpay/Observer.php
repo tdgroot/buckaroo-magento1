@@ -162,6 +162,24 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             return $this;
         }
 
+        $request = $observer->getRequest();
+        $this->_order = $request->getOrder();
+        $payment     = $request->getPayment();
+
+        $vars = $request->getVars();
+
+        $this->_addCreditmemoArticlesVariables($vars, $payment, $this->_method);
+
+        /** @var Mage_Sales_Model_Order $tst */
+        $tst = $request->getOrder();
+        $tst->getPayment()->canRefundPartialPerInvoice();
+
+        if ($this->_order->getPayment()->canRefundPartialPerInvoice() && $payment->getCreditmemo()) {
+            $this->_addCreditmemoArticlesVariables($vars, $payment, $this->_method);
+        }
+
+        $request->setVars($vars);
+
         return $this;
     }
 
@@ -627,6 +645,118 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
         } else {
             $vars['customVars'][$this->_method] = $requestArray;
+        }
+    }
+
+    protected function _addCreditmemoArticlesVariables(&$vars, $payment)
+    {
+        /** @var Mage_Sales_Model_Resource_Order_Creditmemo_Collection $creditmemoCollection */
+        $creditmemoCollection = $this->_order->getCreditmemosCollection();
+
+        /** @var Mage_Sales_Model_Order_Creditmemo $creditmemo */
+        $creditmemo = $payment->getCreditmemo();
+        $products = $creditmemo->getAllItems();
+        $max      = 99;
+        $i        = 1;
+        $group    = array();
+
+        /** @var Mage_Sales_Model_Order_Creditmemo_Item $item */
+        foreach ($products as $item) {
+            if (empty($item) || ($item->getOrderItem() && $item->getOrderItem()->getParentItem())) {
+                continue;
+            }
+
+            $productPrice = ($item->getBasePrice() * $item->getQty())
+                + $item->getBaseTaxAmount()
+                + $item->getBaseHiddenTaxAmount();
+            $productPrice = round($productPrice, 2);
+
+            $article['ArticleDescription']['value'] = (int) $item->getQty() . 'x ' . $item->getName();
+            $article['ArticleId']['value']          = $item->getOrderItemId();
+            $article['ArticleQuantity']['value']    = 1;
+            $article['ArticleUnitPrice']['value']   = $productPrice;
+            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($this->_getTaxClassId($item->getOrderItem()));
+
+            $group[$i] = $article;
+
+            if ($i <= $max) {
+                $i++;
+                continue;
+            }
+
+            break;
+        }
+
+        if (Mage::helper('buckaroo3extended')->isEnterprise() && count($creditmemoCollection) == 1) {
+            $gwId = 1;
+            $gwTax = Mage::helper('enterprise_giftwrapping')->getWrappingTaxClass($this->_order->getStoreId());
+
+            if ($this->_order->getGwBasePrice() > 0) {
+                $gwPrice = $this->_order->getGwBasePrice() + $this->_order->getGwBaseTaxAmount();
+
+                $gwOrder = array();
+                $gwOrder['ArticleDescription']['value'] = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Order');
+                $gwOrder['ArticleId']['value'] = 'gwo_' . $this->_order->getGwId();
+                $gwOrder['ArticleQuantity']['value'] = 1;
+                $gwOrder['ArticleUnitPrice']['value'] = $gwPrice;
+                $gwOrder['ArticleVatcategory']['value'] = $gwTax;
+
+                $group[] = $gwOrder;
+
+                $gwId += $this->_order->getGwId();
+            }
+
+            if ($this->_order->getGwItemsBasePrice() > 0) {
+                $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwItemsBaseTaxAmount();
+
+                $gwiOrder = array();
+                $gwiOrder['ArticleDescription']['value'] = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items');
+                $gwiOrder['ArticleId']['value'] = 'gwi_' . $gwId;
+                $gwiOrder['ArticleQuantity']['value'] = 1;
+                $gwiOrder['ArticleUnitPrice']['value'] = $gwiPrice;
+                $gwiOrder['ArticleVatcategory']['value'] = $gwTax;
+
+                $group[] = $gwiOrder;
+            }
+        }
+
+        end($group);// move the internal pointer to the end of the array
+        $key = (int)key($group);
+        $fee = (double) $creditmemo->getBuckarooFee();
+
+        if ($fee > 0) {
+            $feeTax = (double) $creditmemo->getBuckarooFeeTax();
+
+            $feeArticle['ArticleDescription']['value'] = 'Servicekosten';
+            $feeArticle['ArticleId']['value']          = 1;
+            $feeArticle['ArticleQuantity']['value']    = 1;
+            $feeArticle['ArticleUnitPrice']['value']   = round($fee + $feeTax, 2);
+            $feeArticle['ArticleVatcategory']['value'] = $this->_getTaxCategory(Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId()));
+
+            $feeGroupId = $key+1;
+            $group[$feeGroupId] = $feeArticle;
+        }
+
+        $requestArray = array('Articles' => $group);
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
+        } else {
+            $vars['customVars'][$this->_method] = $requestArray;
+        }
+
+        $shippingCosts = round($creditmemo->getBaseShippingAmount(), 2);
+
+        if ($shippingCosts > 0) {
+            $shippingInfo = array(
+                'ShippingCosts' => $shippingCosts,
+            );
+
+            if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+                $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $shippingInfo);
+            } else {
+                $vars['customVars'][$this->_method] = $shippingInfo;
+            }
         }
     }
 

@@ -49,7 +49,11 @@
 
         <?php $currentBusiness = $this->getBusiness(); ?>
 
-        <?php $currentBusiness = ($this->getPaymethod() == 'afterpaydigiaccept')? $currentBusiness : '1'; ?>
+        <?php
+        if ($this->getPaymethod() != 'afterpaydigiaccept' || $this->getBillingCountry() == 'BE') {
+            $currentBusiness = '1';
+        }
+        ?>
 
         <?php if($currentBusiness == '1'): ?>
 
