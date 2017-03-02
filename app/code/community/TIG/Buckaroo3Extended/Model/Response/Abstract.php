@@ -264,11 +264,22 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->restoreQuote();
 
+        $parsedResponse = $this->_parseResponse();
+        $billingCountry = $this->_order->getBillingAddress()->getCountry();
+        $serviceCode = $this->_response->ServiceCode;
 
+        $errorMessage = $this->_getCorrectFailureMessage($message);
 
-        Mage::getSingleton('core/session')->addError(
-            $this->_getCorrectFailureMessage($message)
-        );
+        if ($billingCountry == 'NL'
+            && ($serviceCode== 'afterpaydigiaccept' || $serviceCode == 'afterpayacceptgiro')
+            && $parsedResponse['code'] == 490
+        ) {
+            $subcodeMessage = explode(':', $parsedResponse['subCode']['message']);
+            array_shift($subcodeMessage);
+            $errorMessage = trim(implode(':', $subcodeMessage));
+        }
+
+        Mage::getSingleton('core/session')->addError($errorMessage);
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())) {
             $this->_returnGiftcards($this->_order);
