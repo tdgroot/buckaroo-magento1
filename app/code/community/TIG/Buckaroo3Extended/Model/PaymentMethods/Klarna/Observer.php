@@ -113,7 +113,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $this->addAddressesVariables($vars);
         $this->addAdditionalInfo($vars);
         $this->addArticlesVariables($vars);
-        $this->addShippingCostsVariables($vars);
+//        $this->addShippingCostsVariables($vars);
 
         $request->setVars($vars);
 
@@ -156,7 +156,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             'Gender'                => $additionalFields['BPE_customer_gender'],
             'OperatingCountry'      => Mage::getStoreConfig('general/country/default', $this->_order->getStoreId()),
             'Pno'                   => $additionalFields['BPE_customer_dob'],
-            'ShippingSameAsBilling' => true,//(boolean)$this->shippingSameAsBilling(),
+            'ShippingSameAsBilling' => (boolean)$this->shippingSameAsBilling(),
             //'Encoding'         => '???',
         );
 
@@ -231,11 +231,18 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
 
         end($group);
         $key             = (int)key($group);
-        $feeGroupId      = $key+1;
+        $feeGroupId      = $key + 1;
         $paymentFeeArray = $this->getPaymentFeeLine();
 
         if (false !== $paymentFeeArray && is_array($paymentFeeArray)) {
             $group[$feeGroupId] = $paymentFeeArray;
+        }
+
+        $shipmentCostsGroupId = $feeGroupId + 1;
+        $shipmentCostsArray = $this->getShipmentCostsLine();
+
+        if (false !== $shipmentCostsArray && is_array($shipmentCostsArray)) {
+            $group[$shipmentCostsGroupId] = $shipmentCostsArray;
         }
 
         $requestArray = array('Articles' => $group);
@@ -489,6 +496,26 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $article['ArticlePrice']['value']    = round($fee + $feeTax, 2);
             $article['ArticleQuantity']['value'] = 1;
             $article['ArticleTitle']['value']    = 'Servicekosten';
+            $article['ArticleVat']['value']      = 0.00;
+
+            return $article;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    private function getShipmentCostsLine()
+    {
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+
+        if ($shippingCosts > 0) {
+            $article['ArticleNumber']['value']   = 1;
+            $article['ArticlePrice']['value']    = $shippingCosts;
+            $article['ArticleQuantity']['value'] = 1;
+            $article['ArticleTitle']['value']    = 'Verzendkosten';
             $article['ArticleVat']['value']      = 0.00;
 
             return $article;
