@@ -38,4 +38,31 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
     protected $_code = 'buckaroo3extended_klarna';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_klarna_checkout_form';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function capture(Varien_Object $payment, $amount)
+    {
+        if (!$this->canCapture()) {
+            Mage::throwException(Mage::helper('payment')->__('Capture action is not available.'));
+        }
+
+        /** @var TIG_Buckaroo3Extended_Model_Request_Capture $captureRequest */
+        $captureRequest = Mage::getModel(
+            'buckaroo3extended/request_capture',
+            array(
+                'payment' => $payment
+            )
+        );
+
+        try {
+            $captureRequest->sendRequest();
+        } catch (Exception $e) {
+            Mage::helper('buckaroo3extended')->logException($e);
+            Mage::throwException($e->getMessage());
+        }
+
+        return $this;
+    }
 }
