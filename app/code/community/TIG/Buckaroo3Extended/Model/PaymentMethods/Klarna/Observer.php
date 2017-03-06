@@ -115,6 +115,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $this->addArticlesVariables($vars);
 //        $this->addShippingCostsVariables($vars);
 
+        unset($vars['amountCredit']);
+        unset($vars['amountDebit']);
+        unset($vars['orderId']);
+
         $request->setVars($vars);
 
         return $this;
@@ -142,6 +146,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         } else {
             $vars['customVars'][$this->_method] = $requestArray;
         }
+
+        $vars['request_type'] = 'DataRequest';
     }
 
     /**
@@ -156,8 +162,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             'Gender'                => $additionalFields['BPE_customer_gender'],
             'OperatingCountry'      => Mage::getStoreConfig('general/country/default', $this->_order->getStoreId()),
             'Pno'                   => $additionalFields['BPE_customer_dob'],
-            'ShippingSameAsBilling' => (boolean)$this->shippingSameAsBilling(),
-            //'Encoding'         => '???',
+            'ShippingSameAsBilling' => $this->shippingSameAsBilling(),
         );
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
@@ -185,7 +190,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
 
             $article['ArticleNumber']['value']   = $item->getId();
             $article['ArticlePrice']['value']    = $item->getBasePrice();
-            $article['ArticleQuantity']['value'] = $item->getQtyOrdered();
+            $article['ArticleQuantity']['value'] = round($item->getQtyOrdered(), 0);
             $article['ArticleTitle']['value']    = $item->getName();
             $article['ArticleVat']['value']      = $item->getTaxPercent();
 
@@ -316,9 +321,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     }
 
     /**
-     * Checks if shipping-address is different from billing-address
+     * Checks if shipping-address is different from billing-address.
+     * Buckaroo needs the bool value as a string, therefore the bool is returned as text.
      *
-     * @return bool
+     * @return string
      */
     private function shippingSameAsBilling()
     {
@@ -342,10 +348,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $addressDiff = array_diff($oBillingAddressFiltered, $oShippingAddressFiltered);
 
         if (empty($addressDiff)) {
-            return true;
+            return "true";
         }
 
-        return false;
+        return "false";
     }
 
     /**
@@ -512,7 +518,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
 
         if ($shippingCosts > 0) {
-            $article['ArticleNumber']['value']   = 1;
+            $article['ArticleNumber']['value']   = 2;
             $article['ArticlePrice']['value']    = $shippingCosts;
             $article['ArticleQuantity']['value'] = 1;
             $article['ArticleTitle']['value']    = 'Verzendkosten';
