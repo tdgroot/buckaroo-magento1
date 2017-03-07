@@ -120,6 +120,31 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     }
 
     /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $responseObject = $observer->getResponseobject();
+
+        if (isset($responseObject->Services) && count($responseObject->Services->Service->ResponseParameter) > 0) {
+            $reserVationNumber = $this->getReservationNumber($responseObject->Services->Service->ResponseParameter);
+
+            /** @var Mage_Sales_Model_Order $order */
+            $order = $observer->getOrder();
+            $order->setBuckarooReservationNumber($reserVationNumber);
+            $order->save();
+        }
+
+        return $this;
+    }
+
+    /**
      * @param array $vars
      */
     private function addAddressesVariables(&$vars)
@@ -509,5 +534,30 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         }
 
         return false;
+    }
+
+    /**
+     * @param array $responseParameters
+     *
+     * @return null|string
+     */
+    private function getReservationNumber($responseParameters)
+    {
+        if (isset($responseParameters->Name) && $responseParameters->Name == 'ReservationNumber') {
+            return $responseParameters->_;
+        }
+
+        $reservationNumber = null;
+
+        array_walk(
+            $responseParameters,
+            function ($parameter, $index) use (&$reservationNumber) {
+                if ($parameter->Name == 'ReservationNumber') {
+                    $reservationNumber = $parameter->_;
+                }
+            }
+        );
+
+        return $reservationNumber;
     }
 }
