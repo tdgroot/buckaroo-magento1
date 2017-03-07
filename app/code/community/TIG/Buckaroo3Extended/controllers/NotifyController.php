@@ -247,6 +247,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     {
         if (
             $this->_order->getTransactionKey() == $this->_postArray['brq_transactions']
+            || $this->_order->getTransactionKey() == $this->_postArray['brq_datarequest']
             || (isset($this->_postArray['brq_relatedtransaction_partialpayment'])
             && $this->_order->getTransactionKey() == $this->_postArray['brq_relatedtransaction_partialpayment'])
         ) {

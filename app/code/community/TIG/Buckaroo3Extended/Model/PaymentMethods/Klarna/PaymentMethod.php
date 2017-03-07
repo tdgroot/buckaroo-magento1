@@ -74,4 +74,18 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
 
         return $postArray;
     }
+
+    /**
+     * Klarna is always in authorize mode, therefore return the authorize payment action when asked for it
+     *
+     * {@inheritdoc}
+     */
+    public function getConfigData($field, $storeId = null)
+    {
+        if ($field == 'payment_action') {
+            return Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
+        }
+
+        return parent::getConfigData($field, $storeId);
+    }
 }
