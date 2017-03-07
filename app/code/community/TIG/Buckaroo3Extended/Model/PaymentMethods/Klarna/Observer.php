@@ -37,6 +37,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     /** @var string $_method */
     protected $_method = 'klarna';
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_capture_request_addservices(Varien_Event_Observer $observer)
     {
         if ($this->_isChosenMethod($observer) === false) {
@@ -65,9 +70,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_capture_request_addcustomvars(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -78,10 +88,46 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
 
         $vars = $request->getVars();
 
-        $vars['ReservationNumber'] = $this->_order->getBuckarooReservationNumber();
+        $this->addCaptureAditionalInfo($vars);
 
         $request->setVars($vars);
 
         return $this;
+    }
+
+    /**
+     * @param $vars
+     */
+    private function addCaptureAditionalInfo(&$vars)
+    {
+        $sendInvoiceBy = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_' . $this->_method . '/send_invoice_by',
+            Mage::app()->getStore()->getStoreId()
+        );
+
+        $array = array(
+            'ReservationNumber' => $this->_order->getBuckarooReservationNumber(),
+            'PreserveReservation' => 'false',
+            'SendByMail' => (TIG_Buckaroo3Extended_Model_Sources_Klarna_SendInvoiceBy::ACTION_MAIL == $sendInvoiceBy),
+            'SendByEmail' => (TIG_Buckaroo3Extended_Model_Sources_Klarna_SendInvoiceBy::ACTION_EMAIL == $sendInvoiceBy),
+        );
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        /** @var Mage_Sales_Model_Order_Invoice $lastInvoice */
+        $lastInvoice = $invoiceCollection->getLastItem();
+
+        if ($this->_order->getPayment()->canCapturePartial()
+            && count($invoiceCollection) > 0
+            && $lastInvoice->getBaseGrandTotal() < $this->_order->getBaseGrandTotal()) {
+            $array['PreserveReservation'] = 'true';
+        }
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
     }
 }
