@@ -62,7 +62,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
     {
         $dobPost = $post['payment'][$this->_code];
         $customerDob = date(
-            'Y-m-d',
+            'dmY',
             strtotime($dobPost['year'] . '-' . $dobPost['month'] . '-' . $dobPost['day'])
         );
 

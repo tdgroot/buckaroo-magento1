@@ -113,11 +113,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $this->addAddressesVariables($vars);
         $this->addAdditionalInfo($vars);
         $this->addArticlesVariables($vars);
-//        $this->addShippingCostsVariables($vars);
-
-        unset($vars['amountCredit']);
-        unset($vars['amountDebit']);
-        unset($vars['orderId']);
 
         $request->setVars($vars);
 
@@ -155,8 +150,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
      */
     private function addAdditionalInfo(&$vars)
     {
-        $session            = Mage::getSingleton('checkout/session');
-        $additionalFields   = $session->getData('additionalFields');
+        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
 
         $requestArray = array(
             'Gender'                => $additionalFields['BPE_customer_gender'],
@@ -170,6 +164,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         } else {
             $vars['customVars'][$this->_method] = $requestArray;
         }
+
+        // Reserve Webservice doesn't support amount and orderId, but does require an invoiceId
+        $vars['invoiceId'] = $vars['orderId'];
+        unset($vars['amountCredit']);
+        unset($vars['amountDebit']);
+        unset($vars['orderId']);
     }
 
     /**
@@ -260,24 +260,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     }
 
     /**
-     * @param array $vars
-     */
-    private function addShippingCostsVariables(&$vars)
-    {
-        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
-
-        $orderInfo = array(
-            'ShippingCosts' => $shippingCosts,
-        );
-
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $orderInfo);
-        } else {
-            $vars['customVars'][$this->_method] = $orderInfo;
-        }
-    }
-
-    /**
      * @param Mage_Sales_Model_Order_Address $address
      *
      * @return array
@@ -311,7 +293,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $addressType . 'HouseNumberSuffix' => $streetFull['number_addition'],
             $addressType . 'PostalCode'        => $address->getPostcode(),
             $addressType . 'City'              => $address->getCity(),
-            $addressType . 'Region'            => $address->getRegion(), // TODO: Test if still necessary
             $addressType . 'Country'           => $billingAddress->getCountryId(),
             $addressType . 'Email'             => $address->getEmail(),
             $addressType . 'CellPhoneNumber'   => $phoneNumber['clean'],
