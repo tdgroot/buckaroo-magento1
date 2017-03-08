@@ -1201,8 +1201,22 @@
                         <class>buckaroo3extended/paymentMethods_afterpay2_observer</class>
                         <method>buckaroo3extended_cancelauthorize_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_afterpay2>
+                    <buckaroo3extended_paymentmethod_observer_klarna>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_klarna_observer</class>
+                        <method>buckaroo3extended_cancelauthorize_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_klarna>
                 </observers>
             </buckaroo3extended_cancelauthorize_request_addservices>
+            <buckaroo3extended_cancelauthorize_request_addcustomvars>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_klarna>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_klarna_observer</class>
+                        <method>buckaroo3extended_cancelauthorize_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_klarna>
+                </observers>
+            </buckaroo3extended_cancelauthorize_request_addcustomvars>
         </events>
     </global>
     <default>
