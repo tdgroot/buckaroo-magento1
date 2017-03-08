@@ -87,6 +87,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $vars['services'] = $array;
         }
 
+        $vars['request_type'] = 'DataRequest';
+
         $request->setVars($vars);
 
         return $this;
@@ -183,6 +185,64 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
      *
      * @return $this
      */
+    public function buckaroo3extended_cancelauthorize_request_addservices(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        /** @var TIG_Buckaroo3Extended_Model_Request_Abstract $request */
+        $request = $observer->getRequest();
+        $vars = $request->getVars();
+
+        $array = array(
+            $this->_method => array(
+                'action'   => 'CancelReservation', //CancelAuthorize
+                'version'  => '1',
+            ),
+        );
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
+        } else {
+            $vars['services'] = $array;
+        }
+
+        $vars['request_type'] = 'DataRequest';
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_cancelauthorize_request_addcustomvars(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        /** @var TIG_Buckaroo3Extended_Model_Request_Abstract $request */
+        $request      = $observer->getRequest();
+        $this->_order = $request->getOrder();
+        $vars         = $request->getVars();
+
+        $this->addCancelAditionalInfo($vars);
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
     {
         if ($this->_isChosenMethod($observer) === false) {
@@ -194,10 +254,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         if (isset($responseObject->Services) && count($responseObject->Services->Service->ResponseParameter) > 0) {
             $reserVationNumber = $this->getReservationNumber($responseObject->Services->Service->ResponseParameter);
 
-            /** @var Mage_Sales_Model_Order $order */
-            $order = $observer->getOrder();
-            $order->setBuckarooReservationNumber($reserVationNumber);
-            $order->save();
+            if (null !== $reserVationNumber) {
+                /** @var Mage_Sales_Model_Order $order */
+                $order = $observer->getOrder();
+                $order->setBuckarooReservationNumber($reserVationNumber);
+                $order->save();
+            }
         }
 
         return $this;
@@ -225,8 +287,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         } else {
             $vars['customVars'][$this->_method] = $requestArray;
         }
-
-        $vars['request_type'] = 'DataRequest';
     }
 
     /**
@@ -294,6 +354,26 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         }
 
         // Pay Webservice doesn't support OriginalTransactionKey
+        unset($vars['OriginalTransactionKey']);
+    }
+
+    /**
+     * @param $vars
+     */
+    private function addCancelAditionalInfo(&$vars)
+    {
+        $array = array(
+            'ReservationNumber' => $this->_order->getBuckarooReservationNumber()
+        );
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+
+        // CancelReservation Webservice doesn't support amountCredit and originalTransactionKey
+        unset($vars['amountCredit']);
         unset($vars['OriginalTransactionKey']);
     }
 
