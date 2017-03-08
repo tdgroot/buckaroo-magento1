@@ -736,6 +736,11 @@
                         <class>buckaroo3extended/paymentMethods_masterpassLightbox_observer</class>
                         <method>buckaroo3extended_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_masterpass_lightbox>
+                    <buckaroo3extended_paymentmethod_observer_klarna>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_klarna_observer</class>
+                        <method>buckaroo3extended_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_klarna>
                 </observers>
             </buckaroo3extended_request_addservices>
             <buckaroo3extended_request_addcustomvars>
@@ -870,6 +875,11 @@
                         <class>buckaroo3extended/paymentMethods_masterpassLightbox_observer</class>
                         <method>buckaroo3extended_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_masterpass_lightbox>
+                    <buckaroo3extended_paymentmethod_observer_klarna>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_klarna_observer</class>
+                        <method>buckaroo3extended_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_klarna>
                 </observers>
             </buckaroo3extended_request_addcustomvars>
             <buckaroo3extended_request_setmethod>
@@ -1004,6 +1014,11 @@
                         <class>buckaroo3extended/paymentMethods_masterpassLightbox_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_masterpass_lightbox>
+                    <buckaroo3extended_paymentmethod_observer_klarna>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_klarna_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_klarna>
                 </observers>
             </buckaroo3extended_request_setmethod>
             <buckaroo3extended_push_custom_processing>
@@ -1129,6 +1144,11 @@
                         <class>buckaroo3extended/paymentMethods_paymentguarantee_observer</class>
                         <method>buckaroo3extended_response_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
+                    <buckaroo3extended_paymentmethod_observer_klarna>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_klarna_observer</class>
+                        <method>buckaroo3extended_response_custom_processing</method>
+                    </buckaroo3extended_paymentmethod_observer_klarna>
                 </observers>
             </buckaroo3extended_response_custom_processing>
             <buckaroo3extended_capture_request_addservices>

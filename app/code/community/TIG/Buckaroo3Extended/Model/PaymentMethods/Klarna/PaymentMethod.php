@@ -38,4 +38,54 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
     protected $_code = 'buckaroo3extended_klarna';
 
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_klarna_checkout_form';
+
+    /**
+     * @return string
+     */
+    public function getOrderPlaceRedirectUrl()
+    {
+        $session = Mage::getSingleton('checkout/session');
+        $post = Mage::app()->getRequest()->getPost();
+
+        $postArray = $this->getBPEPostData($post);
+        $session->setData('additionalFields', $postArray);
+
+        return parent::getOrderPlaceRedirectUrl();
+    }
+
+    /**
+     * @param array $post
+     *
+     * @return array
+     */
+    private function getBPEPostData($post)
+    {
+        $dobPost = $post['payment'][$this->_code];
+        $customerDob = date(
+            'dmY',
+            strtotime($dobPost['year'] . '-' . $dobPost['month'] . '-' . $dobPost['day'])
+        );
+
+        $postArray = array(
+            'BPE_customer_gender'      => $post[$this->_code . '_BPE_customer_gender'],
+            'BPE_customer_phonenumber' => $post[$this->_code . '_BPE_customer_phonenumber'],
+            'BPE_customer_dob'         => $customerDob,
+        );
+
+        return $postArray;
+    }
+
+    /**
+     * Klarna is always in authorize mode, therefore return the authorize payment action when asked for it
+     *
+     * {@inheritdoc}
+     */
+    public function getConfigData($field, $storeId = null)
+    {
+        if ($field == 'payment_action') {
+            return Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
+        }
+
+        return parent::getConfigData($field, $storeId);
+    }
 }

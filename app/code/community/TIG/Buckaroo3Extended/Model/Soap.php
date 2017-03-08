@@ -371,6 +371,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                                 $requestParameter          = new RequestParameter();
                                 $requestParameter->Name    = $articleName;
                                 $requestParameter->GroupID = $groupId;
+                                $requestParameter->Group   = "Article";
                                 $requestParameter->_       = $articleValue['value'];
                                 $requestParameters[]       = $requestParameter;
                             }
