@@ -286,9 +286,10 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return array($module, $processedPush);
         }
 
-        // C012 and C017 are Afterpay Capture transactions which don't need an update
+        // C012, C017 and C700 are Afterpay and Klarna Capture transactions which don't need an update
         if ($this->_postArray['brq_transaction_type'] == 'C012'
             || $this->_postArray['brq_transaction_type'] == 'C017'
+            || $this->_postArray['brq_transaction_type'] == 'C700'
         ) {
             list($processedPush, $module) = $this->_updateCapture();
             return array($module, $processedPush);

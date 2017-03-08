@@ -89,6 +89,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $vars = $request->getVars();
 
         $this->addCaptureAditionalInfo($vars);
+        $this->addPartialArticlesVariables($vars);
 
         $request->setVars($vars);
 
@@ -100,17 +101,19 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
      */
     private function addCaptureAditionalInfo(&$vars)
     {
+        $array = array(
+            'ReservationNumber' => $this->_order->getBuckarooReservationNumber(),
+            'PreserveReservation' => 'false',
+            'SendByMail' => 'false',
+            'SendByEmail' => 'false',
+        );
+
         $sendInvoiceBy = Mage::getStoreConfig(
             'buckaroo/buckaroo3extended_' . $this->_method . '/send_invoice_by',
             Mage::app()->getStore()->getStoreId()
         );
-
-        $array = array(
-            'ReservationNumber' => $this->_order->getBuckarooReservationNumber(),
-            'PreserveReservation' => 'false',
-            'SendByMail' => (TIG_Buckaroo3Extended_Model_Sources_Klarna_SendInvoiceBy::ACTION_MAIL == $sendInvoiceBy),
-            'SendByEmail' => (TIG_Buckaroo3Extended_Model_Sources_Klarna_SendInvoiceBy::ACTION_EMAIL == $sendInvoiceBy),
-        );
+        $sendInvoiceBy = ucfirst($sendInvoiceBy);
+        $array['SendBy' . $sendInvoiceBy] = 'true';
 
         /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
         $invoiceCollection = $this->_order->getInvoiceCollection();
@@ -129,5 +132,125 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         } else {
             $vars['customVars'][$this->_method] = $array;
         }
+
+        // Pay Webservice doesn't support OriginalTransactionKey
+        unset($vars['OriginalTransactionKey']);
+    }
+
+    /**
+     * @param $vars
+     */
+    private function addPartialArticlesVariables(&$vars)
+    {
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        $products = $invoiceCollection->getLastItem()->getAllItems();
+        $max      = 99;
+        $i        = 1;
+        $group    = array();
+
+        /** @var Mage_Sales_Model_Order_Invoice_Item $item */
+        foreach ($products as $item) {
+            if (empty($item) || ($item->getOrderItem() && $item->getOrderItem()->getParentItem())) {
+                continue;
+            }
+
+            $article['ArticleNumber']['value']   = $item->getOrderItemId();
+            $article['ArticleQuantity']['value'] = round($item->getQty(), 0);
+
+            $group[$i] = $article;
+            $i++;
+
+            if ($i > $max) {
+                break;
+            }
+        }
+
+        if (Mage::helper('buckaroo3extended')->isEnterprise() && count($invoiceCollection) == 1) {
+            $gwId = 1;
+
+            if ($this->_order->getGwBasePrice() > 0) {
+                $gwOrder = array();
+                $gwOrder['ArticleNumber']['value']   = 'gwo_' . $this->_order->getGwId();
+                $gwOrder['ArticleQuantity']['value'] = 1;
+
+                $group[] = $gwOrder;
+
+                $gwId += $this->_order->getGwId();
+            }
+
+            if ($this->_order->getGwItemsBasePrice() > 0) {
+                $gwiOrder = array();
+                $gwiOrder['ArticleNumber']['value']   = 'gwi_' . $gwId;
+                $gwiOrder['ArticleQuantity']['value'] = 1;
+
+                $group[] = $gwiOrder;
+            }
+        }
+
+        end($group);
+        $key             = (int)key($group);
+        $feeGroupId      = $key + 1;
+        $paymentFeeArray = $this->getPaymentFeeLine();
+
+        if (false !== $paymentFeeArray && is_array($paymentFeeArray) && count($invoiceCollection) == 1) {
+            unset($paymentFeeArray['ArticlePrice']);
+            unset($paymentFeeArray['ArticleTitle']);
+            unset($paymentFeeArray['ArticleVat']);
+            $group[$feeGroupId] = $paymentFeeArray;
+        }
+
+        $shipmentCostsGroupId = $feeGroupId + 1;
+        $shipmentCostsArray = $this->getShipmentCostsLine();
+
+        if (false !== $shipmentCostsArray && is_array($shipmentCostsArray) && count($invoiceCollection) == 1) {
+            unset($shipmentCostsArray['ArticlePrice']);
+            unset($shipmentCostsArray['ArticleTitle']);
+            unset($shipmentCostsArray['ArticleVat']);
+            $group[$shipmentCostsGroupId] = $shipmentCostsArray;
+        }
+
+        $requestArray = array('Articles' => $group);
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
+        } else {
+            $vars['customVars'][$this->_method] = $requestArray;
+        }
+    }
+
+    /**
+     * @return bool|array
+     */
+    private function getPaymentFeeLine()
+    {
+        $fee    = (double) $this->_order->getBuckarooFee();
+        $feeTax = (double) $this->_order->getBuckarooFeeTax();
+        if ($fee > 0) {
+            $article['ArticleNumber']['value']   = 1;
+            $article['ArticlePrice']['value']    = round($fee + $feeTax, 2);
+            $article['ArticleQuantity']['value'] = 1;
+            $article['ArticleTitle']['value']    = 'Servicekosten';
+            $article['ArticleVat']['value']      = 0.00;
+            return $article;
+        }
+        return false;
+    }
+    /**
+     * @return bool
+     */
+    private function getShipmentCostsLine()
+    {
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+        if ($shippingCosts > 0) {
+            $article['ArticleNumber']['value']   = 2;
+            $article['ArticlePrice']['value']    = $shippingCosts;
+            $article['ArticleQuantity']['value'] = 1;
+            $article['ArticleTitle']['value']    = 'Verzendkosten';
+            $article['ArticleVat']['value']      = 0.00;
+            return $article;
+        }
+        return false;
     }
 }
