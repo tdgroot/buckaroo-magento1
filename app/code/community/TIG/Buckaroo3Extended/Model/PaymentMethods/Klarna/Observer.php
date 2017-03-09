@@ -126,6 +126,63 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
      *
      * @return $this
      */
+    public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        /** @var TIG_Buckaroo3Extended_Model_Request_Abstract $request */
+        $request = $observer->getRequest();
+        $vars = $request->getVars();
+
+        $array = array(
+            'action'    => 'Refund',
+            'version'   => 1,
+        );
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
+            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        } else {
+            $vars['services'][$this->_method] = $array;
+        }
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        /** @var TIG_Buckaroo3Extended_Model_Request_Abstract $request */
+        $request = $observer->getRequest();
+        $vars = $request->getVars();
+
+        $vars['channel'] = 'Web';
+
+        if (!isset($vars['currency']) || strlen($vars['currency']) <= 0) {
+            $vars['currency'] = $request->getOrder()->getBaseCurrency()->getCurrencyCode();
+        }
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_capture_request_addservices(Varien_Event_Observer $observer)
     {
         if ($this->_isChosenMethod($observer) === false) {
