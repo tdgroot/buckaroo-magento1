@@ -306,17 +306,27 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             return $this;
         }
 
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getOrder();
         $responseObject = $observer->getResponseobject();
 
         if (isset($responseObject->Services) && count($responseObject->Services->Service->ResponseParameter) > 0) {
             $reserVationNumber = $this->getReservationNumber($responseObject->Services->Service->ResponseParameter);
 
             if (null !== $reserVationNumber) {
-                /** @var Mage_Sales_Model_Order $order */
-                $order = $observer->getOrder();
                 $order->setBuckarooReservationNumber($reserVationNumber);
                 $order->save();
             }
+        }
+
+        if ($responseObject->Status->Code->Code == '791') {
+            $helper = Mage::helper('buckaroo3extended');
+            $method = $order->getPayment()->getMethod();
+            $status = $helper->getNewStates('BUCKAROO_PENDING_PAYMENT', $order, $method);
+            $message = $helper->__('Klarna is doing an additional check. The status will be known within 24 hours.');
+
+            $order->addStatusHistoryComment($message, $status[1]);
+            $order->save();
         }
 
         return $this;
