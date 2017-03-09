@@ -164,6 +164,31 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         return true;
     }
 
+    /**
+     * @return bool
+     * @throws Zend_Currency_Exception
+     */
+    public function processPartialTransferMessage()
+    {
+        $response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);
+
+        $description = Mage::helper('buckaroo3extended')->__($response['message']);
+        $description .= " (#{$this->_postArray['brq_statuscode']})<br>";
+
+        if ($this->_postArray['brq_currency'] == $this->_order->getBaseCurrencyCode()) {
+            $currencyCode = $this->_order->getBaseCurrencyCode();
+        } else {
+            $currencyCode = $this->_order->getOrderCurrencyCode();
+        }
+        $brqAmount = Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']);
+
+        $description .= 'Partial amount of ' . $brqAmount . ' has been paid';
+
+        $this->_order->addStatusHistoryComment($description)->save();
+
+        return true;
+    }
+
 
     /**
      * Checks if the post received is valid by checking its signature field.
