@@ -1080,6 +1080,13 @@
                         <method>buckaroo3extended_push_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_giftcard>
                 </observers>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_klarna>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_klarna_observer</class>
+                        <method>buckaroo3extended_push_custom_processing</method>
+                    </buckaroo3extended_paymentmethod_observer_klarna>
+                </observers>
             </buckaroo3extended_push_custom_processing>
             <buckaroo3extended_return_custom_processing>
                 <observers>

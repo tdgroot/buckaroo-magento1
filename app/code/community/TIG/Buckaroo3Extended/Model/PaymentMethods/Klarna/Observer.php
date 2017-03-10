@@ -322,9 +322,45 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         if ($responseObject->Status->Code->Code == '791') {
             $helper = Mage::helper('buckaroo3extended');
             $method = $order->getPayment()->getMethod();
-            $status = $helper->getNewStates('BUCKAROO_PENDING_PAYMENT', $order, $method);
+            $status = $helper->getNewStates(
+                TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_PENDING_PAYMENT,
+                $order,
+                $method
+            );
             $message = $helper->__('Klarna is doing an additional check. The status will be known within 24 hours.');
 
+            $order->addStatusHistoryComment($message, $status[1]);
+            $order->save();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        if (TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_REJECTED) {
+            /** @var Mage_Sales_Model_Order $order */
+            $order = $observer->getOrder();
+            $method = $order->getPayment()->getMethod();
+            $helper = Mage::helper('buckaroo3extended');
+
+            $status = $helper->getNewStates(TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_FAILED, $order, $method);
+            $message = $helper->__('Klarna has rejected the payment request. Please check the Buckaroo Payment Plaza for additional information.');
+
+            // skipCancelAuthorize is a custom, temporary data.
+            // This allows us to cancel an order without sending a call to Buckaroo.
+            $order->getPayment()->setSkipCancelAuthorize(true);
+            $order->cancel();
             $order->addStatusHistoryComment($message, $status[1]);
             $order->save();
         }
