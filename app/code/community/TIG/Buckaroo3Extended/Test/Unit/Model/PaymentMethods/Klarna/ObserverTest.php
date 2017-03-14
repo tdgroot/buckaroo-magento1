@@ -104,7 +104,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_request_setmethod($mockObserver);
         $requestMethodResult = $mockObserver->getRequest()->getMethod();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
         $this->assertEquals('klarna', $requestMethodResult);
     }
 
@@ -116,7 +116,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_request_addservices($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
         $this->assertEquals('DataRequest', $requestVarsResult['request_type']);
         $this->assertEquals('Reserve', $requestVarsResult['services']['klarna']['action']);
     }
@@ -133,7 +133,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_request_addcustomvars($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
         $this->assertArrayHasKey('customVars', $requestVarsResult);
         $this->assertArrayHasKey('Articles', $requestVarsResult['customVars']['klarna']);
 
@@ -151,7 +151,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_refund_request_addservices($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
         $this->assertEquals('Refund', $requestVarsResult['services']['klarna']['action']);
     }
 
@@ -163,7 +163,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_refund_request_addcustomvars($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
         $this->assertEquals('Web', $requestVarsResult['channel']);
     }
 
@@ -175,7 +175,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_capture_request_addservices($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
         $this->assertEquals('Pay', $requestVarsResult['services']['klarna']['action']);
     }
 
@@ -187,7 +187,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_capture_request_addcustomvars($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
         $this->assertArrayHasKey('customVars', $requestVarsResult);
         $this->assertArrayHasKey('Articles', $requestVarsResult['customVars']['klarna']);
         $this->assertArrayNotHasKey('OriginalTransactionKey', $requestVarsResult);
@@ -201,7 +201,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_cancelauthorize_request_addservices($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
         $this->assertEquals('CancelReservation', $requestVarsResult['services']['klarna']['action']);
     }
 
@@ -213,7 +213,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $result = $instance->buckaroo3extended_cancelauthorize_request_addcustomvars($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
-        $this->assertInstanceOf(TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::class, $result);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer', $result);
 
         $this->assertArrayHasKey('customVars', $requestVarsResult);
         $this->assertArrayHasKey('ReservationNumber', $requestVarsResult['customVars']['klarna']);
