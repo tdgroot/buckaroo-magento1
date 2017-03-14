@@ -12,7 +12,7 @@ CURRENT_DIR=`pwd`
 BUILDENV="/tmp/magento"
 mkdir -p ${BUILDENV}
 PUBLIC_DIR="${BUILDENV}/public/"
-COMPOSER_HOME="~/.composer/vendor/bin/"
+COMPOSER_HOME="$HOME/.composer/vendor/bin/"
 
 mkdir -p "${PUBLIC_DIR}"
 
