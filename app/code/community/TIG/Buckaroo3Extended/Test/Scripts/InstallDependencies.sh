@@ -17,10 +17,10 @@ if [ $? != "0" ]; then
 fi
 
 if [ ! -f "${COMPOSER_HOME}phpunit" ]; then
-    PHPUNIT_VERSION="4.8"
+    PHPUNIT_VERSION="4.8.35"
 
     if [ ${TRAVIS_PHP_VERSION} == "5.6" ]  || [ ${TRAVIS_PHP_VERSION} == "7.0" ] || [ ${TRAVIS_PHP_VERSION} == "7.1" ]; then
-        PHPUNIT_VERSION="5.7"
+        PHPUNIT_VERSION="5.7.15"
     fi
 
     COMPOSER_REQUIRE="${COMPOSER_REQUIRE} phpunit/phpunit ^${PHPUNIT_VERSION}"
