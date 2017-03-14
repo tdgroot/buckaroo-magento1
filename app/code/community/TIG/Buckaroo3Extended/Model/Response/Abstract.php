@@ -444,7 +444,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             case 'afterpayacceptgiro':
                 $parsedResponse = $this->_parseResponse();
                 $subcodeMessage = explode(':', $parsedResponse['subCode']['message']);
-                array_shift($subcodeMessage);
+
+                if (count($subcodeMessage) > 1) {
+                    array_shift($subcodeMessage);
+                }
+
                 $failureMessage = trim(implode(':', $subcodeMessage));
                 break;
             case 'klarna':

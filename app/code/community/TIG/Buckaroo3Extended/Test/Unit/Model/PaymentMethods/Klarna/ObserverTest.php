@@ -335,6 +335,136 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
     /**
      * @return array
      */
+    public function processPhoneNumberProvider()
+    {
+        return array(
+            'phone 13 length' => array(
+                '0031201234567',
+                '0031201234567',
+                false
+            ),
+            'mobile 13 length' => array(
+                '0031612345678',
+                '0031612345678',
+                true
+            ),
+            'phone 12 length' => array(
+                '+31201234567',
+                '0031201234567',
+                false
+            ),
+            'mobile 12 length' => array(
+                '+31612345678',
+                '0031612345678',
+                true
+            ),
+            'phone 11 length' => array(
+                '31201234567',
+                '0031201234567',
+                false
+            ),
+            'mobile 11 length' => array(
+                '31612345678',
+                '0031612345678',
+                true
+            ),
+            'phone 10 length' => array(
+                '0201234567',
+                '0031201234567',
+                false
+            ),
+            'mobile 10 length' => array(
+                '0612345678',
+                '0031612345678',
+                true
+            ),
+        );
+    }
+
+    /**
+     * @param $telephoneNumber
+     * @param $expectedClean
+     * @param $expectedMobile
+     *
+     * @dataProvider processPhoneNumberProvider
+     */
+    public function testProcessPhoneNumber($telephoneNumber, $expectedClean, $expectedMobile)
+    {
+        $instance = $this->_getInstance();
+        $result = $this->invokeMethod($instance, 'processPhoneNumber', array($telephoneNumber));
+
+        $this->assertEquals($expectedClean, $result['clean']);
+        $this->assertEquals($expectedMobile, $result['mobile']);
+    }
+
+    /**
+     * @return array
+     */
+    public function processPhoneNumberBeProvider()
+    {
+        return array(
+            'phone 13 length' => array(
+                '003212345678',
+                '003212345678',
+                false
+            ),
+            'mobile 13 length' => array(
+                '0032461234567',
+                '0032461234567',
+                true
+            ),
+            'phone 12 length' => array(
+                '+3212345678',
+                '003212345678',
+                false
+            ),
+            'mobile 12 length' => array(
+                '+32461234567',
+                '0032461234567',
+                true
+            ),
+            'phone 11 length' => array(
+                '3212345678',
+                '003212345678',
+                false
+            ),
+            'mobile 11 length' => array(
+                '32461234567',
+                '0032461234567',
+                true
+            ),
+            'phone 10 length' => array(
+                '012345678',
+                '003212345678',
+                false
+            ),
+            'mobile 10 length' => array(
+                '0461234567',
+                '0032461234567',
+                true
+            ),
+        );
+    }
+
+    /**
+     * @param $telephoneNumber
+     * @param $expectedClean
+     * @param $expectedMobile
+     *
+     * @dataProvider processPhoneNumberBeProvider
+     */
+    public function testProcessPhoneNumberBe($telephoneNumber, $expectedClean, $expectedMobile)
+    {
+        $instance = $this->_getInstance();
+        $result = $this->invokeMethod($instance, 'processPhoneNumberBe', array($telephoneNumber));
+
+        $this->assertEquals($expectedClean, $result['clean']);
+        $this->assertEquals($expectedMobile, $result['mobile']);
+    }
+
+    /**
+     * @return array
+     */
     public function getPaymentFeeLineProvider()
     {
         return array(
