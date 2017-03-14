@@ -23,7 +23,7 @@ if [ ! -f "${COMPOSER_HOME}phpunit" ]; then
         PHPUNIT_VERSION="5.7.15"
     fi
 
-    COMPOSER_REQUIRE="${COMPOSER_REQUIRE} phpunit/phpunit ^${PHPUNIT_VERSION}"
+    COMPOSER_REQUIRE="${COMPOSER_REQUIRE} phpunit/phpunit ${PHPUNIT_VERSION}"
 fi
 
 if [ ! -z "${COMPOSER_REQUIRE}" ]; then
