@@ -918,7 +918,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         array_walk(
             $responseParameters,
             function ($parameter, $index) use (&$reservationNumber) {
-                if ($parameter->Name == 'ReservationNumber') {
+                if (isset($parameter->Name) && $parameter->Name == 'ReservationNumber') {
                     $reservationNumber = $parameter->_;
                 }
             }
