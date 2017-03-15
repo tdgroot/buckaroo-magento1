@@ -6452,8 +6452,8 @@
                         </limit_by_ip>
                     </fields>
                 </buckaroo3extended_masterpass>
-                <buckaroo3extended_mpos translate="label">
-                    <label>MPOS</label>
+                <buckaroo3extended_pospayment translate="label">
+                    <label>POSPpayment</label>
                     <sort_order>20300</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -6618,7 +6618,7 @@
                             <comment>Select payment method specific currencies.</comment>
                             <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>
                             <frontend_type>multiselect</frontend_type>
-                            <source_model>buckaroo3extended/sources_mpos_availableCurrencies</source_model>
+                            <source_model>buckaroo3extended/sources_pospayment_availableCurrencies</source_model>
                             <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -6669,7 +6669,7 @@
                             </depends>
                         </limit_by_ip>
                     </fields>
-                </buckaroo3extended_mpos>
+                </buckaroo3extended_pospayment>
                 <buckaroo3extended_refund translate="label">
                     <label>Refunding</label>
                     <sort_order>20500</sort_order>

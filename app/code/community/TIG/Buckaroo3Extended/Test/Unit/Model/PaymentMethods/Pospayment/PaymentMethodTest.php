@@ -29,19 +29,19 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Mpos_PaymentMethodTest
+class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_PaymentMethodTest
     extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
-    /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_PaymentMethod */
+    /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod */
     protected $_instance = null;
 
     /**
-     * @return TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_PaymentMethod
+     * @return TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod
      */
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = new TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_PaymentMethod();
+            $this->_instance = new TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod();
         }
 
         return $this->_instance;
@@ -61,7 +61,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Mpos_PaymentMethodTes
         $instance = $this->_getInstance();
         $result = $instance->getCode();
 
-        $this->assertEquals('buckaroo3extended_mpos', $result);
+        $this->assertEquals('buckaroo3extended_pospayment', $result);
     }
 
 }

@@ -29,26 +29,29 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_Sources_Mpos_AvailableCurrencies
+class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Pospayment_Adminhtml_System_Config_AdvancedbtnTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
+    /** @var null|TIG_Buckaroo3Extended_Block_PaymentMethods_Pospayment_Adminhtml_System_Config_Advancedbtn */
+    protected $_instance = null;
+
     /**
-     * @return array
+     * @return TIG_Buckaroo3Extended_Block_PaymentMethods_Pospayment_Adminhtml_System_Config_Advancedbtn
      */
-    public function toOptionArray()
+    protected function _getInstance()
     {
-        /** @var TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_PaymentMethod $paymentModel */
-        $paymentModel = Mage::getModel('buckaroo3extended/paymentMethods_mpos_paymentMethod');
-        $allowedCurrencies = $paymentModel->getAllowedCurrencies();
-
-        $array = array();
-
-        foreach ($allowedCurrencies as $allowedCurrency) {
-            $array[] = array(
-                'value' => $allowedCurrency,
-                'label' => $allowedCurrency
-            );
+        if ($this->_instance === null) {
+            $this->_instance = new TIG_Buckaroo3Extended_Block_PaymentMethods_Pospayment_Adminhtml_System_Config_Advancedbtn();
         }
 
-        return $array;
+        return $this->_instance;
+    }
+
+    public function testRender()
+    {
+        $instance = $this->_getInstance();
+        $result = $instance->toHtml();
+
+        $this->assertInternalType('string', $result);
     }
 }

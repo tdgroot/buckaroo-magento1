@@ -29,29 +29,35 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Mpos_Adminhtml_System_Config_AdvancedbtnTest
+class TIG_Buckaroo3Extended_Test_Unit_Model_Sources_Pospayment_AvailableCurrenciesTest
     extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
-    /** @var null|TIG_Buckaroo3Extended_Block_PaymentMethods_Mpos_Adminhtml_System_Config_Advancedbtn */
+    /** @var null|TIG_Buckaroo3Extended_Model_Sources_Pospayment_AvailableCurrencies */
     protected $_instance = null;
 
     /**
-     * @return TIG_Buckaroo3Extended_Block_PaymentMethods_Mpos_Adminhtml_System_Config_Advancedbtn
+     * @return TIG_Buckaroo3Extended_Model_Sources_Pospayment_AvailableCurrencies
      */
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = new TIG_Buckaroo3Extended_Block_PaymentMethods_Mpos_Adminhtml_System_Config_Advancedbtn();
+            $this->_instance = new TIG_Buckaroo3Extended_Model_Sources_Pospayment_AvailableCurrencies();
         }
 
         return $this->_instance;
     }
 
-    public function testRender()
+    public function testToOptionArray()
     {
-        $instance = $this->_getInstance();
-        $result = $instance->toHtml();
+        $expectedOptions = array('EUR');
 
-        $this->assertInternalType('string', $result);
+        $instance = $this->_getInstance();
+        $result = $instance->toOptionArray();
+
+        $this->assertInternalType('array', $result);
+
+        foreach ($result as $currency) {
+            $this->assertContains($currency['value'], $expectedOptions);
+        }
     }
 }

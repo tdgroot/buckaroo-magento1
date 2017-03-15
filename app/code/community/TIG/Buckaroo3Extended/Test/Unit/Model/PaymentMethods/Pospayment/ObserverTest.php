@@ -29,19 +29,19 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Mpos_ObserverTest
+class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTest
     extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
-    /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_Observer */
+    /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer */
     protected $_instance = null;
 
     /**
-     * @return TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_Observer
+     * @return TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer
      */
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = new TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_Observer();
+            $this->_instance = new TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer();
         }
 
         return $this->_instance;
@@ -52,26 +52,20 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Mpos_ObserverTest
      */
     private function getMockOrder()
     {
-//        $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')->setMethods(null)->getMock();
-
         $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
             ->setMethods(array('getMethod'))
             ->getMock();
-        $mockPayment->expects($this->any())->method('getMethod')->willReturn('buckaroo3extended_mpos');
+        $mockPayment->expects($this->any())->method('getMethod')->willReturn('buckaroo3extended_pospayment');
 
         $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
             ->setMethods(array(
                 'getPayment',
                 'getPaymentMethodUsedForTransaction'
-//                'getBillingAddress',
-//                'getShippingAddress'
             ))
             ->getMock();
 
         $mockOrder->expects($this->any())->method('getPayment')->will($this->returnValue($mockPayment));
         $mockOrder->expects($this->any())->method('getPaymentMethodUsedForTransaction')->willReturn(false);
-//        $mockOrder->expects($this->any())->method('getBillingAddress')->willReturn($mockOrderAddress);
-//        $mockOrder->expects($this->any())->method('getShippingAddress')->willReturn($mockOrderAddress);
 
         return $mockOrder;
     }
@@ -105,7 +99,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Mpos_ObserverTest
         $result = $instance->buckaroo3extended_request_setmethod($mockObserver);
         $requestMethodResult = $mockObserver->getRequest()->getMethod();
 
-        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_Observer', $result);
-        $this->assertEquals('mpos', $requestMethodResult);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer', $result);
+        $this->assertEquals('pospayment', $requestMethodResult);
     }
 }

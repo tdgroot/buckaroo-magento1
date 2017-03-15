@@ -29,35 +29,17 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_Sources_Mpos_AvailableCurrenciesTest
-    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Pospayment_Adminhtml_System_Config_Advancedbtn
+    extends Mage_Adminhtml_Block_Abstract
+    implements Varien_Data_Form_Element_Renderer_Interface
 {
-    /** @var null|TIG_Buckaroo3Extended_Model_Sources_Mpos_AvailableCurrencies */
-    protected $_instance = null;
-
     /**
-     * @return TIG_Buckaroo3Extended_Model_Sources_Mpos_AvailableCurrencies
+     * @param Varien_Data_Form_Element_Abstract $element
+     *
+     * @return string
      */
-    protected function _getInstance()
+    public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        if ($this->_instance === null) {
-            $this->_instance = new TIG_Buckaroo3Extended_Model_Sources_Mpos_AvailableCurrencies();
-        }
-
-        return $this->_instance;
-    }
-
-    public function testToOptionArray()
-    {
-        $expectedOptions = array('EUR');
-
-        $instance = $this->_getInstance();
-        $result = $instance->toOptionArray();
-
-        $this->assertInternalType('array', $result);
-
-        foreach ($result as $currency) {
-            $this->assertContains($currency['value'], $expectedOptions);
-        }
+        return $this->toHtml();
     }
 }

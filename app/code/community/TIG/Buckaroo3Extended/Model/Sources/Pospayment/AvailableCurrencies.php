@@ -29,15 +29,26 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Model_Sources_Pospayment_AvailableCurrencies
 {
-    public $allowedCurrencies = array(
-        'EUR',
-    );
+    /**
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        /** @var TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod $paymentModel */
+        $paymentModel = Mage::getModel('buckaroo3extended/paymentMethods_pospayment_paymentMethod');
+        $allowedCurrencies = $paymentModel->getAllowedCurrencies();
 
-    protected $_code = 'buckaroo3extended_mpos';
+        $array = array();
 
-    protected $_canOrder                = true;
-    protected $_canRefund               = false;
-    protected $_canRefundInvoicePartial = false;
+        foreach ($allowedCurrencies as $allowedCurrency) {
+            $array[] = array(
+                'value' => $allowedCurrency,
+                'label' => $allowedCurrency
+            );
+        }
+
+        return $array;
+    }
 }
