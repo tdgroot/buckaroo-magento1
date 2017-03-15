@@ -38,5 +38,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_PaymentMethod extends TIG_
     protected $_code = 'buckaroo3extended_mpos';
 
     protected $_canOrder                = true;
+    protected $_canRefund               = false;
     protected $_canRefundInvoicePartial = false;
 }
