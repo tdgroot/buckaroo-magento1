@@ -29,7 +29,7 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Mpos_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
     /** @var string */
     protected $_code = 'buckaroo3extended_mpos';
