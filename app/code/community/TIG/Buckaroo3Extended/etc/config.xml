@@ -1014,6 +1014,11 @@
                         <class>buckaroo3extended/paymentMethods_masterpassLightbox_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_masterpass_lightbox>
+                    <buckaroo3extended_paymentmethod_observer_mpos>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_mpos_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_mpos>
                 </observers>
             </buckaroo3extended_request_setmethod>
             <buckaroo3extended_push_custom_processing>
