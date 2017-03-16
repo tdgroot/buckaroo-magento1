@@ -6507,19 +6507,9 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </order_email>
-                        <x_header translate="label comment">
-                            <label>Unique X-Header</label>
-                            <comment>The payment method will be shown only when the X-Header matches this configuration value.</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>required-entry</validate>
-                        </x_header>
                         <user_agent translate="label comment">
-                            <label>Unique User Agent</label>
-                            <comment>The payment method will be shown only when the User Agent matches this configuration value. The payment method will always be shown when this value is empty.</comment>
+                            <label>Unique User-Agent</label>
+                            <comment>The payment method will be shown only when the User-Agent matches this configuration value. The payment method will always be shown when this value is empty.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>

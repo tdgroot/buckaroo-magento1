@@ -1958,7 +1958,6 @@
                 <order_status_success></order_status_success>
                 <order_status_failed></order_status_failed>
                 <sort_order>220</sort_order>
-                <x_header>ECRID</x_header>
                 <limit_by_ip>0</limit_by_ip>
                 <allowed_currencies>EUR</allowed_currencies>
                 <payment_fee_label>Fee</payment_fee_label>
