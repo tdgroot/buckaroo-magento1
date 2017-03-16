@@ -102,4 +102,28 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
         $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer', $result);
         $this->assertEquals('pospayment', $requestMethodResult);
     }
+
+    public function testBuckaroo3extended_request_addservices()
+    {
+        $mockObserver = $this->getMockObserver();
+
+        $instance = $this->_getInstance();
+        $result = $instance->buckaroo3extended_request_addservices($mockObserver);
+        $requestVarsResult = $mockObserver->getRequest()->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer', $result);
+        $this->assertEquals('Pay', $requestVarsResult['services']['pospayment']['action']);
+    }
+
+    public function testBuckaroo3extended_request_addcustomvars()
+    {
+        $mockObserver = $this->getMockObserver();
+
+        $instance = $this->_getInstance();
+        $result = $instance->buckaroo3extended_request_addcustomvars($mockObserver);
+        $requestVarsResult = $mockObserver->getRequest()->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer', $result);
+        $this->assertEquals('Point-of-sale', $requestVarsResult['channel']);
+    }
 }
