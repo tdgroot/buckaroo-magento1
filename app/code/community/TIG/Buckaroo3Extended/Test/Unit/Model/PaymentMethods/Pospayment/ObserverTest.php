@@ -115,8 +115,57 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
         $this->assertEquals('Pay', $requestVarsResult['services']['pospayment']['action']);
     }
 
-    public function testBuckaroo3extended_request_addcustomvars()
+    /**
+     * @return array
+     */
+    public function buckaroo3extended_request_addcustomvarsProvider()
     {
+        return array(
+            array(
+                'abcd1234',
+                array(
+                    'channel' => 'Point-of-sale',
+                    'customVars' => array(
+                        'pospayment' => array(
+                            'ecrid' => 'abcd1234'
+                        )
+                    )
+                )
+            ),
+            array(
+                'ef56gh78',
+                array(
+                    'channel' => 'Point-of-sale',
+                    'customVars' => array(
+                        'pospayment' => array(
+                            'ecrid' => 'ef56gh78'
+                        )
+                    )
+                )
+            ),
+            array(
+                '9021ijkl',
+                array(
+                    'channel' => 'Point-of-sale',
+                    'customVars' => array(
+                        'pospayment' => array(
+                            'ecrid' => '9021ijkl'
+                        )
+                    )
+                )
+            ),
+        );
+    }
+
+    /**
+     * @param $ecrid
+     * @param $expected
+     *
+     * @dataProvider buckaroo3extended_request_addcustomvarsProvider
+     */
+    public function testBuckaroo3extended_request_addcustomvars($ecrid, $expected)
+    {
+        $_SERVER['HTTP_X_BUCKAROO_ECRID'] = $ecrid;
         $mockObserver = $this->getMockObserver();
 
         $instance = $this->_getInstance();
@@ -124,6 +173,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 
         $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer', $result);
-        $this->assertEquals('Point-of-sale', $requestVarsResult['channel']);
+        $this->assertEquals($expected, $requestVarsResult);
     }
 }

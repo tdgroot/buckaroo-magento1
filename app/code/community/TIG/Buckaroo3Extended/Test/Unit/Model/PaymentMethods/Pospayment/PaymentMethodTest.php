@@ -64,4 +64,60 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_PaymentMet
         $this->assertEquals('buckaroo3extended_pospayment', $result);
     }
 
+    /**
+     * @return array
+     */
+    public function isAvailableProvider()
+    {
+        return array(
+            'no headers' => array(
+                null,
+                'abc',
+                null,
+                false
+            ),
+            'with ecrid header, no user agent configured' => array(
+                '1234567',
+                'def',
+                null,
+                true
+            ),
+            'with ecrid header, wrong user agent' => array(
+                '8901234',
+                'ghi',
+                'jkl',
+                false
+            ),
+            'with ecrid header, correct user agent' => array(
+                '5678901',
+                'mno',
+                'mno',
+                true
+            ),
+        );
+    }
+
+    /**
+     * @param $ecrid
+     * @param $userAgent
+     * @param $configuredUserAgent
+     * @param $expected
+     *
+     * @dataProvider isAvailableProvider
+     */
+    public function testIsAvailable($ecrid, $userAgent, $configuredUserAgent, $expected)
+    {
+        $_SERVER['HTTP_X_BUCKAROO_ECRID'] = $ecrid;
+        $_SERVER['HTTP_USER_AGENT'] = $userAgent;
+
+        Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended_pospayment/user_agent', $configuredUserAgent);
+
+        $quoteMock = $this->getMockBuilder('Mage_Sales_Model_Quote')->setMethods(array('getBaseGrandTotal'))->getMock();
+        $quoteMock->expects($this->any())->method('getBaseGrandTotal')->willReturn(1);
+
+        $instance = $this->_getInstance();
+        $result = $instance->isAvailable($quoteMock);
+
+        $this->assertEquals($expected, $result);
+    }
 }
