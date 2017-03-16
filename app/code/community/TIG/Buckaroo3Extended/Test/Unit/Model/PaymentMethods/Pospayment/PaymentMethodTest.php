@@ -110,7 +110,11 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_PaymentMet
         $_SERVER['HTTP_X_BUCKAROO_ECRID'] = $ecrid;
         $_SERVER['HTTP_USER_AGENT'] = $userAgent;
 
-        Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended_pospayment/user_agent', $configuredUserAgent);
+        $pospaymentPath = 'buckaroo/buckaroo3extended_pospayment/';
+        Mage::app()->getStore()->setConfig($pospaymentPath . 'user_agent', $configuredUserAgent);
+        Mage::app()->getStore()->setConfig($pospaymentPath . 'active', 1);
+        Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/key', 1);
+        Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/thumbprint', 1);
 
         $quoteMock = $this->getMockBuilder('Mage_Sales_Model_Quote')->setMethods(array('getBaseGrandTotal'))->getMock();
         $quoteMock->expects($this->any())->method('getBaseGrandTotal')->willReturn(1);
