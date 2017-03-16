@@ -6507,11 +6507,30 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </order_email>
+                        <x_header translate="label comment">
+                            <label>Unique X-Header</label>
+                            <comment>The payment method will be shown only when the X-Header matches this configuration value.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </x_header>
+                        <user_agent translate="label comment">
+                            <label>Unique User Agent</label>
+                            <comment>The payment method will be shown only when the User Agent matches this configuration value. The payment method will always be shown when this value is empty.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </user_agent>
                         <show_advanced translate="label comment">
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>60</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6520,7 +6539,7 @@
                             <label>Fee</label>
                             <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>70</sort_order>
+                            <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6533,7 +6552,7 @@
                             <label>Fee label</label>
                             <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>80</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6547,7 +6566,7 @@
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>90</sort_order>
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6560,7 +6579,7 @@
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>100</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6573,7 +6592,7 @@
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6587,7 +6606,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>120</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6603,7 +6622,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesFailed</source_model>
-                            <sort_order>130</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6619,7 +6638,7 @@
                             <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>buckaroo3extended/sources_pospayment_availableCurrencies</source_model>
-                            <sort_order>140</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6632,7 +6651,7 @@
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
                             <source_model>buckaroo3extended/sources_allspecificcountries</source_model>
-                            <sort_order>150</sort_order>
+                            <sort_order>170</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6645,7 +6664,7 @@
                             <comment>Only available when set to 'specific countries'.</comment>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>adminhtml/system_config_source_country</source_model>
-                            <sort_order>160</sort_order>
+                            <sort_order>180</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -6660,7 +6679,7 @@
                             <tooltip>Magento developer client restrictions.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>170</sort_order>
+                            <sort_order>190</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
