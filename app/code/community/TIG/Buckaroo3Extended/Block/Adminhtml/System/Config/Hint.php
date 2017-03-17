@@ -31,6 +31,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'afterpay',
         'afterpay2',
         'masterpass',
+        'klarna',
     );
 
     public $services = array(
