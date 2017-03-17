@@ -348,7 +348,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             return $this;
         }
 
-        if (TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_REJECTED) {
+        $response = $observer->getResponse();
+
+        if ($response['status'] == TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_REJECTED) {
             /** @var Mage_Sales_Model_Order $order */
             $order = $observer->getOrder();
             $method = $order->getPayment()->getMethod();
