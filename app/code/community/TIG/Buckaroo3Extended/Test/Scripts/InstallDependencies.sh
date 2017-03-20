@@ -3,7 +3,7 @@
 #set -e
 set -x
 
-COMPOSER_HOME="~/.composer/vendor/bin/";
+COMPOSER_HOME="$HOME/.composer/vendor/bin/";
 COMPOSER_REQUIRE="";
 
 which n98-magerun
