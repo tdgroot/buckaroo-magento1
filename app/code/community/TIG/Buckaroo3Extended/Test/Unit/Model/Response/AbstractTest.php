@@ -62,6 +62,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_AbstractTest extends TIG_Bu
             'afterpay failure message with colon' => array(
                 (Object)array(
                     'ServiceCode' => 'afterpaydigiaccept',
+                    'TransactionType' => 'C011',
                     'Status' => (Object)array(
                         'Code' => (Object)array(
                             'Code' => '490'
@@ -77,6 +78,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_AbstractTest extends TIG_Bu
             'afterpay failure message without colon' => array(
                 (Object)array(
                     'ServiceCode' => 'afterpayacceptgiro',
+                    'TransactionType' => 'C016',
                     'Status' => (Object)array(
                         'Code' => (Object)array(
                             'Code' => '490'
@@ -88,6 +90,22 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_AbstractTest extends TIG_Bu
                     )
                 ),
                 'Address gegevens zijn onjuist'
+            ),
+            'afterpay failure message invalid transactiontype' => array(
+                (Object)array(
+                    'ServiceCode' => 'afterpaydigiaccept',
+                    'TransactionType' => 'I011',
+                    'Status' => (Object)array(
+                        'Code' => (Object)array(
+                            'Code' => '490'
+                        ),
+                        'SubCode' => (Object)array(
+                            'Code' => 'S996',
+                            '_' => 'Geboortedatum is onjuist'
+                        )
+                    )
+                ),
+                null
             ),
             'klarna failure message' => array(
                 (Object)array(
