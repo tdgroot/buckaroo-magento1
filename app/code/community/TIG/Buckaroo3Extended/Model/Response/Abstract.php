@@ -271,7 +271,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         if ($billingCountry == 'NL' && $parsedResponse['code'] == 490) {
             $responseErrorMessage = $this->getResponseFailureMessage();
-            $errorMessage = $responseErrorMessage !== null ? $responseErrorMessage : $errorMessage;
+            $errorMessage = strlen($responseErrorMessage) > 0 ? $responseErrorMessage : $errorMessage;
         }
 
         Mage::getSingleton('core/session')->addError($errorMessage);
@@ -442,14 +442,20 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         switch ($serviceCode) {
             case 'afterpaydigiaccept':
             case 'afterpayacceptgiro':
-                $parsedResponse = $this->_parseResponse();
-                $subcodeMessage = explode(':', $parsedResponse['subCode']['message']);
+                $transactionType = $this->_response->TransactionType;
+                $failureMessage = null;
 
-                if (count($subcodeMessage) > 1) {
-                    array_shift($subcodeMessage);
+                //Only specific Afterpay responses have a custom response message
+                if ($transactionType == 'C011' || $transactionType == 'C016') {
+                    $parsedResponse = $this->_parseResponse();
+                    $subcodeMessage = explode(':', $parsedResponse['subCode']['message']);
+
+                    if (count($subcodeMessage) > 1) {
+                        array_shift($subcodeMessage);
+                    }
+
+                    $failureMessage = trim(implode(':', $subcodeMessage));
                 }
-
-                $failureMessage = trim(implode(':', $subcodeMessage));
                 break;
             case 'klarna':
                 $failureMessage = $this->_response->ConsumerMessage->HtmlText;
