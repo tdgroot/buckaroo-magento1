@@ -1,4 +1,4 @@
-===== 4.16.0 =====
+===== 4.16.4 =====
 - Authorize & (partial) capture is nu mogelijk met Afterpay
 - Partial Refund is nu mogelijk met Afterpay
 - De refund gerelateerde notices en warnings zijn opgelost
@@ -9,9 +9,11 @@
 - Payperemail beschikbare betaalmethodes ook gekoppeld aan Credit Management.
 - OneStepCheckout ondersteunde versies geupdate.
 - Afterpay aanpassing waarbij de korting wordt afgerond op 2 decimalen.
+- Betere beschrijving van Afterpay foutmelding bij samengevoegde (combined) paymentflow. 
 - Adresvalidatie is verberterd.
 - Overboeking terugkopping bij deelbetalingen in order comments.
 - Link naar plaza.buckaroo.nl opgenomen in support tab.
+
 
 ===== 4.15.3 =====
 - Bij Afterpay betalingen via België wordt er bij telefoonnummers van meer dan 10 tekens "0031" toegevoegd
