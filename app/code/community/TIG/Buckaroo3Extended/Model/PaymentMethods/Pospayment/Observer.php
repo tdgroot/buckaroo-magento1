@@ -75,7 +75,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer extends TIG
         $array = array(
             $this->_method => array(
                 'action' => 'Pay',
-                'version' => 1,
+                'version' => 2,
             ),
         );
 
@@ -108,8 +108,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer extends TIG
         $xHeaderName = TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod::POSPAYMENT_XHEADER;
         $xHeaderValue = Mage::app()->getRequest()->getHeader($xHeaderName);
 
-        $vars['channel'] = 'Point-of-sale';
-        $vars['customVars'][$this->_method]['ecrid'] = $xHeaderValue;
+        $vars['customVars'][$this->_method]['TerminalID'] = $xHeaderValue;
 
         $request->setVars($vars);
 
