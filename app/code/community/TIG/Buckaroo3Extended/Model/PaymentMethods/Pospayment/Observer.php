@@ -114,4 +114,24 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer extends TIG
 
         return $this;
     }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $returnUrl = Mage::getUrl('buckaroo3extended/checkout/pospaymentPending', array('_secure' => true));
+
+        $responseModel = $observer->getModel();
+        $responseModel->sendDebugEmail();
+
+        Mage::app()->getFrontController()->getResponse()->setRedirect($returnUrl)->sendResponse();
+        exit;
+    }
 }
