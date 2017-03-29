@@ -124,10 +124,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
             array(
                 'abcd1234',
                 array(
-                    'channel' => 'Point-of-sale',
                     'customVars' => array(
                         'pospayment' => array(
-                            'ecrid' => 'abcd1234'
+                            'TerminalID' => 'abcd1234'
                         )
                     )
                 )
@@ -135,10 +134,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
             array(
                 'ef56gh78',
                 array(
-                    'channel' => 'Point-of-sale',
                     'customVars' => array(
                         'pospayment' => array(
-                            'ecrid' => 'ef56gh78'
+                            'TerminalID' => 'ef56gh78'
                         )
                     )
                 )
@@ -146,10 +144,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
             array(
                 '9021ijkl',
                 array(
-                    'channel' => 'Point-of-sale',
                     'customVars' => array(
                         'pospayment' => array(
-                            'ecrid' => '9021ijkl'
+                            'TerminalID' => '9021ijkl'
                         )
                     )
                 )
