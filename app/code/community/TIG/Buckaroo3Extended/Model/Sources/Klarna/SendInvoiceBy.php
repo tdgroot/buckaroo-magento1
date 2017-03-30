@@ -48,7 +48,7 @@ class TIG_Buckaroo3Extended_Model_Sources_Klarna_SendInvoiceBy
             ),
             array(
                 'value' => self::ACTION_MAIL,
-                'label' => $helper->__('By mail')
+                'label' => $helper->__('By mail (Includes fee from Klarna)')
             ),
         );
 
