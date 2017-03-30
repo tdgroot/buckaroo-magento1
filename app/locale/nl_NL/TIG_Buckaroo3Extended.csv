@@ -363,3 +363,5 @@ TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
 "Whether to use separate authorize and capture calls or to use a combined 'pay' call.","Of er een aparte authorize en capture call gedaan wordt of dat er een samengestelde 'pay' call gebruikt wordt."
 "Combined","Samengesteld"
 "Separate authorize and capture","Losse authorize en capture"
+"Unique User-Agent","Unieke User-Agent"
+"The payment method will be shown only when the User-Agent matches this configuration value. The payment method will always be shown when this value is empty.","De betaalmethode zal alleen getoond worden wanneer de User-Agent met deze waarde overeenkomt. De betaalmethode wordt altijd getoond wanneer deze waarde leef is."

@@ -152,3 +152,5 @@
 "Convert your account number to IBAN %s","Convert your account number to IBAN %s."
 "Please enter these fields as they appear on your bank account.","Please enter these fields as they appear on your bank account."
 "BIC number","BIC number"
+"Unique User-Agent","Unique User-Agent"
+"The payment method will be shown only when the User-Agent matches this configuration value. The payment method will always be shown when this value is empty.","The payment method will be shown only when the User-Agent matches this configuration value. The payment method will always be shown when this value is empty."
