@@ -158,3 +158,5 @@
 "By mail (Includes fee from Klarna)","By mail (Includes fee from Klarna)"
 "Klarna is doing an additional check. The status will be known within 24 hours.","Klarna is doing an additional check. The status will be known within 24 hours."
 "Klarna has rejected the payment request. Please check the Buckaroo Payment Plaza for additional information.","Klarna has rejected the payment request. Please check the Buckaroo Payment Plaza for additional information."
+"Unique User-Agent","Unique User-Agent"
+"The payment method will be shown only when the User-Agent matches this configuration value. The payment method will always be shown when this value is empty.","The payment method will be shown only when the User-Agent matches this configuration value. The payment method will always be shown when this value is empty."
