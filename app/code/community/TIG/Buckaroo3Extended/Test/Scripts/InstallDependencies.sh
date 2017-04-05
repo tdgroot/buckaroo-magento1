@@ -16,6 +16,11 @@ if [ $? != "0" ]; then
     COMPOSER_REQUIRE="${COMPOSER_REQUIRE} colinmollenhour/modman"
 fi
 
+which modman
+if [ $? != "0" ] && [ "${CODE_COVERAGE}" = "true" ]; then
+    COMPOSER_REQUIRE="${COMPOSER_REQUIRE} satooshi/php-coveralls"
+fi
+
 if [ ! -f "${COMPOSER_HOME}phpunit" ]; then
     PHPUNIT_VERSION="4.8.35"
 
