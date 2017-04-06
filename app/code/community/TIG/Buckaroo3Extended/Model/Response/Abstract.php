@@ -266,17 +266,12 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $parsedResponse = $this->_parseResponse();
         $billingCountry = $this->_order->getBillingAddress()->getCountry();
-        $serviceCode = $this->_response->ServiceCode;
 
         $errorMessage = $this->_getCorrectFailureMessage($message);
 
-        if ($billingCountry == 'NL'
-            && ($serviceCode== 'afterpaydigiaccept' || $serviceCode == 'afterpayacceptgiro')
-            && $parsedResponse['code'] == 490
-        ) {
-            $subcodeMessage = explode(':', $parsedResponse['subCode']['message']);
-            array_shift($subcodeMessage);
-            $errorMessage = trim(implode(':', $subcodeMessage));
+        if ($billingCountry == 'NL' && $parsedResponse['code'] == 490) {
+            $responseErrorMessage = $this->getResponseFailureMessage();
+            $errorMessage = strlen($responseErrorMessage) > 0 ? $responseErrorMessage : $errorMessage;
         }
 
         Mage::getSingleton('core/session')->addError($errorMessage);
@@ -435,6 +430,42 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
                     $this->_order->getStoreId())
                 );
         }
+    }
+
+    /**
+     * @return null|string
+     */
+    private function getResponseFailureMessage()
+    {
+        $serviceCode = $this->_response->ServiceCode;
+
+        switch ($serviceCode) {
+            case 'afterpaydigiaccept':
+            case 'afterpayacceptgiro':
+                $transactionType = $this->_response->TransactionType;
+                $failureMessage = null;
+
+                //Only specific Afterpay responses have a custom response message
+                if ($transactionType == 'C011' || $transactionType == 'C016') {
+                    $parsedResponse = $this->_parseResponse();
+                    $subcodeMessage = explode(':', $parsedResponse['subCode']['message']);
+
+                    if (count($subcodeMessage) > 1) {
+                        array_shift($subcodeMessage);
+                    }
+
+                    $failureMessage = trim(implode(':', $subcodeMessage));
+                }
+                break;
+            case 'klarna':
+                $failureMessage = $this->_response->ConsumerMessage->HtmlText;
+                break;
+            default:
+                $failureMessage = null;
+                break;
+        }
+
+        return $failureMessage;
     }
 
     /**
