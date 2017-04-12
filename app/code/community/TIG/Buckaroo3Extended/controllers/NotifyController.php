@@ -148,6 +148,10 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
         try {
             list($module, $processedPush) = $this->_processPushAccordingToType();
+
+            if (!is_object(($module))) {
+                $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
+            }
         } catch (Exception $e) {
             $this->_debugEmail .= "An Exception occurred: " . $e->getMessage() . "\n";
             $this->_debugEmail .= "\nException trace: " . $e->getTraceAsString() . "\n";
@@ -392,21 +396,9 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     {
         $this->_debugEmail .= "Recieved PUSH to update creditmemo. Unfortunately the module does not support creditmemo updates at this time. The PUSH is ignored.";
 
-        $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId());
-        if (empty($debugEmailConfig))
-        {
-            return;
-        }
+        $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
 
-        $mail = $this->_debugEmail;
-
-        mail(
-            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId()),
-            'Buckaroo 3 Extended Debug Email',
-            $mail
-        );
-
-        return $this;
+        return array(true, $module);
     }
 
     /**
@@ -416,21 +408,9 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
     {
         $this->_debugEmail .= "Recieved PUSH to update capture. Unfortunately the module does not support capture updates at this time. The PUSH is ignored.";
 
-        $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId());
-        if (empty($debugEmailConfig))
-        {
-            return;
-        }
+        $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
 
-        $mail = $this->_debugEmail;
-
-        mail(
-            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->_order->getStoreId()),
-            'Buckaroo 3 Extended Debug Email',
-            $mail
-        );
-
-        return $this;
+        return array(true, $module);
     }
 
     protected function _newRefund()
