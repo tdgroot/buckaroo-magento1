@@ -76,19 +76,19 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_PaymentMet
                 null,
                 false
             ),
-            'with ecrid header, no user agent configured' => array(
+            'with terminalid header, no user agent configured' => array(
                 '1234567',
                 'def',
                 null,
                 true
             ),
-            'with ecrid header, wrong user agent' => array(
+            'with terminalid header, wrong user agent' => array(
                 '8901234',
                 'ghi',
                 'jkl',
                 false
             ),
-            'with ecrid header, correct user agent' => array(
+            'with terminalid header, correct user agent' => array(
                 '5678901',
                 'mno',
                 'mno',
@@ -98,16 +98,16 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_PaymentMet
     }
 
     /**
-     * @param $ecrid
+     * @param $terminalid
      * @param $userAgent
      * @param $configuredUserAgent
      * @param $expected
      *
      * @dataProvider isAvailableProvider
      */
-    public function testIsAvailable($ecrid, $userAgent, $configuredUserAgent, $expected)
+    public function testIsAvailable($terminalid, $userAgent, $configuredUserAgent, $expected)
     {
-        $_SERVER['HTTP_X_BUCKAROO_ECRID'] = $ecrid;
+        $_SERVER['HTTP_POS_TERMINAL_ID'] = $terminalid;
         $_SERVER['HTTP_USER_AGENT'] = $userAgent;
 
         $pospaymentPath = 'buckaroo/buckaroo3extended_pospayment/';

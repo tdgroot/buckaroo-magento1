@@ -31,7 +31,7 @@
  */
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
-    const POSPAYMENT_XHEADER = 'X-Buckaroo-Ecrid';
+    const POSPAYMENT_XHEADER = 'Pos-Terminal-Id';
 
     public $allowedCurrencies = array(
         'EUR',
@@ -44,7 +44,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod extend
     protected $_canRefundInvoicePartial = false;
 
     /**
-     * POSPayment may only be used when the ecrid x-header is set and optionally if the User-Agent matches
+     * POSPayment may only be used when the terminalid x-header is set and optionally if the User-Agent matches
      *
      * {@inheritdoc}
      */
