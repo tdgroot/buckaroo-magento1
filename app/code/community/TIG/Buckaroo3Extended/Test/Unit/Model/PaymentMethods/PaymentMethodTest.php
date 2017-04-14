@@ -109,28 +109,28 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest ext
      */
     public function hideForPosPaymentProvider()
     {
-        return [
-            'no header, not pospayment' => [
+        return array(
+            'no header, not pospayment' => array(
                 null,
                 'buckaroo3extended_tig',
                 false
-            ],
-            'with header, not pospayment' => [
+            ),
+            'with header, not pospayment' => array(
                 '1234567',
                 'buckaroo3extended_tig',
                 true
-            ],
-            'no header, is pospayment' => [
+            ),
+            'no header, is pospayment' => array(
                 null,
                 'buckaroo3extended_pospayment',
                 false
-            ],
-            'with header, is pospayment' => [
+            ),
+            'with header, is pospayment' => array(
                 '8901234',
                 'buckaroo3extended_pospayment',
                 false
-            ]
-        ];
+            )
+        );
     }
 
     /**
