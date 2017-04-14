@@ -134,15 +134,15 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest ext
     }
 
     /**
-     * @param $ecrid
+     * @param $terminalid
      * @param $methodCode
      * @param $expected
      *
      * @dataProvider hideForPosPaymentProvider
      */
-    public function testHideForPosPayment($ecrid, $methodCode, $expected)
+    public function testHideForPosPayment($terminalid, $methodCode, $expected)
     {
-        $_SERVER['HTTP_X_BUCKAROO_ECRID'] = $ecrid;
+        $_SERVER['HTTP_POS_TERMINAL_ID'] = $terminalid;
 
         $instance = $this->_getInstance();
         $this->setProperty('_code', $methodCode, $instance);

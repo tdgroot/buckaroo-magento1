@@ -155,14 +155,14 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
     }
 
     /**
-     * @param $ecrid
+     * @param $terminalid
      * @param $expected
      *
      * @dataProvider buckaroo3extended_request_addcustomvarsProvider
      */
-    public function testBuckaroo3extended_request_addcustomvars($ecrid, $expected)
+    public function testBuckaroo3extended_request_addcustomvars($terminalid, $expected)
     {
-        $_SERVER['HTTP_X_BUCKAROO_ECRID'] = $ecrid;
+        $_SERVER['HTTP_POS_TERMINAL_ID'] = $terminalid;
         $mockObserver = $this->getMockObserver();
 
         $instance = $this->_getInstance();
