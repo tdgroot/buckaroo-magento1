@@ -271,6 +271,9 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         if (is_null($response)) {
             $response = false;
         }
+        else {
+            $response['requestType'] = $requestType;
+        }
 
         $responseXML = $client->__getLastResponse();
         $requestXML = $client->__getLastRequest();

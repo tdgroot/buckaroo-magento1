@@ -278,7 +278,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())) {
             $this->_returnGiftcards($this->_order);
-            $this->setBuckarooFailedAuthorizeForI013();
+            $this->setBuckarooFailedAuthorize();
             $this->_order->cancel()->save();
         }
 
@@ -308,7 +308,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->_returnGiftcards($this->_order);
 
-        $this->setBuckarooFailedAuthorizeForI013();
+        $this->setBuckarooFailedAuthorize();
         $this->_order->cancel()->save();
         $this->_returnGiftcards($this->_order);
 
@@ -345,7 +345,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         Mage::getSingleton('core/session')->addError($message);
 
-        $this->setBuckarooFailedAuthorizeForI013();
+        $this->setBuckarooFailedAuthorize();
         $this->_order->cancel()->save();
         $this->_debugEmail .= "The order has been cancelled. \n";
         $this->restoreQuote();
@@ -441,13 +441,27 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
-     * Set additional data to payment to NOT sent Buckaroo a CancelAuthorize.
+     * Set additional data to payment to NOT sent Buckaroo a CancelAuthorize or CancelReservation.
      * "Do not cancel order on a failed authorize, because it will send a cancel authorize message to
      * Buckaroo, this is not needed/correct."
      */
-    protected function setBuckarooFailedAuthorizeForI013()
+    protected function setBuckarooFailedAuthorize()
     {
+        $setFailedAuthorize = false;
+
+        //Afterpay
         if ($this->_response->TransactionType == 'I013') {
+            $setFailedAuthorize = true;
+        }
+
+        //Klarna
+        if ($this->_response->requestType == 'DataRequest' &&
+            $this->_response->ServiceCode == 'klarna' &&
+            $this->_response->Code->Code == '490' ) {
+            $setFailedAuthorize = true;
+        }
+
+        if ($setFailedAuthorize) {
             $payment = $this->_order->getPayment();
             $payment->setAdditionalInformation('buckaroo_failed_authorize', 1);
             $payment->save();
