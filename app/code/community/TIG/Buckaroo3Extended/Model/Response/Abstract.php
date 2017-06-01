@@ -457,10 +457,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         //Klarna
         if ($this->_response->requestType == 'DataRequest' &&
             $this->_response->ServiceCode == 'klarna' &&
-            $this->_response->Code->Code == '490' ) {
+            $this->_response->Status->Code->Code == '490' ) {
             $setFailedAuthorize = true;
         }
-
+ 
         if ($setFailedAuthorize) {
             $payment = $this->_order->getPayment();
             $payment->setAdditionalInformation('buckaroo_failed_authorize', 1);
