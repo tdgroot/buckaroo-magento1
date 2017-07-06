@@ -307,10 +307,9 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         );
 
         $this->_returnGiftcards($this->_order);
-
         $this->setBuckarooFailedAuthorize();
         $this->_order->cancel()->save();
-        $this->_returnGiftcards($this->_order);
+
 
         $this->_debugEmail .= "The order has been cancelled. \n";
         $this->restoreQuote();
@@ -345,8 +344,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         Mage::getSingleton('core/session')->addError($message);
 
+        $this->_returnGiftcards($this->_order);
         $this->setBuckarooFailedAuthorize();
         $this->_order->cancel()->save();
+        
         $this->_debugEmail .= "The order has been cancelled. \n";
         $this->restoreQuote();
         $this->_debugEmail .= "The quote has been restored. \n";
