@@ -228,7 +228,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             $shouldSend = false;
         }
 
-        if(!$this->_order->getEmailSent() && false !== $shouldSend)
+        if(!$this->_order->getEmailSent() && false != $shouldSend)
         {
             $this->_debugEmail .= "New Order email has been send \n";
             $this->sendNewOrderEmail();
