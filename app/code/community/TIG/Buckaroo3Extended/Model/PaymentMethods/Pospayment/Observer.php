@@ -134,4 +134,56 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer extends TIG
         Mage::app()->getFrontController()->getResponse()->setRedirect($returnUrl)->sendResponse();
         exit;
     }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_push_custom_save_invoice_after(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getOrder();
+        $push = $observer->getPush()->getPostArray();
+        $response = $observer->getResponse();
+
+        if ($response['status'] !== self::BUCKAROO_SUCCESS) {
+            return $this;
+        }
+
+        $this->saveTicketToInvoice($order, $push);
+
+        return $this;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @param array                  $push
+     */
+    private function saveTicketToInvoice($order, $push)
+    {
+        if (!isset($push['brq_SERVICE_pospayment_Ticket']) || strlen($push['brq_SERVICE_pospayment_Ticket']) <= 0) {
+            return;
+        }
+
+        $ticketDecoded = urldecode($push['brq_SERVICE_pospayment_Ticket']);
+
+        // A line in the ticket may start with a undesirable number between brackets, e.g. [0] or [1]
+        $ticketFixed = preg_replace('/^\[[0-9]*\]/m', '', $ticketDecoded);
+        $ticketComment = nl2br($ticketFixed);
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $order->getInvoiceCollection()
+            ->addFieldToFilter('transaction_id', array('eq' => $push['brq_transactions']))
+            ->setOrder('entity_id', Mage_Sales_Model_Resource_Order_Invoice_Collection::SORT_ORDER_DESC);
+
+        /** @var Mage_Sales_Model_Order_Invoice $invoice */
+        $invoice = $invoiceCollection->getFirstItem();
+
+        $invoice->addComment($ticketComment, true, true)->save();
+    }
 }
