@@ -259,7 +259,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
     public function testSaveTicketToInvoice($push, $expectedCallCount, $expectedCommentToSave)
     {
         $mockInvoice = $this->getMockBuilder('Mage_Sales_Model_Order_Invoice')
-            ->setMethods(['addComment', 'save'])
+            ->setMethods(array('addComment', 'save'))
             ->getMock();
         $mockInvoice->expects($this->exactly($expectedCallCount))
             ->method('addComment')
@@ -268,7 +268,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
         $mockInvoice->expects($this->exactly($expectedCallCount))->method('save');
 
         $mockInvoiceCollection = $this->getMockBuilder('Mage_Sales_Model_Resource_Order_Invoice_Collection')
-            ->setMethods(['addFieldToFilter', 'setOrder', 'getFirstItem'])
+            ->setMethods(array('addFieldToFilter', 'setOrder', 'getFirstItem'))
             ->getMock();
         $mockInvoiceCollection->expects($this->exactly($expectedCallCount))
             ->method('addFieldToFilter')
@@ -281,6 +281,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
         $mockOrder->expects($this->exactly($expectedCallCount))->method('getInvoiceCollection')->willReturn($mockInvoiceCollection);
 
         $instance = $this->_getInstance();
-        $this->invokeMethod($instance, 'saveTicketToInvoice', [$mockOrder, $push]);
+        $this->invokeMethod($instance, 'saveTicketToInvoice', array($mockOrder, $push));
     }
 }
