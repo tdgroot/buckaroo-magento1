@@ -57,13 +57,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
             ->getMock();
         $mockPayment->expects($this->any())->method('getMethod')->willReturn('buckaroo3extended_pospayment');
 
-        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
-            ->setMethods(array(
-                'getPayment',
-                'getPaymentMethodUsedForTransaction'
-            ))
-            ->getMock();
-
+        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')->getMock();
         $mockOrder->expects($this->any())->method('getPayment')->will($this->returnValue($mockPayment));
         $mockOrder->expects($this->any())->method('getPaymentMethodUsedForTransaction')->willReturn(false);
 
@@ -171,5 +165,122 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
 
         $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer', $result);
         $this->assertEquals($expected, $requestVarsResult);
+    }
+
+
+    /**
+     * @return array
+     */
+    public function buckaroo3extended_push_custom_save_invoice_afterProvider()
+    {
+        return array(
+            'succes status' => array(TIG_Buckaroo3Extended_Model_Abstract::BUCKAROO_SUCCESS),
+            'failed status' => array(TIG_Buckaroo3Extended_Model_Abstract::BUCKAROO_FAILED),
+        );
+    }
+
+    /**
+     * @param $status
+     *
+     * @dataProvider buckaroo3extended_push_custom_save_invoice_afterProvider
+     */
+    public function testBuckaroo3extended_push_custom_save_invoice_after($status)
+    {
+        $mockOrder = $this->getMockOrder();
+
+        $mockPush = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Push')
+            ->setMethods(array('getPostArray'))
+            ->getMock();
+        $mockPush->expects($this->once())->method('getPostArray')->willReturn(array());
+
+        $mockObserver = $this->getMockBuilder('Varien_Event_Observer')
+            ->setMethods(array('getPush', 'getOrder', 'getResponse'))
+            ->getMock();
+        $mockObserver->expects($this->any())->method('getPush')->willReturn($mockPush);
+        $mockObserver->expects($this->any())->method('getOrder')->willReturn($mockOrder);
+        $mockObserver->expects($this->any())->method('getResponse')->willReturn(array('status' => $status));
+
+
+        $instance = $this->_getInstance();
+        $result = $instance->buckaroo3extended_push_custom_save_invoice_after($mockObserver);
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer', $result);
+    }
+
+    public function saveTicketToInvoiceProvider()
+    {
+        return array(
+            'no ticket' => array(
+                array('brq_transactions' => '123'),
+                0,
+                null
+            ),
+            'not encoded ticket' => array(
+                array(
+                    'brq_SERVICE_pospayment_Ticket' => 'abc',
+                    'brq_transactions' => '456'
+                ),
+                1,
+                'abc'
+            ),
+            'encoded ticket' => array(
+                array(
+                    'brq_SERVICE_pospayment_Ticket' => 'def+ghi',
+                    'brq_transactions' => '789'
+                ),
+                1,
+                'def ghi'
+            ),
+            'ticket with line breaks' => array(
+                array(
+                    'brq_SERVICE_pospayment_Ticket' => "jkl\r\nmno",
+                    'brq_transactions' => '012'
+                ),
+                1,
+                "jkl<br />\r\nmno"
+            ),
+            'encoded ticket with line breaks' => array(
+                array(
+                    'brq_SERVICE_pospayment_Ticket' => 'pqr%0Dstu+vwx',
+                    'brq_transactions' => '345'
+                ),
+                1,
+                "pqr<br />\rstu vwx"
+            ),
+        );
+    }
+
+    /**
+     * @param $push
+     * @param $expectedCallCount
+     * @param $expectedCommentToSave
+     *
+     * @dataProvider saveTicketToInvoiceProvider
+     */
+    public function testSaveTicketToInvoice($push, $expectedCallCount, $expectedCommentToSave)
+    {
+        $mockInvoice = $this->getMockBuilder('Mage_Sales_Model_Order_Invoice')
+            ->setMethods(['addComment', 'save'])
+            ->getMock();
+        $mockInvoice->expects($this->exactly($expectedCallCount))
+            ->method('addComment')
+            ->with($expectedCommentToSave, true, true)
+            ->willReturnSelf();
+        $mockInvoice->expects($this->exactly($expectedCallCount))->method('save');
+
+        $mockInvoiceCollection = $this->getMockBuilder('Mage_Sales_Model_Resource_Order_Invoice_Collection')
+            ->setMethods(['addFieldToFilter', 'setOrder', 'getFirstItem'])
+            ->getMock();
+        $mockInvoiceCollection->expects($this->exactly($expectedCallCount))
+            ->method('addFieldToFilter')
+            ->with('transaction_id', array('eq' => $push['brq_transactions']))
+            ->willReturnSelf();
+        $mockInvoiceCollection->expects($this->exactly($expectedCallCount))->method('setOrder')->willReturnSelf();
+        $mockInvoiceCollection->expects($this->exactly($expectedCallCount))->method('getFirstItem')->willReturn($mockInvoice);
+
+        $mockOrder = $this->getMockOrder();
+        $mockOrder->expects($this->exactly($expectedCallCount))->method('getInvoiceCollection')->willReturn($mockInvoiceCollection);
+
+        $instance = $this->_getInstance();
+        $this->invokeMethod($instance, 'saveTicketToInvoice', [$mockOrder, $push]);
     }
 }
