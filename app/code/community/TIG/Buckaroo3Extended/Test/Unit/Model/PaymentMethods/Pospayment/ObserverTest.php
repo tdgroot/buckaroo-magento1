@@ -218,6 +218,14 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
         return array(
             'no ticket' => array(
                 array('brq_transactions' => '123'),
+                1,
+                null
+            ),
+            'no invoices' => array(
+                array(
+                    'brq_SERVICE_pospayment_Ticket' => 'cba',
+                    'brq_transactions' => '321'
+                ),
                 0,
                 null
             ),
@@ -258,34 +266,38 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
 
     /**
      * @param $push
-     * @param $expectedCallCount
+     * @param $invoiceCount
      * @param $expectedCommentToSave
      *
      * @dataProvider saveTicketToInvoiceProvider
      */
-    public function testSaveTicketToInvoice($push, $expectedCallCount, $expectedCommentToSave)
+    public function testSaveTicketToInvoice($push, $invoiceCount, $expectedCommentToSave)
     {
+        $hasTicket = (int)isset($push['brq_SERVICE_pospayment_Ticket']);
+        $hasInvoices = (int)($hasTicket && $invoiceCount);
+
         $mockInvoice = $this->getMockBuilder('Mage_Sales_Model_Order_Invoice')
             ->setMethods(array('addComment', 'save'))
             ->getMock();
-        $mockInvoice->expects($this->exactly($expectedCallCount))
+        $mockInvoice->expects($this->exactly($hasInvoices))
             ->method('addComment')
             ->with($expectedCommentToSave, true, true)
             ->willReturnSelf();
-        $mockInvoice->expects($this->exactly($expectedCallCount))->method('save');
+        $mockInvoice->expects($this->exactly($hasInvoices))->method('save');
 
         $mockInvoiceCollection = $this->getMockBuilder('Mage_Sales_Model_Resource_Order_Invoice_Collection')
-            ->setMethods(array('addFieldToFilter', 'setOrder', 'getFirstItem'))
+            ->setMethods(array('addFieldToFilter', 'setOrder', 'count', 'getFirstItem'))
             ->getMock();
-        $mockInvoiceCollection->expects($this->exactly($expectedCallCount))
+        $mockInvoiceCollection->expects($this->exactly($hasTicket))
             ->method('addFieldToFilter')
             ->with('transaction_id', array('eq' => $push['brq_transactions']))
             ->willReturnSelf();
-        $mockInvoiceCollection->expects($this->exactly($expectedCallCount))->method('setOrder')->willReturnSelf();
-        $mockInvoiceCollection->expects($this->exactly($expectedCallCount))->method('getFirstItem')->willReturn($mockInvoice);
+        $mockInvoiceCollection->expects($this->exactly($hasTicket))->method('setOrder')->willReturnSelf();
+        $mockInvoiceCollection->expects($this->exactly($hasTicket))->method('count')->willReturn($invoiceCount);
+        $mockInvoiceCollection->expects($this->exactly($hasInvoices))->method('getFirstItem')->willReturn($mockInvoice);
 
         $mockOrder = $this->getMockOrder();
-        $mockOrder->expects($this->exactly($expectedCallCount))->method('getInvoiceCollection')->willReturn($mockInvoiceCollection);
+        $mockOrder->expects($this->exactly($hasTicket))->method('getInvoiceCollection')->willReturn($mockInvoiceCollection);
 
         $instance = $this->_getInstance();
         $this->invokeMethod($instance, 'saveTicketToInvoice', array($mockOrder, $push));
