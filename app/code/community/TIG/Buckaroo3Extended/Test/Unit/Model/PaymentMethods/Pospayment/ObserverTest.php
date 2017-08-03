@@ -174,31 +174,38 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
     public function buckaroo3extended_push_custom_save_invoice_afterProvider()
     {
         return array(
-            'succes status' => array(TIG_Buckaroo3Extended_Model_Abstract::BUCKAROO_SUCCESS),
-            'failed status' => array(TIG_Buckaroo3Extended_Model_Abstract::BUCKAROO_FAILED),
+            'succes status' => array(
+                TIG_Buckaroo3Extended_Model_Abstract::BUCKAROO_SUCCESS,
+                1
+            ),
+            'failed status' => array(
+                TIG_Buckaroo3Extended_Model_Abstract::BUCKAROO_FAILED,
+                0
+            ),
         );
     }
 
     /**
      * @param $status
+     * @param $expectedCallCount
      *
      * @dataProvider buckaroo3extended_push_custom_save_invoice_afterProvider
      */
-    public function testBuckaroo3extended_push_custom_save_invoice_after($status)
+    public function testBuckaroo3extended_push_custom_save_invoice_after($status, $expectedCallCount)
     {
         $mockOrder = $this->getMockOrder();
 
         $mockPush = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Push')
             ->setMethods(array('getPostArray'))
             ->getMock();
-        $mockPush->expects($this->once())->method('getPostArray')->willReturn(array());
+        $mockPush->expects($this->exactly($expectedCallCount))->method('getPostArray')->willReturn(array());
 
         $mockObserver = $this->getMockBuilder('Varien_Event_Observer')
             ->setMethods(array('getPush', 'getOrder', 'getResponse'))
             ->getMock();
-        $mockObserver->expects($this->any())->method('getPush')->willReturn($mockPush);
-        $mockObserver->expects($this->any())->method('getOrder')->willReturn($mockOrder);
-        $mockObserver->expects($this->any())->method('getResponse')->willReturn(array('status' => $status));
+        $mockObserver->expects($this->exactly($expectedCallCount))->method('getPush')->willReturn($mockPush);
+        $mockObserver->expects($this->atLeastOnce())->method('getOrder')->willReturn($mockOrder);
+        $mockObserver->expects($this->once())->method('getResponse')->willReturn(array('status' => $status));
 
 
         $instance = $this->_getInstance();
