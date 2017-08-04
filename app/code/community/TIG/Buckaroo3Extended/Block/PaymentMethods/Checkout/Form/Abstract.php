@@ -120,10 +120,13 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     public function getGender()
     {
         $gender = (int) $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
+
         if (!$gender) {
-            $customerId = $this->getAddress()->getCustomerId();
-            $customer = Mage::getModel('customer/customer')->load($customerId);
-            $gender = (int) $customer->getGender();
+            $gender = (int) $this->getQuote()->getCustomerGender();
+        }
+
+        if (!$gender && $this->getCustomer()) {
+            $gender = (int) $this->getCustomer()->getGender();
         }
 
         return $gender;
@@ -134,27 +137,26 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
      */
     public function getDob()
     {
-        $dob = array(
-            false,
-            false,
-            false,
-        );
-        if (!is_null($this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]'))) {
-            $dob = array(
-                $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]'),
-                $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[month]'),
-                $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[year]'),
-            );
-        } else {
-            $customerId = $this->getAddress()->getCustomerId();
-            $customer = Mage::getModel('customer/customer')->load($customerId);
-            $customerDob = $customer->getDob();
+        $dobDay = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]');
+        $dobMonth = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[month]');
+        $dobYear = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[year]');
+
+        $dob = $dobYear . '-' . $dobMonth . '-' . $dobDay;
+
+        if (!$dobDay) {
+            $customerDob = $this->getQuote()->getCustomerDob();
+
+            $dob = Mage::getModel('core/date')->date('Y-m-d', $customerDob);
+        }
+
+        if (!$dobDay && $this->getCustomer()) {
+            $customerDob = $this->getCustomer()->getDob();
+
             if (!$customerDob) {
                 return $dob;
             }
 
-            $dob = Mage::getModel('core/date')->date('d,m,Y', $customerDob);
-            $dob = explode(',', $dob);
+            $dob = Mage::getModel('core/date')->date('Y-m-d', $customerDob);
         }
 
         return $dob;
