@@ -121,43 +121,41 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     {
         $gender = (int) $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
 
-        if (!$gender) {
-            $gender = (int) $this->getQuote()->getCustomerGender();
-        }
-
         if (!$gender && $this->getCustomer()) {
             $gender = (int) $this->getCustomer()->getGender();
+        }
+
+        if (!$gender) {
+            $gender = (int) $this->getQuote()->getCustomerGender();
         }
 
         return $gender;
     }
 
     /**
-     * @return array|string
+     * @return string
      */
     public function getDob()
     {
+        $dob = null;
+
         $dobDay = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]');
         $dobMonth = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[month]');
         $dobYear = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[year]');
 
-        $dob = $dobYear . '-' . $dobMonth . '-' . $dobDay;
-
-        if (!$dobDay) {
-            $customerDob = $this->getQuote()->getCustomerDob();
-
-            $dob = Mage::getModel('core/date')->date('Y-m-d', $customerDob);
+        if ($dobDay) {
+            $dob = $dobYear . '-' . $dobMonth . '-' . $dobDay;
         }
 
-        if (!$dobDay && $this->getCustomer()) {
-            $customerDob = $this->getCustomer()->getDob();
-
-            if (!$customerDob) {
-                return $dob;
-            }
-
-            $dob = Mage::getModel('core/date')->date('Y-m-d', $customerDob);
+        if (!$dob && $this->getCustomer()) {
+            $dob = $this->getCustomer()->getDob();
         }
+
+        if (!$dob) {
+            $dob = $this->getQuote()->getCustomerDob();
+        }
+
+        $dob = Mage::getModel('core/date')->date('Y-m-d', $dob);
 
         return $dob;
     }
