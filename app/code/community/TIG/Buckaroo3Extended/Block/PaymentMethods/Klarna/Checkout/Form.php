@@ -36,4 +36,21 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Klarna_Checkout_Form extends TI
         $this->setTemplate('buckaroo3extended/klarna/checkout/form.phtml');
         parent::_construct();
     }
+
+    /**
+     * Get Calculated Payment Fee
+     *
+     * @return float|mixed
+     */
+    public function getPlainPaymentFee() {
+        $paymentFeeWithMarkUp = $this->getMethodLabelAfterHtml(false);
+
+        if (!$paymentFeeWithMarkUp) {
+            return 0.00;
+        }
+
+        $plainPaymentFee = preg_replace('/[^0-9.,]/','',$paymentFeeWithMarkUp);
+
+        return $plainPaymentFee;
+    }
 }
