@@ -70,25 +70,25 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_PaymentMet
     public function isAvailableProvider()
     {
         return array(
-            'no headers' => array(
+            'no cookie' => array(
                 null,
                 'abc',
                 null,
                 false
             ),
-            'with terminalid header, no user agent configured' => array(
+            'with terminalid cookie, no user agent configured' => array(
                 '1234567',
                 'def',
                 null,
                 true
             ),
-            'with terminalid header, wrong user agent' => array(
+            'with terminalid cookie, wrong user agent' => array(
                 '8901234',
                 'ghi',
                 'jkl',
                 false
             ),
-            'with terminalid header, correct user agent' => array(
+            'with terminalid cookie, correct user agent' => array(
                 '5678901',
                 'mno',
                 'mno',
@@ -107,7 +107,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_PaymentMet
      */
     public function testIsAvailable($terminalid, $userAgent, $configuredUserAgent, $expected)
     {
-        $_SERVER['HTTP_POS_TERMINAL_ID'] = $terminalid;
+        $_COOKIE['Pos-Terminal-Id'] = $terminalid;
         $_SERVER['HTTP_USER_AGENT'] = $userAgent;
 
         $pospaymentPath = 'buckaroo/buckaroo3extended_pospayment/';

@@ -294,12 +294,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
      */
     public function getPosPaymentTerminalId()
     {
+        $request = Mage::app()->getRequest();
+
         $cookieName = TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod::POSPAYMENT_COOKIE;
-        $value = Mage::app()->getCookie()->get($cookieName);
+        $value = $request->getCookie($cookieName);
 
         if (!$value || strlen($value) <= 0) {
             $xHeaderName = TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod::POSPAYMENT_XHEADER;
-            $value = Mage::app()->getRequest()->getHeader($xHeaderName);
+            $value = $request->getHeader($xHeaderName);
         }
 
         return $value;
