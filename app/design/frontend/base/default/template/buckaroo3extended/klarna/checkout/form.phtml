@@ -141,5 +141,11 @@
             ; ?>
         </li>
 
+        <?php if (!$this->billingIsSameAsShipping()): ?>
+            <li>
+                <?php echo Mage::helper('buckaroo3extended')->__('Please note: when choosing a different billing and shipping address, the first name, the last name and country have to be the same for both addresses when paying with Klarna.')?>
+            </li>
+        <?php endif;?>
+
     </ul>
 </fieldset>

@@ -53,4 +53,35 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Klarna_Checkout_Form extends TI
 
         return $plainPaymentFee;
     }
+
+    /**
+     * Klarna demands that Firstname, LastName and Country are the same for Billing and Shipping Address
+     *
+     * @return bool
+     */
+    public function billingIsSameAsShipping() {
+        $quote = $this->getQuote();
+
+        $oBillingAddress = $quote->getBillingAddress()->getData();
+        $oShippingAddress = $quote->getShippingAddress()->getData();
+
+        // include only certain keys that are always different
+        $includeKeys = array(
+            'firstname',
+            'lastname',
+            'country_id',
+        );
+
+        $oBillingAddressFiltered = array_intersect_key($oBillingAddress, array_flip($includeKeys));
+        $oShippingAddressFiltered = array_intersect_key($oShippingAddress, array_flip($includeKeys));
+
+        //differentiate the addressess, when some data is different an array with changes will be returned
+        $addressDiff = array_diff($oBillingAddressFiltered, $oShippingAddressFiltered);
+
+        if (empty($addressDiff)) {
+            return true;
+        }
+
+        return false;
+    }
 }
