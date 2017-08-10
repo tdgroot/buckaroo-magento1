@@ -280,14 +280,28 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
      */
     public function hideForPosPayment()
     {
-        $request = Mage::app()->getRequest();
-        $xHeaderName = TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod::POSPAYMENT_XHEADER;
-        $xHeaderValue = $request->getHeader($xHeaderName);
+        $terminalId = $this->getPosPaymentTerminalId();
 
-        if (strlen($xHeaderValue) > 0 && $this->getCode() != 'buckaroo3extended_pospayment') {
+        if (strlen($terminalId) > 0 && $this->getCode() != 'buckaroo3extended_pospayment') {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @return false|string
+     */
+    public function getPosPaymentTerminalId()
+    {
+        $cookieName = TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod::POSPAYMENT_COOKIE;
+        $value = Mage::app()->getCookie()->get($cookieName);
+
+        if (!$value || strlen($value) <= 0) {
+            $xHeaderName = TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod::POSPAYMENT_XHEADER;
+            $value = Mage::app()->getRequest()->getHeader($xHeaderName);
+        }
+
+        return $value;
     }
 }
