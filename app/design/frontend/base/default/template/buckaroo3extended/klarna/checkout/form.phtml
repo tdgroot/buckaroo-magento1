@@ -85,7 +85,7 @@
                 ->setFieldNameFormat('payment[' . $_code . '][%s]')
                 ->setIsRequired(true)
                 ->setPaymentMethodCode($_code)
-                ->setDate($this->getCustomer()->getDob())
+                ->setDate($this->getDob())
                 ->toHtml();
             ?>
         </li>
