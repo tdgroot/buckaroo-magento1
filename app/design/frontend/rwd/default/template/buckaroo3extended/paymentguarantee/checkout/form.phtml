@@ -12,8 +12,8 @@ $_code = $this->getMethodCode();
         <div class="input-box">
             <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" title="<?php echo $this->__('Salutation');?>" id="<?php echo $_code;?>_BPE_Customergender">
                 <option value=''><?php echo $this->__('Select'); ?></option>
-                <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
-                <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
+                <option value="1" <?php echo (in_array($this->getGender(),array(1,123)))?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
+                <option value="2" <?php echo (in_array($this->getGender(),array(2,124)))?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
             </select>
         </div>
     </li>
