@@ -105,10 +105,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer extends TIG
         $request = $observer->getRequest();
         $vars = $request->getVars();
 
-        $xHeaderName = TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod::POSPAYMENT_XHEADER;
-        $xHeaderValue = Mage::app()->getRequest()->getHeader($xHeaderName);
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getOrder();
+        /** @var TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod $methodInstance */
+        $methodInstance = $order->getPayment()->getMethodInstance();
+        $terminalId = $methodInstance->getPosPaymentTerminalId();
 
-        $vars['customVars'][$this->_method]['TerminalID'] = $xHeaderValue;
+        $vars['customVars'][$this->_method]['TerminalID'] = $terminalId;
 
         $request->setVars($vars);
 

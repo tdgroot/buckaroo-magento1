@@ -156,7 +156,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
      */
     public function testBuckaroo3extended_request_addcustomvars($terminalid, $expected)
     {
-        $_SERVER['HTTP_POS_TERMINAL_ID'] = $terminalid;
+        $_COOKIE['Pos-Terminal-Id'] = $terminalid;
         $mockObserver = $this->getMockObserver();
 
         $instance = $this->_getInstance();
