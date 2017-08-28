@@ -32,6 +32,7 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     const POSPAYMENT_XHEADER = 'Pos-Terminal-Id';
+    const POSPAYMENT_COOKIE = 'Pos-Terminal-Id';
 
     public $allowedCurrencies = array(
         'EUR',
@@ -44,21 +45,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_PaymentMethod extend
     protected $_canRefundInvoicePartial = false;
 
     /**
-     * POSPayment may only be used when the terminalid x-header is set and optionally if the User-Agent matches
+     * POSPayment may only be used when the terminalid is set in the header or cookie.
+     * If an User-Agent is configured, that one will have to match with that of the client as well.
      *
      * {@inheritdoc}
      */
     public function isAvailable($quote = null)
     {
-        $request = Mage::app()->getRequest();
-        $xHeader = $request->getHeader(self::POSPAYMENT_XHEADER);
+        $terminalId = $this->getPosPaymentTerminalId();
 
-        if (strlen($xHeader) <= 0) {
+        if (strlen($terminalId) <= 0) {
             return false;
         }
 
         $storeId = Mage::app()->getStore()->getId();
-        $userAgent = $request->getHeader('User-Agent');
+        $userAgent = Mage::app()->getRequest()->getHeader('User-Agent');
         $userAgentConfiguration = trim(Mage::getStoreConfig('buckaroo/' . $this->_code . '/user_agent', $storeId));
 
         if (strlen($userAgentConfiguration) > 0 && $userAgent != $userAgentConfiguration) {

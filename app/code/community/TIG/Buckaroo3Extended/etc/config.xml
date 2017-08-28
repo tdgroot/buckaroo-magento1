@@ -2,12 +2,12 @@
 <config>
     <modules>
         <TIG_Buckaroo3Extended>
-            <version>4.17.2</version>
+            <version>4.18.0</version>
         </TIG_Buckaroo3Extended>
     </modules>
     <tig>
         <buckaroo>
-            <stability>stable</stability>
+            <stability>RC1</stability>
         </buckaroo>
     </tig>
     <frontend>
@@ -1203,6 +1203,15 @@
                     </buckaroo3extended_paymentmethod_observer_pospayment>
                 </observers>
             </buckaroo3extended_response_custom_processing>
+            <buckaroo3extended_push_custom_save_invoice_after>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_pospayment>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_pospayment_observer</class>
+                        <method>buckaroo3extended_push_custom_save_invoice_after</method>
+                    </buckaroo3extended_paymentmethod_observer_pospayment>
+                </observers>
+            </buckaroo3extended_push_custom_save_invoice_after>
             <buckaroo3extended_capture_request_addservices>
                 <observers>
                     <buckaroo3extended_paymentmethod_observer_afterpay>

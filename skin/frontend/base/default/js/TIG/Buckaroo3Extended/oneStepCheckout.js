@@ -2,9 +2,9 @@ oldFirstname = '';
 oldLastname = '';
 oldEmail = '';
 oldGender = '';
-oldDay = '';
-oldMonth = '';
-oldYear = '';
+oldDay = jQuery_1123("#billing\\:day").val();
+oldMonth = jQuery_1123("#billing\\:month").val();
+oldYear = jQuery_1123("#billing\\:year").val();
 oldPhone = '';
 originalAddress = jQuery_1123('#billing-address-select option:selected').val();
 changedAddress = false;
@@ -177,6 +177,8 @@ jQuery_1123("#billing\\:gender").change(
 		}
 
 		oldGender = gender;
+
+        saveOscBilling();
 	}
 );
 jQuery_1123("#billing\\:day").change(
@@ -202,6 +204,8 @@ jQuery_1123("#billing\\:day").change(
         }
 
 		oldDay = day;
+
+        updateDob();
 	}
 );
 jQuery_1123("#billing\\:month").change(
@@ -227,6 +231,8 @@ jQuery_1123("#billing\\:month").change(
         }
 
 		oldMonth = month;
+
+        updateDob();
 	}
 );
 jQuery_1123("#billing\\:year").change(
@@ -252,6 +258,8 @@ jQuery_1123("#billing\\:year").change(
         }
 
 		oldYear = year;
+
+        updateDob();
 	}
 );
 
@@ -264,3 +272,23 @@ jQuery_1123('#billing-address-select').change(
         }
     }
 );
+
+function updateDob()
+{
+    if (oldDay && oldMonth && oldYear && oldYear > 1900) {
+        var fullDay = oldDay;
+        if (fullDay < 10 && fullDay.charAt(0) != '0') {
+            fullDay = '0' + oldDay;
+        }
+
+        var fullMonth = oldMonth;
+        if (fullMonth < 10 && fullMonth.charAt(0) != '0') {
+            fullMonth = '0' + oldMonth;
+        }
+
+        var fullDob = fullDay + '-' + fullMonth + '-' + oldYear;
+        jQuery_1123("#billing\\:dob").val(fullDob);
+
+        saveOscBilling();
+    }
+}

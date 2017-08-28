@@ -110,22 +110,22 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest ext
     public function hideForPosPaymentProvider()
     {
         return array(
-            'no header, not pospayment' => array(
+            'no cookie, not pospayment' => array(
                 null,
                 'buckaroo3extended_tig',
                 false
             ),
-            'with header, not pospayment' => array(
+            'with cookie, not pospayment' => array(
                 '1234567',
                 'buckaroo3extended_tig',
                 true
             ),
-            'no header, is pospayment' => array(
+            'no cookie, is pospayment' => array(
                 null,
                 'buckaroo3extended_pospayment',
                 false
             ),
-            'with header, is pospayment' => array(
+            'with cookie, is pospayment' => array(
                 '8901234',
                 'buckaroo3extended_pospayment',
                 false
@@ -142,12 +142,56 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest ext
      */
     public function testHideForPosPayment($terminalid, $methodCode, $expected)
     {
-        $_SERVER['HTTP_POS_TERMINAL_ID'] = $terminalid;
+        $_COOKIE['Pos-Terminal-Id'] = $terminalid;
 
         $instance = $this->_getInstance();
         $this->setProperty('_code', $methodCode, $instance);
 
         $result = $instance->hideForPosPayment();
+        $this->assertEquals($expected, $result);
+    }
+
+    public function getPosPaymentTerminalIdProvider()
+    {
+        return array(
+            'no cookie or header' => array(
+                null,
+                null,
+                null
+            ),
+            'with cookie, no header' => array(
+                '1234',
+                null,
+                '1234'
+            ),
+            'no cookie, with header' => array(
+                null,
+                '5678',
+                '5678'
+            ),
+            'with both cookie and header' => array(
+                '9012',
+                '3456',
+                '9012'
+            ),
+        );
+    }
+
+    /**
+     * @param $terminalidCookie
+     * @param $terminalidHeader
+     * @param $expected
+     *
+     * @dataProvider getPosPaymentTerminalIdProvider
+     */
+    public function testGetPosPaymentTerminalId($terminalidCookie, $terminalidHeader, $expected)
+    {
+        $_COOKIE['Pos-Terminal-Id'] = $terminalidCookie;
+        $_SERVER['HTTP_POS_TERMINAL_ID'] = $terminalidHeader;
+
+        $instance = $this->_getInstance();
+        $result = $instance->getPosPaymentTerminalId();
+
         $this->assertEquals($expected, $result);
     }
 }
