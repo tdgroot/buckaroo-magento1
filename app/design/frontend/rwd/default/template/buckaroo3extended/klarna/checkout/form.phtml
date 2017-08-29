@@ -43,10 +43,10 @@
                 <option value=''>
                     <?php echo $this->__('Select'); ?>
                 </option>
-                <option value="1" <?php echo (in_array($this->getGender(),array(1,123)))?'selected':'';?>>
+                <option value="1" <?php echo ' test="'.$this->getGender().'" '; echo (in_array($this->getGender(),array(1,123)))?'selected':'';?>>
                     <?php echo $this->__('Mr.'); ?>
                 </option>
-                <option value="2" <?php echo (in_array($this->getGender(),array(2,124)))?'selected':'';?>>
+                <option value="2" <?php echo ' test="'.$this->getGender().'" '; echo (in_array($this->getGender(),array(2,124)))?'selected':'';?>>
                     <?php echo $this->__('Mrs.'); ?>
                 </option>
             </select>
@@ -122,7 +122,7 @@
                 <input class="input-checkbox required-entry" type="checkbox" title="<?php echo $this->__('Terms and Conditions') ?>" name="<?php echo $_code;?>_bpe_accept" value="checked" id="<?php echo $_code;?>_BPE_terms_and_conditions" />
             </div>
             <label for="<?php echo $_code;?>_BPE_terms_and_conditions" class="required">
-                <?php echo $this->__('%slegal consent%s for the use of Klarna.',
+                <?php echo $this->__('Mit der Übermittlung der für die Abwicklung der gewählten Klarna Zahlungsmethode und einer Identitäts- und Bonitätsprüfung erforderlichen Daten an Klarna bin ich einverstanden. Meine %sEinwilligung%s kann ich jederzeit mit Wirkung für die Zukunft widerrufen. Es gelten die AGB des Händlers',
                     '<a style="float:none;margin:0;" target="_blank" 
                     href="https://cdn.klarna.com/1.0/shared/content/legal/terms/0/' .
                     $countryFormatKlarna . '/consent">', '</a>'); ?> <em>*</em>
@@ -132,7 +132,7 @@
 
 
     <li>
-        <?php echo $this->__('%slegal terms%s for the use of Klarna.',
+        <?php echo $this->__('%sInvoice payment terms%s',
             '<a style="float:none;margin:0;" target="_blank" 
             href="https://cdn.klarna.com/1.0/shared/content/legal/terms/0/' .
             $countryFormatKlarna . '/invoice?fee=' .
