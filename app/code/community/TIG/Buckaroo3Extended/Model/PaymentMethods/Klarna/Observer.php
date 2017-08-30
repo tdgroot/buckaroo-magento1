@@ -675,18 +675,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $phoneNumber = $this->processPhoneNumberBe($rawPhoneNumber);
         }
 
-        // First-, lastname and country always should be the same, so use the billing address to achieve this
-        $billingAddress = $this->_order->getBillingAddress();
-
         $addressInfo = array(
-            $addressType . 'FirstName'         => $billingAddress->getFirstname(),
-            $addressType . 'LastName'          => $billingAddress->getLastname(),
+            $addressType . 'FirstName'         => $address->getFirstname(),
+            $addressType . 'LastName'          => $address->getLastname(),
             $addressType . 'Street'            => $streetFull['street'],
             $addressType . 'HouseNumber'       => $streetFull['house_number'],
             $addressType . 'HouseNumberSuffix' => $streetFull['number_addition'],
             $addressType . 'PostalCode'        => $address->getPostcode(),
             $addressType . 'City'              => $address->getCity(),
-            $addressType . 'Country'           => $billingAddress->getCountryId(),
+            $addressType . 'Country'           => $address->getCountryId(),
             $addressType . 'Email'             => $address->getEmail(),
             $addressType . 'CellPhoneNumber'   => $phoneNumber['clean'],
         );

@@ -26,6 +26,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
      */
     public function getMethodLabelAfterHtml($useSpan = true)
     {
+        //this is the Module of Klarna NOT the Buckaroo Klarna Payment Option
         if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
             return '';
         }
@@ -120,41 +121,43 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     public function getGender()
     {
         $gender = (int) $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
+
+        if (!$gender && $this->getCustomer()) {
+            $gender = (int) $this->getCustomer()->getGender();
+        }
+
         if (!$gender) {
-            $customerId = $this->getAddress()->getCustomerId();
-            $customer = Mage::getModel('customer/customer')->load($customerId);
-            $gender = (int) $customer->getGender();
+            $gender = (int) $this->getQuote()->getCustomerGender();
         }
 
         return $gender;
     }
 
     /**
-     * @return array|string
+     * @return string
      */
     public function getDob()
     {
-        $dob = array(
-            false,
-            false,
-            false,
-        );
-        if (!is_null($this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]'))) {
-            $dob = array(
-                $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]'),
-                $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[month]'),
-                $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[year]'),
-            );
-        } else {
-            $customerId = $this->getAddress()->getCustomerId();
-            $customer = Mage::getModel('customer/customer')->load($customerId);
-            $customerDob = $customer->getDob();
-            if (!$customerDob) {
-                return $dob;
-            }
+        $dob = null;
 
-            $dob = Mage::getModel('core/date')->date('d,m,Y', $customerDob);
-            $dob = explode(',', $dob);
+        $dobDay = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]');
+        $dobMonth = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[month]');
+        $dobYear = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[year]');
+
+        if ($dobDay) {
+            $dob = $dobYear . '-' . $dobMonth . '-' . $dobDay;
+        }
+
+        if (!$dob && $this->getCustomer()) {
+            $dob = $this->getCustomer()->getDob();
+        }
+
+        if (!$dob) {
+            $dob = $this->getQuote()->getCustomerDob();
+        }
+
+        if ($dob) {
+            $dob = Mage::getModel('core/date')->date('Y-m-d', $dob);
         }
 
         return $dob;
