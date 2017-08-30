@@ -575,8 +575,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     protected function _autoInvoice()
     {
         //check if the module is configured to create invoice on success
-        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', $this->_order->getStoreId()))
-        {
+        if (!Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/auto_invoice', $this->_order->getStoreId())) {
             return false;
         }
 
@@ -589,20 +588,59 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         //returns true if invoice has been made, else false
         $invoiceSaved = $this->_saveInvoice();
 
-        if($invoiceSaved && Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', $this->_order->getStoreId()))
-        {
-            //loop through every invoice
-            foreach($this->_order->getInvoiceCollection() as $invoice)
-            {
-                //when there is no invoice send to the customer, send it!
-                if(!$invoice->getEmailSent())
-                {
-                    $invoice->sendEmail()
-                            ->setEmailSent(true)
-                            ->save();
-                }
-            }
+        if($invoiceSaved && Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/invoice_mail', $this->_order->getStoreId())) {
+            $this->sendInvoiceEmail();
         }
+    }
+
+    /**
+     * Emails the invoice of the latest invoice of the current transaction
+     */
+    private function sendInvoiceEmail()
+    {
+        // We can't send an invoice if we don't know the current transaction
+        if (!isset($this->_postArray['brq_transactions'])) {
+            return;
+        }
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection()
+            ->addFieldToFilter('transaction_id', array('eq' => $this->_postArray['brq_transactions']))
+            ->setOrder('entity_id', Mage_Sales_Model_Resource_Order_Invoice_Collection::SORT_ORDER_DESC);
+
+        /** @var Mage_Sales_Model_Order_Invoice $invoice */
+        $invoice = $invoiceCollection->getFirstItem();
+
+        if ($invoice->getId() && !$invoice->getEmailSent()) {
+            $comment = $this->getNewestInvoiceComment($invoice);
+
+            $invoice->sendEmail(true, $comment)
+                ->setEmailSent(true)
+                ->save();
+        }
+    }
+
+    /**
+     * Obtain the latest invoice of the invoice
+     *
+     * @param Mage_Sales_Model_Order_Invoice $invoice
+     *
+     * @return string
+     */
+    private function getNewestInvoiceComment($invoice)
+    {
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Comment_Collection $commentsCollection */
+        $commentsCollection = $invoice->getCommentsCollection();
+
+        /** @var Mage_Sales_Model_Order_Invoice_Comment $commentItem */
+        $commentItem = $commentsCollection->getFirstItem();
+        $commentText = '';
+
+        if ($commentItem->getId()) {
+            $commentText = $commentItem->getComment();
+        }
+
+        return $commentText;
     }
 
     /**
@@ -612,6 +650,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      */
     protected function _saveInvoice()
     {
+
         if ($this->_order->canInvoice() && !$this->_order->hasInvoices()) {
             $payment = $this->_order->getPayment();
             $payment->registerCaptureNotification($this->_order->getBaseGrandTotal());
@@ -628,6 +667,16 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
                 $invoice->setTransactionId($this->_postArray['brq_transactions'])
                         ->save();
             }
+
+            $response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);
+            Mage::dispatchEvent('buckaroo3extended_push_custom_save_invoice_after',
+                array(
+                    'push' => $this,
+                    'order' => $this->getCurrentOrder(),
+                    'response' => $response
+                )
+            );
+
             return true;
         }
 

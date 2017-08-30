@@ -372,3 +372,5 @@ TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
 "Klarna has rejected the payment request. Please check the Buckaroo Payment Plaza for additional information.","Klarna heeft de betaling afgewezen. U kunt in de Payment Plaza additionele informatie vinden."
 "Unique User-Agent","Unieke User-Agent"
 "The payment method will be shown only when the User-Agent matches this configuration value. The payment method will always be shown when this value is empty.","De betaalmethode zal alleen getoond worden wanneer de User-Agent met deze waarde overeenkomt. De betaalmethode wordt altijd getoond wanneer deze waarde leeg is."
+"%sInvoice payment terms%s","%sFactuurvoorwaarden%s"
+"Please note: when choosing a different billing and shipping address, the first name, the last name and country have to be the same for both addresses when paying with Klarna.","Let op: bij een verschil in factuur- en verzendadres dienen de voornaam, achternaam en het land hetzelfde te zijn bij beide adressen ingeval er voor Klarna gekozen wordt."
