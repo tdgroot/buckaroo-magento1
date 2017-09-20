@@ -400,10 +400,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     private function addAdditionalInfo(&$vars)
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        $billingAddress = $this->_order->getBillingAddress();
 
         $requestArray = array(
             'Gender'                => $additionalFields['BPE_customer_gender'],
-            'OperatingCountry'      => Mage::getStoreConfig('general/country/default', $this->_order->getStoreId()),
+            'OperatingCountry'      => $billingAddress->getCountryId(),
             'Pno'                   => $additionalFields['BPE_customer_dob'],
             'ShippingSameAsBilling' => $this->shippingSameAsBilling(),
         );
