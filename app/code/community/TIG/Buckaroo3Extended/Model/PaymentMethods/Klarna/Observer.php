@@ -402,9 +402,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         $billingAddress = $this->_order->getBillingAddress();
 
+        $listCountries = Zend_Locale::getTranslationList('territory', 'en_US');
+
         $requestArray = array(
             'Gender'                => $additionalFields['BPE_customer_gender'],
             'OperatingCountry'      => $billingAddress->getCountryId(),
+            'Encoding'              => $listCountries[$billingAddress->getCountryId()],
             'Pno'                   => $additionalFields['BPE_customer_dob'],
             'ShippingSameAsBilling' => $this->shippingSameAsBilling(),
         );
