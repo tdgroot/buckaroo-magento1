@@ -32,9 +32,12 @@
 class TIG_Buckaroo3Extended_Model_Observer_KlarnaCreateInvoice extends Mage_Core_Model_Abstract
 {
     const XPATH_BUCKAROO_KLARNA_INVOICE_WHEN_SHIPPING = 'buckaroo/buckaroo3extended_klarna/auto_invoice_when_shipping';
+    const XPATH_BUCKAROO_KLARNA_INVOICE_CAPTURE_TYPE  = 'buckaroo/buckaroo3extended_klarna/auto_invoice_capture_mode';
 
     /**
-     *
+     * This observer is triggerd by: sales_order_shipment_save_after
+     * When the payment is Klarna and the option auto_invoice_when_shipping is enabled in the advanced settings
+     * of the Klarna configuration, the invoice will automaticly be created.
      *
      * @param Varien_Event_Observer $observer
      *
@@ -91,7 +94,8 @@ class TIG_Buckaroo3Extended_Model_Observer_KlarnaCreateInvoice extends Mage_Core
                 );
             }
 
-            $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
+            /** @noinspection PhpUndefinedMethodInspection */
+            $invoice->setRequestedCaptureCase($this->_getCaptureType($order->getStoreId()));
             $invoice->register();
 
             /** @var Mage_Core_Model_Resource_Transaction $transaction */
@@ -147,6 +151,16 @@ class TIG_Buckaroo3Extended_Model_Observer_KlarnaCreateInvoice extends Mage_Core
         $paymentMethodCode = substr($payment->getMethodInstance()->getCode(), 18);
 
         return $paymentMethodCode == 'klarna';
+    }
+
+    /**
+     * @param null $storeId
+     *
+     * @return string
+     */
+    protected function _getCaptureType($storeId = null)
+    {
+        return Mage::getStoreConfig(static::XPATH_BUCKAROO_KLARNA_INVOICE_CAPTURE_TYPE, $storeId);
     }
 
     /**
