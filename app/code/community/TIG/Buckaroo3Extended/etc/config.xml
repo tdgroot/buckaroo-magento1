@@ -263,6 +263,15 @@
                     </buckaroo3extended_cancelauthorize_observer>
                 </observers>
             </sales_order_payment_cancel>
+            <sales_order_payment_place_end>
+                <observers>
+                    <buckaroo3extended_payment_place_end_observer>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/observer_paymentPlaceEnd</class>
+                        <method>updateOrderStatus</method>
+                    </buckaroo3extended_payment_place_end_observer>
+                </observers>
+            </sales_order_payment_place_end>
             <buckaroo3extended_refund_request_setmethod>
                 <observers>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
