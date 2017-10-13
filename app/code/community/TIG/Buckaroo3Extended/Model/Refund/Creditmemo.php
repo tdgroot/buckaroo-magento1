@@ -300,7 +300,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
     }
 
     /**
-     * Checks if the post recieved is valid by checking its signature field.
+     * Checks if the post received is valid by checking its signature field.
      * This field is unique for every payment and every store.
      * Also calls a method that checks if the order is able to have a creditmemo
      *
@@ -315,7 +315,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             $correctSignature = true;
         }
 
-        //check if the order can recieve a new creditmemo
+        //check if the order can receive a new creditmemo
         if ($correctSignature === true) {
             $canProcess = $this->_canProcessCreditmemo();
         }

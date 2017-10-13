@@ -206,7 +206,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->_order->addStatusHistoryComment(
             Mage::helper('buckaroo3extended')->__(
-                'The payment request has been successfully recieved by Buckaroo.'
+                'The payment request has been successfully received by Buckaroo.'
             )
         );
         $this->_order->save();
@@ -368,14 +368,14 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->_order->addStatusHistoryComment(
             Mage::helper('buckaroo3extended')->__(
-                'The payment request has been recieved by Buckaroo.'
+                'The payment request has been received by Buckaroo.'
             )
         );
         $this->_order->save();
 
         Mage::getSingleton('core/session')->addSuccess(
             Mage::helper('buckaroo3extended')->__(
-                'Your order has been placed succesfully. You will recieve an e-mail containing further payment instructions shortly.'
+                'Your order has been placed succesfully. You will receive an e-mail containing further payment instructions shortly.'
             )
         );
 
@@ -586,7 +586,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     {
         $this->_debugEmail .= "The transaction's authenticity was not verified. \n";
         Mage::getSingleton('core/session')->addNotice(
-            Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not recieve an e-mail regarding your order within 30 minutes, please contact the shop owner.')
+            Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not receive an e-mail regarding your order within 30 minutes, please contact the shop owner.')
         );
 
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->_order->getStoreId());
