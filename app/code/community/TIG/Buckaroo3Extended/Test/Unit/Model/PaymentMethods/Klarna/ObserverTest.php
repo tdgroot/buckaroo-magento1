@@ -52,7 +52,12 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
      */
     private function getMockOrder()
     {
-        $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')->setMethods(null)->getMock();
+        $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')
+            ->setMethods(array('getCountryId'))
+            ->getMock();
+        $mockOrderAddress->expects($this->any())
+            ->method('getCountryId')
+            ->will($this->returnValue('NL'));
 
         $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
             ->setMethods(array('getMethod'))
@@ -123,13 +128,17 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
 
     public function testBuckaroo3extended_request_addcustomvars()
     {
+        $this->registerMockSessions();
         $randOrdernumber = rand(1000, 9999);
 
         $mockObserver = $this->getMockObserver();
         $mockRequest = $mockObserver->getRequest();
-        $mockRequest->setVars(array('orderId' => $randOrdernumber));
+        $mockRequest->setVars(array('orderId' => $randOrdernumber, 'invoiceId' => $randOrdernumber));
+
+        $mockOrder = $this->getMockOrder();
 
         $instance = $this->_getInstance();
+        $this->setProperty('_order', $mockOrder, $instance);
         $result = $instance->buckaroo3extended_request_addcustomvars($mockObserver);
         $requestVarsResult = $mockObserver->getRequest()->getVars();
 

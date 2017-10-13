@@ -58,12 +58,21 @@
             <checkout_submit_all_after>
                 <observers>
                     <buckaroo3extended_backendOrder>
-                        <type>Model</type>
+                        <type>model</type>
                         <class>buckaroo3extended/observer_backendOrder</class>
                         <method>checkout_submit_all_after</method>
                     </buckaroo3extended_backendOrder>
                 </observers>
             </checkout_submit_all_after>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <buckaroo3extended_klarnaCreateInvoice>
+                        <type>model</type>
+                        <class>buckaroo3extended/observer_klarnaCreateInvoice</class>
+                        <method>salesOrderShipmentSaveAfter</method>
+                    </buckaroo3extended_klarnaCreateInvoice>
+                </observers>
+            </sales_order_shipment_save_after>
         </events>
     </adminhtml>
     <admin>
