@@ -32,7 +32,22 @@ class TIG_Buckaroo3Extended_Model_Response_BackendOrder extends TIG_Buckaroo3Ext
     {
         $this->_debugEmail .= "The request generated an error \n";
 
-        $this->_order->cancel()->save();
+        $newInvoiceIsCanceled = false;
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoices */
+        $invoices = $this->_order->getInvoiceCollection();
+
+        /** @var Mage_Sales_Model_Order_Invoice $invoice */
+        foreach ($invoices->getItems() as $invoice) {
+            if ($invoice->isObjectNew() && $invoice->getRequestedCaptureCase() == 'online') {
+                $newInvoiceIsCanceled = true;
+                $invoice->cancel()->save()->delete();
+            }
+        }
+
+        if (!$newInvoiceIsCanceled) {
+            $this->_order->cancel()->save();
+        }
 
         $this->_debugEmail .= "I have cancelled the order! \n";
 
