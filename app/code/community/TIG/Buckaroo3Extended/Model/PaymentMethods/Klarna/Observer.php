@@ -365,6 +365,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $order->cancel();
             $order->addStatusHistoryComment($message, $status[1]);
             $order->save();
+
+            return $this;
+        }
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getOrder();
+        $paymentMethod = $order->getPayment()->getMethodInstance();
+
+        // Authorize is successful
+        if ($response['status'] == TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_SUCCESS ||
+            $paymentMethod->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+
+
+            $newStates = $observer->getPush()->getNewStates($response['status']);
+            $order->setState($newStates[0])
+                  ->save();
+
         }
 
         return $this;
