@@ -43,10 +43,10 @@
                 <option value=''>
                     <?php echo $this->__('Select'); ?>
                 </option>
-                <option value="1" <?php echo ' test="'.$this->getGender().'" '; echo (in_array($this->getGender(),array(1,123)))?'selected':'';?>>
+                <option value="1" <?php echo (in_array($this->getGender(),array(1,123)))?'selected':'';?>>
                     <?php echo $this->__('Mr.'); ?>
                 </option>
-                <option value="2" <?php echo ' test="'.$this->getGender().'" '; echo (in_array($this->getGender(),array(2,124)))?'selected':'';?>>
+                <option value="2" <?php echo (in_array($this->getGender(),array(2,124)))?'selected':'';?>>
                     <?php echo $this->__('Mrs.'); ?>
                 </option>
             </select>

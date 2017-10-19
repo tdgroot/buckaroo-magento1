@@ -191,7 +191,7 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
     {
         $this->_debugEmail .= "The transaction's authenticity was not verified. \n";
         Mage::getSingleton('core/session')->addNotice(
-            Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not recieve an e-mail regarding your order within 30 minutes, please contact the shop owner.')
+            Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not receive an e-mail regarding your order within 30 minutes, please contact the shop owner.')
         );
 
         $returnLocation = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', Mage::app()->getStore()->getId());

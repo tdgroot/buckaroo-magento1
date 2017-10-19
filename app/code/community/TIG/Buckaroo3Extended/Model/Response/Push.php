@@ -109,7 +109,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 
         $newStates = $this->getNewStates($response['status']);
 
-        $this->_debugEmail .= "Response recieved: " . var_export($response, true) . "\n\n";
+        $this->_debugEmail .= "Response received: " . var_export($response, true) . "\n\n";
         $this->_debugEmail .= "Current state: " . $this->_order->getState() . "\nCurrent status: " . $this->_order->getStatus() . "\n";
         $this->_debugEmail .= "New state: " . $newStates[0] . "\nNew status: " . $newStates[1] . "\n\n";
 
@@ -210,7 +210,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             $correctSignature = true;
         }
 
-        //check if the order can recieve further status updates
+        //check if the order can receive further status updates
         if ($correctSignature === true) {
             $canUpdate = $this->_canUpdate($response);
         }
@@ -296,7 +296,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 
     /**
      * Uses setState to add a comment to the order status history without changing the state nor status. Purpose of the comment
-     * is to inform the user of an attempted status upsate after the order has already recieved complete, canceled, closed or holded states
+     * is to inform the user of an attempted status upsate after the order has already received complete, canceled, closed or holded states
      * or the order can't be invoiced. Returns false if the config has disabled this feature.
      *
      * @param string $description

@@ -12,6 +12,11 @@
         <reference name="order_totals">
             <block type="buckaroo3extended/adminhtml_sales_order_totals_fee" before="tax" name="buckaroo_fee"/>
         </reference>
+        <reference name="order_info">
+            <action method='setTemplate'>
+                <template>buckaroo3extended/sales/order/view/info.phtml</template>
+            </action>
+        </reference>
     </adminhtml_sales_order_view>
 
     <adminhtml_sales_order_invoice_view>
@@ -23,6 +28,11 @@
                 <template>buckaroo3extended/sales/order/totals/tax.phtml</template>
             </action>
         </reference>
+        <reference name="order_info">
+            <action method='setTemplate'>
+                <template>buckaroo3extended/sales/order/view/info.phtml</template>
+            </action>
+        </reference>
     </adminhtml_sales_order_invoice_view>
 
     <adminhtml_sales_order_invoice_new>
@@ -32,6 +42,11 @@
         <reference name="tax">
             <action method = 'setTemplate'>
                 <template>buckaroo3extended/sales/order/totals/tax.phtml</template>
+            </action>
+        </reference>
+        <reference name="order_info">
+            <action method='setTemplate'>
+                <template>buckaroo3extended/sales/order/view/info.phtml</template>
             </action>
         </reference>
     </adminhtml_sales_order_invoice_new>
@@ -52,6 +67,11 @@
         <reference name="creditmemo_totals">
             <block name="buckaroo_fee" type="buckaroo3extended/adminhtml_sales_order_creditmemo_totals_fee" before="tax"/>
         </reference>
+        <reference name="order_info">
+            <action method='setTemplate'>
+                <template>buckaroo3extended/sales/order/view/info.phtml</template>
+            </action>
+        </reference>
     </adminhtml_sales_order_creditmemo_view>
 
     <adminhtml_sales_order_creditmemo_new>
@@ -63,6 +83,11 @@
        		<action method = 'setTemplate'>
        			<template>buckaroo3extended/sales/order/totals/tax.phtml</template>
        		</action>
+        </reference>
+        <reference name="order_info">
+            <action method='setTemplate'>
+                <template>buckaroo3extended/sales/order/view/info.phtml</template>
+            </action>
         </reference>
     </adminhtml_sales_order_creditmemo_new>
 
