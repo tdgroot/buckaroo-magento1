@@ -80,7 +80,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
         }
     }
     /**
-     * Processes 'pushes' recieves from Buckaroo with the purpose of updating an existing creditmemo or create a new one.
+     * Processes 'pushes' receives from Buckaroo with the purpose of updating an existing creditmemo or create a new one.
      *
      * @return boolean
      */
@@ -98,7 +98,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
 
         $response = $this->_parseRefundPostResponse($this->_postArray['brq_statuscode']);
 
-        $this->_debugEmail .= "Response recieved: " . var_export($response, true) . "\n\n";
+        $this->_debugEmail .= "Response received: " . var_export($response, true) . "\n\n";
 
         Mage::dispatchEvent('buckaroo3extended_refund_push_custom_processing', array('push' => $this, 'order' => $this->getCurrentOrder(), 'response' => $response));
 
@@ -110,7 +110,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
     }
 
     /**
-     * Checks if the post recieved is valid by checking its signature field.
+     * Checks if the post received is valid by checking its signature field.
      * This field is unique for every payment and every store.
      * Also calls method that checks if an order is able to be updated further.
      * Canceled, completed, holded etc. orders are not able to be updated
@@ -126,7 +126,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
             $correctSignature = true;
         }
 
-        //check if the order can recieve further status updates
+        //check if the order can receive further status updates
         if ($correctSignature === true) {
             if ($this->_order->canRefund() && $this->_postArray['brq_statuscode'] == '190') {
                 $canUpdate = true;

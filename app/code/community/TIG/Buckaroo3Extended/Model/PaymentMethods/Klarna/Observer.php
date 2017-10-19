@@ -365,6 +365,23 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $order->cancel();
             $order->addStatusHistoryComment($message, $status[1]);
             $order->save();
+
+            return $this;
+        }
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getOrder();
+        $paymentMethod = $order->getPayment()->getMethodInstance();
+
+        // Authorize is successful
+        if ($response['status'] == TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_SUCCESS ||
+            $paymentMethod->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+
+
+            $newStates = $observer->getPush()->getNewStates($response['status']);
+            $order->setState($newStates[0])
+                  ->save();
+
         }
 
         return $this;
@@ -400,10 +417,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     private function addAdditionalInfo(&$vars)
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        $billingAddress = $this->_order->getBillingAddress();
+
+        $listCountries = Zend_Locale::getTranslationList('territory', 'en_US');
 
         $requestArray = array(
             'Gender'                => $additionalFields['BPE_customer_gender'],
-            'OperatingCountry'      => Mage::getStoreConfig('general/country/default', $this->_order->getStoreId()),
+            'OperatingCountry'      => $billingAddress->getCountryId(),
+            'Encoding'              => $listCountries[$billingAddress->getCountryId()],
             'Pno'                   => $additionalFields['BPE_customer_dob'],
             'ShippingSameAsBilling' => $this->shippingSameAsBilling(),
         );
@@ -428,7 +449,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     {
         $array = array(
             'ReservationNumber' => $this->_order->getBuckarooReservationNumber(),
-            'PreserveReservation' => 'false',
             'SendByMail' => 'false',
             'SendByEmail' => 'false',
         );
@@ -439,18 +459,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         );
         $sendInvoiceBy = ucfirst($sendInvoiceBy);
         $array['SendBy' . $sendInvoiceBy] = 'true';
-
-        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
-        $invoiceCollection = $this->_order->getInvoiceCollection();
-
-        /** @var Mage_Sales_Model_Order_Invoice $lastInvoice */
-        $lastInvoice = $invoiceCollection->getLastItem();
-
-        if ($this->_order->getPayment()->canCapturePartial()
-            && count($invoiceCollection) > 0
-            && $lastInvoice->getBaseGrandTotal() < $this->_order->getBaseGrandTotal()) {
-            $array['PreserveReservation'] = 'true';
-        }
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
@@ -546,7 +554,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
 
         end($group);
         $key             = (int)key($group);
-        $feeGroupId      = $key + 1;
+
+        $discountGroupId = $key + 1;
+        $discountArray   = $this->getDiscountLine();
+
+        if (false !== $discountArray && is_array($discountArray)) {
+            $group[$discountGroupId] = $discountArray;
+        }
+
+        $feeGroupId      = $discountGroupId + 1;
         $paymentFeeArray = $this->getPaymentFeeLine();
 
         if (false !== $paymentFeeArray && is_array($paymentFeeArray)) {
@@ -623,7 +639,18 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
 
         end($group);
         $key             = (int)key($group);
-        $feeGroupId      = $key + 1;
+
+        $discountGroupId = $key + 1;
+        $discountArray   = $this->getDiscountLine();
+
+        if (false !== $discountArray && is_array($discountArray) && count($invoiceCollection) == 1) {
+            unset($discountArray['ArticlePrice']);
+            unset($discountArray['ArticleTitle']);
+            unset($discountArray['ArticleVat']);
+            $group[$discountGroupId] = $discountArray;
+        }
+
+        $feeGroupId      = $discountGroupId + 1;
         $paymentFeeArray = $this->getPaymentFeeLine();
 
         if (false !== $paymentFeeArray && is_array($paymentFeeArray) && count($invoiceCollection) == 1) {
@@ -858,6 +885,45 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         }
 
         return $return;
+    }
+
+    /**
+     * @return array|bool
+     */
+    private function getDiscountLine()
+    {
+        /** @var Mage_Sales_Model_Order|Mage_Sales_Model_Order_Invoice $discountData */
+        $discountData = $this->_order;
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        if (count($invoiceCollection) > 0) {
+            $discountData = $invoiceCollection->getLastItem();
+        }
+
+        $discount = abs((double)$discountData->getDiscountAmount());
+
+        if (Mage::helper('buckaroo3extended')->isEnterprise()) {
+            $discount += (double)$discountData->getGiftCardsAmount();
+        }
+
+        if ($discount <= 0) {
+            return false;
+        }
+
+        // Klarna expects the discount price to be negative
+        $discount = -1 * round($discount, 2);
+
+        $article = array(
+            'ArticleNumber'   => array('value' => 3),
+            'ArticlePrice'    => array('value' => $discount),
+            'ArticleQuantity' => array('value' => 1),
+            'ArticleTitle'    => array('value' => 'Discount'),
+            'ArticleVat'      => array('value' => 0),
+        );
+
+        return $article;
     }
 
     /**

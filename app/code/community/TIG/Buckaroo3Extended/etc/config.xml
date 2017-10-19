@@ -2,7 +2,7 @@
 <config>
     <modules>
         <TIG_Buckaroo3Extended>
-            <version>4.17.3</version>
+            <version>4.17.4</version>
         </TIG_Buckaroo3Extended>
     </modules>
     <tig>
@@ -58,12 +58,21 @@
             <checkout_submit_all_after>
                 <observers>
                     <buckaroo3extended_backendOrder>
-                        <type>Model</type>
+                        <type>model</type>
                         <class>buckaroo3extended/observer_backendOrder</class>
                         <method>checkout_submit_all_after</method>
                     </buckaroo3extended_backendOrder>
                 </observers>
             </checkout_submit_all_after>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <buckaroo3extended_klarnaCreateInvoice>
+                        <type>model</type>
+                        <class>buckaroo3extended/observer_klarnaCreateInvoice</class>
+                        <method>salesOrderShipmentSaveAfter</method>
+                    </buckaroo3extended_klarnaCreateInvoice>
+                </observers>
+            </sales_order_shipment_save_after>
         </events>
     </adminhtml>
     <admin>
@@ -254,6 +263,15 @@
                     </buckaroo3extended_cancelauthorize_observer>
                 </observers>
             </sales_order_payment_cancel>
+            <sales_order_payment_place_end>
+                <observers>
+                    <buckaroo3extended_payment_place_end_observer>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/observer_paymentPlaceEnd</class>
+                        <method>updateOrderStatus</method>
+                    </buckaroo3extended_payment_place_end_observer>
+                </observers>
+            </sales_order_payment_place_end>
             <buckaroo3extended_refund_request_setmethod>
                 <observers>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
@@ -1069,18 +1087,18 @@
                         <method>buckaroo3extended_push_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_paymentguarantee>
                 </observers>
-                <!--<observers>-->
-                    <!--<buckaroo3extended_paymentmethod_observer_afterpay>-->
-                        <!--<type>Singleton</type>-->
-                        <!--<class>buckaroo3extended/paymentMethods_afterpay_observer</class>-->
-                        <!--<method>buckaroo3extended_push_custom_processing</method>-->
-                    <!--</buckaroo3extended_paymentmethod_observer_afterpay>-->
-                    <!--<buckaroo3extended_paymentmethod_observer_afterpay2>-->
-                        <!--<type>Singleton</type>-->
-                        <!--<class>buckaroo3extended/paymentMethods_afterpay2_observer</class>-->
-                        <!--<method>buckaroo3extended_push_custom_processing</method>-->
-                    <!--</buckaroo3extended_paymentmethod_observer_afterpay2>-->
-                <!--</observers>-->
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_afterpay>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay_observer</class>
+                        <method>buckaroo3extended_push_custom_processing</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay>
+                    <buckaroo3extended_paymentmethod_observer_afterpay2>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_afterpay2_observer</class>
+                        <method>buckaroo3extended_push_custom_processing</method>
+                    </buckaroo3extended_paymentmethod_observer_afterpay2>
+                </observers>
                 <observers>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
                         <type>Singleton</type>

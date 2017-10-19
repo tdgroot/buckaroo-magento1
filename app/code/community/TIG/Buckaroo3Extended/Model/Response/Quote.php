@@ -146,7 +146,7 @@ class TIG_Buckaroo3Extended_Model_Response_Quote extends TIG_Buckaroo3Extended_M
         $this->sendDebugEmail();
 
         return array(
-            'error' => Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not recieve an e-mail regarding your order within 30 minutes, please contact the shop owner.'),
+            'error' => Mage::helper('buckaroo3extended')->__('We are currently unable to retrieve the status of your transaction. If you do not receive an e-mail regarding your order within 30 minutes, please contact the shop owner.'),
         );
     }
 }

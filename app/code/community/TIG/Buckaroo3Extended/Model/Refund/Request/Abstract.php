@@ -146,7 +146,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
             $this->_debugEmail .= "Response XML:" . var_export($responseXML->saveXML(), true) . "\n\n";
         }
 
-        $this->_debugEmail .= "Response recieved. \n";
+        $this->_debugEmail .= "Response received. \n";
         //process the response
 
         $processedResponse = Mage::getModel(

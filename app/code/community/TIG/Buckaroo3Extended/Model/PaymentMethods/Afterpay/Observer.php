@@ -83,6 +83,37 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
 
     /**
      * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function buckaroo3extended_push_custom_processing(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $response = $observer->getResponse();
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getOrder();
+        $paymentMethod = $order->getPayment()->getMethodInstance();
+
+        // Authorize is successful
+        if ($response['status'] == TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_SUCCESS ||
+            $paymentMethod->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+
+
+            $newStates = $observer->getPush()->getNewStates($response['status']);
+            $order->setState($newStates[0])
+                  ->save();
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
      * @return $this
      */
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)

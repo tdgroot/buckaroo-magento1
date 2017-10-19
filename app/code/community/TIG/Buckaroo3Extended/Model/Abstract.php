@@ -481,7 +481,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 
 
     /**
-     * Retrieves an array with information related to a recieved response code.
+     * Retrieves an array with information related to a received response code.
      * This method will only be called when it's child cant find it itself. This list
      * is a general list of known status codes. Its not as inclusive as the lists used\
      * by its children. However, this list also contains general error codes not

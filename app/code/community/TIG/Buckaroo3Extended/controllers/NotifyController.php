@@ -104,7 +104,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return false;
         }
 
-        $this->_debugEmail .= 'Buckaroo push recieved at ' . date('Y-m-d H:i:s') . "\n";
+        $this->_debugEmail .= 'Buckaroo push received at ' . date('Y-m-d H:i:s') . "\n";
         $this->_debugEmail .= 'Order ID: ' . $orderId . "\n";
 
         if (isset($postData['brq_test']) && $postData['brq_test'] == 'true') {
@@ -144,7 +144,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $this->_paymentCode = $this->_order->getPayment()->getMethod();
 
         $this->_debugEmail .= 'Payment code: ' . $this->_paymentCode . "\n\n";
-        $this->_debugEmail .= 'POST variables recieved: ' . var_export($this->_postArray, true) . "\n\n";
+        $this->_debugEmail .= 'POST variables received: ' . var_export($this->_postArray, true) . "\n\n";
 
         try {
             list($module, $processedPush) = $this->_processPushAccordingToType();
@@ -394,7 +394,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
      */
     protected function _updateCreditmemo()
     {
-        $this->_debugEmail .= "Recieved PUSH to update creditmemo. Unfortunately the module does not support creditmemo updates at this time. The PUSH is ignored.";
+        $this->_debugEmail .= "Received PUSH to update creditmemo. Unfortunately the module does not support creditmemo updates at this time. The PUSH is ignored.";
 
         $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
 
@@ -406,7 +406,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
      */
     protected function _updateCapture()
     {
-        $this->_debugEmail .= "Recieved PUSH to update capture. Unfortunately the module does not support capture updates at this time. The PUSH is ignored.";
+        $this->_debugEmail .= "Received PUSH to update capture. Unfortunately the module does not support capture updates at this time. The PUSH is ignored.";
 
         $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
 

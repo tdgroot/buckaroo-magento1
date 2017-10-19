@@ -22,7 +22,7 @@
 
 final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model_Abstract
 {
-    const WSDL_URL = 'https://checkout.buckaroo.nl/soap/soap.svc?wsdl';
+    const WSDL_URL = 'https://checkout.buckaroo.nl/soap/Soap.svc?singleWsdl';
 
     private $_vars;
     private $_method;

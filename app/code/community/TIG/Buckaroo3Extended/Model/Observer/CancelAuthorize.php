@@ -57,6 +57,11 @@ class TIG_Buckaroo3Extended_Model_Observer_CancelAuthorize extends Mage_Core_Mod
             return $this;
         }
 
+        // Only allow when pushed in the backend on the cancel button
+        if (strpos($_SERVER['PATH_INFO'], 'sales_order/cancel') === false) {
+            return $this;
+        }
+
         $paymentMethodAction = $payment->getMethodInstance()->getConfigPaymentAction();
 
         /** The first characters are "buckaroo3extended_" which are the same for all methods.
