@@ -666,15 +666,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 continue;
             }
 
-            $productPrice = ($item->getBasePrice() * $item->getQty())
-                + $item->getBaseTaxAmount()
-                + $item->getBaseHiddenTaxAmount();
-            $productPrice = round($productPrice, 2);
-
             $article['ArticleDescription']['value'] = (int) $item->getQty() . 'x ' . $item->getName();
             $article['ArticleId']['value']          = $item->getOrderItemId();
             $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = $productPrice;
+            $article['ArticleUnitPrice']['value']   = $item->getRowTotal() - $item->getDiscountAmount();
             $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($this->_getTaxClassId($item->getOrderItem()));
 
             $group[$i] = $article;
