@@ -195,21 +195,21 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_PaymentMethodT
      */
     public function testCanInvoicePartially($invoiceDiscount, $invoiceTotal, $orderDiscount, $orderTotal, $expected)
     {
-        $mockInvoice = $this->getMockBuilder(Mage_Sales_Model_Order_Invoice::class)
+        $mockInvoice = $this->getMockBuilder('Mage_Sales_Model_Order_Invoice')
             ->setMethods(array('getLastItem', 'getDiscountAmount', 'getBaseGrandTotal'))
             ->getMock();
         $mockInvoice->expects($this->once())->method('getLastItem')->willReturnSelf();
         $mockInvoice->expects($this->once())->method('getDiscountAmount')->willReturn($invoiceDiscount);
         $mockInvoice->expects($this->once())->method('getBaseGrandTotal')->willReturn($invoiceTotal);
 
-        $mockOrder = $this->getMockBuilder(Mage_Sales_Model_Order::class)
+        $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
             ->setMethods(array('getInvoiceCollection', 'getDiscountAmount', 'getBaseGrandTotal'))
             ->getMock();
         $mockOrder->expects($this->once())->method('getInvoiceCollection')->willReturn($mockInvoice);
         $mockOrder->expects($this->once())->method('getDiscountAmount')->willReturn($orderDiscount);
         $mockOrder->expects($this->once())->method('getBaseGrandTotal')->willReturn($orderTotal);
 
-        $mockPayment = $this->getMockBuilder(Mage_Sales_Model_Order_Payment::class)
+        $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
             ->setMethods(array('getOrder'))
             ->getMock();
         $mockPayment->expects($this->any())
