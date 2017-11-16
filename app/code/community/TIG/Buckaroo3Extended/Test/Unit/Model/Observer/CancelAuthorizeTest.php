@@ -134,6 +134,8 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Observer_CancelAuthorizeTest extends
      */
     public function testSales_order_payment_cancel_authorize($paymentAction, $paymentMethod, $sendRequestExpects)
     {
+        $_SERVER['PATH_INFO'] = 'sales_order/cancel';
+
         $mockPayment = $this->_getMockPayment($paymentAction, $paymentMethod);
 
         $mockObserver = $this->getMockBuilder('Varien_Event_Observer')
