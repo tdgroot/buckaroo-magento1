@@ -90,12 +90,49 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
     }
 
     /**
+     * @return bool
+     */
+    public function canInvoicePartially()
+    {
+        /** @var Mage_Sales_Model_Order_Payment $payment */
+        $payment = $this->getInfoInstance();
+
+        $order = $payment->getOrder();
+        $orderDiscount = abs($order->getDiscountAmount());
+        $orderTotal = $order->getBaseGrandTotal();
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $collection */
+        $collection = $order->getInvoiceCollection();
+
+        /** @var Mage_Sales_Model_Order_Invoice $invoice */
+        $invoice = $collection->getLastItem();
+        $invoiceDiscount = abs($invoice->getDiscountAmount());
+        $invoiceTotal = $invoice->getBaseGrandTotal();
+
+        if (Mage::helper('buckaroo3extended')->isEnterprise()) {
+            $orderDiscount += (double)abs($order->getGiftCardsAmount());
+            $invoiceDiscount += (double)abs($invoice->getGiftCardsAmount());
+        }
+
+        if (($orderDiscount > 0 || $invoiceDiscount > 0) && $invoiceTotal < $orderTotal) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function capture(Varien_Object $payment, $amount)
     {
         if (!$this->canCapture()) {
             Mage::throwException(Mage::helper('payment')->__('Capture action is not available.'));
+        }
+
+        if (!$this->canInvoicePartially()) {
+            $message = 'Partial invoice is not available when a discount has been applied.';
+            Mage::throwException(Mage::helper('buckaroo3extended')->__($message));
         }
 
         /** @var TIG_Buckaroo3Extended_Model_Request_Capture $captureRequest */
