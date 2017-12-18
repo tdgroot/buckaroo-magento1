@@ -390,8 +390,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         );
         $requestArray = array_merge($requestArray,$billingInfo);
 
+        // Compatible with postnl pakjegemak
+        $pakjeGemakAddress = false;
+        if (Mage::helper('core')->isModuleEnabled('TIG_PostNL')) {
+            $addresses = $this->_order->getAddressesCollection();
+
+            foreach ($addresses as $addressNew) {
+                if ($addressNew->getAddressType() == 'pakje_gemak') {
+                    $pakjeGemakAddress = $addressNew;
+                    break;
+                }
+            }
+        }
+
         //add shipping address (only when different from billing address)
-        if($this->isShippingDifferent()){
+        if($this->isShippingDifferent() || $pakjeGemakAddress){
             $shippingAddress     = $this->_order->getShippingAddress();
             $streetFull          = $this->_processAddress($shippingAddress->getStreetFull());
             $shippingPhonenumber = ($shippingAddress->getCountryId() ? $this->_processPhoneNumberBe($shippingAddress->getTelephone()) : $this->_processPhoneNumber($shippingAddress->getTelephone()));
@@ -414,6 +427,22 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'ShippingPhoneNumber'       => $shippingPhonenumber['clean'],
                 'ShippingLanguage'          => $shippingAddress->getCountryId(),
             );
+
+            //Update with pakjeGemak values
+            if ($pakjeGemakAddress) {
+                $streetPakjeGemak = $this->_processAddress($pakjeGemakAddress->getStreetFull());
+
+                $shippingInfo['ShippingTitle']             = 'A';
+                $shippingInfo['ShippingLastName']          = 'POSTNL afhaalpunt ' . $pakjeGemakAddress->getCompany();
+                $shippingInfo['ShippingStreet']            = $streetPakjeGemak['street'];
+                $shippingInfo['ShippingHouseNumber']       = $streetPakjeGemak['house_number'];
+                $shippingInfo['ShippingHouseNumberSuffix'] = $streetPakjeGemak['number_addition'];
+                $shippingInfo['ShippingPostalCode']        = $pakjeGemakAddress->getPostcode();
+                $shippingInfo['ShippingCity']              = $pakjeGemakAddress->getCity();
+                $shippingInfo['ShippingCountryCode']       = $pakjeGemakAddress->getCountryId();
+                $shippingInfo['ShippingPhoneNumber']       = $pakjeGemakAddress->getTelephone();
+            }
+
             $requestArray = array_merge($requestArray,$shippingInfo);
         }
 
