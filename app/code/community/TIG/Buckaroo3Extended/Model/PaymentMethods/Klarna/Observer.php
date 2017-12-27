@@ -37,6 +37,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     /** @var string $_method */
     protected $_method = 'klarna';
 
+    /** Klarna Article Types */
+    const KLARNA_ARTICLE_TYPE_GENERAL           = 'General';
+    const KLARNA_ARTICLE_TYPE_HANDLINGFEE       = 'HandlingFee';
+    const KLARNA_ARTICLE_TYPE_SHIPMENTFEE       = 'ShipmentFee';
+
     /**
      * @param Varien_Event_Observer $observer
      *
@@ -402,6 +407,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $shippingAddress = $this->_order->getShippingAddress();
         $shippingInfo = $this->getAddressInfo($shippingAddress);
         $shippingInfo['ShippingCompany'] = $shippingAddress->getCompany();
+
+        // BUCKM1-451: shipping is empty for guest with different billing and shipping addresses
+        if (!$shippingInfo['ShippingEmail']) {
+            $shippingInfo['ShippingEmail'] = $billingAddress->getEmail();
+        }
+
         $requestArray = array_merge($requestArray, $shippingInfo);
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
@@ -511,6 +522,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $article['ArticleQuantity']['value'] = round($item->getQtyOrdered(), 0);
             $article['ArticleTitle']['value']    = $item->getName();
             $article['ArticleVat']['value']      = $item->getTaxPercent();
+            $article['ArticleType']['value']     = self::KLARNA_ARTICLE_TYPE_GENERAL;
 
             $group[$i] = $article;
             $i++;
@@ -532,6 +544,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
                 $gwOrder['ArticleQuantity']['value'] = 1;
                 $gwOrder['ArticleTitle']['value']    = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Order');
                 $gwOrder['ArticleVat']['value']      = 0.00;
+                $gwOrder['ArticleType']['value']     = self::KLARNA_ARTICLE_TYPE_GENERAL;
 
                 $group[] = $gwOrder;
 
@@ -545,8 +558,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
                 $gwiOrder['ArticleNumber']['value']   = 'gwi_' . $gwId;
                 $gwiOrder['ArticlePrice']['value']    = $gwiPrice;
                 $gwiOrder['ArticleQuantity']['value'] = 1;
-                $gwiOrder['ArticleTitle']['value']   = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items');
+                $gwiOrder['ArticleTitle']['value']    = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items');
                 $gwiOrder['ArticleVat']['value']      = 0.00;
+                $gwiOrder['ArticleType']['value']     = self::KLARNA_ARTICLE_TYPE_GENERAL;
 
                 $group[] = $gwiOrder;
             }
@@ -947,6 +961,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $article['ArticleQuantity']['value'] = 1;
             $article['ArticleTitle']['value']    = 'Servicekosten';
             $article['ArticleVat']['value']      = (double) $percent;
+            $article['ArticleType']['value']     = self::KLARNA_ARTICLE_TYPE_HANDLINGFEE;
+
 
             return $article;
         }
@@ -973,6 +989,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $article['ArticleQuantity']['value'] = 1;
             $article['ArticleTitle']['value']    = 'Verzendkosten';
             $article['ArticleVat']['value']      = (double) $percent;
+            $article['ArticleType']['value']     = self::KLARNA_ARTICLE_TYPE_SHIPMENTFEE;
 
             return $article;
         }

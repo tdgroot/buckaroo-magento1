@@ -7,7 +7,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Observer extends Mage_Core_Model_Abstra
         $creditmemo = $observer->getCreditmemo();
 
         if (!$creditmemo->getTransactionKey()) {
-            $creditmemo->setTransactionKey($payment->getTransactionKey())->save();
+            $creditmemo->setTransactionKey($payment->getTransactionKey());
             $payment->setTransactionKey(null)->save(); //the transaction key needs to be reset after every refund
         }
 
