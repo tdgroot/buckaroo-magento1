@@ -291,7 +291,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     }
 
     /**
-     * Restores a previously closed quote so that the cart stays filled after an unsuccessfull order
+     * Restores a previously closed quote so that the cart stays filled after an unsuccessful order
      */
     public function restoreQuote()
     {

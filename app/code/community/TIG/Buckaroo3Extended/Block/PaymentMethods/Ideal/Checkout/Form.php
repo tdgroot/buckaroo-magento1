@@ -58,20 +58,28 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
                     'name' => 'ASN Bank',
                     'logo' => 'icon_asn.gif',
                 ),
+                'BUNQNL2A' => array(
+                    'name' => 'bunq',
+                    'logo' => 'logo_bunq_s.gif',
+                ),
                 'INGBNL2A' => array(
                     'name' => 'ING',
                     'logo' => 'logo_ing_s.gif',
+                ),
+                'KNABNL2H' => array(
+                    'name' => 'Knab bank',
+                    'logo' => 'logo_knab_s.gif',
                 ),
                 'RABONL2U' => array(
                     'name' => 'Rabobank',
                     'logo' => 'logo_rabo_s.gif',
                 ),
-                'SNSBNL2A' => array(
-                    'name' => 'SNS Bank',
-                    'logo' => 'logo_sns_s.gif',
-                ),
                 'RBRBNL21' => array(
                     'name' => 'RegioBank',
+                    'logo' => 'logo_sns_s.gif',
+                ),
+                'SNSBNL2A' => array(
+                    'name' => 'SNS Bank',
                     'logo' => 'logo_sns_s.gif',
                 ),
                 'TRIONL2U' => array(
@@ -81,14 +89,6 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
                 'FVLBNL22' => array(
                     'name' => 'Van Lanschot',
                     'logo' => 'logo_lanschot_s.gif',
-                ),
-                'KNABNL2H' => array(
-                    'name' => 'Knab bank',
-                    'logo' => 'logo_knab_s.gif',
-                ),
-                'BUNQNL2A' => array(
-                    'name' => 'Bunq bank',
-                    'logo' => 'logo_bunq_s.gif',
                 ),
             ),
         );
