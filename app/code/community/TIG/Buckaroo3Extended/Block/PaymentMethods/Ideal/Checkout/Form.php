@@ -59,7 +59,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
                     'logo' => 'icon_asn.gif',
                 ),
                 'BUNQNL2A' => array(
-                    'name' => 'Bunq bank',
+                    'name' => 'bunq',
                     'logo' => 'logo_bunq_s.gif',
                 ),
                 'INGBNL2A' => array(
