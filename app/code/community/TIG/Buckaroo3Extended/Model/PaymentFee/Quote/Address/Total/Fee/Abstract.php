@@ -33,7 +33,7 @@
  * versions in the future. If you wish to customize this module for your
  * needs please contact servicedesk@tig.nl for more information.
  *
- * @copyright   Copyright (c) 2014 Total Internet Group B.V. https://tig.nl/copyright
+ * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
 abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Abstract extends Mage_Tax_Model_Sales_Total_Quote_Tax
