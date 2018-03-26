@@ -48,11 +48,3 @@
     right: 0;
     top: 0;
 }
-
-/* Klarna */
-#checkout-payment-method-load #dt_method_buckaroo3extended_klarna label:after {
-    background-image: url('../../../../../base/default/images/tig_buckaroo3extended/payment_logo/buckaroo_klarna.png');
-    background-size: 35px;
-    background-repeat: no-repeat;
-    background-position: 100% 50%;
-}
