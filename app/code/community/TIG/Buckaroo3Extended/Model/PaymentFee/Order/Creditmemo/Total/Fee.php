@@ -106,7 +106,6 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
 
             if (isset($creditmemoParameters['buckaroo_fee'])
                 && $creditmemoParameters['buckaroo_fee'] !== null
-                && $creditmemoParameters['buckaroo_fee'] !== ''
             ) {
                 $this->_updateCreditmemoTotalsFromParams($creditmemo, $order, $creditmemoParameters);
 
