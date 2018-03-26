@@ -489,6 +489,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
                     'ArticleQuantity' => array('value' => 1),
                     'ArticleTitle' => array('value' => 'Servicekosten'),
                     'ArticleVat' => array('value' => 0.00),
+                    'ArticleType' => array('value' => TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::KLARNA_ARTICLE_TYPE_HANDLINGFEE),
                 )
             )
         );
@@ -530,6 +531,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
                     'ArticleQuantity' => array('value' => 1),
                     'ArticleTitle' => array('value' => 'Verzendkosten'),
                     'ArticleVat' => array('value' => 0.00),
+                    'ArticleType' => array('value' => TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::KLARNA_ARTICLE_TYPE_SHIPMENTFEE),
                 )
             )
         );
