@@ -409,7 +409,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $shippingInfo['ShippingCompany'] = $shippingAddress->getCompany();
 
         // BUCKM1-451: shipping is empty for guest with different billing and shipping addresses
-        if (!$shippingInfo['ShippingEmail']) {
+        if (!isset($shippingInfo['ShippingEmail']) || empty($shippingInfo['ShippingEmail'])) {
             $shippingInfo['ShippingEmail'] = $billingAddress->getEmail();
         }
 
