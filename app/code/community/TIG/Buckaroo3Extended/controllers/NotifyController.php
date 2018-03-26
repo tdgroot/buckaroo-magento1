@@ -249,11 +249,12 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
 
     protected function _processPushAccordingToType()
     {
-        if (
-            $this->_order->getTransactionKey() == $this->_postArray['brq_transactions']
-            || $this->_order->getTransactionKey() == $this->_postArray['brq_datarequest']
-            || (isset($this->_postArray['brq_relatedtransaction_partialpayment'])
-            && $this->_order->getTransactionKey() == $this->_postArray['brq_relatedtransaction_partialpayment'])
+        if ($this->_order->getTransactionKey() == $this->_postArray['brq_transactions']
+            || (isset($this->_postArray['brq_datarequest'])
+                && $this->_order->getTransactionKey() == $this->_postArray['brq_datarequest']
+            ) || (isset($this->_postArray['brq_relatedtransaction_partialpayment'])
+                && $this->_order->getTransactionKey() == $this->_postArray['brq_relatedtransaction_partialpayment']
+            )
         ) {
             list($processedPush, $module) = $this->_updateOrderWithKey();
             return array($module, $processedPush);
