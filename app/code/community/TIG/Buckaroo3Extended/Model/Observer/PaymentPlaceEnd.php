@@ -48,7 +48,8 @@ class TIG_Buckaroo3Extended_Model_Observer_PaymentPlaceEnd extends Mage_Core_Mod
 
         $orderState = Mage_Sales_Model_Order::STATE_NEW;
         $orderStatus = $methodInstance->getConfigData('order_status');
-        $states = $order->getConfig()->getStatusStates($orderStatus);
+
+        $states = $this->getAvailableStates($order, $orderStatus);
 
         if (!$orderStatus || count($states) == 0) {
             $orderStatus = $order->getConfig()->getStateDefaultStatus($orderState);
@@ -65,5 +66,34 @@ class TIG_Buckaroo3Extended_Model_Observer_PaymentPlaceEnd extends Mage_Core_Mod
         $latestHistory->save();
 
         return $this;
+    }
+
+    /**
+     * getStatusStates() only exists from Magento 1.8.
+     * So manually collect the states when an older version is being used.
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @param $orderStatus
+     *
+     * @return array
+     */
+    private function getAvailableStates($order, $orderStatus)
+    {
+        if (version_compare(Mage::getVersion(), "1.8") != -1) {
+            return $order->getConfig()->getStatusStates($orderStatus);
+        }
+
+        $states = array();
+
+        /** @var Mage_Sales_Model_Resource_Order_Status_Collection $collection */
+        $collection = Mage::getResourceModel('sales/order_status_collection');
+        $collection->joinStates();
+        $collection->getSelect()->where('state_table.status=?', $orderStatus);
+
+        foreach ($collection as $state) {
+            $states[] = $state;
+        }
+
+        return $states;
     }
 }
