@@ -1800,10 +1800,11 @@
                 <limit_by_ip>0</limit_by_ip>
                 <allowed_currencies>EUR</allowed_currencies>
                 <payment_fee_label>Fee</payment_fee_label>
-                <sellers_protection_eligible>Processing</sellers_protection_eligible>
-                <sellers_protection_itemnotreceived_eligible>Processing</sellers_protection_itemnotreceived_eligible>
-                <sellers_protection_unauthorizedpayment_eligible>Processing</sellers_protection_unauthorizedpayment_eligible>
-                <sellers_protection_ineligible>Processing</sellers_protection_ineligible>
+                <sellers_protection>1</sellers_protection>
+                <sellers_protection_eligible>processing</sellers_protection_eligible>
+                <sellers_protection_itemnotreceived_eligible>processing</sellers_protection_itemnotreceived_eligible>
+                <sellers_protection_unauthorizedpayment_eligible>processing</sellers_protection_unauthorizedpayment_eligible>
+                <sellers_protection_ineligible>processing</sellers_protection_ineligible>
                 <order_email>1</order_email>
             </buckaroo3extended_paypal>
 
