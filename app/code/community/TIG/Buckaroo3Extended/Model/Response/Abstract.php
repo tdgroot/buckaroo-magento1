@@ -332,6 +332,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $paymentMethod = $this->_order->getPayment()->getMethod();
         switch($paymentMethod){
             case 'buckaroo3extended_afterpay':
+            case 'buckaroo3extended_afterpay2':
                     $message = Mage::helper('buckaroo3extended')->__(
                         $this->getAfterpayRejectMessage($message)
                     );
