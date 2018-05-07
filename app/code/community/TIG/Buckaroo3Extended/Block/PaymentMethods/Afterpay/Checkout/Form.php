@@ -92,7 +92,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends 
      */
     private function getAcceptgiroUrl()
     {
-        $url = 'https://www.afterpay.nl/nl/algemeen/betalen-met-afterpay/betalingsvoorwaarden';
+        $url = $this->getDigiacceptUrl();
 
         return $url;
     }
