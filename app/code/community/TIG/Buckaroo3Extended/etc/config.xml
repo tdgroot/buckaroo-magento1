@@ -2,7 +2,7 @@
 <config>
     <modules>
         <TIG_Buckaroo3Extended>
-            <version>4.18.0</version>
+            <version>4.18.1</version>
         </TIG_Buckaroo3Extended>
     </modules>
     <tig>
@@ -299,6 +299,11 @@
                         <class>buckaroo3extended/paymentMethods_ideal_observer</class>
                         <method>buckaroo3extended_refund_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_ideal>
+                    <buckaroo3extended_paymentmethod_observer_idealprocessing>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_idealprocessing_observer</class>
+                        <method>buckaroo3extended_refund_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_idealprocessing>
                     <buckaroo3extended_paymentmethod_observer_amex>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_amex_observer</class>
@@ -393,6 +398,11 @@
                         <class>buckaroo3extended/paymentMethods_ideal_observer</class>
                         <method>buckaroo3extended_refund_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_ideal>
+                    <buckaroo3extended_paymentmethod_observer_idealprocessing>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_idealprocessing_observer</class>
+                        <method>buckaroo3extended_refund_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_idealprocessing>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_payperemail_observer</class>
@@ -517,6 +527,11 @@
                         <class>buckaroo3extended/paymentMethods_ideal_observer</class>
                         <method>buckaroo3extended_refund_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_ideal>
+                    <buckaroo3extended_paymentmethod_observer_idealprocessing>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_idealprocessing_observer</class>
+                        <method>buckaroo3extended_refund_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_idealprocessing>
                     <buckaroo3extended_paymentmethod_observer_payperemail>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_payperemail_observer</class>
@@ -674,6 +689,11 @@
                         <class>buckaroo3extended/paymentMethods_ideal_observer</class>
                         <method>buckaroo3extended_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_ideal>
+                    <buckaroo3extended_paymentmethod_observer_idealprocessing>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_idealprocessing_observer</class>
+                        <method>buckaroo3extended_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_idealprocessing>
                     <buckaroo3extended_paymentmethod_observer_mastercard>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_mastercard_observer</class>
@@ -798,6 +818,11 @@
                         <class>buckaroo3extended/paymentMethods_ideal_observer</class>
                         <method>buckaroo3extended_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_ideal>
+                    <buckaroo3extended_paymentmethod_observer_idealprocessing>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_idealprocessing_observer</class>
+                        <method>buckaroo3extended_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_idealprocessing>
                     <buckaroo3extended_paymentmethod_observer_visa>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_visa_observer</class>
@@ -942,6 +967,11 @@
                         <class>buckaroo3extended/paymentMethods_ideal_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_ideal>
+                    <buckaroo3extended_paymentmethod_observer_idealprocessing>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_idealprocessing_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_idealprocessing>
                     <buckaroo3extended_paymentmethod_observer_visa>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_visa_observer</class>
@@ -1305,9 +1335,15 @@
                 <model>buckaroo3extended/paymentMethods_ideal_paymentMethod</model>
                 <title>iDEAL</title>
                 <sort_order>10</sort_order>
-                <sort_order></sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_ideal>
+            <buckaroo3extended_idealprocessing>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_idealprocessing_paymentMethod</model>
+                <title>iDEAL Processing</title>
+                <sort_order>11</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_idealprocessing>
             <buckaroo3extended_paymentguarantee>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_paymentguarantee_paymentMethod</model>
@@ -1661,6 +1697,22 @@
                 <order_email>1</order_email>
             </buckaroo3extended_ideal>
 
+            <buckaroo3extended_idealprocessing>
+                <active>0</active>
+                <mode>0</mode>
+                <title>iDEAL Processing</title>
+                <allowspecific>0</allowspecific>
+                <specificcountry></specificcountry>
+                <order_status_success></order_status_success>
+                <order_status_failed></order_status_failed>
+                <sort_order>11</sort_order>
+                <limit_by_ip>0</limit_by_ip>
+                <allowed_currencies>EUR</allowed_currencies>
+                <payment_fee_label>Fee</payment_fee_label>
+                <service_version>2</service_version>
+                <order_email>1</order_email>
+            </buckaroo3extended_idealprocessing>
+
             <buckaroo3extended_visa>
                 <active>0</active>
                 <mode>0</mode>
@@ -1748,10 +1800,11 @@
                 <limit_by_ip>0</limit_by_ip>
                 <allowed_currencies>EUR</allowed_currencies>
                 <payment_fee_label>Fee</payment_fee_label>
-                <sellers_protection_eligible>Processing</sellers_protection_eligible>
-                <sellers_protection_itemnotreceived_eligible>Processing</sellers_protection_itemnotreceived_eligible>
-                <sellers_protection_unauthorizedpayment_eligible>Processing</sellers_protection_unauthorizedpayment_eligible>
-                <sellers_protection_ineligible>Processing</sellers_protection_ineligible>
+                <sellers_protection>1</sellers_protection>
+                <sellers_protection_eligible>processing</sellers_protection_eligible>
+                <sellers_protection_itemnotreceived_eligible>processing</sellers_protection_itemnotreceived_eligible>
+                <sellers_protection_unauthorizedpayment_eligible>processing</sellers_protection_unauthorizedpayment_eligible>
+                <sellers_protection_ineligible>processing</sellers_protection_ineligible>
                 <order_email>1</order_email>
             </buckaroo3extended_paypal>
 

@@ -31,4 +31,104 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends 
     {
         return  $this->getSession()->getData($this->getMethodCode() . '_BPE_BusinessSelect');
     }
+
+    /**
+     * @return string
+     */
+    public function getTosUrl()
+    {
+        $paymentMethod = $this->getPaymethod();
+
+        switch ($paymentMethod) {
+            case TIG_Buckaroo3Extended_Model_Sources_AcceptgiroDirectdebit::AFTERPAY_PAYMENT_METHOD_DIGIACCEPT:
+                $url = $this->getDigiacceptUrl();
+                break;
+            case TIG_Buckaroo3Extended_Model_Sources_AcceptgiroDirectdebit::AFTERPAY_PAYMENT_METHOD_ACCEPTGIRO:
+            default:
+                $url = $this->getAcceptgiroUrl();
+                break;
+        }
+
+        return $url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getB2CUrl()
+    {
+        $billingCountry = $this->getBillingCountry();
+
+        switch ($billingCountry) {
+            case 'BE':
+                $url = 'https://www.afterpay.be/be/footer/betalen-met-afterpay/betalingsvoorwaarden';
+                break;
+            case 'NL':
+            default:
+                $url = 'https://www.afterpay.nl/nl/algemeen/betalen-met-afterpay/betalingsvoorwaarden';
+                break;
+        }
+
+        return $url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getB2BUrl()
+    {
+        $billingCountry = $this->getBillingCountry();
+        $url = 'https://www.afterpay.nl/nl/algemeen/betalen-met-afterpay/betalingsvoorwaarden';
+
+        if ($billingCountry == 'NL') {
+            $url = 'https://www.afterpay.nl/nl/algemeen/zakelijke-partners/betalingsvoorwaarden-zakelijk';
+        }
+
+        return $url;
+    }
+
+    /**
+     * @return string
+     */
+    private function getAcceptgiroUrl()
+    {
+        $url = $this->getDigiacceptUrl();
+
+        return $url;
+    }
+
+    /**
+     * @return string
+     */
+    private function getDigiacceptUrl()
+    {
+        $businessIsB2C = $this->businessIsB2C();
+
+        switch ($businessIsB2C) {
+            case false:
+                $url = $this->getB2BUrl();
+                break;
+            case true:
+            default:
+                $url = $this->getB2CUrl();
+                break;
+        }
+
+        return $url;
+    }
+
+    /**
+     * @return bool
+     */
+    private function businessIsB2C()
+    {
+        $result = true;
+        $business = $this->getBusiness();
+
+        if ($business == TIG_Buckaroo3Extended_Model_Sources_BusinessToBusiness::AFTERPAY_BUSINESS_B2B) {
+            $result = false;
+        }
+
+        return $result;
+    }
 }
