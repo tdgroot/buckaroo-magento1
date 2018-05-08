@@ -132,11 +132,4 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_FormTest exte
         $result = $instance->getB2BUrl();
         $this->assertEquals($expected, $result);
     }
-
-    public function testGetAcceptgiroUrl()
-    {
-        $instance = $this->_getInstance();
-        $result = $this->invokeMethod($instance, 'getAcceptgiroUrl');
-        $this->assertEquals('https://www.afterpay.nl/nl/algemeen/betalen-met-afterpay/betalingsvoorwaarden', $result);
-    }
 }
