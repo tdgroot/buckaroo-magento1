@@ -579,6 +579,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                 'directdebit',
                 'giropay',
                 'ideal',
+                'idealprocessing',
                 'mastercard',
                 'onlinegiro',
                 'paypal',

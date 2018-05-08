@@ -111,7 +111,11 @@
             <input style="float:left;" class="input-checkbox required-entry" type="checkbox" title="<?php echo $this->__('Terms and Conditions') ?>" name="<?php echo $_code;?>_bpe_accept" value="checked" id="<?php echo $_code;?>_BPE_terms_and_conditions" />
         </div>
         <label for="<?php echo $_code;?>_BPE_terms_and_conditions" class="required agree-label">
-            <?php echo $this->__('Yes, I accept the %sterms and condition%s for the use of Afterpay.', '<a style="float:none;margin:0;" target="_blank" href="https://www.afterpay.nl/nl/klantenservice/betalingsvoorwaarden/">', '</a>') ?> <em>*</em>
+            <?php echo $this->__(
+                    'Yes, I accept the %sterms and condition%s for the use of Afterpay.',
+                    '<a style="float:none;margin:0;" id="' . $_code . '-tos-url" target="_blank" href="' . $this->getTosUrl() . '">',
+                    '</a>'
+            ) ?> <em>*</em>
         </label>
     </li>
 
@@ -127,10 +131,14 @@
     $(paymentCode + '_BPE_BusinessSelect').observe('change', function(event){
         if($(paymentCode + '_BPE_BusinessSelect').getValue() == 2){
             $('b2b-fields').show();
+            var b2bUrl = '<?php echo $this->getB2BUrl(); ?>';
+            $('<?php echo $_code; ?>-tos-url').href =  b2bUrl;
         }
 
         if($(paymentCode + '_BPE_BusinessSelect').getValue() == 1){
             $('b2b-fields').hide();
+            var b2cUrl = '<?php echo $this->getB2CUrl(); ?>';
+            $('<?php echo $_code; ?>-tos-url').href = b2cUrl;
         }
     });
     <?php endif;?>
