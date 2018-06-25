@@ -409,6 +409,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             if (is_array($value)) {
                 $requestParameter->Group = $value['group'];
                 $requestParameter->_ = $value['value'];
+
+                if (isset($value['groupId']) && !empty($value['groupId'])) {
+                    $requestParameter->GroupID = $value['groupId'];
+                }
             } else {
                 $requestParameter->_ = $value;
             }
@@ -448,6 +452,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             if (is_array($value)) {
                 $requestParameter->Group = $value['group'];
                 $requestParameter->_ = $value['value'];
+
+                if (isset($value['groupId']) && !empty($value['groupId'])) {
+                    $requestParameter->GroupID = $value['groupId'];
+                }
             } else {
                 $requestParameter->_ = $value;
             }

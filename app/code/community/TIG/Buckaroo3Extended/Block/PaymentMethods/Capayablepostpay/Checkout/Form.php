@@ -39,4 +39,28 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Capayablepostpay_Checkout_Form 
         $this->setTemplate('buckaroo3extended/capayablepostpay/checkout/form.phtml');
         parent::_construct();
     }
+
+    /**
+     * @return string|int
+     */
+    public function getOrderAs()
+    {
+        return $this->getSession()->getData($this->getMethodCode() . '_BPE_OrderAs');
+    }
+
+    /**
+     * @return string|int
+     */
+    public function getCompanyCOCRegistration()
+    {
+        return $this->getSession()->getData($this->getMethodCode() . '_BPE_CompanyCOCRegistration');
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyName()
+    {
+        return $this->getSession()->getData($this->getMethodCode() . '_BPE_CompanyName');
+    }
 }
