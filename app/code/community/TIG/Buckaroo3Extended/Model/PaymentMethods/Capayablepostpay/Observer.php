@@ -81,6 +81,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_Observer exten
 
         $this->addCustomerData($vars);
         $this->addProductData($vars);
+        $this->addSubtotalData($vars);
 
         $request->setVars($vars);
 
@@ -366,47 +367,136 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_Observer exten
 
         if ($this->_order->getGwBasePrice() > 0) {
             $gwPrice = $this->_order->getGwBasePrice() + $this->_order->getGwBaseTaxAmount();
-            $gwArticle = array();
 
-            $gwArticle['Code']['value']       = 'gwo_' . $this->_order->getGwId();
-            $gwArticle['Code']['group']       = 'ProductLine';
-            $gwArticle['Code']['groupId']     = $groupId;
-            $gwArticle['Name']['value']       = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Order');
-            $gwArticle['Name']['group']       = 'ProductLine';
-            $gwArticle['Name']['groupId']     = $groupId;
-            $gwArticle['Quantity']['value']   = 1;
-            $gwArticle['Quantity']['group']   = 'ProductLine';
-            $gwArticle['Quantity']['groupId'] = $groupId;
-            $gwArticle['Price']['value']      = $gwPrice;
-            $gwArticle['Price']['group']      = 'ProductLine';
-            $gwArticle['Price']['groupId']    = $groupId;
+            /** @var Mage_Sales_Model_Order_Item $gwArticleModel */
+            $gwArticleModel = Mage::getModel('sales/order_item');
+            $gwArticleModel->setSku('gwo_' . $this->_order->getGwId());
+            $gwArticleModel->setName(Mage::helper('buckaroo3extended')->__('Gift Wrapping for Order'));
+            $gwArticleModel->setQtyOrdered(1);
+            $gwArticleModel->setBasePriceInclTax($gwPrice);
 
+            $gwArticle = $this->getProductArticle($gwArticleModel, $groupId++);
             $gwGroup[] = $gwArticle;
 
             $gwId += $this->_order->getGwId();
-            $groupId++;
         }
 
         if ($this->_order->getGwItemsBasePrice() > 0) {
             $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwItemsBaseTaxAmount();
-            $gwiArticle = array();
 
-            $gwiArticle['Code']['value']       = 'gwi_' . $gwId;
-            $gwiArticle['Code']['group']       = 'ProductLine';
-            $gwiArticle['Code']['groupId']     = $groupId;
-            $gwiArticle['Name']['value']       = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items');
-            $gwiArticle['Name']['group']       = 'ProductLine';
-            $gwiArticle['Name']['groupId']     = $groupId;
-            $gwiArticle['Quantity']['value']   = 1;
-            $gwiArticle['Quantity']['group']   = 'ProductLine';
-            $gwiArticle['Quantity']['groupId'] = $groupId;
-            $gwiArticle['Price']['value']      = $gwiPrice;
-            $gwiArticle['Price']['group']      = 'ProductLine';
-            $gwiArticle['Price']['groupId']    = $groupId;
+            /** @var Mage_Sales_Model_Order_Item $gwiArticleModel */
+            $gwiArticleModel = Mage::getModel('sales/order_item');
+            $gwiArticleModel->setSku('gwi_' . $gwId);
+            $gwiArticleModel->setName(Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items'));
+            $gwiArticleModel->setQtyOrdered(1);
+            $gwiArticleModel->setBasePriceInclTax($gwiPrice);
 
+            $gwiArticle = $this->getProductArticle($gwiArticleModel, $groupId);
             $gwGroup[] = $gwiArticle;
         }
 
         return $gwGroup;
+    }
+
+    /**
+     * @param $vars
+     */
+    private function addSubtotalData(&$vars)
+    {
+        if (!isset($vars['customVars'][$this->_method]['Articles'])
+            || empty($vars['customVars'][$this->_method]['Articles'])
+        ) {
+            $vars['customVars'][$this->_method]['Articles'] = array();
+        }
+
+        $groupId = 1;
+        $vars['customVars'][$this->_method]['Articles'][] = $this->getDiscountLine($groupId);
+        $vars['customVars'][$this->_method]['Articles'][] = $this->getFeeLine($groupId);
+        $vars['customVars'][$this->_method]['Articles'][] = $this->getShippingCostsLine($groupId);
+    }
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     * @param int    $groupId
+     *
+     * @return array
+     */
+    private function getSubtotalLine($name, $value, $groupId = 1)
+    {
+        $subtotalLine = array();
+
+        $subtotalLine['Name']['value']    = $name;
+        $subtotalLine['Name']['group']    = 'SubtotalLine';
+        $subtotalLine['Name']['groupId']  = $groupId;
+        $subtotalLine['Value']['value']   = $value;
+        $subtotalLine['Value']['group']   = 'SubtotalLine';
+        $subtotalLine['Value']['groupId'] = $groupId;
+
+        return $subtotalLine;
+    }
+
+    /**
+     * @param int $groupId
+     *
+     * @return array
+     */
+    private function getDiscountLine(&$groupId)
+    {
+        $discount = abs((double)$this->_order->getDiscountAmount());
+
+        if (Mage::helper('buckaroo3extended')->isEnterprise() && (double)$this->_order->getGiftCardsAmount() > 0) {
+            $discount += (double)$this->_order->getGiftCardsAmount();
+        }
+
+        if ($discount <= 0) {
+            return array();
+        }
+
+        $discount = (-1 * round($discount, 2));
+        $discountLine = $this->getSubtotalLine('Korting', $discount, $groupId++);
+
+        return $discountLine;
+    }
+
+    /**
+     * @param int $groupId
+     *
+     * @return array
+     */
+    private function getFeeLine(&$groupId)
+    {
+        $fee    = (double) $this->_order->getBuckarooFee();
+
+        if ($fee <= 0) {
+            return array();
+        }
+
+        $feeTax = (double) $this->_order->getBuckarooFeeTax();
+        $feeInclTax = round($fee + $feeTax, 2);
+
+        $feeLine = $this->getSubtotalLine('Betaaltoeslag', $feeInclTax, $groupId++);
+
+        return $feeLine;
+    }
+
+    /**
+     * @param int $groupId
+     *
+     * @return array
+     */
+    private function getShippingCostsLine(&$groupId)
+    {
+        $shippingCosts = $this->_order->getBaseShippingInclTax();
+
+        if ($shippingCosts <= 0) {
+            return array();
+        }
+
+        $shippingCosts = round($shippingCosts, 2);
+
+        $shippingCostsLine = $this->getSubtotalLine('Verzendkosten', $shippingCosts, $groupId++);
+
+        return $shippingCostsLine;
     }
 }
