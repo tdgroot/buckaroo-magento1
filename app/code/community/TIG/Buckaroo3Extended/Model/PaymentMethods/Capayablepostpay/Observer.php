@@ -80,6 +80,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_Observer exten
         $vars = $request->getVars();
 
         $this->addCustomerData($vars);
+        $this->addProductData($vars);
 
         $request->setVars($vars);
 
@@ -129,6 +130,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_Observer exten
 
         $array = array_merge($array, $this->getPersonGroupData());
         $array = array_merge($array, $this->getAddressGroupData());
+        $array = array_merge($array, $this->getCompanyGroupData());
 
         if (array_key_exists('customVars', $vars)
             && array_key_exists($this->_method, $vars['customVars'])
@@ -226,6 +228,35 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_Observer exten
     }
 
     /**
+     * @return array
+     */
+    private function getCompanyGroupData()
+    {
+        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+
+        if (Mage::helper('buckaroo3extended')->isAdmin()) {
+            $additionalFields = Mage::getSingleton('core/session')->getData('additionalFields');
+        }
+
+        if (!isset($additionalFields['BPE_OrderAs']) || $additionalFields['BPE_OrderAs'] == 1) {
+            return array();
+        }
+
+        $array = array(
+            'Name' => array(
+                'value' => $additionalFields['BPE_CompanyName'],
+                'group' => 'Company'
+            ),
+            'ChamberOfCommerce' => array(
+                'value' => $additionalFields['BPE_CompanyCOCRegistration'],
+                'group' => 'Company'
+            )
+        );
+
+        return $array;
+    }
+
+    /**
      * @return string
      */
     private function getCustomerType()
@@ -254,5 +285,128 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_Observer exten
         }
 
         return $customerType;
+    }
+
+    /**
+     * @param array $vars
+     */
+    private function addProductData(&$vars)
+    {
+        $products = $this->_order->getAllItems();
+        $max      = 99;
+        $i        = 1;
+        $group    = array();
+
+        /** @var Mage_Sales_Model_Order_Item $item */
+        foreach ($products as $item) {
+            if (empty($item) || $item->hasParentItemId()) {
+                continue;
+            }
+
+            $group[] = $this->getProductArticle($item, $i++);
+
+            if ($i > $max) {
+                break;
+            }
+        }
+
+        $group = array_merge($group, $this->getGiftwrapArticles($i));
+
+        $requestArray = array('Articles' => $group);
+
+        if (array_key_exists('customVars', $vars)
+            && array_key_exists($this->_method, $vars['customVars'])
+            && is_array($vars['customVars'][$this->_method])
+        ) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
+        } else {
+            $vars['customVars'][$this->_method] = $requestArray;
+        }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Item $item
+     * @param int                         $groupId
+     *
+     * @return array
+     */
+    private function getProductArticle($item, $groupId = 1)
+    {
+        $article = array();
+
+        $article['Code']['value']       = $item->getSku();
+        $article['Code']['group']       = 'ProductLine';
+        $article['Code']['groupId']     = $groupId;
+        $article['Name']['value']       = $item->getName();
+        $article['Name']['group']       = 'ProductLine';
+        $article['Name']['groupId']     = $groupId;
+        $article['Quantity']['value']   = round($item->getQtyOrdered(), 0);
+        $article['Quantity']['group']   = 'ProductLine';
+        $article['Quantity']['groupId'] = $groupId;
+        $article['Price']['value']      = $item->getBasePriceInclTax();
+        $article['Price']['group']      = 'ProductLine';
+        $article['Price']['groupId']    = $groupId;
+
+        return $article;
+    }
+
+    /**
+     * @param int $groupId
+     *
+     * @return array
+     */
+    private function getGiftwrapArticles($groupId = 1)
+    {
+        if (!Mage::helper('buckaroo3extended')->isEnterprise()) {
+            return array();
+        }
+
+        $gwId = 1;
+        $gwGroup = array();
+
+        if ($this->_order->getGwBasePrice() > 0) {
+            $gwPrice = $this->_order->getGwBasePrice() + $this->_order->getGwBaseTaxAmount();
+            $gwArticle = array();
+
+            $gwArticle['Code']['value']       = 'gwo_' . $this->_order->getGwId();
+            $gwArticle['Code']['group']       = 'ProductLine';
+            $gwArticle['Code']['groupId']     = $groupId;
+            $gwArticle['Name']['value']       = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Order');
+            $gwArticle['Name']['group']       = 'ProductLine';
+            $gwArticle['Name']['groupId']     = $groupId;
+            $gwArticle['Quantity']['value']   = 1;
+            $gwArticle['Quantity']['group']   = 'ProductLine';
+            $gwArticle['Quantity']['groupId'] = $groupId;
+            $gwArticle['Price']['value']      = $gwPrice;
+            $gwArticle['Price']['group']      = 'ProductLine';
+            $gwArticle['Price']['groupId']    = $groupId;
+
+            $gwGroup[] = $gwArticle;
+
+            $gwId += $this->_order->getGwId();
+            $groupId++;
+        }
+
+        if ($this->_order->getGwItemsBasePrice() > 0) {
+            $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwItemsBaseTaxAmount();
+            $gwiArticle = array();
+
+            $gwiArticle['Code']['value']       = 'gwi_' . $gwId;
+            $gwiArticle['Code']['group']       = 'ProductLine';
+            $gwiArticle['Code']['groupId']     = $groupId;
+            $gwiArticle['Name']['value']       = Mage::helper('buckaroo3extended')->__('Gift Wrapping for Items');
+            $gwiArticle['Name']['group']       = 'ProductLine';
+            $gwiArticle['Name']['groupId']     = $groupId;
+            $gwiArticle['Quantity']['value']   = 1;
+            $gwiArticle['Quantity']['group']   = 'ProductLine';
+            $gwiArticle['Quantity']['groupId'] = $groupId;
+            $gwiArticle['Price']['value']      = $gwiPrice;
+            $gwiArticle['Price']['group']      = 'ProductLine';
+            $gwiArticle['Price']['groupId']    = $groupId;
+
+            $gwGroup[] = $gwiArticle;
+        }
+
+        return $gwGroup;
     }
 }
