@@ -73,7 +73,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_PaymentMethod 
     protected function isShippingDifferent($quote)
     {
         // exclude certain keys that are always different
-        $excludeKeys = array('entity_id', 'updated_at', 'customer_address_id', 'quote_address_id', 'address_id', 'region_id', 'customer_id', 'address_type', 'applied_taxes');
+        $excludeKeys = array(
+            'entity_id', 'entity_type_id', 'parent_id', 'created_at', 'updated_at', 'customer_address_id',
+            'quote_address_id', 'address_id', 'region_id', 'customer_id', 'address_type', 'applied_taxes'
+        );
 
         //get both the order-addresses
         $billingAddress = $quote->getBillingAddress()->getData();
