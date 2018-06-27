@@ -29,38 +29,20 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Capayablepostpay_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Transfer_Adminhtml_System_Config_Advancedbtn
+    extends Mage_Adminhtml_Block_Abstract
+    implements Varien_Data_Form_Element_Renderer_Interface
 {
-    /**
-     * TIG_Buckaroo3Extended_Block_PaymentMethods_Capayablepostpay_Checkout_Form constructor.
-     */
-    public function __construct()
-    {
-        $this->setTemplate('buckaroo3extended/capayablepostpay/checkout/form.phtml');
-        parent::_construct();
-    }
+    protected $_template = 'buckaroo3extended/capayablepostpay_system/config/advancedbtn.phtml';
 
     /**
-     * @return string|int
-     */
-    public function getOrderAs()
-    {
-        return $this->getSession()->getData($this->getMethodCode() . '_BPE_OrderAs');
-    }
-
-    /**
-     * @return string|int
-     */
-    public function getCompanyCOCRegistration()
-    {
-        return $this->getSession()->getData($this->getMethodCode() . '_BPE_CompanyCOCRegistration');
-    }
-
-    /**
+     * Render fieldset html
+     *
+     * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
-    public function getCompanyName()
+    public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        return $this->getSession()->getData($this->getMethodCode() . '_BPE_CompanyName');
+        return $this->toHtml();
     }
 }
