@@ -49,7 +49,7 @@
                 $style = ' style="display:none;"';
             }
             ?>
-            <div id="b2b-fields"<?php echo $style;?>>
+            <div id="<?php echo $_code;?>_b2b_fields"<?php echo $style;?>>
                 <label class="required" for="<?php echo $_code;?>_BPE_CompanyCOCRegistration"><?php echo $this->__('COC Number');?></label>
                 <div class="input-box">
                     <input class="input-text required-entry" type="text" name="<?php echo $_code;?>_BPE_CompanyCOCRegistration" id="<?php echo $_code;?>_BPE_CompanyCOCRegistration" value="<?php echo $this->escapeHtml($this->getCompanyCoCRegistration());?>" />
@@ -70,10 +70,10 @@
     var paymentCode = '<?php echo $_code;?>';
 
     $(paymentCode + '_BPE_OrderAs').observe('change', function(event){
-        $('b2b-fields').show();
+        $(paymentCode + '_b2b_fields').show();
 
         if($(paymentCode + '_BPE_OrderAs').getValue() == 1){
-            $('b2b-fields').hide();
+            $(paymentCode + '_b2b_fields').hide();
         }
     });
 </script>

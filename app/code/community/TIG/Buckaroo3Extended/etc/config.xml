@@ -814,6 +814,11 @@
                         <class>buckaroo3extended/paymentMethods_capayable_postpay_observer</class>
                         <method>buckaroo3extended_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_capayablepostpay>
+                    <buckaroo3extended_paymentmethod_observer_capayableinstallments>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_capayable_installments_observer</class>
+                        <method>buckaroo3extended_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_capayableinstallments>
                 </observers>
             </buckaroo3extended_request_addservices>
             <buckaroo3extended_request_addcustomvars>
@@ -968,6 +973,11 @@
                         <class>buckaroo3extended/paymentMethods_capayable_postpay_observer</class>
                         <method>buckaroo3extended_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_capayablepostpay>
+                    <buckaroo3extended_paymentmethod_observer_capayableinstallments>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_capayable_installments_observer</class>
+                        <method>buckaroo3extended_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_capayableinstallments>
                 </observers>
             </buckaroo3extended_request_addcustomvars>
             <buckaroo3extended_request_setmethod>
@@ -1122,6 +1132,11 @@
                         <class>buckaroo3extended/paymentMethods_capayable_postpay_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_capayablepostpay>
+                    <buckaroo3extended_paymentmethod_observer_capayableinstallments>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_capayable_installments_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_capayableinstallments>
                 </observers>
             </buckaroo3extended_request_setmethod>
             <buckaroo3extended_push_custom_processing>
@@ -1555,6 +1570,13 @@
                 <sort_order>240</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_capayablepostpay>
+            <buckaroo3extended_capayableinstallments>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_capayable_installments_paymentMethod</model>
+                <title>Capayable In Installments</title>
+                <sort_order>250</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_capayableinstallments>
             <buckaroo2012ideal>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
@@ -2184,6 +2206,21 @@
                 <allowed_currencies>EUR</allowed_currencies>
                 <limit_by_ip>0</limit_by_ip>
             </buckaroo3extended_capayablepostpay>
+
+            <buckaroo3extended_capayableinstallments>
+                <active>0</active>
+                <mode>0</mode>
+                <title>Capayable: Gespreid Betalen</title>
+                <sort_order>240</sort_order>
+                <order_email>1</order_email>
+                <payment_fee_label>Fee</payment_fee_label>
+                <order_status_success></order_status_success>
+                <order_status_failed></order_status_failed>
+                <allowspecific>0</allowspecific>
+                <specificcountry>NL</specificcountry>
+                <allowed_currencies>EUR</allowed_currencies>
+                <limit_by_ip>0</limit_by_ip>
+            </buckaroo3extended_capayableinstallments>
         </buckaroo>
         <tax>
             <calculation>
