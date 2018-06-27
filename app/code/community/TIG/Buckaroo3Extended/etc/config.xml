@@ -811,7 +811,7 @@
                     </buckaroo3extended_paymentmethod_observer_pospayment>
                     <buckaroo3extended_paymentmethod_observer_capayablepostpay>
                         <type>Singleton</type>
-                        <class>buckaroo3extended/paymentMethods_capayablepostpay_observer</class>
+                        <class>buckaroo3extended/paymentMethods_capayable_postpay_observer</class>
                         <method>buckaroo3extended_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_capayablepostpay>
                 </observers>
@@ -965,7 +965,7 @@
                     </buckaroo3extended_paymentmethod_observer_pospayment>
                     <buckaroo3extended_paymentmethod_observer_capayablepostpay>
                         <type>Singleton</type>
-                        <class>buckaroo3extended/paymentMethods_capayablepostpay_observer</class>
+                        <class>buckaroo3extended/paymentMethods_capayable_postpay_observer</class>
                         <method>buckaroo3extended_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_capayablepostpay>
                 </observers>
@@ -1119,7 +1119,7 @@
                     </buckaroo3extended_paymentmethod_observer_pospayment>
                     <buckaroo3extended_paymentmethod_observer_capayablepostpay>
                         <type>Singleton</type>
-                        <class>buckaroo3extended/paymentMethods_capayablepostpay_observer</class>
+                        <class>buckaroo3extended/paymentMethods_capayable_postpay_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_capayablepostpay>
                 </observers>
@@ -1550,7 +1550,7 @@
             </buckaroo3extended_pospayment>
             <buckaroo3extended_capayablepostpay>
                 <active>1</active>
-                <model>buckaroo3extended/paymentMethods_capayablepostpay_paymentMethod</model>
+                <model>buckaroo3extended/paymentMethods_capayable_postpay_paymentMethod</model>
                 <title>Capayable Postpay</title>
                 <sort_order>240</sort_order>
                 <group>buckaroo3extended</group>
