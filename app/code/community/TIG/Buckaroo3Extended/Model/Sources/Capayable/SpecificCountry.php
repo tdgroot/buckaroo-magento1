@@ -29,38 +29,24 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Capayablepostpay_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
+class TIG_Buckaroo3Extended_Model_Sources_Capayable_SpecificCountry
 {
-    /**
-     * TIG_Buckaroo3Extended_Block_PaymentMethods_Capayablepostpay_Checkout_Form constructor.
-     */
-    public function __construct()
-    {
-        $this->setTemplate('buckaroo3extended/capayablepostpay/checkout/form.phtml');
-        parent::_construct();
-    }
+    const SPECIFIC_COUNTRY_NETHERLANDS = 'NL';
 
     /**
-     * @return string|int
+     * @return array
      */
-    public function getOrderAs()
+    public function toOptionArray()
     {
-        return $this->getSession()->getData($this->getMethodCode() . '_BPE_OrderAs');
-    }
+        $helper = Mage::helper('buckaroo3extended');
 
-    /**
-     * @return string|int
-     */
-    public function getCompanyCOCRegistration()
-    {
-        return $this->getSession()->getData($this->getMethodCode() . '_BPE_CompanyCOCRegistration');
-    }
+        $array = array(
+            array(
+                'value' => self::SPECIFIC_COUNTRY_NETHERLANDS,
+                'label' => $helper->__('Netherlands')
+            ),
+        );
 
-    /**
-     * @return string
-     */
-    public function getCompanyName()
-    {
-        return $this->getSession()->getData($this->getMethodCode() . '_BPE_CompanyName');
+        return $array;
     }
 }

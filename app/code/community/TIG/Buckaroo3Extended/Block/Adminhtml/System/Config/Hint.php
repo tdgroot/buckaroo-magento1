@@ -35,6 +35,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'klarna',
         'pospayment',
         'capayablepostpay',
+        'capayableinstallments',
     );
 
     public $services = array(
