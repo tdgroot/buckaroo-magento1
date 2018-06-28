@@ -29,18 +29,35 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Capayable_Adminhtml_System_Config_Advancedbtn
-    extends Mage_Adminhtml_Block_Abstract
-    implements Varien_Data_Form_Element_Renderer_Interface
+class TIG_Buckaroo3Extended_Test_Unit_Model_Sources_Capayable_SpecificCountryTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
+    /** @var null|TIG_Buckaroo3Extended_Model_Sources_Capayable_SpecificCountry */
+    protected $_instance = null;
+
     /**
-     * Render fieldset html
-     *
-     * @param Varien_Data_Form_Element_Abstract $element
-     * @return string
+     * @return null|TIG_Buckaroo3Extended_Model_Sources_Capayable_SpecificCountry
      */
-    public function render(Varien_Data_Form_Element_Abstract $element)
+    protected function _getInstance()
     {
-        return $this->toHtml();
+        if ($this->_instance === null) {
+            $this->_instance = new TIG_Buckaroo3Extended_Model_Sources_Capayable_SpecificCountry();
+        }
+
+        return $this->_instance;
+    }
+
+    public function testToOptionArray()
+    {
+        $expectedOptions = array('NL');
+
+        $instance = $this->_getInstance();
+        $result = $instance->toOptionArray();
+
+        $this->assertInternalType('array', $result);
+
+        foreach ($result as $currency) {
+            $this->assertContains($currency['value'], $expectedOptions);
+        }
     }
 }
