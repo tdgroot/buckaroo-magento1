@@ -29,20 +29,35 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Transfer_Adminhtml_System_Config_Advancedbtn
-    extends Mage_Adminhtml_Block_Abstract
-    implements Varien_Data_Form_Element_Renderer_Interface
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Postpay_Observer extends TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer
 {
-    protected $_template = 'buckaroo3extended/capayablepostpay_system/config/advancedbtn.phtml';
+    protected $_code = 'buckaroo3extended_capayablepostpay';
 
     /**
-     * Render fieldset html
+     * @param Varien_Event_Observer $observer
      *
-     * @param Varien_Data_Form_Element_Abstract $element
-     * @return string
+     * @return $this
      */
-    public function render(Varien_Data_Form_Element_Abstract $element)
+    public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
-        return $this->toHtml();
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+        $vars = $request->getVars();
+        $serviceVersion = $this->_getServiceVersion();
+
+        $array = array($this->_method => array('action'  => 'Pay', 'version' => $serviceVersion));
+
+        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
+            $vars['services'] = array_merge($vars['services'], $array);
+        } else {
+            $vars['services'] = $array;
+        }
+
+        $request->setVars($vars);
+
+        return $this;
     }
 }

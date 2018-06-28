@@ -29,24 +29,7 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_Sources_Capayablepostpay_SpecificCountry
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Postpay_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod
 {
-    const SPECIFIC_COUNTRY_NETHERLANDS = 'NL';
-
-    /**
-     * @return array
-     */
-    public function toOptionArray()
-    {
-        $helper = Mage::helper('buckaroo3extended');
-
-        $array = array(
-            array(
-                'value' => self::SPECIFIC_COUNTRY_NETHERLANDS,
-                'label' => $helper->__('Netherlands')
-            ),
-        );
-
-        return $array;
-    }
+    protected $_code = 'buckaroo3extended_capayablepostpay';
 }

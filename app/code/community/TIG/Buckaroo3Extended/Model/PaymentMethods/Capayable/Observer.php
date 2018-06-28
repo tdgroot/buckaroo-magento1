@@ -29,38 +29,9 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
-    protected $_code = 'buckaroo3extended_capayablepostpay';
     protected $_method = 'Capayable';
-
-    /**
-     * @param Varien_Event_Observer $observer
-     *
-     * @return $this
-     */
-    public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
-    {
-        if ($this->_isChosenMethod($observer) === false) {
-            return $this;
-        }
-
-        $request = $observer->getRequest();
-        $vars = $request->getVars();
-        $serviceVersion = $this->_getServiceVersion();
-
-        $array = array($this->_method => array('action'  => 'Pay', 'version' => $serviceVersion));
-
-        if (array_key_exists('services', $vars) && is_array($vars['services'])) {
-            $vars['services'] = array_merge($vars['services'], $array);
-        } else {
-            $vars['services'] = $array;
-        }
-
-        $request->setVars($vars);
-
-        return $this;
-    }
 
     /**
      * @param Varien_Event_Observer $observer

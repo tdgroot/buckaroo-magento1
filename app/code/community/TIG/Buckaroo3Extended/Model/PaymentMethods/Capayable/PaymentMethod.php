@@ -29,15 +29,13 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayablepostpay_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
         'EUR',
     );
 
-    protected $_code = 'buckaroo3extended_capayablepostpay';
-
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_capayablepostpay_checkout_form';
+    protected $_formBlockType = 'buckaroo3extended/paymentMethods_capayable_checkout_form';
 
     protected $_orderMailStatusses = array(
         TIG_Buckaroo3Extended_Model_Response_Abstract::BUCKAROO_SUCCESS,

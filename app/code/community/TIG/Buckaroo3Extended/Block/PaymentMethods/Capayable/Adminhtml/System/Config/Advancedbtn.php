@@ -29,21 +29,20 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_Sources_Capayablepostpay_AvailableCurrencies
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Capayable_Adminhtml_System_Config_Advancedbtn
+    extends Mage_Adminhtml_Block_Abstract
+    implements Varien_Data_Form_Element_Renderer_Interface
 {
+    protected $_template = 'buckaroo3extended/capayable_system/config/advancedbtn.phtml';
+
     /**
-     * @return array
+     * Render fieldset html
+     *
+     * @param Varien_Data_Form_Element_Abstract $element
+     * @return string
      */
-    public function toOptionArray()
+    public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        $paymentModel = Mage::getModel('buckaroo3extended/paymentMethods_capayablepostpay_paymentMethod');
-        $allowedCurrencies = $paymentModel->getAllowedCurrencies();
-
-        $array = array();
-        foreach ($allowedCurrencies as $allowedCurrency) {
-            $array[] = array('value' => $allowedCurrency, 'label' => $allowedCurrency);
-        }
-
-        return $array;
+        return $this->toHtml();
     }
 }
