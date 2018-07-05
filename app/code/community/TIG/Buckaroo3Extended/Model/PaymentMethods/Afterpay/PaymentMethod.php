@@ -275,6 +275,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
      */
     public function getRejectedMessage($responseData)
     {
+        if (!isset($responseData->ConsumerMessage->HtmlText)) {
+            return false;
+        }
+
         $rejectedMessage = $responseData->ConsumerMessage->HtmlText;
 
         if (!$rejectedMessage) {

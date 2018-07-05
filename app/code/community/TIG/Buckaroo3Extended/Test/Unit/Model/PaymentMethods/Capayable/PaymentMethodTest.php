@@ -159,4 +159,19 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Capayable_PaymentMeth
 
         $this->assertInternalType('string', $functionResult);
     }
+
+    public function testGetAllowedCurrencies()
+    {
+        $instance = $this->_getInstance();
+        $result = $instance->getAllowedCurrencies();
+        $this->assertEquals(array('EUR'), $result);
+    }
+
+    public function testGetRejectedMessage()
+    {
+        $instance = $this->_getInstance();
+        $result = $instance->getRejectedMessage(array());
+        $this->assertInternalType('string', $result);
+        $this->assertContains('https://www.capayable.com/klantenservice', $result);
+    }
 }

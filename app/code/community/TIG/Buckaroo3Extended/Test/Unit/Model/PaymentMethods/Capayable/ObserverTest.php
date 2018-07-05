@@ -141,4 +141,133 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Capayable_ObserverTes
         $this->assertArrayHasKey('customVars', $requestVarsResult);
         $this->assertArrayHasKey('Articles', $requestVarsResult['customVars']['Capayable']);
     }
+
+    public function testGetCompanyGroupData()
+    {
+        $sessionArray = array(
+            'BPE_OrderAs' => 2,
+            'BPE_CompanyCOCRegistration' => '123456789',
+            'BPE_CompanyName' => 'TIG',
+        );
+
+        $expectedResult = array(
+            'Name' => array(
+                'value' => 'TIG',
+                'group' => 'Company'
+            ),
+            'ChamberOfCommerce' => array(
+                'value' => '123456789',
+                'group' => 'Company'
+            )
+        );
+
+        $checkoutSession = Mage::getSingleton('core/session');
+        $checkoutSession->method('getData')->with('additionalFields')->willReturn($sessionArray);
+
+        $instance = $this->_getInstance();
+        $result = $this->invokeMethod($instance, 'getCompanyGroupData');
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomerTypeProvider()
+    {
+        return array(
+            'not set' => array(
+                array('BPE_Company' => 'TIG'),
+                ''
+            ),
+            'empty' => array(
+                array('BPE_OrderAs' => ''),
+                ''
+            ),
+            'incorrect type' => array(
+                array('BPE_OrderAs' => '5'),
+                ''
+            ),
+            'debtor' => array(
+                array('BPE_OrderAs' => '1'),
+                'Debtor'
+            ),
+            'company' => array(
+                array('BPE_OrderAs' => '2'),
+                'Company'
+            ),
+            'soleproprietor' => array(
+                array('BPE_OrderAs' => '3'),
+                'SoleProprietor'
+            ),
+        );
+    }
+
+    /**
+     * @param $additionalFields
+     * @param $expected
+     *
+     * @dataProvider getCustomerTypeProvider
+     */
+    public function testGetCustomerType($additionalFields, $expected)
+    {
+        $checkoutSession = Mage::getSingleton('core/session');
+        $checkoutSession->method('getData')->with('additionalFields')->willReturn($additionalFields);
+
+        $instance = $this->_getInstance();
+        $result = $this->invokeMethod($instance, 'getCustomerType');
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testGetProductArticle()
+    {
+        $groupId = 3;
+        $articleValues = array(
+            'Code' => 'tig-001',
+            'Name' => 'TIG Product',
+            'Quantity' => '2',
+            'Price' => '4.78',
+        );
+
+        $productMock = $this->getMockBuilder('Mage_Sales_Model_Order_Item')
+            ->setMethods(array('getSku', 'getName', 'getQtyOrdered', 'getBasePriceInclTax'))
+            ->getMock();
+        $productMock->expects($this->once())->method('getSku')->willReturn($articleValues['Code']);
+        $productMock->expects($this->once())->method('getName')->willReturn($articleValues['Name']);
+        $productMock->expects($this->once())->method('getQtyOrdered')->willReturn($articleValues['Quantity']);
+        $productMock->expects($this->once())->method('getBasePriceInclTax')->willReturn($articleValues['Price']);
+
+        $instance = $this->_getInstance();
+        $result = $this->invokeMethod($instance, 'getProductArticle', array($productMock, $groupId));
+
+        $this->assertInternalType('array', $result);
+
+        foreach ($result as $name => $groupValue) {
+            $this->assertEquals($articleValues[$name], $groupValue['value']);
+            $this->assertEquals('ProductLine', $groupValue['group']);
+            $this->assertEquals($groupId, $groupValue['groupId']);
+        }
+    }
+
+    public function testGetSubtotalLine()
+    {
+        $groupId = 2;
+        $articleValues = array(
+            'Name' => 'Shipping',
+            'Value' => '5.98',
+        );
+
+        $params = array($articleValues['Name'], $articleValues['Value'], $groupId);
+
+        $instance = $this->_getInstance();
+        $result = $this->invokeMethod($instance, 'getSubtotalLine', $params);
+
+        $this->assertInternalType('array', $result);
+
+        foreach ($result as $name => $groupValue) {
+            $this->assertEquals($articleValues[$name], $groupValue['value']);
+            $this->assertEquals('SubtotalLine', $groupValue['group']);
+            $this->assertEquals($groupId, $groupValue['groupId']);
+        }
+    }
 }
