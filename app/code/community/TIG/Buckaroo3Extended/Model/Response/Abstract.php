@@ -330,21 +330,16 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->_debugEmail .= "The transaction generated an error. \n";
 
-        $paymentMethod = $this->_order->getPayment()->getMethod();
-        switch($paymentMethod){
-            case 'buckaroo3extended_afterpay':
-            case 'buckaroo3extended_afterpay2':
-                    $message = Mage::helper('buckaroo3extended')->__(
-                        $this->getAfterpayRejectMessage($message)
-                    );
-                break;
-            default:
-                $message = Mage::helper('buckaroo3extended')->__(
-                    $this->_getCorrectFailureMessage($message)
-                );
+        $paymentInstance = $this->_order->getPayment()->getMethodInstance();
+        $rejectedMessage = $paymentInstance->getRejectedMessage($this->_response);
+
+        if ($rejectedMessage == false || strlen($rejectedMessage) <= 0) {
+            $rejectedMessage = $this->_getCorrectFailureMessage($message);
         }
 
-        Mage::getSingleton('core/session')->addError($message);
+        $rejectedMessage = Mage::helper('buckaroo3extended')->__($rejectedMessage);
+
+        Mage::getSingleton('core/session')->addError($rejectedMessage);
 
         $this->_returnGiftcards($this->_order);
         $this->setBuckarooFailedAuthorize();
@@ -469,22 +464,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             $payment->setAdditionalInformation('buckaroo_failed_authorize', 1);
             $payment->save();
         }
-    }
-
-    /**
-     * @param $message null
-     *
-     * @return string
-     */
-    private function getAfterpayRejectMessage($message = null)
-    {
-        $rejectedMessage = $this->_response->ConsumerMessage->HtmlText;
-
-        if ($rejectedMessage) {
-            return $rejectedMessage;
-        }
-
-        return $message;
     }
 
     /**

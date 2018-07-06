@@ -144,4 +144,19 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
 
         return $customerBirthDate;
     }
+
+    /**
+     * @param $responseData
+     *
+     * @return string
+     */
+    public function getRejectedMessage($responseData)
+    {
+        $rejectedMessage = "Your request to pay with Capayable has been rejected. "
+            . "For questions about the rejection, please contact Capayable Customer Service: "
+            . "<a href='https://www.capayable.com/klantenservice' target='_blank'>"
+            . "https://www.capayable.com/klantenservice</a>. You can also choose to select a different payment method.";
+
+        return $rejectedMessage;
+    }
 }
