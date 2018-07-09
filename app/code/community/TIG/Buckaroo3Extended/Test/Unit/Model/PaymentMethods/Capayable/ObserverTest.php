@@ -129,6 +129,70 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Capayable_ObserverTes
         $this->assertEquals('capayable', $requestMethodResult);
     }
 
+    public function testBuckaroo3extended_refund_request_addservices()
+    {
+        $mockObserver = $this->getMockObserver();
+        $instance = $this->_getInstance();
+
+        $expectedRequestVars = array(
+            'services' => array(
+                'Capayable' => array(
+                    'action' => 'Refund',
+                    'version' => 1
+                )
+            )
+        );
+
+        $result = $instance->buckaroo3extended_refund_request_addservices($mockObserver);
+        $requestVarsResult = $mockObserver->getRequest()->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer', $result);
+        $this->assertEquals($expectedRequestVars, $requestVarsResult);
+    }
+
+    /**
+     * @return array
+     */
+    public function buckaroo3extended_refund_request_addcustomvarsProvider()
+    {
+        return array(
+            'no channel parameter' => array(
+                array('payment_method' => 'Capayable')
+            ),
+            'null parameter' => array(
+                array('channel' => null)
+            ),
+            'empty string parameter' => array(
+                array('channel' => '')
+            ),
+            'was callcenter' => array(
+                array('channel' => 'CallCenter')
+            ),
+            'was web' => array(
+                array('channel' => 'Web')
+            ),
+        );
+    }
+
+    /**
+     * @param $channel
+     *
+     * @dataProvider buckaroo3extended_refund_request_addcustomvarsProvider
+     */
+    public function testBuckaroo3extended_refund_request_addcustomvars($channel)
+    {
+        $mockObserver = $this->getMockObserver();
+        $mockObserver->getRequest()->setVars($channel);
+
+        $instance = $this->_getInstance();
+
+        $result = $instance->buckaroo3extended_refund_request_addcustomvars($mockObserver);
+        $requestVarsResult = $mockObserver->getRequest()->getVars();
+
+        $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer', $result);
+        $this->assertEquals('Web', $requestVarsResult['channel']);
+    }
+
     public function testBuckaroo3extended_request_addcustomvars()
     {
         $mockObserver = $this->getMockObserver();

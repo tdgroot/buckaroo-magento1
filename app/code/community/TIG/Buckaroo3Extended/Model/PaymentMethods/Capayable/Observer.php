@@ -100,7 +100,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
         );
 
         if($this->_method == false){
-            $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', Mage::app()->getStore()->getStoreId());
+            $storeId = Mage::app()->getStore()->getStoreId();
+            $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', $storeId);
         }
 
         if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
