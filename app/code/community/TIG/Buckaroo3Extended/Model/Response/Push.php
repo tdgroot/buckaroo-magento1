@@ -419,7 +419,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
              * brq_datarequest = Klarna
              */
             if ($this->_postArray['brq_transaction_type'] == self::BUCK_PUSH_ACCEPT_AUTHORIZE_TYPE ||
-                $this->_postArray['brq_datarequest'] != ''
+                (isset($this->_postArray['brq_datarequest']) && $this->_postArray['brq_datarequest'] != '')
                 ) {
                 $payment = $this->_order->getPayment();
                 $payment->setAdditionalInformation('buckaroo_failed_authorize', 1);
