@@ -269,7 +269,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $errorMessage = $this->_getCorrectFailureMessage($message);
 
-        if ($billingCountry == 'NL' && $parsedResponse['code'] == 490) {
+        if ($billingCountry == 'NL' && isset($parsedResponse['code']) && $parsedResponse['code'] == 490) {
             $responseErrorMessage = $this->getResponseFailureMessage();
             $errorMessage = strlen($responseErrorMessage) > 0 ? $responseErrorMessage : $errorMessage;
         }
@@ -448,14 +448,14 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $setFailedAuthorize = false;
 
         //Afterpay
-        if ($this->_response->TransactionType == 'I013') {
+        if (isset($this->_response->TransactionType) && $this->_response->TransactionType == 'I013') {
             $setFailedAuthorize = true;
         }
 
         //Klarna
-        if ($this->_response->requestType == 'DataRequest' &&
-            $this->_response->ServiceCode == 'klarna' &&
-            $this->_response->Status->Code->Code == '490' ) {
+        if (isset($this->_response->requestType) && $this->_response->requestType == 'DataRequest' &&
+            isset($this->_response->ServiceCode) && $this->_response->ServiceCode == 'klarna' &&
+            isset($this->_response->Status->Code->Code) && $this->_response->Status->Code->Code == '490' ) {
             $setFailedAuthorize = true;
         }
  
