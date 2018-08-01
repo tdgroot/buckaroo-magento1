@@ -171,7 +171,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         $email = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customeremail');
 
         if (!$email) {
-            $this->getAddress()->getEmail();
+            $email = $this->getAddress()->getEmail();
         }
 
         if (!$email && $this->getCustomer()) {
