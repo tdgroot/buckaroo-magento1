@@ -7155,7 +7155,7 @@
                     </fields>
                 </buckaroo3extended_pospayment>
                 <buckaroo3extended_capayablepostpay translate="label">
-                    <label>Capayable Postpay</label>
+                    <label>Capayable: Achteraf Betalen</label>
                     <sort_order>20350</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -7389,7 +7389,7 @@
                     </fields>
                 </buckaroo3extended_capayablepostpay>
                 <buckaroo3extended_capayableinstallments translate="label">
-                    <label>Capayable In Installments</label>
+                    <label>Capayable: Gespreid Betalen</label>
                     <sort_order>20400</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>

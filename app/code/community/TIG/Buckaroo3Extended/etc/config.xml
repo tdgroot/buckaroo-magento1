@@ -2,7 +2,7 @@
 <config>
     <modules>
         <TIG_Buckaroo3Extended>
-            <version>4.18.1</version>
+            <version>4.19.0</version>
         </TIG_Buckaroo3Extended>
     </modules>
     <tig>
@@ -2225,7 +2225,7 @@
             <buckaroo3extended_capayablepostpay>
                 <active>0</active>
                 <mode>0</mode>
-                <title>Capayable: Achteraf betalen</title>
+                <title>Capayable: Achteraf Betalen</title>
                 <sort_order>230</sort_order>
                 <order_email>1</order_email>
                 <payment_fee_label>Fee</payment_fee_label>
