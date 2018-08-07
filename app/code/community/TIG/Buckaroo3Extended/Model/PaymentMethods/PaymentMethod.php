@@ -306,4 +306,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
 
         return $value;
     }
+
+    /**
+     * @param $responsedData
+     *
+     * @return bool
+     */
+    public function getRejectedMessage($responsedData)
+    {
+        return false;
+    }
 }
