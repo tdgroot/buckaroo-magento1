@@ -13,12 +13,12 @@ env:
     - CODE_COVERAGE=false
 
   matrix:
-      - MAGENTO_VERSION=magento-mirror-1.9.3.9
+      - MAGENTO_VERSION=magento-mirror-1.9.3.8
 
 matrix:
   include:
     - php: 7.0
-      env: MAGENTO_VERSION=magento-mirror-1.9.3.9 CODE_COVERAGE=true
+      env: MAGENTO_VERSION=magento-mirror-1.9.3.8 CODE_COVERAGE=true
     - php: 7.0
       env: MAGENTO_VERSION=magento-mirror-1.9.2.4
     - php: 7.0
