@@ -374,28 +374,27 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
         $requestParameters = array();
 
-        foreach($this->_vars['customVars'][$name] as $fieldName => $value) {
+        foreach ($this->_vars['customVars'][$name] as $fieldName => $value) {
 
-            if($fieldName == 'Articles'){
-                if(is_array($value) && !empty($value)){
-                    foreach($value as $groupId => $articleArray){
-                        if(is_array($articleArray) && !empty($articleArray)){
-                            foreach($articleArray as $articleName => $articleValue){
-                                $requestParameter          = new RequestParameter();
-                                $requestParameter->Name    = $articleName;
-                                $requestParameter->GroupID = $groupId;
-                                $requestParameter->Group   = "Article";
-                                $requestParameter->_       = $articleValue['value'];
-                                $requestParameters[]       = $requestParameter;
-                            }
-                        }
+            if ($fieldName == 'Articles' && is_array($value) && !empty($value)) {
+                foreach ($value as $groupId => $articleArray) {
+                    if (!is_array($articleArray) || empty($articleArray)) {
+                        continue;
                     }
-                    continue;
+
+                    foreach ($articleArray as $articleName => $articleValue) {
+                        $newParameter          = new RequestParameter();
+                        $newParameter->Name    = $articleName;
+                        $newParameter->GroupID = isset($articleValue['groupId']) ? $articleValue['groupId'] : $groupId;
+                        $newParameter->Group   = isset($articleValue['group']) ? $articleValue['group'] : "Article";
+                        $newParameter->_       = $articleValue['value'];
+                        $requestParameters[]   = $newParameter;
+                    }
                 }
+                continue;
             }
 
-            if (
-                (is_null($value) || $value === '')
+            if ((is_null($value) || $value === '')
                 || (
                     is_array($value)
                     && (is_null($value['value']) || $value['value'] === '')
@@ -409,6 +408,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             if (is_array($value)) {
                 $requestParameter->Group = $value['group'];
                 $requestParameter->_ = $value['value'];
+
+                if (isset($value['groupId']) && !empty($value['groupId'])) {
+                    $requestParameter->GroupID = $value['groupId'];
+                }
             } else {
                 $requestParameter->_ = $value;
             }
@@ -448,6 +451,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             if (is_array($value)) {
                 $requestParameter->Group = $value['group'];
                 $requestParameter->_ = $value['value'];
+
+                if (isset($value['groupId']) && !empty($value['groupId'])) {
+                    $requestParameter->GroupID = $value['groupId'];
+                }
             } else {
                 $requestParameter->_ = $value;
             }

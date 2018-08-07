@@ -492,14 +492,21 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
      */
     protected function _parseResponse()
     {
+        $returnArray = array(
+            'message' => 'Onbekende responsecode',
+            'status' => self::BUCKAROO_NEUTRAL
+        );
+
+        if (!isset($this->_response->Status->Code->Code)) {
+            return $returnArray;
+        }
+
         $code = $this->_response->Status->Code->Code;
 
-        if (!isset($this->responseCodes[$code]))
-        {
-            return array(
-                'message' => 'Onbekende responsecode: ' . $code,
-                'status' => self::BUCKAROO_NEUTRAL
-            );
+        if (!isset($this->responseCodes[$code])) {
+            $returnArray['message'] .= ': ' . $code;
+
+            return $returnArray;
         }
 
         $returnArray = $this->responseCodes[$code];
