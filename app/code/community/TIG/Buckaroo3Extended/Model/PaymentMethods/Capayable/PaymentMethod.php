@@ -74,7 +74,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
         $excludeKeys = array(
             'entity_id', 'entity_type_id', 'parent_id', 'created_at', 'updated_at', 'customer_address_id',
             'quote_address_id', 'address_id', 'region_id', 'customer_id', 'address_type', 'applied_taxes',
-            'cached_items_all', 'cached_items_nominal', 'cached_items_nonnominal'
+            'cached_items_all', 'cached_items_nominal', 'cached_items_nonnominal', 'rounding_deltas', 'cart_fixed_rules'
         );
 
         //get both the order-addresses
