@@ -73,8 +73,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
         // exclude certain keys that are always different
         $excludeKeys = array(
             'entity_id', 'entity_type_id', 'parent_id', 'created_at', 'updated_at', 'customer_address_id',
-            'quote_address_id', 'address_id', 'region_id', 'customer_id', 'address_type', 'applied_taxes',
-            'cached_items_all', 'cached_items_nominal', 'cached_items_nonnominal', 'rounding_deltas', 'cart_fixed_rules'
+            'quote_address_id', 'address_id', 'region_id', 'customer_id', 'address_type', 'applied_taxes'
         );
 
         //get both the order-addresses
@@ -84,6 +83,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
         //remove the keys with corresponding values from both the addressess
         $billingAddressFiltered = array_diff_key($billingAddress, array_flip($excludeKeys));
         $shippingAddressFiltered = array_diff_key($shippingAddress, array_flip($excludeKeys));
+
+        //filter out the non-scalar values, like array, object or resource.
+        $billingAddressFiltered = array_filter($billingAddressFiltered, 'is_scalar');
+        $shippingAddressFiltered = array_filter($shippingAddressFiltered, 'is_scalar');
 
         //differentiate the addresses, when some data is different an array with changes will be returned
         $addressDiff = array_diff($billingAddressFiltered, $shippingAddressFiltered);
